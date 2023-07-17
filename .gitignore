@@ -14,3 +14,8 @@ spec/dummy/tmp/
 *.sublime-workspace
 
 .byebug_history
+
+node_modules/
+spec/dummy/app/assets/builds/
+spec/dummy/config/master.key
+spec/examples.txt
