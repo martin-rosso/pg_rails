@@ -21,7 +21,7 @@ module Admin
     private
 
     def atributos_permitidos
-      %i[nombre tipo categoria_de_cosa_id]
+      %i[nombre tipo categoria_de_cosa_id rico]
     end
 
     def atributos_para_buscar
@@ -33,7 +33,7 @@ module Admin
     end
 
     def atributos_para_mostrar
-      %i[nombre tipo categoria_de_cosa]
+      %i[nombre tipo categoria_de_cosa rico]
     end
   end
 end

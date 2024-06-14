@@ -36,6 +36,8 @@ class Cosa < ApplicationRecord
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
+  has_rich_text :rico
+
   enumerize :tipo, in: { completar: 0, los: 1, valores: 2 }
 
   validates :nombre, :tipo, presence: true

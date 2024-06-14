@@ -1,12 +1,13 @@
 / # locals: (object: nil, asociable: false)
 
-div style="max-width: 22em" data-controller="cosa"
+div style="max-width: 52em" data-controller="cosa"
   = pg_form_for(@cosa || object, asociable:) do |f|
     = f.mensajes_de_error
 
     = hidden_field_tag :asociable, true if asociable
     = f.input :nombre
     = f.input :tipo
+    = f.rich_text_area :rico
     = f.pg_associable :categoria_de_cosa,
                       preload: CategoriaDeCosa.limit(2), placeholder: 'el placeholder',
                       wrapper_html: { 'xdata-placeholder': 'dale, escribí' }
