@@ -1,6 +1,17 @@
 require 'rails_helper'
 
 describe 'Base requests' do
+  describe 'internal_error_but_with_status200' do
+    subject do
+      get '/internal_error_but_with_status200'
+    end
+
+    it do
+      subject
+      expect(response).to have_http_status(:ok)
+    end
+  end
+
   describe 'invalid authenticity token' do
     subject { get '/admin/cosas', headers: }
 
