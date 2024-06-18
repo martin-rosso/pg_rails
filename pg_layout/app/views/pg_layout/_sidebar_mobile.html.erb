@@ -3,9 +3,9 @@
     <h5 class="offcanvas-title" id="offcanvasExampleLabel"></h5>
     <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body">
+  <div class="offcanvas-body text-end">
     <% if user_signed_in? %>
-      <span class="text-light"><%= Current.user %></span>
+      <span class="text-light pe-4 mt-4 d-inline-block"><%= Current.user %></span>
       <hr>
     <% end %>
     <ul class="list-unstyled mt-4">
@@ -15,7 +15,7 @@
         <li>
           <a
             href="<%= entry[:path] %>"
-            class="text-light <%= @navbar.active_entry?(entry, request) ? 'active' : '' %>"
+            class="pg--nav-button pe-4 text-light <%= @navbar.active_entry?(entry, request) ? 'active' : '' %>"
             <%= entry[:attributes] %>
           >
             <%= entry[:title] %>
@@ -30,6 +30,6 @@
     text-decoration: none;
   }
   .offcanvas li {
-    margin-top: 0.75em;
+    xmargin-top: 0.75em;
   }
 </style>

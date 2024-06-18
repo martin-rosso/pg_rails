@@ -46,9 +46,9 @@ $chevron-color: 200,200,200,.5;
   // background-color: #d2f4ea;
 }
 
-#sidebar li a.active {
-  font-weight: bold;
+.pg--nav-button.active {
   --bs-link-color-rgb: white!important;
+  background-color: tint-color($primary, 17%);
 }
 // Los small-items están deprecados
 #sidebar {
@@ -94,9 +94,27 @@ $chevron-color: 200,200,200,.5;
     flex-basis: 10em;
   }
   & > * {
-    width: 9em;
+    width: 10em;
     position:fixed;
   }
+}
+
+.pg--nav-button {
+  padding: 0.4em 1.7em;
+  width: 100%;
+  text-align: right;
+  display: inline-block !important;
+}
+.offcanvas-body {
+  padding: 0!important;
+}
+.pg--nav-button:hover {
+  background-color: tint-color($primary, 20%);
+}
+
+.offcanvas .pg--nav-button {
+  padding: 0.7em 1.7em;
+  text-align: right;
 }
 
 .with-sidebar > :last-child {
