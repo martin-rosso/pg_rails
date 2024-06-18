@@ -7,4 +7,6 @@ class AlertComponentPreview < ViewComponent::Preview
   def dismisible; end
 
   def colours; end
+
+  def tooltips; end
 end
