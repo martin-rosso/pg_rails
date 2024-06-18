@@ -27,6 +27,7 @@ module PgEngine
                 with: :invalid_authenticity_token
 
     rescue_from Pundit::NotAuthorizedError, with: :not_authorized
+    rescue_from PgEngine::PageNotFoundError, with: :page_not_found
     rescue_from Redirect do |e|
       redirect_to e.url
     end
@@ -41,6 +42,15 @@ module PgEngine
       pg_warn err
 
       render_my_component(BadRequestComponent.new, :bad_request)
+    end
+
+    def page_not_found
+      render_my_component(PageNotFoundComponent.new, :not_found)
+    end
+
+    # Para cachear el html y guardarlo en public/500.html
+    def internal_error_but_with_status200
+      render_my_component(InternalErrorComponent.new, :ok)
     end
 
     before_action do
