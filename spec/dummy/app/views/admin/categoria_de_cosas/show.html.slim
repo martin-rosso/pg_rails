@@ -8,6 +8,7 @@
   .ms-1
   = @categoria_de_cosa.edit_link
 .container
+  span data-bs-toggle="tooltip" data-bs-title="Las cosas" el tooltip
   div data-controller="cosa"
     = link_to 'Fade in', 'javascript:void(0)', 'data-action': 'cosa#doFadeIn'
     | &nbsp;&nbsp;
