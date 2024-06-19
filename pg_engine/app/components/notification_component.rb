@@ -10,9 +10,14 @@ class NotificationComponent < BaseComponent
       <div>
         <%= @notification.message %>
       </div>
-      <div class="notification--time text-body-tertiary text-end ms-4">
-        hace
-        <%= distance_of_time_in_words @notification.created_at, Time.zone.now %>
+      <div class="notification--time d-flex flex-column justify-content-end text-body-tertiary text-end ms-4">
+        <div>
+          hace
+          <%= distance_of_time_in_words @notification.created_at, Time.zone.now %>
+        </div>
+        <div>
+          <a href="javascript:void" class="link-opacity-50" data-action="notifications#markAsUnseen">Marcar como no leído</a>
+        </div>
       </div>
     </div>
   ERB

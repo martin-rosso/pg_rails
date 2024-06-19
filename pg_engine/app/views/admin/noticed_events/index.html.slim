@@ -1,0 +1,6 @@
+- content_for :actions do
+  = link_to 'Nuevo', new_admin_noticed_event_path
+h1 Eventos
+
+- @events.each do |event|
+  pre.mb-5 = JSON.pretty_generate event.as_json

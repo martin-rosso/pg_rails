@@ -18,15 +18,33 @@ export default class extends Controller {
     })
   }
 
+  async markAsUnseen (e) {
+    const notification = e.target.closest('.notification')
+    notification.dataset.markedAsUnseen = true
+    const id = notification.dataset.id
+    const response = await post('/u/notifications/mark_as_unseen',
+      { query: { id } })
+
+    if (response.ok) {
+      notification.classList.add('unseen')
+    } else {
+      const text = await response.text
+      Rollbar.error('Error marking as unseen: ', text)
+    }
+  }
+
   async markAsSeen () {
     const ids = []
-    document.querySelectorAll('.notification')
-      .forEach((e) => { ids.push(e.dataset.id) })
+    const targets = Array.from(document.querySelectorAll('.notification')).filter((e) => {
+      return !e.dataset.markedAsUnseen
+    })
+    targets.forEach((e) => { ids.push(e.dataset.id) })
+
     const response = await post('/u/notifications/mark_as_seen',
       { query: { ids }, responseKind: 'turbo-stream' })
 
     if (response.ok) {
-      document.querySelectorAll('.notification.unseen').forEach(
+      targets.forEach(
         (notif) => {
           notif.classList.remove('unseen')
         }

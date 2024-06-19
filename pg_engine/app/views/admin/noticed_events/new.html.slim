@@ -1,0 +1,9 @@
+= pg_form_for @event, url: admin_noticed_events_path do |f|
+  = f.mensajes_de_error
+
+  = f.input :type, as: :select, collection: ApplicationNotifier.descendants.map(&:to_s)
+  = f.rich_text_area :message
+  = f.input :tooltip
+  = f.input :record_type
+  = f.input :record_id
+  = f.submit

@@ -1,5 +1,11 @@
 module Users
   class NotificationsController < ApplicationController
+    def mark_as_unseen
+      notification = Noticed::Notification.find(params[:id])
+      notification.mark_as_unseen!
+      head :ok
+    end
+
     def mark_as_seen
       # No handleo errores porque no debería fallar, y si falla
       # se notifica a rollbar y al user no le pasa nada

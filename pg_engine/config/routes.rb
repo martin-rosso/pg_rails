@@ -17,9 +17,11 @@ Rails.application.routes.draw do
   }, failure_app: PgEngine::DeviseFailureApp
   namespace :users, path: 'u' do
     post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
+    post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
   end
   namespace :admin, path: 'a' do
     pg_resource(:emails)
+    pg_resource(:noticed_events)
     pg_resource(:email_logs) do
       collection do
         post :mailgun_sync
