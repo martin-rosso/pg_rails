@@ -53,6 +53,9 @@ Metrics/BlockLength:
 Rails/LexicallyScopedActionFilter:
   Enabled: false
 
+Rails/DynamicFindBy:
+  Enabled: false
+
 RSpec/NestedGroups:
   Max: 4
 

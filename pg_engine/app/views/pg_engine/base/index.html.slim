@@ -53,6 +53,7 @@ div
               - atributos_para_listar.each do |att|
                 td.text-nowrap = object.send(att)
               td.text-nowrap.text-end.ps-5
+                = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
                 = object.show_link
                 = object.edit_link(text: '', klass: 'btn-light')
                 = object.destroy_link
