@@ -31,6 +31,9 @@ RSpec/ContextWording:
 Style/Documentation:
   Enabled: false
 
+Style/StringConcatenation:
+  Enabled: false
+
 Rails/I18nLocaleTexts:
   Enabled: false
 

@@ -1,3 +1,25 @@
+.pg--notifications-bell--tooltip {
+  position: relative;
+  background-color: green;
+  padding: 4px;
+  z-index: 10;
+  border-radius: 2px;
+}
+.pg--notifications-bell--tooltip::after {
+  content: '';
+  display: block;
+  position: absolute;
+  right: -11px;
+  top: 0;
+  border-color: transparent;
+  border-left-color: green;
+  border-style: solid;
+  border-top-width: 1rem;
+  border-bottom-width: 1rem;
+  border-left-width: 1rem;
+  z-index: -1;
+}
+
 #notifications {
   display: flex;
   align-items: center;
