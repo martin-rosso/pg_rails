@@ -1,5 +1,5 @@
 module Admin
-  class NoticedEventsController < AdminController
+  class EventosController < AdminController
     layout 'pg_layout/containerized'
 
     add_breadcrumb 'Eventos'
@@ -32,7 +32,7 @@ module Admin
         notifier.deliver(User.where(developer: true))
       end
 
-      redirect_to admin_noticed_events_path
+      redirect_to admin_eventos_path
     rescue StandardError => e
       flash.now[:alert] = e.to_s
       render :new, status: :unprocessable_entity

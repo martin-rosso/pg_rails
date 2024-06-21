@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   end
   namespace :admin, path: 'a' do
     pg_resource(:emails)
-    pg_resource(:noticed_events)
+    pg_resource(:eventos)
     pg_resource(:email_logs) do
       collection do
         post :mailgun_sync
