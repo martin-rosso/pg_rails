@@ -28,7 +28,7 @@
       <% if @notifications&.any? %>
         <%= render NotificationComponent.with_collection(@notifications) if @notifications&.any? %>
       <% else %>
-        <span class="text-light">
+        <span class="text-light text-center">
           No hay notificaciones
         </span>
       <% end %>
