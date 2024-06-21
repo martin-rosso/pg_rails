@@ -1,5 +1,4 @@
 require 'rails_helper'
-# rubocop:disable RSpec/ExampleLength
 describe PgEngine::PgRailsHelper do
   describe '#img_placeholder' do
     it 'si no es fade_in' do
@@ -35,4 +34,3 @@ describe PgEngine::PgRailsHelper do
     end
   end
 end
-# rubocop:enable RSpec/ExampleLength

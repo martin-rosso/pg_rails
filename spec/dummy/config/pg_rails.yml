@@ -14,7 +14,7 @@ sidebar.signed_in:
     path: root_path
   -
     name: Eventos
-    path: admin_noticed_events_path
+    path: admin_eventos_path
   -
     name: ActiveAdmin
     path: active_admin_root_path

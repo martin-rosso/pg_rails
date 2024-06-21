@@ -29,6 +29,9 @@ describe 'Notifications' do
       expect(page).to have_css('.notifications-unseen-mark')
       find('.bi-bell-fill').click
       expect(page).to have_no_css('.notifications-unseen-mark', wait: 5)
+      expect(page).to have_no_css('.unseen')
+      click_on 'Marcar como no leído'
+      expect(page).to have_css('.unseen')
     end
   end
 

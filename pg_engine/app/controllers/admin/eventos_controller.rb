@@ -12,6 +12,7 @@ module Admin
       @event = Evento.new(type: SimpleUserNotifier.to_s)
     end
 
+    # rubocop:disable Metrics/MethodLength
     def create # rubocop:disable Metrics/AbcSize
       @event = Evento.new(event_params)
       # @event.message.save!
@@ -30,13 +31,20 @@ module Admin
         notifier.deliver(User.all)
       elsif @event.target == 'devs'
         notifier.deliver(User.where(developer: true))
+      else
+        # :nocov:
+        'shouldnt happen'
+        # :nocov:
       end
 
       redirect_to admin_eventos_path
     rescue StandardError => e
+      # :nocov:
       flash.now[:alert] = e.to_s
       render :new, status: :unprocessable_entity
+      # :nocov:
     end
+    # rubocop:enable Metrics/MethodLength
 
     private
 

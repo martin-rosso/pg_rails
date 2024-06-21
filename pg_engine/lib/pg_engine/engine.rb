@@ -13,13 +13,13 @@ module PgEngine
       g.fallbacks[:pg_active_record] = :active_record
     end
 
-    overrides = "#{PgEngine::Engine.root}/app/overrides"
+    # overrides = "#{PgEngine::Engine.root}/app/overrides"
 
-    config.to_prepare do
-      Dir.glob("#{overrides}/**/*.rb").each do |override|
-        load override
-      end
-    end
+    # config.to_prepare do
+    #   Dir.glob("#{overrides}/**/*.rb").each do |override|
+    #     load override
+    #   end
+    # end
 
     initializer 'pg_engine.set_exceptions_app' do
       Rails.application.config.exceptions_app = Rails.application.routes
