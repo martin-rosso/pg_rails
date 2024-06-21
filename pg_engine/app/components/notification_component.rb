@@ -8,7 +8,7 @@ class NotificationComponent < BaseComponent
     <div class="notification d-flex justify-content-between <%= 'unseen' if @notification.unseen? %>"
          id="<%= dom_id(@notification) %>" data-id="<%= @notification.id %>">
       <div>
-        <%= @notification.message %>
+        <%= @notification.message.html_safe %>
       </div>
       <div class="notification--time d-flex flex-column justify-content-end text-body-tertiary text-end ms-4">
         <div>

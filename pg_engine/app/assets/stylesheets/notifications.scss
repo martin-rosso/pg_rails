@@ -31,7 +31,8 @@
 }
 
 #notifications-inner {
-  max-width: 400px;
+  width: 100%;
+  max-width: 40em;
   display: flex;
   flex-direction: column;
   gap: 0.4em;
@@ -46,6 +47,10 @@
   display: flex;
   align-items: stretch;
   background-color: white;
+
+  figcaption {
+    display: none;
+  }
 }
 .notification:not(.unseen) {
   xcolor: #646464;
