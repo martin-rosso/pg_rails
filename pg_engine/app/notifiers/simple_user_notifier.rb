@@ -21,6 +21,10 @@ class SimpleUserNotifier < ApplicationNotifier
     def message
       params[:message]
     end
+
+    def tooltip
+      params[:tooltip]
+    end
   end
   # Add required params
   #

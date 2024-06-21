@@ -22,6 +22,10 @@ RSpec/AnyInstance:
 
 RSpec/MultipleMemoizedHelpers:
   Enabled: false
+
+RSpec/ExampleLength:
+  Max: 10
+
 RSpec/MultipleExpectations:
   Enabled: false
 
@@ -29,6 +33,9 @@ RSpec/ContextWording:
   Enabled: false
 
 Style/Documentation:
+  Enabled: false
+
+Style/StringConcatenation:
   Enabled: false
 
 Rails/I18nLocaleTexts:

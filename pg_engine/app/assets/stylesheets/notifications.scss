@@ -1,3 +1,26 @@
+.pg--notifications-bell--tooltip {
+  position: relative;
+  background-color: #99570b;
+  padding: 4px;
+  z-index: 10;
+  border-radius: 2px;
+}
+.pg--notifications-bell--tooltip::after {
+  content: '';
+  color: white;
+  display: block;
+  position: absolute;
+  right: -9px;
+  top: 3px;
+  border-color: transparent;
+  border-left-color: #99570b;
+  border-style: solid;
+  border-top-width: 0.7rem;
+  border-bottom-width: 0.7rem;
+  border-left-width: 0.7rem;
+  z-index: -1;
+}
+
 #notifications {
   display: flex;
   align-items: center;
@@ -8,7 +31,8 @@
 }
 
 #notifications-inner {
-  max-width: 400px;
+  width: 100%;
+  max-width: 40em;
   display: flex;
   flex-direction: column;
   gap: 0.4em;
@@ -18,10 +42,15 @@
   border-radius: 2px;
   position: relative;
   padding: 0.3em 2.5em;
+  padding-right: 0.5em;
   xpadding-left: 2.5em;
   display: flex;
-  align-items: center;
+  align-items: stretch;
   background-color: white;
+
+  figcaption {
+    display: none;
+  }
 }
 .notification:not(.unseen) {
   xcolor: #646464;
