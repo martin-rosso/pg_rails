@@ -5,12 +5,12 @@ class NotificationComponent < BaseComponent
   end
 
   erb_template <<~ERB
-    <div class="notification d-flex justify-content-between <%= 'unseen' if @notification.unseen? %>"
+    <div class="notification d-flex flex-column flex-sm-row justify-content-between <%= 'unseen' if @notification.unseen? %>"
          id="<%= dom_id(@notification) %>" data-id="<%= @notification.id %>">
-      <div>
+      <div class="pe-3">
         <%= @notification.message.html_safe %>
       </div>
-      <div class="notification--time d-flex flex-column justify-content-end text-body-tertiary text-end ms-4">
+      <div class="notification--time d-flex flex-column justify-content-end text-body-tertiary text-end">
         <div>
           hace
           <%= distance_of_time_in_words @notification.created_at, Time.zone.now %>
