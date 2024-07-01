@@ -16,6 +16,7 @@
       <%= f.input :password_confirmation,
                   required: true,
                   input_html: { autocomplete: "new-password" } %>
+      <%= f.input :accept_terms, as: :boolean, label: t('attributes.accept_terms').html_safe, error_prefix: '' %>
     </div>
 
     <div class="form-actions">
