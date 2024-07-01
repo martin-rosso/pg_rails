@@ -9,7 +9,9 @@ def add_emulate_device(browser_options, emulate_device)
 end
 
 def default_options(headless:)
-  options = Selenium::WebDriver::Chrome::Options.new
+  options = Selenium::WebDriver::Chrome::Options.new(
+    unhandled_prompt_behavior: 'ignore'
+  )
   options.args << '--disable-site-isolation-trials'
   # options.args << '--start-maximized'
 
