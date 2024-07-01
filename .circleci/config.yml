@@ -106,6 +106,10 @@ jobs:
             undercover --compare origin/main
             cp coverage/lcov/project.lcov coverage/lcov.info
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
+      - store_artifacts:
+          path: spec/dummy/tmp/capybara
+      - store_artifacts:
+          path: tmp/parallel_runtime_rspec.log
 workflows:
   build-test:
     jobs:
