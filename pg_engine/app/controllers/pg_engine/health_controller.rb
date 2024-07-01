@@ -34,7 +34,6 @@ module PgEngine
     end
 
     def html_status(color:)
-      # rubocop:disable Rails/OutputSafety
       %(<!DOCTYPE html><html><body style="background-color: #{color}"></body></html>).html_safe
       # rubocop:enable Rails/OutputSafety
     end

@@ -87,7 +87,6 @@ module PgEngine
           fields: fields.gsub("\n", '')
         }
       ) do
-        # rubocop:disable Rails/OutputSafety
         "<i class=\"bi bi-plus-lg\"></i> #{name}".html_safe
         # rubocop:enable Rails/OutputSafety
       end
