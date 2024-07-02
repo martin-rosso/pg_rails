@@ -22,13 +22,33 @@ describe 'Al Registrarse' do
         fill_in 'user_apellido', with: Faker::Name.name
         fill_in 'user_password', with: 'admin123'
         fill_in 'user_password_confirmation', with: 'admin123'
+
+        accept_terms
+
         instance_exec('input[type=submit]', &find_scroll).click
+      end
+    end
+
+    context 'cuando acepta los términos' do
+      let(:accept_terms) do
+        check 'user_accept_terms'
+      end
+
+      it 'guarda el user' do
+        expect { subject }.to change(User, :count).by(1)
         expect(page).to have_text('Te enviamos un correo electrónico con instrucciones')
       end
     end
 
-    it 'guarda el user' do
-      expect { subject }.to change(User, :count).by(1)
+    context 'si no acepta los terms' do
+      let(:accept_terms) do
+        nil
+      end
+
+      it do
+        subject
+        expect(page).to have_text 'es necesario que aceptes los términos y condiciones'
+      end
     end
   end
 

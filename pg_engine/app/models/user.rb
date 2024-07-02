@@ -50,6 +50,10 @@ class User < ApplicationRecord
   validates_length_of       :password, if: :password_required?, within: 6..128,
                                        message: 'es demasiado corta (6 caracteres mínimo)'
 
+  validates :accept_terms, acceptance: {
+    message: 'Para crear una cuenta es necesario que aceptes los términos y condiciones'
+  }
+
   attr_accessor :orphan
 
   after_create do

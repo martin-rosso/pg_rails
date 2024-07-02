@@ -34,7 +34,7 @@ class PgFormBuilder < SimpleForm::FormBuilder
     base_message = (base_errors.map(&:to_s).join('<br>') if base_errors.present?)
     base_tag = error_notification(message: base_message, class: 'alert alert-danger') if base_message
 
-    "#{title}#{base_tag}".html_safe # rubocop:disable Rails/OutputSafety
+    "#{title}#{base_tag}".html_safe
   end
 
   def mensaje

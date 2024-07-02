@@ -14,6 +14,9 @@ RSpec/Focus:
 Rails/SkipsModelValidations:
   Enabled: false
 
+Rails/OutputSafety:
+  Enabled: false
+
 FactoryBot/AssociationStyle:
   Enabled: false
 
