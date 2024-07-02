@@ -92,6 +92,7 @@ module PgEngine
 
       if Current.user.present?
         @notifications = Current.user.notifications.order(id: :desc)
+                                .where(type: 'SimpleUserNotifier::Notification')
         unseen = @notifications.unseen.any?
         tooltip = @notifications.unseen.map(&:tooltip).first
         @notifications_bell = NotificationsBellComponent.new(

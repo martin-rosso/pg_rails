@@ -1,13 +1,16 @@
 = pg_form_for @event, url: admin_eventos_path do |f|
   = f.mensajes_de_error
 
-  = f.input :type, as: :select, collection: ApplicationNotifier.descendants.map(&:to_s)
+  = f.input :type, as: :select, collection: @notifier_types
   - if params[:plain_text]
     = f.input :message, as: :text
   - else
     = f.rich_text_area :message
+  = f.input :message_text, as: :text
   = f.input :tooltip
+  = f.input :subject
   = f.input :record_type
   = f.input :record_id
   = f.input :target
+  = f.input :user_ids, label: 'User emails'
   = f.submit
