@@ -106,7 +106,7 @@ RSpec.describe Admin::CosasController do
       expect(response).to be_successful
     end
 
-    fit 'cuando no existe el record' do
+    it 'cuando no existe el record' do
       get :show, params: { id: 321 }
       expect(response).to have_http_status(:not_found)
     end
