@@ -9,6 +9,12 @@ describe 'Eventos' do
     SimpleUserNotifier.with(message: 'New post').deliver(User.all, enqueue_job: false)
   end
 
+  around do |example|
+    perform_enqueued_jobs do
+      example.run
+    end
+  end
+
   it 'renders the event index' do
     get '/a/eventos'
 
@@ -26,11 +32,15 @@ describe 'Eventos' do
           message_text:,
           subject: asunto,
           user_ids:,
+          record_type: 'User',
+          record_id:,
           target:
         }
       }
+      get "/a/eventos/new?event_id=#{Noticed::Event.last.id}"
     end
 
+    let(:record_id) { nil }
     let(:asunto) { nil }
     let(:user_ids) { nil }
     let(:message_text) { nil }
@@ -59,6 +69,7 @@ describe 'Eventos' do
       let(:message_text) { 'texto' }
       let(:message) { '<h1>html</h1>' }
       let(:type) { 'EmailUserNotifier' }
+      let(:record_id) { user.id }
 
       before do
         create :user, email: 'user@host.com'
@@ -71,6 +82,16 @@ describe 'Eventos' do
     end
 
     context 'cuando hay error' do
+      subject do
+        post '/a/eventos', params: {
+          evento: {
+            type:,
+            message: 'hola',
+            target:
+          }
+        }
+      end
+
       let(:target) { 'bla' }
 
       it do

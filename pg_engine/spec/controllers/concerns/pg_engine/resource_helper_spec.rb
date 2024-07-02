@@ -17,7 +17,7 @@ describe PgEngine::Resource do
       instancia.set_clase_modelo
     end
 
-    fit do
+    it do
       expect { subject }.to raise_error(PgEngine::PageNotFoundError)
     end
   end
