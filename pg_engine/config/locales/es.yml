@@ -11,7 +11,7 @@ es:
     confirmed_at: Fecha de confirmación
     actualizado_por: Actualizado por
     creado_por: Creado por
-    accept_terms: Acepto los <a href="/terminos_y_condiciones" target="_blank">Términos y condiciones</a>
+    accept_terms: Acepto los <a href="/terminos_y_condiciones" target="_blank">Términos y condiciones</a> y la <a href="/privacidad" target="_blank">Política de privacidad</a>
   enumerize:
     email:
       status:
