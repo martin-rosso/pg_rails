@@ -23,6 +23,9 @@ class Account < ApplicationRecord
   audited
   include Discard::Model
 
+  has_many :user_accounts
+  has_many :users, through: :user_accounts
+
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 

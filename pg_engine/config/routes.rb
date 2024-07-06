@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get '500', to: 'application#internal_error'
   get 'internal_error_but_with_status200', to: 'application#internal_error_but_with_status200'
 
+  get 'contacto', to: 'public/mensaje_contactos#new'
+
   namespace :public, path: '' do
     pg_resource(:mensaje_contactos, only: [:new, :create], path: 'contacto')
     post 'webhook/mailgun', to: 'webhooks#mailgun'
