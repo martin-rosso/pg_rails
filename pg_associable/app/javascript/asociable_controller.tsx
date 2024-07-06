@@ -290,14 +290,20 @@ export default class extends Controller {
   }
 
   completarCampo (target) {
-    // FIXME: savedInputState = null
+    this.savedInputState = null
     const textField = this.element.querySelector('input[type=text]')
     const hiddenField = this.element.querySelector('input[type=hidden]')
 
-    if (target && target.dataset.fieldName) { hiddenField.name = target.dataset.fieldName }
-
     if (target) {
-      const object = JSON.parse(target.dataset.object)
+      let object = null
+      if (target.dataset) {
+        // cuando se selecciona un objeto existente
+        if (target.dataset.fieldName) { hiddenField.name = target.dataset.fieldName }
+        object = JSON.parse(target.dataset.object)
+      } else {
+        // cuando se crea un objeto desde el modal
+        object = target
+      }
       hiddenField.value = object.id
       textField.value = object.to_s
       textField.setAttribute('readonly', 'true')
