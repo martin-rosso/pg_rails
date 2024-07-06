@@ -3,6 +3,8 @@ require:
   - rubocop-rspec
   - rubocop-capybara
   - rubocop-factory_bot
+  - rubocop-rspec_rails
+  - rubocop-capybara
 
 Lint/UselessAssignment:
   Exclude:

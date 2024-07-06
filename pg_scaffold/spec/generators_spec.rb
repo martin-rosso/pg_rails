@@ -18,7 +18,7 @@ describe 'Generators', type: :generator do
       run_generator(['Frontend/Modelo', 'bla:integer'])
 
       my_assert_file 'app/decorators/modelo_decorator.rb' do |content|
-        assert_match(/delegate_all/, content)
+        expect(content).to match(/delegate_all/)
       end
     end
   end
@@ -33,8 +33,8 @@ describe 'Generators', type: :generator do
       run_generator(['Frontend/Modelo', 'bla:integer'])
 
       my_assert_file 'spec/controllers/frontend/modelos_controller_spec.rb' do |content|
-        assert_match(/routing/, content)
-        assert_match(/sign_in/, content)
+        expect(content).to match(/routing/)
+        expect(content).to match(/sign_in/)
       end
     end
   end
@@ -49,7 +49,7 @@ describe 'Generators', type: :generator do
       run_generator(['Frontend/Modelo', 'bla:integer', 'cosa:references', '--activeadmin'])
 
       my_assert_file 'app/admin/modelos.rb' do |content|
-        assert_match(/permit_params.*cosa_id/, content)
+        expect(content).to match(/permit_params.*cosa_id/)
       end
     end
   end

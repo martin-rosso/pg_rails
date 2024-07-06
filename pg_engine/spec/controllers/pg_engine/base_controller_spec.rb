@@ -20,7 +20,6 @@ class DummyBaseController < PgEngine::BaseController
   end
 end
 
-# rubocop:disable RSpec/FilePath
 # rubocop:disable RSpec/SpecFilePathFormat
 describe DummyBaseController do
   render_views
@@ -128,5 +127,4 @@ describe DummyBaseController do
   end
 end
 # rubocop:enable RSpec/MultipleExpectations
-# rubocop:enable RSpec/FilePath
 # rubocop:enable RSpec/SpecFilePathFormat

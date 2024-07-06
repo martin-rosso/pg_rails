@@ -43,7 +43,7 @@ module PgEngine
         # Si es un decorated method
         super(attribute[0..-3], options)
       else
-        super(attribute, options)
+        super
       end
     end
 

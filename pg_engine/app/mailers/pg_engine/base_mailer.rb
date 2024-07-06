@@ -28,7 +28,7 @@ module PgEngine
     protected
 
     def mail(*args)
-      super(*args).tap do |message|
+      super.tap do |message|
         # message.mailgun_options = {
         #   'tag' => email.tags,
         #   'tracking-opens' => true
