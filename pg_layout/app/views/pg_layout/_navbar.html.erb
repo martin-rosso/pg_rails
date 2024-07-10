@@ -14,12 +14,15 @@
       <%= render @notifications_bell %>
     <% end %>
     <%= @navbar.logo if @navbar.logo.present? %>
-    <button class="btn btn-outline-light d-inline-block d-<%= @breakpoint_navbar_expand %>-none"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
-      <i class="bi bi-list"></i>
-    </button>
+    <% unless @sidebar == false %>
+      <button class="btn btn-outline-light d-inline-block
+                     d-<%= @breakpoint_navbar_expand %>-none"
+              type="button"
+              data-bs-toggle="offcanvas"
+              data-bs-target="#offcanvasExample" aria-controls="offcanvasExample">
+        <i class="bi bi-list"></i>
+      </button>
+    <% end %>
   </div>
 </nav>
 <div class="collapse" id="notifications-collapse" data-controller="notifications">

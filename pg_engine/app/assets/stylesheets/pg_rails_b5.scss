@@ -15,6 +15,20 @@
 }
 
 // FORMS
+
+// Radio buttons
+.radio_buttons legend {
+  font-weight: bold;
+}
+.radio_buttons label {
+  font-weight: normal;
+}
+
+// Trix
+.is-invalid trix-editor {
+  border: 1px solid $red;
+}
+
 input[disabled] {
   background-color: #e9e9ed;
   color: black;
@@ -40,7 +54,7 @@ input[type=datetime-local], input[type=datetime] {
   background-color: #d5d5d5;
 }
 
-.form-control.is-invalid, .form-select.is-invalid {
+.form-control.is-invalid, .form-select.is-invalid, .is-invalid trix-editor {
   background-color: #fff3f3;
 }
 
@@ -50,9 +64,13 @@ input[type=datetime-local], input[type=datetime] {
     padding: 0.25rem 1rem;
   }
 }
+.listado td:has(.btn) {
+  display: flex;
+  justify-content: flex-end;
+  gap: 4px;
+}
 .listado .btn-sm {
   padding: 0em 0.3em;
-  margin-right: 4px;
 }
 
 // FILTROS
@@ -114,4 +132,33 @@ input[type=datetime-local], input[type=datetime] {
 // Flash
 #flash .alert {
   box-shadow: 0px 9px 13px -3px rgba(0, 0, 0, 0.5);
+}
+
+// Full calendar
+.fc-daygrid-day-top a {
+  text-decoration: none;
+}
+.fc-col-header-cell a {
+  text-decoration: none;
+}
+.fc-multimonth {
+  .fc-daygrid-day-events {
+    display: none;
+  }
+  .fc-daygrid-day-top {
+    display: inline-block;
+    height: 100%;
+  }
+  td, th {
+    vertical-align: middle;
+    text-align: center;
+    border: none;
+  }
+  td.fc-day-today {
+    border: 1px solid black;
+  }
+  .fc-daygrid-day-number {
+    cursor: default;
+  }
+  --fc-neutral-bg-color: none;
 }
