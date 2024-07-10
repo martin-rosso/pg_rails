@@ -20,6 +20,7 @@ module Admin
 
     def create
       @user.skip_confirmation!
+      @user.user_accounts << UserAccount.new(account: Current.account)
       pg_respond_create
     end
 

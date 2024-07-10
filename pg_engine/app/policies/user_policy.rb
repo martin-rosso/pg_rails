@@ -4,13 +4,17 @@
 
 class UserPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    # def resolve
-    #   if policy.acceso_total?
-    #     scope.all
-    #   else
-    #     scope.none
-    #   end
-    # end
+    def resolve
+      if policy.acceso_total?
+        if Current.account.present?
+          scope.joins(:user_accounts).where('user_accounts.account_id': Current.account.id)
+        else
+          scope.none
+        end
+      else
+        scope.none
+      end
+    end
   end
 
   # def puede_editar?
@@ -25,7 +29,7 @@ class UserPolicy < ApplicationPolicy
   #   acceso_total? && !record.readonly?
   # end
 
-  # def acceso_total?
-  #   user.developer?
-  # end
+  def acceso_total?
+    user.present?
+  end
 end

@@ -9,6 +9,7 @@ module Admin
     before_action { @clase_modelo = Cosa }
 
     before_action(only: :index) { authorize Cosa }
+    before_action(only: :index) { @sidebar = false }
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
@@ -25,7 +26,7 @@ module Admin
     end
 
     def atributos_para_buscar
-      %i[nombre tipo categoria_de_cosa]
+      %i[nombre tipo categoria_de_cosa creado_por]
     end
 
     def atributos_para_listar

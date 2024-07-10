@@ -7,7 +7,10 @@ div style="max-width: 52em" data-controller="cosa"
     = hidden_field_tag :asociable, true if asociable
     = f.input :nombre
     = f.input :tipo
-    = f.rich_text_area :rico
+    = f.pg_associable :creado_por
+    .mb-3(class="#{'is-invalid' if @cosa.errors[:rico].any? }")
+      = f.label :rico, class: 'form-label'
+      = f.rich_text_area :rico
     = f.pg_associable :categoria_de_cosa,
                       preload: CategoriaDeCosa.limit(2), placeholder: 'el placeholder',
                       wrapper_html: { 'xdata-placeholder': 'dale, escribí' }

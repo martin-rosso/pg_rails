@@ -5,6 +5,8 @@ div style="max-width: 22em"
     = f.mensajes_de_error
 
     = hidden_field_tag :asociable, true if asociable
+    = f.input :nombre
+    = f.input :apellido
     = f.input :email
     = f.input :password, required: false, hint: 'Si se deja en blanco no se cambia'
     = f.input :developer
