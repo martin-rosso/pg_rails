@@ -39,3 +39,13 @@ $alert-margin-bottom:           0.5rem;
 @import 'bootstrap-icons/font/bootstrap-icons';
 
 @import 'trix/dist/trix';
+
+$warning-border-emphasis:   shade-color($yellow, 60%);
+.bg-primary-subtle .btn-warning {
+  border: 1px solid $warning-border-emphasis;
+}
+
+.listado tr:has(td:hover):has(.bi-eye-fill) td {
+	background-color: #f2f2f2;
+	cursor: pointer;
+}

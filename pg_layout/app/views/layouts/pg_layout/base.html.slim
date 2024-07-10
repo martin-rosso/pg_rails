@@ -57,7 +57,8 @@ html
         = render partial: 'pg_layout/navbar' if @navbar.present?
         div
           - if user_signed_in? && breadcrumbs.any?
-            .d-flex.align-items-center.justify-content-between.px-3.py-1.d-print-none[
+            .d-flex.px-3.py-1.d-print-none[
+              class="bg-primary-subtle align-items-center justify-content-between"
               style="min-height: 2.5em;"]
               nav aria-label="breadcrumb"
                 = render_breadcrumbs
