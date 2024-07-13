@@ -10,6 +10,9 @@ Lint/UselessAssignment:
   Exclude:
     - "**/*.slim*"
 
+Style/IfUnlessModifier:
+  Enabled: false
+
 RSpec/Focus:
   Enabled: false
 
