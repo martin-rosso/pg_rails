@@ -89,6 +89,7 @@ module PgEngine
       object = instancia_modelo
       respond_to do |format|
         if (@saved = object.save)
+          # TODO: 'asociable' lo cambiaría por 'in_modal' o algo así
           if params[:asociable]
             format.turbo_stream do
               render turbo_stream:
@@ -96,7 +97,6 @@ module PgEngine
                   <div data-modal-target="response" data-response='#{object.decorate.to_json}'></div>
                 HTML
                 )
-              # rubocop:enable Rails/SkipsModelValidations
             end
           end
           format.html do
@@ -113,10 +113,8 @@ module PgEngine
           # self.instancia_modelo = instancia_modelo.decorate
           if params[:asociable]
             format.turbo_stream do
-              # rubocop:disable Rails/SkipsModelValidations
               render turbo_stream:
                 turbo_stream.update_all('.modal.show .pg-associable-form', partial: 'form', locals: { asociable: true })
-              # rubocop:enable Rails/SkipsModelValidations
             end
           end
           format.html { render :new, status: :unprocessable_entity }
@@ -138,9 +136,14 @@ module PgEngine
     end
 
     def pg_respond_show(object = nil)
-      respond_to do |format|
-        format.json { render json: object || instancia_modelo }
-        format.html
+      object = object || instancia_modelo
+      if params[:modal].present?
+        render turbo_stream: turbo_stream.append_all('body', partial: 'pg_layout/modal_show', locals: { object: })
+      else
+        respond_to do |format|
+          format.json { render json: object }
+          format.html
+        end
       end
     end
 
