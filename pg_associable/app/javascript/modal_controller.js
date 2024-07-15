@@ -9,6 +9,14 @@ export default class extends Controller {
 
   connect (e) {
     this.modalPuntero = new bootstrap.Modal(this.element)
+    if (this.element.dataset.removeOnHide) {
+      this.element.addEventListener('hidden.bs.modal', (e) => {
+        this.element.remove()
+        window.Stimulus.controllers.map((c) => { return c.calendar })
+          .filter((e) => { return e })
+          .map((c) => { c.refetchEvents() })
+          })
+    }
     this.modalPuntero.show()
     document.addEventListener('turbo:before-cache', () => {
       this.element.remove()

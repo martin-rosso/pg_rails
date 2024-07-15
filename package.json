@@ -35,7 +35,8 @@
   ],
   "exports": {
     ".": "./pg_rails/js/index.js",
-    "./utils": "./pg_layout/app/javascript/utils/utils.ts"
+    "./utils": "./pg_layout/app/javascript/utils/utils.ts",
+    "./modal_controller": "./pg_associable/app/javascript/modal_controller.js"
   },
   "devDependencies": {
     "@types/react": "^18.2.55",
