@@ -135,6 +135,9 @@ input[type=datetime-local], input[type=datetime] {
 }
 
 // Full calendar
+.fc .fc-highlight {
+	background-color: #{tint-color($primary, 60%)};
+}
 .fc-daygrid-day-top a {
   text-decoration: none;
 }

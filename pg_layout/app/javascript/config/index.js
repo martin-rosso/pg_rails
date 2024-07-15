@@ -22,7 +22,6 @@ function bindListingClick () {
         }
       }
     }
-    console.log('click')
   }
 }
 bindListingClick()
