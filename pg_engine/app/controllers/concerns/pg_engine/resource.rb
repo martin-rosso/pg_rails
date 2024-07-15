@@ -97,6 +97,8 @@ module PgEngine
                   <div data-modal-target="response" data-response='#{object.decorate.to_json}'></div>
                 HTML
                 )
+              # FIXME: handlear json
+              # render json: object.decorate, content_type: 'application/json'
             end
           end
           format.html do
@@ -113,6 +115,7 @@ module PgEngine
           # self.instancia_modelo = instancia_modelo.decorate
           if params[:asociable]
             format.turbo_stream do
+              # FIXME: agregar , status: :unprocessable_entity
               render turbo_stream:
                 turbo_stream.update_all('.modal.show .pg-associable-form', partial: 'form', locals: { asociable: true })
             end
