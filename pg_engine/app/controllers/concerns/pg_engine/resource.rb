@@ -139,7 +139,7 @@ module PgEngine
     end
 
     def pg_respond_show(object = nil)
-      object = object || instancia_modelo
+      object ||= instancia_modelo
       if params[:modal].present?
         render turbo_stream: turbo_stream.append_all('body', partial: 'pg_layout/modal_show', locals: { object: })
       else

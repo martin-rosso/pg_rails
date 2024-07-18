@@ -14,8 +14,8 @@ export default class extends Controller {
         this.element.remove()
         window.Stimulus.controllers.map((c) => { return c.calendar })
           .filter((e) => { return e })
-          .map((c) => { c.refetchEvents() })
-          })
+          .forEach((c) => { c.refetchEvents() })
+      })
     }
     this.modalPuntero.show()
     document.addEventListener('turbo:before-cache', () => {
