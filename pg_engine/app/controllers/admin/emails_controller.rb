@@ -22,6 +22,7 @@ module Admin
     def create
       saved = false
       ActiveRecord::Base.transaction do
+        # FIXME: acá la transaction jode porque el ActiveJob no puede deserializar el Email
         if (saved = @email.save)
           PgEngine::AdminMailer.with(email_object: @email).admin_mail.deliver_later
         end
