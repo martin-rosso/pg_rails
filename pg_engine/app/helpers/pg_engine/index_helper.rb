@@ -17,10 +17,10 @@ module PgEngine
               end
         cgi['order_by'] = campo
         cgi['order_direction'] =
-          if field.to_s == campo.to_s && direction.to_s == 'asc'
-            'desc'
-          else
+          if field.to_s == campo.to_s && direction.to_s == 'desc'
             'asc'
+          else
+            'desc'
           end
 
         symbol = if field.to_s == campo.to_s
