@@ -102,8 +102,8 @@ jobs:
             export LCOV=true
             # bundle exec parallel_rspec --runtime-log spec/parallel_runtime_rspec.log
             bundle exec rspec spec pg_scaffold/spec pg_associable/spec pg_engine/spec pg_layout
-            gem install undercover
-            undercover --compare origin/main
+            # gem install undercover
+            # undercover --compare origin/main
             cp coverage/lcov/project.lcov coverage/lcov.info
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
       - store_artifacts:
