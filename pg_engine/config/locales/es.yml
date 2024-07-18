@@ -5,6 +5,9 @@ es:
         empty: 'No hay %{model} aún'
         empty_but_filtered: 'No hay %{model} para los filtros aplicados'
   attributes:
+    external_labels: Etiquetas externas
+    external_source: Fuente externa
+    external_id: ID externo
     created_at: Fecha de creación
     updated_at: Fecha de actualización
     discarded_at: Fecha de borrado

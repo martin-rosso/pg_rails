@@ -72,13 +72,20 @@ module PgEngine
             raise 'filtro de asociacion no soportado'
           end
         elsif tipo(campo).in?(%i[string text])
-          match_vector = parametros[campo].split.map { |a| "#{a}:*" }.join(' & ')
-          match_like = "%#{parametros[campo]}%"
+          columna = @clase_modelo.columns.find { |c| c.name == campo.to_s }
           campo_tabla = "#{@clase_modelo.table_name}.#{campo}"
-          condicion = "to_tsvector(coalesce(unaccent(#{campo_tabla}), '')) @@ to_tsquery( unaccent(?) )"
-          condicion += " OR unaccent(CONCAT(#{campo_tabla})) ILIKE unaccent(?)"
-          query = query.where(condicion, I18n.transliterate(match_vector).to_s,
-                              I18n.transliterate(match_like).to_s)
+          match_like = "%#{parametros[campo]}%"
+          query =
+            if columna&.array
+              # El CONCAT no sé para qué sirve, pero lo dejo
+              query.where("unaccent(CONCAT(array_to_string(#{campo_tabla}, ' '))) ILIKE unaccent(?)", I18n.transliterate(match_like).to_s)
+            else
+              match_vector = parametros[campo].split.map { |a| "#{a}:*" }.join(' & ')
+              condicion = "to_tsvector(coalesce(unaccent(#{campo_tabla}), '')) @@ to_tsquery( unaccent(?) )"
+              condicion += " OR unaccent(CONCAT(#{campo_tabla})) ILIKE unaccent(?)"
+              query = query.where(condicion, I18n.transliterate(match_vector).to_s,
+                                  I18n.transliterate(match_like).to_s)
+            end
         elsif tipo(campo) == :boolean
           if campo.to_s == 'discarded'
             # Si el nombre del campo es 'discarded' entonces no es un campo
