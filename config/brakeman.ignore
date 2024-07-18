@@ -7,7 +7,7 @@
       "check_name": "UnsafeReflection",
       "message": "Unsafe reflection method `constantize` called on model attribute",
       "file": "pg_engine/app/controllers/admin/eventos_controller.rb",
-      "line": 27,
+      "line": 49,
       "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
       "code": "Evento.new(event_params).type.constantize",
       "render_path": null,
@@ -53,7 +53,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "pg_engine/app/lib/pg_engine/filtros_builder.rb",
-      "line": 80,
+      "line": 86,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "query.kept.where(\"#{\"#{clase_modelo.table_name}.#{sin_sufijo(campo)}\"} #{comparador(campo)} ?\", parametros_controller[campo]).joins(sin_sufijo(campo).to_sym).group(\"#{clase_modelo.table_name}.id\").having(\"ARRAY_AGG(#{obtener_asociacion(sin_sufijo(campo)).join_table}.#{obtener_asociacion(sin_sufijo(campo)).association_foreign_key}) #{comparador_array(extraer_sufijo(campo))} ARRAY[#{(parametros_controller[campo].join(\",\") or parametros_controller[campo])}]::bigint[]\").where(\"#{clase_modelo.table_name}.#{campo}_id = ?\", parametros_controller[campo]).where((\"to_tsvector(coalesce(unaccent(#{\"#{clase_modelo.table_name}.#{campo}\"}), '')) @@ to_tsquery( unaccent(?) )\" + \" OR unaccent(CONCAT(#{\"#{clase_modelo.table_name}.#{campo}\"})) ILIKE unaccent(?)\"), I18n.transliterate(parametros_controller[campo].split.map do\n \"#{a}:*\"\n end.join(\" & \")).to_s, I18n.transliterate(\"%#{parametros_controller[campo]}%\").to_s)",
       "render_path": null,
@@ -99,7 +99,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "pg_engine/app/lib/pg_engine/filtros_builder.rb",
-      "line": 101,
+      "line": 108,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "query.kept.where(\"#{\"#{clase_modelo.table_name}.#{sin_sufijo(campo)}\"} #{comparador(campo)} ?\", parametros_controller[campo]).joins(sin_sufijo(campo).to_sym).group(\"#{clase_modelo.table_name}.id\").having(\"ARRAY_AGG(#{obtener_asociacion(sin_sufijo(campo)).join_table}.#{obtener_asociacion(sin_sufijo(campo)).association_foreign_key}) #{comparador_array(extraer_sufijo(campo))} ARRAY[#{(parametros_controller[campo].join(\",\") or parametros_controller[campo])}]::bigint[]\").where(\"#{clase_modelo.table_name}.#{campo}_id = ?\", parametros_controller[campo]).where((\"to_tsvector(coalesce(unaccent(#{\"#{clase_modelo.table_name}.#{campo}\"}), '')) @@ to_tsquery( unaccent(?) )\" + \" OR unaccent(CONCAT(#{\"#{clase_modelo.table_name}.#{campo}\"})) ILIKE unaccent(?)\"), I18n.transliterate(parametros_controller[campo].split.map do\n \"#{a}:*\"\n end.join(\" & \")).to_s, I18n.transliterate(\"%#{parametros_controller[campo]}%\").to_s).unscope(:where => :discarded_at).where(\"#{clase_modelo.table_name}.discarded_at IS NOT NULL\").unscope(:where => :discarded_at).where(\"#{clase_modelo.table_name}.discarded_at IS NULL\").where(\"#{clase_modelo.table_name}.#{campo} = ?\", (parametros_controller[campo] == \"si\")).where(\"#{\"#{clase_modelo.table_name}.#{sin_sufijo(campo)}\"} #{comparador(campo)} ?\", ((Date.parse(parametros_controller[campo]) + 1.day) - 1.second))",
       "render_path": null,
@@ -164,11 +164,34 @@
     {
       "warning_type": "SQL Injection",
       "warning_code": 0,
+      "fingerprint": "baf66a3bc92d595ac02ba47ef3a58ce022e07b31d56cb2d51fd07cb2dff06de6",
+      "check_name": "SQL",
+      "message": "Possible SQL injection",
+      "file": "pg_engine/app/lib/pg_engine/filtros_builder.rb",
+      "line": 81,
+      "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
+      "code": "query.kept.where(\"#{\"#{clase_modelo.table_name}.#{sin_sufijo(campo)}\"} #{comparador(campo)} ?\", parametros_controller[campo]).joins(sin_sufijo(campo).to_sym).group(\"#{clase_modelo.table_name}.id\").having(\"ARRAY_AGG(#{obtener_asociacion(sin_sufijo(campo)).join_table}.#{obtener_asociacion(sin_sufijo(campo)).association_foreign_key}) #{comparador_array(extraer_sufijo(campo))} ARRAY[#{(parametros_controller[campo].join(\",\") or parametros_controller[campo])}]::bigint[]\").where(\"#{clase_modelo.table_name}.#{campo}_id = ?\", parametros_controller[campo]).where(\"unaccent(CONCAT(array_to_string(#{\"#{clase_modelo.table_name}.#{campo}\"}, ' '))) ILIKE unaccent(?)\", I18n.transliterate(\"%#{parametros_controller[campo]}%\").to_s)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "PgEngine::FiltrosBuilder",
+        "method": "filtrar"
+      },
+      "user_input": "campo",
+      "confidence": "Weak",
+      "cwe_id": [
+        89
+      ],
+      "note": ""
+    },
+    {
+      "warning_type": "SQL Injection",
+      "warning_code": 0,
       "fingerprint": "db3df39aaf2c5fcb15b4b1c4f9b0a28ed8d678507f3342dc0e9f70988c3a8639",
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "pg_engine/app/lib/pg_engine/filtros_builder.rb",
-      "line": 94,
+      "line": 101,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "query.kept.where(\"#{\"#{clase_modelo.table_name}.#{sin_sufijo(campo)}\"} #{comparador(campo)} ?\", parametros_controller[campo]).joins(sin_sufijo(campo).to_sym).group(\"#{clase_modelo.table_name}.id\").having(\"ARRAY_AGG(#{obtener_asociacion(sin_sufijo(campo)).join_table}.#{obtener_asociacion(sin_sufijo(campo)).association_foreign_key}) #{comparador_array(extraer_sufijo(campo))} ARRAY[#{(parametros_controller[campo].join(\",\") or parametros_controller[campo])}]::bigint[]\").where(\"#{clase_modelo.table_name}.#{campo}_id = ?\", parametros_controller[campo]).where((\"to_tsvector(coalesce(unaccent(#{\"#{clase_modelo.table_name}.#{campo}\"}), '')) @@ to_tsquery( unaccent(?) )\" + \" OR unaccent(CONCAT(#{\"#{clase_modelo.table_name}.#{campo}\"})) ILIKE unaccent(?)\"), I18n.transliterate(parametros_controller[campo].split.map do\n \"#{a}:*\"\n end.join(\" & \")).to_s, I18n.transliterate(\"%#{parametros_controller[campo]}%\").to_s).unscope(:where => :discarded_at).where(\"#{clase_modelo.table_name}.discarded_at IS NOT NULL\").unscope(:where => :discarded_at).where(\"#{clase_modelo.table_name}.discarded_at IS NULL\").where(\"#{clase_modelo.table_name}.#{campo} = ?\", (parametros_controller[campo] == \"si\"))",
       "render_path": null,
@@ -214,7 +237,7 @@
       "check_name": "SQL",
       "message": "Possible SQL injection",
       "file": "pg_engine/app/controllers/concerns/pg_engine/resource.rb",
-      "line": 96,
+      "line": 97,
       "link": "https://brakemanscanner.org/docs/warning_types/sql_injection/",
       "code": "turbo_stream.update_all(\".modal.show .pg-associable-form\", \"<div data-modal-target=\\\"response\\\" data-response='#{instancia_modelo.decorate.to_json}'></div>\\n\")",
       "render_path": null,
@@ -231,6 +254,6 @@
       "note": ""
     }
   ],
-  "updated": "2024-06-21 16:43:02 -0300",
+  "updated": "2024-07-18 13:24:11 -0300",
   "brakeman_version": "6.1.2"
 }
