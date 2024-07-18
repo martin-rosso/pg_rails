@@ -77,6 +77,7 @@ module PgEngine
           match_like = "%#{parametros[campo]}%"
           query =
             if columna&.array
+              # FIXME: testear
               # El CONCAT no sé para qué sirve, pero lo dejo
               query.where("unaccent(CONCAT(array_to_string(#{campo_tabla}, ' '))) ILIKE unaccent(?)", I18n.transliterate(match_like).to_s)
             else
