@@ -65,6 +65,7 @@ input[type=datetime-local], input[type=datetime] {
   }
 }
 .listado td:has(.btn) {
+  // FIXME: rompe porque es una tabla y tiene que tener su propio display
   display: flex;
   justify-content: flex-end;
   gap: 4px;
