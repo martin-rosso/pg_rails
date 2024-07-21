@@ -41,9 +41,10 @@ div
               - atributos_para_listar.each do |att|
                 th = object.send(att)
               td.text-nowrap.text-end.ps-5
-                = object.show_link
-                = object.edit_link(text: '', klass: 'btn-light')
-                = object.destroy_link
+                .actions-wrapper
+                  = object.show_link
+                  = object.edit_link(text: '', klass: 'btn-light')
+                  = object.destroy_link
 
     .ps-3.justify-content-center
       = paginate(@collection)

@@ -24,7 +24,7 @@ module PgEngine
     end
 
     def show
-      add_breadcrumb instancia_modelo, instancia_modelo.target_object
+      add_breadcrumb instancia_modelo.to_s_short, instancia_modelo.target_object
 
       pg_respond_show
     end
@@ -34,7 +34,7 @@ module PgEngine
     end
 
     def edit
-      add_breadcrumb instancia_modelo, instancia_modelo.target_object
+      add_breadcrumb instancia_modelo.to_s_short, instancia_modelo.target_object
       add_breadcrumb 'Editando'
     end
 

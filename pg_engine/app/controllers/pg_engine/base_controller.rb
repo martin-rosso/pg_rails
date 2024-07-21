@@ -112,6 +112,7 @@ module PgEngine
 
     protected
 
+    # rubocop:disable Metrics/AbcSize
     def render_my_component(component, status)
       respond_to do |format|
         format.html do
@@ -128,11 +129,17 @@ module PgEngine
                  status:
         end
 
+        format.json do
+          html = component.render_in(view_context)
+          render json: { html: }, status:
+        end
+
         format.any do
           head status
         end
       end
     end
+    # rubocop:enable Metrics/AbcSize
 
     def not_authorized(_arg_required_for_active_admin)
       respond_to do |format|

@@ -22,6 +22,10 @@ module PgEngine
       object.as_json(options).tap { |o| o[:to_s] = to_s }
     end
 
+    def to_s_short
+      truncate(object.to_s)
+    end
+
     # rubocop:disable Style/MissingRespondToMissing
     def method_missing(method_name, *args, &)
       valor = object.attributes[method_name.to_s]

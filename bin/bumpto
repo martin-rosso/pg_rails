@@ -9,18 +9,25 @@ def system!(cmd)
   abort("Error en: #{cmd}") unless system(cmd)
 end
 
-newversion = ARGV[0] || raise('usage: bumpto version')
+def deduce_new_version
+  engver = File.read('pg_rails/lib/version.rb')
+  current_version = engver.match(/VERSION = '(.*)'/)[1]
+  parts = current_version.split('-')
+  if parts.length != 2
+    raise 'no está en pre-release'
+  end
+  parts[0] + '-' + (parts[1].to_i + 1).to_s
+end
+
+newversion = ARGV[0]
+
+unless newversion
+  newversion = deduce_new_version
+end
 
 MAIN_BRANCH = 'main'
 current_branch = `git branch --show-current`
 
-if current_branch != "#{MAIN_BRANCH}\n" && !ENV['DONT_REBASE']
-  system!('git fetch --all --prune')
-  system("git branch -d #{MAIN_BRANCH}")
-  system!("git checkout -b #{MAIN_BRANCH}")
-  system!("git branch -d #{current_branch}")
-  system!("git rebase origin/#{MAIN_BRANCH}")
-end
 
 pkgjson = File.read('package.json')
 newcontent = pkgjson.sub /"version": .*,/, "\"version\": \"#{newversion}\","
@@ -32,22 +39,4 @@ File.write('pg_rails/lib/version.rb', newcontent)
 
 system! 'bundle'
 
-system! 'git add .'
-system! "git commit -m 'Version #{newversion}'"
-
-system! 'bundle exec rake release_all'
-
-proj = ENV['UPGRADE_PROJECT_AFTER_PGRAILS']
-if proj && proj.length > 0 && !ENV['SKIP_AFTER']
-  SECONDS = 30
-  puts "Dandole tiempo a rubygems para que actualice para actualizar #{proj}"
-  SECONDS.times.each do |i|
-    left = SECONDS - i
-    puts "Dandole tiempo a rubygems para que actualice: #{left}"
-    sleep 1
-  end
-
-  FileUtils.chdir("../#{proj}") do
-    system! './bin/update_pgrails'
-  end
-end
+# system! 'bundle exec rake release_all'
