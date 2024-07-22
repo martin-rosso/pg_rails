@@ -6,7 +6,7 @@
     = f.input :message, as: :text
   - else
     = f.rich_text_area :message
-  = f.input :message_text, as: :text
+  = f.input :message_text, as: :text, hint: 'Solo para emails, para la plain/text part'
   = f.input :tooltip
   = f.input :subject
   = f.input :record_type

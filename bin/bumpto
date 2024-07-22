@@ -25,9 +25,7 @@ unless newversion
   newversion = deduce_new_version
 end
 
-MAIN_BRANCH = 'main'
 current_branch = `git branch --show-current`
-
 
 pkgjson = File.read('package.json')
 newcontent = pkgjson.sub /"version": .*,/, "\"version\": \"#{newversion}\","
