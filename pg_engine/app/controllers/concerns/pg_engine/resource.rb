@@ -160,7 +160,9 @@ module PgEngine
             end
           else
             format.turbo_stream do
-              render turbo_stream: turbo_stream.remove(model)
+              # Esto no es totalmente limpio pero funciona tanto en los listados como en los
+              # modal show
+              render turbo_stream: turbo_stream.remove(model) + turbo_stream.remove_all('.modal')
             end
             format.html do
               redirect_back(fallback_location: root_path, notice: msg, status: 303)

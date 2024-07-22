@@ -2,7 +2,7 @@
 
 module PgEngine
   class EmailObserver
-    def self.delivered_email(message) # rubocop:disable Metrics/AbcSize
+    def self.delivered_email(message)
       message_id = message.message_id
       mailer = message.delivery_handler.to_s
       status = get_status(message)

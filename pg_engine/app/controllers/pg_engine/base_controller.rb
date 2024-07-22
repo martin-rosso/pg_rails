@@ -112,8 +112,13 @@ module PgEngine
 
     protected
 
-    # rubocop:disable Metrics/AbcSize
     def render_my_component(component, status)
+      # Esto es para que saltee los turbo frames y genere
+      # un full reload. El turbo_no_cache no es estrictamente necesario
+      # pero lo dejo por las dudas
+      @turbo_page_requires_reload = true
+      @turbo_no_cache = true
+
       respond_to do |format|
         format.html do
           render component.alert_wrapped(view_context),
@@ -139,7 +144,6 @@ module PgEngine
         end
       end
     end
-    # rubocop:enable Metrics/AbcSize
 
     def not_authorized(_arg_required_for_active_admin)
       respond_to do |format|
