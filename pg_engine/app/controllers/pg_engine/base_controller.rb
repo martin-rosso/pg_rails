@@ -94,6 +94,7 @@ module PgEngine
         @notifications = Current.user.notifications.order(id: :desc)
                                 .where(type: 'SimpleUserNotifier::Notification')
         unseen = @notifications.unseen.any?
+        # FIXME: testear y fixear, buscar el primero que esté present
         tooltip = @notifications.unseen.map(&:tooltip).first
         @notifications_bell = NotificationsBellComponent.new(
           unseen:,
