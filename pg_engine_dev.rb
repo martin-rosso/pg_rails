@@ -32,7 +32,7 @@ end
 
 # Misc
 group :development do
-  gem 'overcommit', '~> 0.61.0'
+  gem 'overcommit', '~> 0.64'
   gem 'letter_opener', '~> 1.8.1'
   gem 'annotate', '~> 3.2.0'
   gem 'web-console', '~> 4.2.1'
