@@ -1,8 +1,8 @@
 require "bundler/setup"
 
 def playchord(status)
-  json_path = File.expand_path("spec/hooks/prepush-#{status}.json", ENV.fetch('PREPUSH_HOOK_JSON_DIR'))
-  system "curl -X POST -d \"@#{json_path}\" -H \"Content-Type: application/json\" #{ENV.fetch('PREPUSH_HOOK_URL')}"
+  # json_path = File.expand_path("spec/hooks/prepush-#{status}.json", ENV.fetch('PREPUSH_HOOK_JSON_DIR'))
+  # system "curl -X POST -d \"@#{json_path}\" -H \"Content-Type: application/json\" #{ENV.fetch('PREPUSH_HOOK_URL')}"
 end
 
 def system!(*args)
@@ -43,7 +43,7 @@ end
 
 desc "Testear sin spring"
 task :rspec do
-  system! "CI=true bundle exec rspec --fail-fast #{PATHS_TO_TEST}"
+  system! "LCOV=true CI=true bundle exec rspec --fail-fast #{PATHS_TO_TEST}"
 end
 
 desc "Static analysis"
