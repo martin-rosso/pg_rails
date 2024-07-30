@@ -8,6 +8,7 @@ import ClearTimeoutController from './clear_timeout_controller'
 import SwitcherController from './switcher_controller'
 import FiltrosController from './filtros_controller'
 import NotificationsController from './notifications_controller'
+import SelectizeController from './selectize_controller'
 
 application.register('navbar', NavbarController)
 application.register('nested', NestedController)
@@ -17,5 +18,6 @@ application.register('clear-timeout', ClearTimeoutController)
 application.register('switcher', SwitcherController)
 application.register('filtros', FiltrosController)
 application.register('notifications', NotificationsController)
+application.register('selectize', SelectizeController)
 
 // TODO: testear con capybara todo lo que se pueda

@@ -39,7 +39,20 @@ $alert-margin-bottom:           0.5rem;
 @import 'bootstrap-icons/font/bootstrap-icons';
 
 @import 'trix/dist/trix';
+@import 'tom-select/dist/scss/tom-select.bootstrap5';
 
+.ts-control {
+  padding-top: 2px!important;
+  padding-bottom: 2px!important;
+  display: flex;
+  gap: 4px;
+}
+.input-group-sm > .ts-wrapper.multi.has-items .ts-control, .ts-wrapper.form-select-sm.multi.has-items .ts-control, .ts-wrapper.form-control-sm.multi.has-items .ts-control {
+	padding-top: 2px!important;
+}
+.ts-wrapper.multi .ts-control > div {
+	margin: 0!important;
+}
 $warning-border-emphasis:   shade-color($yellow, 60%);
 .bg-primary-subtle .btn-warning {
   border: 1px solid $warning-border-emphasis;
