@@ -91,7 +91,7 @@ module PgEngine
       end
 
       if Current.user.present?
-        @notifications = Current.user.notifications.order(id: :desc)
+        @notifications = Current.user.notifications.order(id: :desc).includes(:event)
                                 .where(type: 'SimpleUserNotifier::Notification')
         unseen = @notifications.unseen.any?
         # FIXME: testear y fixear, buscar el primero que esté present
