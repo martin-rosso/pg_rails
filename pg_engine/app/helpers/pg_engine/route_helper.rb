@@ -16,11 +16,15 @@ module PgEngine
         end
       end
 
+      def self.current_route(context)
+        req = request(context)
+        Rails.application.routes.recognize_path(req.path, method: req.env['REQUEST_METHOD'])
+      end
+
       def self.namespace(context)
         return Current.namespace if Current.namespace.present?
 
-        req = request(context)
-        route = Rails.application.routes.recognize_path(req.path, method: req.env['REQUEST_METHOD'])
+        route = current_route(context)
         parts = route[:controller].split('/')
         return unless parts.length > 1
 
@@ -28,6 +32,10 @@ module PgEngine
       rescue ActionController::RoutingError
         nil
       end
+    end
+
+    def pg_current_route
+      NamespaceDeductor.current_route(self)
     end
 
     def pg_namespace

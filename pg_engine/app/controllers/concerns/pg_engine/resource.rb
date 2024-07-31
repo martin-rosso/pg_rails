@@ -5,7 +5,7 @@ module PgEngine
       clazz.helper_method :atributos_para_listar
       clazz.helper_method :atributos_para_mostrar
       clazz.helper_method :current_page_size
-      clazz.helper_method :any_filter?
+      clazz.helper_method :show_filters?
     end
 
     # Public endpoints
@@ -53,8 +53,17 @@ module PgEngine
 
     protected
 
-    def any_filter?
-      params.keys.reject { |a| a.in? %w[controller action page page_size order_by order_direction] }.any?
+    def show_filters?
+      cur_route = pg_current_route
+      idtf = cur_route[:controller] + '#' + cur_route[:action] + '#open-filters'
+
+      if params[:ocultar_filtros]
+        session[idtf] = nil
+      elsif params[:mostrar_filtros]
+        session[idtf] = true
+      end
+
+      session[idtf]
     end
 
     def current_page_size

@@ -9,6 +9,10 @@ class CategoriaDeCosaDecorator < PgEngine::BaseRecordDecorator
     nombre.upcase
   end
 
+  def cosas_f
+    object.cosas.map(&:to_s).join(', ')
+  end
+
   # Define presentation-specific methods here. Helpers are accessed through
   # `helpers` (aka `h`). You can override attributes, for example:
   #
