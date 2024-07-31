@@ -2,8 +2,11 @@ es:
   ransack:
     predicates:
       cont: ''
+      cont_all: ''
       in: ''
       eq: ''
+      lt: 'hasta'
+      gt: 'desde'
   pg_engine:
     base:
       index:

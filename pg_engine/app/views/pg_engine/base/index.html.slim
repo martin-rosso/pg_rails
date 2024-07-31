@@ -21,7 +21,9 @@
         span.bi.bi-funnel-fill
       = search_form_for @q, url: namespaced_path(@clase_modelo) do |f|
         .row.g-1
-          = @filtros.filtros_html(form: f)
+          .col
+            .row.g-1
+              = @filtros.filtros_html(form: f)
           .col-auto.gap-1.d-flex.align-items-start
             = button_tag class: 'btn btn-sm btn-primary col-auto' do
               span.bi.bi-search

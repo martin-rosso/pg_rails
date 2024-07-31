@@ -7,7 +7,7 @@ module PgEngine
     include PostgresHelper
     attr_accessor :controller
 
-    SUFIJOS = %w[desde hasta incluye es_igual_a].freeze
+    SUFIJOS = %w[desde hasta incluye es_igual_a in cont eq].freeze
 
     def initialize(controller, clase_modelo, campos)
       @clase_modelo = clase_modelo
@@ -240,14 +240,12 @@ module PgEngine
 
     def filtro_asociacion(campo, _placeholder = '')
       asociacion = obtener_asociacion(campo)
-      multiple = asociacion.instance_of?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
       nombre_clase = asociacion.options[:class_name]
       nombre_clase = asociacion.name.to_s.camelize if nombre_clase.nil?
       clase_asociacion = Object.const_get(nombre_clase)
       scope = Pundit.policy_scope!(Current.user, clase_asociacion)
 
-      # Filtro soft deleted, y sea con paranoia o con discard
-      scope = scope.without_deleted if scope.respond_to?(:without_deleted)
+      # Filtro soft deleted
       scope = scope.kept if scope.respond_to?(:kept)
 
       if @filtros[campo.to_sym][:scope_asociacion].present?
@@ -258,14 +256,14 @@ module PgEngine
 
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          if multiple
-            @form.select campo, map, { multiple: true }, 'data-controller': 'selectize',
-                                                         class: 'form-select form-select-sm pg-input-lg'
+          placeholder = ransack_placeholder(campo)
+          suf = extraer_sufijo(campo)
+          if suf.in? %w[in]
+            @form.select sin_sufijo(campo) + '_id_in', map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
+                                                                                class: 'form-control form-control-sm pg-input-lg'
           else
-            campo = campo.to_s + '_id_in'
-            placeholder = ransack_placeholder(campo)
-            @form.select campo, map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
-                                                         class: 'form-control form-control-sm pg-input-lg'
+            campo = campo.to_s + '_id_eq'
+            @form.select campo, map, { include_blank: "Seleccionar #{placeholder}" }, class: 'form-select form-select-sm pg-input-lg'
           end
         end
       end
@@ -279,7 +277,12 @@ module PgEngine
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
           placeholder = ransack_placeholder(campo)
-          @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
+          suf = extraer_sufijo(campo)
+          if suf.in? %w[in]
+            @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
+          else
+            @form.select(campo, map, { include_blank: "Seleccionar #{placeholder}" }, placeholder:, class: 'form-select form-select-sm pg-input-lg')
+          end
         end
       end
     end
@@ -337,7 +340,7 @@ module PgEngine
     end
 
     def ransack_placeholder(campo)
-      @form.object.translate(campo, include_associations: true)
+      @form.object.translate(campo, include_associations: false)
     end
 
     def parametros_controller

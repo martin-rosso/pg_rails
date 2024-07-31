@@ -53,6 +53,11 @@ $alert-margin-bottom:           0.5rem;
 .ts-wrapper.multi .ts-control > div {
 	margin: 0!important;
 }
+.ts-control:not(.rtl) {
+	padding-right: 0.75rem !important;
+}
+
+
 $warning-border-emphasis:   shade-color($yellow, 60%);
 .bg-primary-subtle .btn-warning {
   border: 1px solid $warning-border-emphasis;

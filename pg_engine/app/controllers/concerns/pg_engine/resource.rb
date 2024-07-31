@@ -318,7 +318,7 @@ module PgEngine
       scope = if scope.model.respond_to? "order_by_#{field}"
                 scope.send "order_by_#{field}", direction
               else
-                scope.order(field => direction)
+                scope.order("#{field} #{direction} nulls last")
               end
       instance_variable_set(:@field, field)
       instance_variable_set(:@direction, direction)
