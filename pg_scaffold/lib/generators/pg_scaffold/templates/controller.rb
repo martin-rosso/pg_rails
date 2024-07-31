@@ -26,6 +26,7 @@ class <%= controller_class_name.split('::').last %>Controller < <%= parent_contr
   end
 
   def atributos_para_buscar
+    # FIXME: append _cont
     %i[<%= atributos_a_filtrar.map(&:name).join(' ') %>]
   end
 

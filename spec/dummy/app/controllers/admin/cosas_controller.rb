@@ -26,7 +26,7 @@ module Admin
     end
 
     def atributos_para_buscar
-      %i[nombre tipo categoria_de_cosa creado_por]
+      %i[nombre_cont tipo_in categoria_de_cosa categoria_de_cosa_nombre_cont creado_por_id_eq]
     end
 
     def atributos_para_listar

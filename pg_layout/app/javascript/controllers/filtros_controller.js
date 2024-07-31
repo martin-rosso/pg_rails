@@ -1,5 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
 
+// DEPRECATED.
+//
 // Connects to data-controller="switcher"
 export default class extends Controller {
   originalText = null

@@ -19,6 +19,15 @@ module PgEngine
 
     def index
       @collection = filtros_y_policy atributos_para_buscar
+
+      shared_context = Ransack::Context.for(clase_modelo)
+
+      @q = @clase_modelo.ransack(params[:q], context: shared_context)
+      # @collection = @q.result(distinct: true)
+      @collection = @collection.joins(shared_context.join_sources)
+      vis = Ransack::Visitor.new.accept(@q.base)
+      @collection = @collection.where(vis)
+
       @collection = sort_collection(@collection)
       pg_respond_index
     end

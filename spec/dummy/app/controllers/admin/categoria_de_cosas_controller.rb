@@ -24,7 +24,7 @@ module Admin
     end
 
     def atributos_para_buscar
-      %i[nombre tipo fecha tiempo]
+      %i[nombre_cont tipo_in fecha_eq tiempo]
     end
 
     def atributos_para_listar

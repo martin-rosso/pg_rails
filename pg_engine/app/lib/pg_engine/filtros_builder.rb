@@ -186,6 +186,9 @@ module PgEngine
     end
 
     def filtros_html(options = {})
+      @form = options[:form]
+      raise PgEngine::Error, 'se debe setear el form' if @form.blank?
+
       res = ''
       @filtros.each do |campo, opciones|
         if opciones[:oculto] ||
@@ -253,42 +256,35 @@ module PgEngine
 
       map = scope.map { |o| [o.to_s, o.id] }
 
-      unless @filtros[campo.to_sym].present? && @filtros[campo.to_sym][:include_blank] == false
-        map.unshift ["Seleccionar #{@clase_modelo.human_attribute_name(campo.to_sym).downcase}",
-                     nil]
-      end
-
-      default = parametros_controller[campo].nil? ? nil : parametros_controller[campo]
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
           if multiple
-            select_tag campo, options_for_select(map, default), multiple: true,
-                                                                class: 'form-select form-select-sm selectize pg-input-lg'
+            @form.select campo, map, { multiple: true }, 'data-controller': 'selectize',
+                                                         class: 'form-select form-select-sm pg-input-lg'
           else
-            select_tag campo, options_for_select(map, default),
-                       class: 'form-select form-select-sm chosen-select pg-input-lg'
+            campo = campo.to_s + '_id_in'
+            placeholder = ransack_placeholder(campo)
+            @form.select campo, map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
+                                                         class: 'form-control form-control-sm pg-input-lg'
           end
         end
       end
     end
 
     def filtro_select(campo, placeholder = '')
-      map = @clase_modelo.send(campo).values.map do |key|
+      map = @clase_modelo.send(sin_sufijo(campo)).values.map do |key|
         [I18n.t("#{@clase_modelo.to_s.underscore}.#{campo}.#{key}", default: key.humanize),
          key.value]
       end
-      unless @filtros[campo.to_sym].present? && @filtros[campo.to_sym][:include_blank] == false
-        map.unshift ["Seleccionar #{placeholder.downcase}",
-                     nil]
-      end
-      default = parametros_controller[campo].nil? ? nil : parametros_controller[campo]
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          select_tag campo, options_for_select(map, default), class: 'form-select form-select-sm pg-input-lg'
+          placeholder = ransack_placeholder(campo)
+          @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
         end
       end
     end
 
+    # DEPRECADO
     def filtro_select_custom(campo, placeholder = '')
       map = @filtros[campo.to_sym][:opciones]
       unless @filtros[campo.to_sym].present? && @filtros[campo.to_sym][:include_blank] == false
@@ -306,8 +302,9 @@ module PgEngine
     def filtro_texto(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          text_field_tag(
-            campo, parametros_controller[campo], class: 'form-control form-control-sm allow-enter-submit', placeholder:, autocomplete: 'off'
+          placeholder = ransack_placeholder(campo)
+          @form.search_field(
+            campo, class: 'form-control form-control-sm allow-enter-submit', placeholder:, autocomplete: 'off'
           )
         end
       end
@@ -330,12 +327,17 @@ module PgEngine
     def filtro_fecha(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
+          placeholder = ransack_placeholder(campo)
           label_tag(nil, placeholder, class: 'text-body-secondary') +
-            date_field_tag(
-              campo, parametros_controller[campo], class: 'form-control form-control-sm d-inline-block w-auto ms-1', placeholder:, autocomplete: 'off'
+            @form.date_field(
+              campo, class: 'form-control form-control-sm d-inline-block w-auto ms-1', placeholder:, autocomplete: 'off'
             )
         end
       end
+    end
+
+    def ransack_placeholder(campo)
+      @form.object.translate(campo, include_associations: true)
     end
 
     def parametros_controller

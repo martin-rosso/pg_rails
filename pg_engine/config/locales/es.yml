@@ -1,4 +1,9 @@
 es:
+  ransack:
+    predicates:
+      cont: ''
+      in: ''
+      eq: ''
   pg_engine:
     base:
       index:

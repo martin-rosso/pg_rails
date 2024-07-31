@@ -53,7 +53,7 @@ module Admin
     end
 
     def atributos_para_buscar
-      %i[email nombre apellido developer]
+      %i[email_cont nombre_cont apellido_cont developer]
     end
 
     def atributos_para_listar

@@ -19,10 +19,9 @@
     .d-flex.align-items-center.p-2
       .px-2.d-none.d-sm-inline-block
         span.bi.bi-funnel-fill
-      = form_tag nil, class: '', method: :get do
+      = search_form_for @q, url: namespaced_path(@clase_modelo) do |f|
         .row.g-1
-          = @filtros.filtros_html
-          .col-auto
+          = @filtros.filtros_html(form: f)
           .col-auto.gap-1.d-flex.align-items-start
             = button_tag class: 'btn btn-sm btn-primary col-auto' do
               span.bi.bi-search
@@ -32,7 +31,6 @@
             = link_to namespaced_path(@clase_modelo, mostrar_filtros: 1),
                       class: 'btn btn-sm btn-secondary col-auto' do
               | Limpiar
-
 div
   - if @collection.any?
     .table-responsive
