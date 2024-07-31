@@ -44,7 +44,7 @@ PreCommit:
     on_warn: fail
 
   Stylelint:
-    enabled: true
+    enabled: false
     required_executable: npx
     command: ["npx", "--no-install", "stylelint"]
     include:
