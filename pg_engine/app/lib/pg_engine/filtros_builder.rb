@@ -7,7 +7,7 @@ module PgEngine
     include PostgresHelper
     attr_accessor :controller
 
-    SUFIJOS = %w[desde hasta incluye es_igual_a in cont eq].freeze
+    SUFIJOS = %w[desde hasta gt gte lt lte incluye es_igual_a in cont cont_all eq].freeze
 
     def initialize(controller, clase_modelo, campos)
       @clase_modelo = clase_modelo
@@ -178,10 +178,13 @@ module PgEngine
 
     def placeholder_campo(campo)
       suf = extraer_sufijo(campo)
+      key = [controller_name, action_name, 'filter', sin_sufijo(campo)].join('.')
+      dflt = :"activerecord.attributes.#{@clase_modelo.model_name.i18n_key}.#{sin_sufijo(campo)}"
+      humann = @clase_modelo.human_attribute_name(key, default: dflt)
       if suf.present?
-        "#{@clase_modelo.human_attribute_name(sin_sufijo(campo))} #{suf}"
+        "#{humann} #{I18n.t(suf, scope: 'ransack.predicates')}".strip.tap { _1[0] = _1[0].capitalize }
       else
-        @clase_modelo.human_attribute_name(campo)
+        humann
       end
     end
 
@@ -238,7 +241,7 @@ module PgEngine
       end
     end
 
-    def filtro_asociacion(campo, _placeholder = '')
+    def filtro_asociacion(campo, placeholder = '')
       asociacion = obtener_asociacion(campo)
       nombre_clase = asociacion.options[:class_name]
       nombre_clase = asociacion.name.to_s.camelize if nombre_clase.nil?
@@ -256,7 +259,7 @@ module PgEngine
 
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          placeholder = ransack_placeholder(campo)
+          # placeholder = ransack_placeholder(campo)
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
             @form.select sin_sufijo(campo) + '_id_in', map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
@@ -276,7 +279,7 @@ module PgEngine
       end
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          placeholder = ransack_placeholder(campo)
+          # placeholder = ransack_placeholder(campo)
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
             @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
@@ -305,7 +308,7 @@ module PgEngine
     def filtro_texto(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          placeholder = ransack_placeholder(campo)
+          # placeholder = ransack_placeholder(campo)
           @form.search_field(
             campo, class: 'form-control form-control-sm allow-enter-submit', placeholder:, autocomplete: 'off'
           )
@@ -330,7 +333,7 @@ module PgEngine
     def filtro_fecha(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          placeholder = ransack_placeholder(campo)
+          # placeholder = ransack_placeholder(campo)
           label_tag(nil, placeholder, class: 'text-body-secondary') +
             @form.date_field(
               campo, class: 'form-control form-control-sm d-inline-block w-auto ms-1', placeholder:, autocomplete: 'off'

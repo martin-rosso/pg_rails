@@ -6,6 +6,9 @@ module PgEngine
       campo = campo.to_s.sub(/_f\z/, '')
       campo = campo.to_s.sub(/_text\z/, '')
       clase = options[:clase] || @clase_modelo
+      key = [controller_name, action_name, 'listado_header', campo].join('.')
+      dflt = :"activerecord.attributes.#{clase.model_name.i18n_key}.#{campo}"
+      human_name = clase.human_attribute_name(key, default: dflt)
       if options[:ordenable]
         field = controller.instance_variable_get(:@field)
         direction = controller.instance_variable_get(:@direction)
@@ -35,9 +38,9 @@ module PgEngine
 
         uri.query = cgi.transform_values { |b| (b.length == 1 ? b.first : b) }.to_query
 
-        link_to(clase.human_attribute_name(campo), uri.to_s) + " #{symbol}".html_safe
+        link_to(human_name, uri.to_s) + " #{symbol}".html_safe
       else
-        clase.human_attribute_name(campo)
+        human_name
       end
     end
   end
