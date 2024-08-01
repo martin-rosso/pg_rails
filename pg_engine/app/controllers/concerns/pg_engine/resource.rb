@@ -20,10 +20,6 @@ module PgEngine
     def index
       @collection = filtros_y_policy atributos_para_buscar
 
-      shared_context = Ransack::Adapters::ActiveRecord::Context.new(@collection)
-      @q = @clase_modelo.ransack(params[:q], context: shared_context)
-      @collection = shared_context.evaluate(@q)
-
       pg_respond_index
     end
 
@@ -292,7 +288,11 @@ module PgEngine
       )
       scope = policy_scope(clase_modelo)
 
-      @filtros.filtrar(scope)
+      scope = @filtros.filtrar(scope)
+
+      shared_context = Ransack::Adapters::ActiveRecord::Context.new(scope)
+      @q = @clase_modelo.ransack(params[:q], context: shared_context)
+      shared_context.evaluate(@q)
     end
 
     def default_scope_for_current_model
