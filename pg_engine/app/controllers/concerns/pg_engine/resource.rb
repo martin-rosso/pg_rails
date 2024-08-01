@@ -159,7 +159,9 @@ module PgEngine
     def pg_respond_show(object = nil)
       object ||= instancia_modelo
       if params[:modal].present?
-        render turbo_stream: turbo_stream.append_all('body', partial: 'pg_layout/modal_show', locals: { object: })
+        render turbo_stream: turbo_stream.append_all(
+          'body', partial: 'pg_layout/modal_show', locals: { object: }
+        )
       else
         respond_to do |format|
           format.json { render json: object }

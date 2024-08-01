@@ -24,17 +24,47 @@ describe 'Filtros de cosas' do
   end
 
   describe 'Cosas' do
-    let!(:cosa) { create :cosa }
+    let!(:cosa) { create :cosa, nombre: }
+    let(:nombre) { Faker::Lorem.sentence }
     let!(:otro_tipo) { Cosa.tipo.values.reject { _1 == cosa.tipo }.sample }
     let!(:otra_cosa) { create :cosa, tipo: otro_tipo }
     let(:controller_class) { Admin::CosasController }
     let(:path) { '/admin/cosas' }
 
-    it 'buscar por nombre' do
-      visitar
-      fill_in 'Nombre', with: 'asd'
-      buscar
-      expect(page).to have_text 'No hay cosos para los filtros aplicados'
+    context 'buscar por nombre sin predicado' do
+      let(:search_fields) { %i[nombre] }
+
+      it do
+        visitar
+        fill_in 'Nombre', with: 'asd'
+        buscar
+        expect(page).to have_text 'No hay cosos para los filtros aplicados'
+      end
+    end
+
+    context 'buscar por nombre not_cont' do
+      let(:search_fields) { %i[nombre_not_cont] }
+      let(:nombre) { 'uno dos tres' }
+
+      fit do
+        visitar
+        fill_in 'Nombre no contiene', with: 'dos'
+        buscar
+        expect(listado).to have_text otra_cosa.nombre
+        expect(listado).to have_no_text cosa.nombre
+      end
+    end
+
+    context 'buscar por nombre cont_any' do
+      let(:search_fields) { %i[nombre_cont_any] }
+      let(:nombre) { 'uno dos tres' }
+
+      it do
+        visitar
+        fill_in 'Nombre', with: 'dos bla'
+        buscar
+        expect(listado).to have_text nombre
+      end
     end
 
     context 'buscar categoría por select simple' do
@@ -111,14 +141,25 @@ describe 'Filtros de cosas' do
     let(:otra_fecha) { categoria.fecha + 1.day }
     let!(:otra_categoria) { create :categoria_de_cosa, fecha: otra_fecha }
 
-    it do
-      visitar
-      expect(listado).to have_text otra_categoria.nombre
-      fill_in 'Fecha desde', with: categoria.fecha
-      fill_in 'Fecha hasta', with: categoria.fecha
-      buscar
-      expect(listado).to have_text categoria.nombre
-      expect(listado).to have_no_text otra_categoria.nombre
+    describe 'fechas' do
+      it do
+        visitar
+        expect(listado).to have_text otra_categoria.nombre
+        fill_in 'Fecha desde', with: categoria.fecha
+        fill_in 'Fecha hasta', with: categoria.fecha
+        buscar
+        expect(listado).to have_text categoria.nombre
+        expect(listado).to have_no_text otra_categoria.nombre
+      end
+    end
+
+    describe 'ocultar filtros' do
+      it do
+        visitar
+        expect(page).to have_no_text 'Filtrar'
+        click_on 'Ocultar filtros'
+        expect(page).to have_text 'Filtrar'
+      end
     end
   end
 end

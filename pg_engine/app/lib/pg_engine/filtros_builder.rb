@@ -7,7 +7,23 @@ module PgEngine
     include PostgresHelper
     attr_accessor :controller
 
-    SUFIJOS = %w[desde hasta gt gteq lt lteq incluye es_igual_a in cont cont_all eq].freeze
+    # El orden de los sufijos es importante
+    SUFIJOS = %w[
+      desde
+      hasta
+      gteq
+      gt
+      lteq
+      lt
+      incluye
+      es_igual_a
+      in
+      cont_all
+      cont_any
+      not_cont
+      cont
+      eq
+    ].freeze
 
     def initialize(controller, clase_modelo, campos)
       @clase_modelo = clase_modelo
@@ -275,7 +291,6 @@ module PgEngine
 
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          # placeholder = ransack_placeholder(campo)
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
             @form.select campo, map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
@@ -294,7 +309,6 @@ module PgEngine
       end
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          # placeholder = ransack_placeholder(campo)
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
             @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
@@ -323,7 +337,6 @@ module PgEngine
     def filtro_texto(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          # placeholder = ransack_placeholder(campo)
           @form.search_field(
             campo, class: 'form-control form-control-sm allow-enter-submit', placeholder:, autocomplete: 'off'
           )
@@ -348,17 +361,12 @@ module PgEngine
     def filtro_fecha(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          # placeholder = ransack_placeholder(campo)
           label_tag(nil, placeholder, class: 'text-body-secondary') +
             @form.date_field(
               campo, class: 'form-control form-control-sm d-inline-block w-auto ms-1', placeholder:, autocomplete: 'off'
             )
         end
       end
-    end
-
-    def ransack_placeholder(campo)
-      @form.object.translate(campo, include_associations: false)
     end
 
     def parametros_controller
