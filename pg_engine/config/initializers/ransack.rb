@@ -25,6 +25,14 @@ module Arel
 end
 
 Ransack.configure do |config|
+  config.postgres_fields_sort_option = :nulls_always_last
+
+  config.custom_arrows = {
+    up_arrow: '<i class="bi bi-sort-up" />',
+    down_arrow: '<i class="bi bi-sort-down-alt" />',
+    default_arrow: ''
+  }
+
   # Piso predicados cont y not_cont para que usen unaccent
   config.add_predicate 'cont',
     arel_predicate: 'matches_unaccent',

@@ -10,7 +10,7 @@ div style="max-width: 32em" data-controller="pg_form"
     = f.input :tiempo, html5: true
     = f.input :tipo
 
-    h4 Items
+    h4 Cosas
     #items.nested-container data-required="true"
       = f.fields_for :cosas do |vi|
         = render partial: 'cosa_fields', locals: { f: vi }

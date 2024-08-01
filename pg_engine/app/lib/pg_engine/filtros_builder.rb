@@ -251,8 +251,11 @@ module PgEngine
                  filtro_texto(campo, placeholder_campo(campo))
                end
       end
-      res +=  hidden_field_tag('order_by', parametros_controller['order_by'])
-      res +=  hidden_field_tag('order_direction', parametros_controller['order_direction'])
+
+      if params[:q] && params[:q][:s]
+        res += @form.hidden_field('s', value: params[:q][:s])
+      end
+
       res.html_safe
     end
 
