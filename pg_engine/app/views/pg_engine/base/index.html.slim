@@ -16,7 +16,7 @@
 
 - if @filtros.present? && show_filters?
   .border-bottom#filtros
-    .d-flex.align-items-center.p-2
+    .d-flex.align-items-center.px-3.py-2
       .px-2.d-none.d-sm-inline-block
         span.bi.bi-funnel-fill
       = search_form_for @q, url: namespaced_path(@clase_modelo) do |f|

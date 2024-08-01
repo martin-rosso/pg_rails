@@ -40,7 +40,7 @@ module PgEngine
         # tengo que quitarle el [] del final, porque si no, le agrega otros [] adicionales
         # y queda q[tipo_item_in][][]=1&q[tipo_item_in][][]=2
         # no sé si es un bug de CGI o qué onda
-        cgi = cgi.map { |k, v| [v.length > 1 && k.ends_with?('[]') ? k.sub(/\[\]$/, '') : k, v] }.to_h
+        cgi = cgi.to_h { |k, v| [v.length > 1 && k.ends_with?('[]') ? k.sub(/\[\]$/, '') : k, v] }
 
         # todos los campos que tengan un solo valor, lo desagrego para que no le
         # agregue [] al final

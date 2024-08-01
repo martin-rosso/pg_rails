@@ -13,9 +13,6 @@ Lint/UselessAssignment:
 Style/IfUnlessModifier:
   Enabled: false
 
-RSpec/Focus:
-  Enabled: false
-
 Rails/SkipsModelValidations:
   Enabled: false
 

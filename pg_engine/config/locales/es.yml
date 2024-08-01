@@ -7,6 +7,8 @@ es:
       eq: ''
       lt: 'hasta'
       gt: 'desde'
+      lteq: 'hasta'
+      gteq: 'desde'
   pg_engine:
     base:
       index:

@@ -42,6 +42,7 @@ require 'pg_rails/capybara_support'
 require 'pg_rails/redis_support'
 require 'pg_rails/vcr_support'
 require 'pg_rails/rspec_logger_matchers'
+require 'pg_rails/tom_select_helpers'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -84,6 +85,9 @@ RSpec.configure do |config|
   #   DatabaseCleaner.clean_with(:truncation)
   # end
 
+  config.before(:each, type: :system) do
+    driven_by ENV['DRIVER']&.to_sym || :selenium_chrome_headless_iphone
+  end
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 
@@ -121,5 +125,7 @@ RSpec.configure do |config|
   config.include ViewComponent::TestHelpers, type: :component
   config.include ViewComponent::SystemTestHelpers, type: :component
   config.include Capybara::RSpecMatchers, type: :component
+
+  config.include PgRails::TomSelectHelpers, type: :system
   # config.include ActiveSupport::Testing::TimeHelpers
 end

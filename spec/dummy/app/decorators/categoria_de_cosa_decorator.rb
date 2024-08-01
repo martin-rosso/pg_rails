@@ -6,7 +6,7 @@ class CategoriaDeCosaDecorator < PgEngine::BaseRecordDecorator
   delegate_all
 
   def nombre_f
-    nombre.upcase
+    nombre
   end
 
   def cosas_f

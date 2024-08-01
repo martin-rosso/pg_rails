@@ -7,13 +7,28 @@ module PgEngine
     include PostgresHelper
     attr_accessor :controller
 
-    SUFIJOS = %w[desde hasta gt gte lt lte incluye es_igual_a in cont cont_all eq].freeze
+    SUFIJOS = %w[desde hasta gt gteq lt lteq incluye es_igual_a in cont cont_all eq].freeze
 
     def initialize(controller, clase_modelo, campos)
       @clase_modelo = clase_modelo
-      @campos = campos
-      @controller = controller
       @filtros = {}
+      @campos = campos.map do |campo|
+        if extraer_sufijo(campo).blank?
+          case tipo(campo)
+          when :enumerized, :boolean
+            :"#{campo}_eq"
+          when :asociacion
+            :"#{campo.to_s.sub(/_id$/, '')}_id_eq"
+          when :date, :datetime
+            [:"#{campo}_gteq", :"#{campo}_lteq"]
+          else
+            :"#{campo}_cont_all"
+          end
+        else
+          campo
+        end
+      end.flatten
+      @controller = controller
       @campos.each { |campo| @filtros[campo] = {} }
     end
 
@@ -114,15 +129,20 @@ module PgEngine
       query
     end
 
+    def find_on_all_associations(klass, campo)
+      nombre_campo = sin_sufijo(campo)
+      klass.reflect_on_all_associations.find do |a|
+        a.name == nombre_campo.to_sym || a.name == nombre_campo.sub(/_id$/, '').to_sym
+      end
+    end
+
     def tipo(campo)
       nombre_campo = sin_sufijo(campo)
       if @filtros[nombre_campo.to_sym].present? && @filtros[nombre_campo.to_sym][:tipo].present?
         @filtros[nombre_campo.to_sym][:tipo]
       elsif @clase_modelo.respond_to?(:enumerized_attributes) && @clase_modelo.enumerized_attributes[nombre_campo.to_s].present?
         :enumerized
-      elsif @clase_modelo.reflect_on_all_associations.find do |a|
-              a.name == nombre_campo.to_sym
-            end.present?
+      elsif find_on_all_associations(@clase_modelo, campo).present?
         :asociacion
       else
         columna = @clase_modelo.columns.find { |c| c.name == nombre_campo.to_s }
@@ -221,18 +241,14 @@ module PgEngine
     end
 
     def obtener_asociacion(campo)
-      nombre_campo = sin_sufijo(campo)
-      extraer_sufijo(campo)
-      asociacion = @clase_modelo.reflect_on_all_associations.find do |a|
-        a.name == nombre_campo.to_sym
-      end
+      asociacion = find_on_all_associations(@clase_modelo, campo)
+
       raise 'no se encontró la asociacion' if asociacion.nil?
 
       if asociacion.instance_of?(ActiveRecord::Reflection::ThroughReflection)
         through_class = asociacion.through_reflection.class_name.constantize
-        asociacion_posta = through_class.reflect_on_all_associations.find do |a|
-          a.name == nombre_campo.to_sym
-        end
+        asociacion_posta = find_on_all_associations(through_class, campo)
+
         raise 'no se encontró la asociacion' if asociacion_posta.nil?
 
         asociacion_posta
@@ -262,10 +278,9 @@ module PgEngine
           # placeholder = ransack_placeholder(campo)
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
-            @form.select sin_sufijo(campo) + '_id_in', map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
-                                                                                class: 'form-control form-control-sm pg-input-lg'
+            @form.select campo, map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
+                                                         class: 'form-control form-control-sm pg-input-lg'
           else
-            campo = campo.to_s + '_id_eq'
             @form.select campo, map, { include_blank: "Seleccionar #{placeholder}" }, class: 'form-select form-select-sm pg-input-lg'
           end
         end
