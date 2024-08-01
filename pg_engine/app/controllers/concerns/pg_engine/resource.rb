@@ -20,15 +20,10 @@ module PgEngine
     def index
       @collection = filtros_y_policy atributos_para_buscar
 
-      shared_context = Ransack::Context.for(clase_modelo)
-
+      shared_context = Ransack::Adapters::ActiveRecord::Context.new(@collection)
       @q = @clase_modelo.ransack(params[:q], context: shared_context)
-      # @collection = @q.result(distinct: true)
-      @collection = @collection.joins(shared_context.join_sources)
-      vis = Ransack::Visitor.new.accept(@q.base)
-      @collection = @collection.where(vis)
+      @collection = shared_context.evaluate(@q)
 
-      @collection = sort_collection(@collection)
       pg_respond_index
     end
 
@@ -304,45 +299,6 @@ module PgEngine
       PgEngine::FiltrosBuilder.new(
         self, clase_modelo, []
       ).filtrar(policy_scope(clase_modelo))
-    end
-
-    def do_sort(scope, field, direction)
-      # TODO: restringir ciertos campos?
-      unless scope.model.column_names.include?(field.to_s) ||
-             scope.model.respond_to?("order_by_#{field}")
-        pg_warn("No existe el campo \"#{field}\"")
-        return scope
-      end
-      unless direction.to_sym.in? %i[asc desc]
-        pg_warn("Direction not valid: \"#{direction}\"")
-        return scope
-      end
-      scope = if scope.model.respond_to? "order_by_#{field}"
-                scope.send "order_by_#{field}", direction
-              else
-                sql = scope.model.arel_table[field.to_sym].send(direction).to_sql + ' nulls last'
-                scope.order(sql)
-              end
-      instance_variable_set(:@field, field)
-      instance_variable_set(:@direction, direction)
-      scope
-    rescue ArgumentError => e
-      pg_warn(e)
-      scope
-    end
-
-    def sort_collection(scope, options = {})
-      if params[:order_by].present?
-        field = params[:order_by]
-        direction = params[:order_direction]
-        do_sort(scope, field, direction)
-      elsif options[:default].present?
-        field = options[:default].first[0]
-        direction = options[:default].first[1]
-        do_sort(scope, field, direction)
-      else
-        do_sort(scope, 'id', 'desc')
-      end
     end
   end
 end

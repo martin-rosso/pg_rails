@@ -4,13 +4,10 @@
 
 class CosaPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    # def resolve
-    #   if policy.acceso_total?
-    #     scope.all
-    #   else
-    #     scope.none
-    #   end
-    # end
+    def resolve
+      # scope.where.not(tipo: :los)
+      scope.all
+    end
   end
 
   # def puede_editar?

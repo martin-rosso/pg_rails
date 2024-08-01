@@ -43,6 +43,20 @@ FactoryBot.define do
     password { "password#{rand(99_999)}" }
     confirmed_at { Faker::Date.backward }
 
+    transient do
+      account { nil }
+    end
+
+    after(:create) do |model, context|
+      if context.account
+        model.user_accounts.create!(account: context.account)
+      end
+    end
+
+    trait :orphan do
+      orphan { true }
+    end
+
     trait :admin do
       developer { true }
     end

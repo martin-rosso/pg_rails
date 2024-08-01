@@ -64,96 +64,18 @@ module PgEngine
       @filtros[campo][:scope_asociacion] = block
     end
 
-    def algun_filtro_presente?
-      @campos.any? { |campo| parametros_controller[campo].present? }
-    end
-
     def filtrar(query, parametros = nil)
       parametros = parametros_controller if parametros.nil?
 
       # Filtro soft deleted
       query = query.kept if query.respond_to?(:kept) && parametros[:archived] != 'true'
 
-      @filtros.each_key do |campo|
-        next if parametros[campo].blank?
-
-        if @filtros[campo.to_sym].present? && @filtros[campo.to_sym][:query].present?
-          query = @filtros[campo.to_sym][:query].call(query, parametros[campo])
-        elsif tipo(campo) == :enumerized
-          columna = @clase_modelo.columns.find { |c| c.name == campo.to_s }
-          query = if columna.array
-                    query.where("? = any(#{@clase_modelo.table_name}.#{campo})", parametros[campo])
-                  else
-                    query.where("#{@clase_modelo.table_name}.#{campo} = ?", parametros[campo])
-                  end
-        elsif tipo(campo).in?(%i[integer float decimal])
-          campo_a_comparar = "#{@clase_modelo.table_name}.#{sin_sufijo(campo)}"
-          query = query.where("#{campo_a_comparar} #{comparador(campo)} ?", parametros[campo])
-        elsif tipo(campo) == :asociacion
-          nombre_campo = sin_sufijo(campo)
-          suf = extraer_sufijo(campo)
-          asociacion = obtener_asociacion(nombre_campo)
-          if asociacion.instance_of?(ActiveRecord::Reflection::HasAndBelongsToManyReflection)
-            array = parametros[campo].instance_of?(Array) ? parametros[campo].join(',') : parametros[campo]
-            query = query.joins(nombre_campo.to_sym).group("#{@clase_modelo.table_name}.id")
-                         .having("ARRAY_AGG(#{asociacion.join_table}.#{asociacion.association_foreign_key}) #{comparador_array(suf)} ARRAY[#{array}]::bigint[]")
-          elsif asociacion.instance_of?(ActiveRecord::Reflection::BelongsToReflection)
-            query = query.where("#{@clase_modelo.table_name}.#{campo}_id = ?", parametros[campo])
-          else
-            raise 'filtro de asociacion no soportado'
-          end
-        elsif tipo(campo).in?(%i[string text])
-          columna = @clase_modelo.columns.find { |c| c.name == campo.to_s }
-          campo_tabla = "#{@clase_modelo.table_name}.#{campo}"
-          match_like = "%#{parametros[campo]}%"
-          query =
-            if columna&.array
-              # FIXME: testear
-              # El CONCAT no sé para qué sirve, pero lo dejo
-              query.where("unaccent(CONCAT(array_to_string(#{campo_tabla}, ' '))) ILIKE unaccent(?)", I18n.transliterate(match_like).to_s)
-            else
-              match_vector = parametros[campo].split.map { |a| "#{a}:*" }.join(' & ')
-              condicion = "to_tsvector(coalesce(unaccent(#{campo_tabla}), '')) @@ to_tsquery( unaccent(?) )"
-              condicion += " OR unaccent(CONCAT(#{campo_tabla})) ILIKE unaccent(?)"
-              query = query.where(condicion, I18n.transliterate(match_vector).to_s,
-                                  I18n.transliterate(match_like).to_s)
-            end
-        elsif tipo(campo) == :boolean
-          if campo.to_s == 'discarded'
-            # Si el nombre del campo es 'discarded' entonces no es un campo
-            # real sino filtro booleano por presencia de discarded_at
-            case parametros[campo]
-            when 'si'
-              query = query.unscope(where: :discarded_at).where("#{@clase_modelo.table_name}.discarded_at IS NOT NULL")
-            when 'no'
-              query = query.unscope(where: :discarded_at).where("#{@clase_modelo.table_name}.discarded_at IS NULL")
-            end
-          else
-            # Si no simplemente hago la query por booleano
-            query = query.where("#{@clase_modelo.table_name}.#{campo} = ?", parametros[campo] == 'si')
-          end
-        elsif tipo(campo) == :date || tipo(campo) == :datetime
-          begin
-            fecha = Date.parse(parametros[campo])
-            fecha = fecha + 1.day - 1.second if tipo(campo) == :datetime && comparador(campo) == '<'
-            campo_a_comparar = "#{@clase_modelo.table_name}.#{sin_sufijo(campo)}"
-            query = query.where("#{campo_a_comparar} #{comparador(campo)} ?", fecha)
-          rescue ArgumentError
-          end
-        end
-      end
       query
-    end
-
-    def find_on_all_associations(klass, campo)
-      nombre_campo = sin_sufijo(campo)
-      klass.reflect_on_all_associations.find do |a|
-        a.name == nombre_campo.to_sym || a.name == nombre_campo.sub(/_id$/, '').to_sym
-      end
     end
 
     def tipo(campo)
       nombre_campo = sin_sufijo(campo)
+
       if @filtros[nombre_campo.to_sym].present? && @filtros[nombre_campo.to_sym][:tipo].present?
         @filtros[nombre_campo.to_sym][:tipo]
       elsif @clase_modelo.respond_to?(:enumerized_attributes) && @clase_modelo.enumerized_attributes[nombre_campo.to_s].present?
@@ -169,7 +91,8 @@ module PgEngine
           # real sino filtro booleano por presencia de discarded_at
           return :boolean if campo.to_s == 'discarded'
 
-          Rails.logger.warn("no existe el campo: #{nombre_campo}")
+          pg_warn("no existe el campo: #{nombre_campo}")
+
           return
         end
         columna.type
@@ -201,14 +124,17 @@ module PgEngine
       SUFIJOS.each do |sufijo|
         return sufijo if campo.to_s.ends_with?("_#{sufijo}")
       end
+
       nil
     end
 
     def sin_sufijo(campo)
       ret = campo.to_s.dup
+
       SUFIJOS.each do |sufijo|
         ret.gsub!(/_#{sufijo}$/, '')
       end
+
       ret
     end
 
@@ -216,16 +142,21 @@ module PgEngine
       suf = extraer_sufijo(campo)
       key = [controller_name, action_name, 'filter', sin_sufijo(campo)].join('.')
       dflt = :"activerecord.attributes.#{@clase_modelo.model_name.i18n_key}.#{sin_sufijo(campo)}"
-      humann = @clase_modelo.human_attribute_name(key, default: dflt)
-      if suf.present?
-        "#{humann} #{I18n.t(suf, scope: 'ransack.predicates')}".strip.tap { _1[0] = _1[0].capitalize }
-      else
-        humann
-      end
+      human_name = @clase_modelo.human_attribute_name(key, default: dflt)
+
+      ret =
+        if suf.present?
+          "#{human_name} #{I18n.t(suf, scope: 'ransack.predicates')}"
+        else
+          human_name
+        end
+
+      ret.strip.downcase.tap { _1[0] = _1[0].capitalize }
     end
 
     def filtros_html(options = {})
       @form = options[:form]
+
       raise PgEngine::Error, 'se debe setear el form' if @form.blank?
 
       res = ''
@@ -237,8 +168,6 @@ module PgEngine
         end
 
         res += case tipo(campo)
-               when :select_custom
-                 filtro_select_custom(campo, placeholder_campo(campo))
                when :enumerized
                  filtro_select(campo, placeholder_campo(campo))
                when :asociacion
@@ -257,6 +186,13 @@ module PgEngine
       end
 
       res.html_safe
+    end
+
+    def find_on_all_associations(klass, campo)
+      nombre_campo = sin_sufijo(campo)
+      klass.reflect_on_all_associations.find do |a|
+        a.name == nombre_campo.to_sym || a.name == nombre_campo.sub(/_id$/, '').to_sym
+      end
     end
 
     def obtener_asociacion(campo)
@@ -290,6 +226,8 @@ module PgEngine
         scope = @filtros[campo.to_sym][:scope_asociacion].call(scope)
       end
 
+      # TODO: default sort
+
       map = scope.map { |o| [o.to_s, o.id] }
 
       content_tag :div, class: 'col-auto' do
@@ -299,7 +237,7 @@ module PgEngine
             @form.select campo, map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
                                                          class: 'form-control form-control-sm pg-input-lg'
           else
-            @form.select campo, map, { include_blank: "Seleccionar #{placeholder}" }, class: 'form-select form-select-sm pg-input-lg'
+            @form.select campo, map, { include_blank: "Seleccionar #{placeholder.downcase}" }, class: 'form-select form-select-sm pg-input-lg'
           end
         end
       end
@@ -316,23 +254,8 @@ module PgEngine
           if suf.in? %w[in]
             @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
           else
-            @form.select(campo, map, { include_blank: "Seleccionar #{placeholder}" }, placeholder:, class: 'form-select form-select-sm pg-input-lg')
+            @form.select(campo, map, { include_blank: "Seleccionar #{placeholder.downcase}" }, placeholder:, class: 'form-select form-select-sm pg-input-lg')
           end
-        end
-      end
-    end
-
-    # DEPRECADO
-    def filtro_select_custom(campo, placeholder = '')
-      map = @filtros[campo.to_sym][:opciones]
-      unless @filtros[campo.to_sym].present? && @filtros[campo.to_sym][:include_blank] == false
-        map.unshift ["Seleccionar #{placeholder.downcase}",
-                     nil]
-      end
-      default = parametros_controller[campo].nil? ? nil : parametros_controller[campo]
-      content_tag :div, class: 'col-auto' do
-        content_tag :div, class: 'filter' do
-          select_tag campo, options_for_select(map, default), class: 'form-select form-select-sm pg-input-lg'
         end
       end
     end
@@ -348,15 +271,13 @@ module PgEngine
     end
 
     def filtro_boolean(campo, placeholder = '')
-      map = [%w[Si si], %w[No no]]
-      unless @filtros[campo.to_sym].present? && @filtros[campo.to_sym][:include_blank] == false
-        map.unshift ["¿#{placeholder.titleize}?",
-                     nil]
-      end
-      default = parametros_controller[campo].nil? ? nil : parametros_controller[campo]
+      map = [%w[Sí true], %w[No false]]
+
+      include_blank = "¿#{placeholder.titleize}?"
+
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: 'filter' do
-          select_tag campo, options_for_select(map, default), class: 'form-select form-select-sm pg-input-lg'
+          @form.select campo.to_sym, map, { include_blank: }, class: 'form-select form-select-sm pg-input-lg'
         end
       end
     end

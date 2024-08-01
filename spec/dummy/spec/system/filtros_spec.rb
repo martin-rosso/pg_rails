@@ -46,7 +46,7 @@ describe 'Filtros de cosas' do
       let(:search_fields) { %i[nombre_not_cont] }
       let(:nombre) { 'uno dos tres' }
 
-      fit do
+      it do
         visitar
         fill_in 'Nombre no contiene', with: 'dos'
         buscar
@@ -159,6 +159,41 @@ describe 'Filtros de cosas' do
         expect(page).to have_no_text 'Filtrar'
         click_on 'Ocultar filtros'
         expect(page).to have_text 'Filtrar'
+      end
+    end
+
+    describe 'sorting' do
+      it do
+        visitar
+        anterior = categoria.decorate.fecha
+        posterior = otra_categoria.decorate.fecha
+        click_on 'Fecha'
+        target = page.find('.listado').native.attribute('outerHTML')
+        expect(target).to match(/#{posterior}.*#{anterior}/)
+        click_on 'Fecha'
+        target = page.find('.listado').native.attribute('outerHTML')
+        expect(target).to match(/#{anterior}.*#{posterior}/)
+      end
+    end
+  end
+
+  describe 'Users' do
+    let(:controller_class) { Admin::UsersController }
+    let(:path) { '/a/users' }
+    let(:search_fields) { %i[developer] }
+    let(:account) { user.current_account }
+
+    let!(:target_user) { create :user, :orphan, account:, developer: true }
+    let!(:otro_user) { create :user, :orphan, account:, developer: false }
+
+    describe 'boolean' do
+      it do
+        visitar
+        expect(listado).to have_text otro_user.email
+        select 'Sí'
+        buscar
+        expect(listado).to have_text target_user.nombre
+        expect(listado).to have_no_text otro_user.nombre
       end
     end
   end

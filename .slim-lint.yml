@@ -6,6 +6,7 @@ linters:
     max: 100
   RuboCop:
     ignored_cops:
+      - Style/HashEachMethods
       - Style/RedundantLineContinuation
       - Layout/ArgumentAlignment
       - Layout/ArrayAlignment

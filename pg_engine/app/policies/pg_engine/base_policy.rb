@@ -89,8 +89,8 @@ module PgEngine
     end
 
     def objeto_borrado?
-      if record.respond_to?(:discarded?)
-        record.discarded?
+      if record.respond_to?(:kept?)
+        !record.kept?
       else
         false
       end

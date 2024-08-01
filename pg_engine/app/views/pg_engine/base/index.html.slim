@@ -49,7 +49,7 @@ div
           - @collection.each do |object|
             - object = object.decorate
             tr id="#{dom_id(object)}"
-              - atributos_para_listar.each do |att|
+              - atributos_para_listar.each do |att, _sort_field|
                 td.text-nowrap = object.send(att)
               td.text-nowrap.text-end.ps-5
                 .actions-wrapper

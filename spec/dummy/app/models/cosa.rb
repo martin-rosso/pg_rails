@@ -38,6 +38,12 @@ class Cosa < ApplicationRecord
 
   has_rich_text :rico
 
+  scope :kept, -> { undiscarded.joins(:categoria_de_cosa).merge(CategoriaDeCosa.kept) }
+
+  def kept?
+    undiscarded? && categoria_de_cosa.kept?
+  end
+
   enumerize :tipo, in: { completar: 0, los: 1, valores: 2 }
 
   validates :nombre, :tipo, presence: true

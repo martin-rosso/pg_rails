@@ -2,12 +2,12 @@
 
 wb = xlsx_package.workbook
 wb.add_worksheet(name: @clase_modelo.nombre_plural) do |sheet|
-  headers = atributos_para_listar.map { |a| @clase_modelo.human_attribute_name(a) }
+  headers = atributos_para_listar.map { |a, _sort_by| @clase_modelo.human_attribute_name(a) }
   headers.prepend 'ID interno'
   sheet.add_row(headers)
 
   @collection.decorate.each do |object|
-    array = atributos_para_listar.map do |att|
+    array = atributos_para_listar.map do |att, _sort_by|
       object.send(att)
     end
     array.prepend object.to_key

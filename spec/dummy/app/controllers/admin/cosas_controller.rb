@@ -26,11 +26,15 @@ module Admin
     end
 
     def atributos_para_buscar
-      %i[nombre tipo_in categoria_de_cosa_id_in categoria_de_cosa_nombre_cont creado_por]
+      %i[nombre tipo_in categoria_de_cosa_id_in categoria_de_cosa creado_por]
     end
 
     def atributos_para_listar
-      %i[nombre tipo_text categoria_de_cosa]
+      [
+        :nombre,
+        :tipo_text,
+        %i[categoria_de_cosa categoria_de_cosa_nombre]
+      ]
     end
 
     def atributos_para_mostrar
