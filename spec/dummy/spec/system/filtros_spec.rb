@@ -192,8 +192,8 @@ describe 'Filtros de cosas' do
         expect(listado).to have_text otro_user.email
         select 'Sí'
         buscar
-        expect(listado).to have_text target_user.nombre
-        expect(listado).to have_no_text otro_user.nombre
+        expect(listado).to have_text target_user.email
+        expect(listado).to have_no_text otro_user.email
       end
     end
   end
