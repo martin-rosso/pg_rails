@@ -31,6 +31,21 @@ describe 'Filtros de cosas' do
     let(:controller_class) { Admin::CosasController }
     let(:path) { '/admin/cosas' }
 
+    describe 'default sort' do
+      before do
+        create :cosa, nombre: 'AAA'
+        create :cosa, nombre: 'BBB'
+        create :cosa, nombre: 'CCC'
+        create :cosa, nombre: 'DDD'
+      end
+
+      it do
+        visitar
+        target = page.find('.listado').native.attribute('outerHTML')
+        expect(target).to match(/AAA.*BBB.*CCC.*DDD/)
+      end
+    end
+
     context 'buscar por nombre sin predicado' do
       let(:search_fields) { %i[nombre] }
 

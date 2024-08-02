@@ -21,6 +21,10 @@ module Admin
 
     private
 
+    def default_sort
+      'nombre asc'
+    end
+
     def atributos_permitidos
       %i[nombre tipo categoria_de_cosa_id rico]
     end
