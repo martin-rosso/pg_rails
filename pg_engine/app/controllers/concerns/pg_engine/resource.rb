@@ -18,7 +18,7 @@ module PgEngine
     end
 
     def index
-      @collection = filtros_y_policy atributos_para_buscar
+      @collection = filtros_y_policy(atributos_para_buscar, default_sort)
 
       pg_respond_index
     end
@@ -52,6 +52,10 @@ module PgEngine
     # End public endpoints
 
     protected
+
+    def default_sort
+      nil
+    end
 
     def show_filters?
       cur_route = pg_current_route
@@ -282,7 +286,7 @@ module PgEngine
       @clase_modelo ||= self.class.name.singularize.gsub('Controller', '').constantize
     end
 
-    def filtros_y_policy(campos)
+    def filtros_y_policy(campos, dflt_sort = nil)
       @filtros = PgEngine::FiltrosBuilder.new(
         self, clase_modelo, campos
       )
@@ -292,6 +296,9 @@ module PgEngine
 
       shared_context = Ransack::Adapters::ActiveRecord::Context.new(scope)
       @q = @clase_modelo.ransack(params[:q], context: shared_context)
+
+      @q.sorts = dflt_sort if @q.sorts.empty? && dflt_sort.present?
+
       shared_context.evaluate(@q)
     end
 

@@ -8,12 +8,12 @@ module PgEngine
         sort_field = input.last
       else
         campo = sort_field = input
+        sort_field = sort_field.to_s.sub(/_f\z/, '')
+        sort_field = sort_field.to_s.sub(/_text\z/, '')
       end
 
       campo = campo.to_s.sub(/_f\z/, '')
       campo = campo.to_s.sub(/_text\z/, '')
-      sort_field = sort_field.to_s.sub(/_f\z/, '')
-      sort_field = sort_field.to_s.sub(/_text\z/, '')
 
       clase = options[:clase] || @clase_modelo
       key = [controller_name, action_name, 'listado_header', campo].join('.')
@@ -21,7 +21,11 @@ module PgEngine
       human_name = clase.human_attribute_name(key, default: dflt)
 
       if options[:ordenable]
-        sort_link(@q, sort_field, human_name, default_order: default_order(campo))
+        if sort_field.is_a? Array
+          sort_link(@q, sort_field.first, sort_field, human_name, default_order: default_order(campo))
+        else
+          sort_link(@q, sort_field, human_name, default_order: default_order(campo))
+        end
       else
         human_name
       end
