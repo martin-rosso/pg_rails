@@ -32,7 +32,13 @@ module Admin
     end
 
     def atributos_para_listar
-      %i[nombre_f tipo_text cosas_f fecha tiempo]
+      [
+        :nombre_f,
+        [:tipo_text, [:tipo, :fecha]],
+        :cosas_f,
+        :fecha,
+        :tiempo
+      ]
     end
 
     def atributos_para_mostrar
