@@ -19,6 +19,10 @@ module Admin
 
     private
 
+    def default_page_size
+      15
+    end
+
     def atributos_permitidos
       %i[nombre tipo fecha tiempo].push(cosas_attributes: %i[id nombre tipo _destroy])
     end

@@ -58,8 +58,15 @@ div
                   = object.edit_link(text: '', klass: 'btn-light')
                   = object.destroy_link
 
-    .ps-3.justify-content-center
+    .d-flex.justify-content-center
       = paginate(@collection)
+    .d-flex.align-items-center.justify-content-center.opacity-50
+      label.me-2 Filas por página:
+      ul.list-group.list-group-horizontal
+        - available_page_sizes.each do |page_size|
+          = link_to page_size,
+            namespaced_path(@clase_modelo, page_size:),
+            class: "list-group-item #{'active' if current_page_size == page_size }"
   - elsif @records_filtered
     - i18n_key = "#{controller_key}.#{action_name}.index.empty_but_filtered"
     p.m-3

@@ -6,6 +6,7 @@ module PgEngine
       clazz.helper_method :atributos_para_mostrar
       clazz.helper_method :current_page_size
       clazz.helper_method :show_filters?
+      clazz.helper_method :available_page_sizes
     end
 
     # Public endpoints
@@ -57,6 +58,10 @@ module PgEngine
       nil
     end
 
+    def available_page_sizes
+      [10, 20, 30, 50, 100].push(current_page_size).uniq.sort
+    end
+
     def show_filters?
       cur_route = pg_current_route
       idtf = cur_route[:controller] + '#' + cur_route[:action] + '#open-filters'
@@ -72,15 +77,22 @@ module PgEngine
 
     def current_page_size
       if params[:page_size].present?
-        session[:page_size] = params[:page_size]
-        params[:page_size].to_i
+        session[page_size_session_key] = params[:page_size].to_i
+      end
+
+      if session[page_size_session_key].present?
+        session[page_size_session_key]
       else
         default_page_size
       end
     end
 
+    def page_size_session_key
+      "#{controller_name}/#{action_name}/page_size"
+    end
+
     def default_page_size
-      session[:page_size].present? ? session[:page_size].to_i : 10
+      10
     end
 
     def pg_respond_update
