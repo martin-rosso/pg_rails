@@ -13,6 +13,7 @@ describe '<%= name %>' do
   end
 
   let(:logged_user) { create :user }
+  let(:account) { logged_user.current_account }
 
   before do
     login_as logged_user
