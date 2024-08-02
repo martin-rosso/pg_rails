@@ -80,11 +80,7 @@ module PgEngine
         session[page_size_session_key] = params[:page_size].to_i
       end
 
-      if session[page_size_session_key].present?
-        session[page_size_session_key]
-      else
-        default_page_size
-      end
+      session[page_size_session_key].presence || default_page_size
     end
 
     def page_size_session_key

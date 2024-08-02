@@ -1,0 +1,5 @@
+Description:
+    Generates a system spec
+
+Example:
+    rails generate pg_rails:system_spec "Some feature"

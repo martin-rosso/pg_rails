@@ -34,7 +34,7 @@ module Admin
     def atributos_para_listar
       [
         :nombre_f,
-        [:tipo_text, [:tipo, :fecha]],
+        [:tipo_text, %i[tipo fecha]],
         :cosas_f,
         :fecha,
         :tiempo
