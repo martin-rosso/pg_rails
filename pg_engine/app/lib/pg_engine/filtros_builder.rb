@@ -231,7 +231,7 @@ module PgEngine
       map = scope.map { |o| [o.to_s, o.id] }
 
       content_tag :div, class: 'col-auto' do
-        content_tag :div, class: 'filter' do
+        content_tag :div, class: "filter #{active_class(campo)}" do
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
             @form.select campo, map, { multiple: true }, placeholder:, 'data-controller': 'selectize',
@@ -249,7 +249,7 @@ module PgEngine
          key.value]
       end
       content_tag :div, class: 'col-auto' do
-        content_tag :div, class: 'filter' do
+        content_tag :div, class: "filter #{active_class(campo)}" do
           suf = extraer_sufijo(campo)
           if suf.in? %w[in]
             @form.select(campo, map, { multiple: true }, placeholder:, class: 'form-control form-control-sm pg-input-lg', 'data-controller': 'selectize')
@@ -262,7 +262,7 @@ module PgEngine
 
     def filtro_texto(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
-        content_tag :div, class: 'filter' do
+        content_tag :div, class: "filter #{active_class(campo)}" do
           @form.search_field(
             campo, class: 'form-control form-control-sm allow-enter-submit', placeholder:, autocomplete: 'off'
           )
@@ -276,7 +276,7 @@ module PgEngine
       include_blank = "¿#{placeholder.titleize}?"
 
       content_tag :div, class: 'col-auto' do
-        content_tag :div, class: 'filter' do
+        content_tag :div, class: "filter #{active_class(campo)}" do
           @form.select campo.to_sym, map, { include_blank: }, class: 'form-select form-select-sm pg-input-lg'
         end
       end
@@ -284,12 +284,21 @@ module PgEngine
 
     def filtro_fecha(campo, placeholder = '')
       content_tag :div, class: 'col-auto' do
-        content_tag :div, class: 'filter' do
+        content_tag :div, class: "filter #{active_class(campo)}" do
           label_tag(nil, placeholder, class: 'text-body-secondary') +
             @form.date_field(
               campo, class: 'form-control form-control-sm d-inline-block w-auto ms-1', placeholder:, autocomplete: 'off'
             )
         end
+      end
+    end
+
+    def active_class(campo)
+      if parametros_controller[:q] &&
+         [parametros_controller[:q][campo.to_sym]].flatten.compact_blank.any?
+        'active'
+      else
+        ''
       end
     end
 

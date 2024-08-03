@@ -84,6 +84,11 @@ input[type=datetime-local], input[type=datetime] {
   vertical-align: top;
   // max-width: 17em;
 }
+.filter.active {
+  .form-select, .form-control {
+    background-color: #ffb40157;
+  }
+}
 
 .filter label {
   font-size: 0.8em;
