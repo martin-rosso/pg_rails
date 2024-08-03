@@ -1,0 +1,8 @@
+- if helpers.show_filters?
+  = link_to url_for(ocultar_filtros: 1, cancel_filter: 'true'),
+            class: 'btn btn-sm btn-outline-primary col-auto' do
+    | Ocultar filtros
+- else
+  = link_to url_for(mostrar_filtros: 1),
+            class: 'btn btn-sm btn-outline-primary col-auto' do
+    | Filtrar

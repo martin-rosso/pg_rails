@@ -1,0 +1,17 @@
+- if helpers.show_filters?
+  .border-bottom#filtros
+    .d-flex.align-items-center.px-3.py-2
+      .px-2.d-none.d-sm-inline-block
+        span.bi.bi-funnel-fill
+      = helpers.search_form_for @q, url: url_for do |f|
+        .row.g-1
+          .col
+            .row.g-1
+              = @builder.filtros_html(form: f)
+          .col-auto.gap-1.d-flex.align-items-start
+            = helpers.button_tag class: 'btn btn-sm btn-primary col-auto' do
+              span.bi.bi-search
+              span.d-none.d-sm-inline
+                | &nbsp
+                span.text Buscar
+            = helpers.clear_filter(title: 'Limpiar', class: 'btn btn-sm btn-secondary col-auto')

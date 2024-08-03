@@ -3,34 +3,12 @@
   - @actions&.each do |link_args|
     = link_to(*link_args)
   - if @filtros.present?
-    - if show_filters?
-      = link_to namespaced_path(@clase_modelo, ocultar_filtros: 1),
-                class: 'btn btn-sm btn-outline-primary col-auto' do
-        | Ocultar filtros
-    - else
-      = link_to namespaced_path(@clase_modelo, mostrar_filtros: 1),
-                class: 'btn btn-sm btn-outline-primary col-auto' do
-        | Filtrar
+    = render SearchBarTogglerComponent.new
     .ms-1
   = @clase_modelo.new.decorate.new_link
 
-- if @filtros.present? && show_filters?
-  .border-bottom#filtros
-    .d-flex.align-items-center.px-3.py-2
-      .px-2.d-none.d-sm-inline-block
-        span.bi.bi-funnel-fill
-      = search_form_for @q, url: namespaced_path(@clase_modelo) do |f|
-        .row.g-1
-          .col
-            .row.g-1
-              = @filtros.filtros_html(form: f)
-          .col-auto.gap-1.d-flex.align-items-start
-            = button_tag class: 'btn btn-sm btn-primary col-auto' do
-              span.bi.bi-search
-              span.d-none.d-sm-inline
-                | &nbsp
-                span.text Buscar
-            = clear_filter(title: 'Limpiar', class: 'btn btn-sm btn-secondary col-auto')
+- if @filtros.present?
+  = render SearchBarComponent.new(@q, @filtros)
 
 div
   - if @collection.any?
