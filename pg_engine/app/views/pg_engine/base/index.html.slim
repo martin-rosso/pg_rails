@@ -30,9 +30,8 @@
               span.d-none.d-sm-inline
                 | &nbsp
                 span.text Buscar
-            = link_to namespaced_path(@clase_modelo, mostrar_filtros: 1),
-                      class: 'btn btn-sm btn-secondary col-auto' do
-              | Limpiar
+            = clear_filter(title: 'Limpiar', class: 'btn btn-sm btn-secondary col-auto')
+
 div
   - if @collection.any?
     .table-responsive

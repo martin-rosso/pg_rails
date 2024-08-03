@@ -104,6 +104,9 @@ Gem::Specification.new do |spec|
   # Full text search
   spec.add_dependency 'pg_search', "~> 2.3.6"
 
+  # Ransack memory
+  spec.add_dependency 'ransack_memory', '~> 0.1'
+
   spec.add_dependency 'view_component', '~> 3.12.1'
 
   # Notifications
