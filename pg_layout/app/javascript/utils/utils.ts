@@ -81,14 +81,14 @@ export function flashMessage (message, flashType = 'warning', toast = false) {
 }
 
 export function fadeOut (e) {
-  if (window.getComputedStyle(e).visibility !== 'hidden') {
+  if (e && window.getComputedStyle(e).visibility !== 'hidden') {
     e.classList.add('fade-out')
     e.addEventListener('animationend', onAnimationEndHide, { once: true })
   }
 }
 
 export function fadeIn (e) {
-  if (window.getComputedStyle(e).visibility !== 'visible') {
+  if (e && window.getComputedStyle(e).visibility !== 'visible') {
     e.classList.add('fade-in')
     e.addEventListener('animationend', onAnimationEndShow, { once: true })
   }

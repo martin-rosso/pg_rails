@@ -7,7 +7,7 @@ class NotificationComponent < BaseComponent
   erb_template <<~ERB
     <div class="notification d-flex flex-column flex-sm-row justify-content-between <%= 'unseen' if @notification.unseen? %>"
          id="<%= dom_id(@notification) %>" data-id="<%= @notification.id %>">
-      <div class="pe-3">
+      <div class="pe-3 trix-content">
         <%= @notification.message.html_safe %>
       </div>
       <div class="notification--time d-flex flex-column justify-content-end text-body-tertiary text-end">
