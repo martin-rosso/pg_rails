@@ -1,4 +1,13 @@
 
+7.1.12 / 2024-08-08
+===================
+
+  * debug: minor fix, quito warning en filtros builder
+  * feat: restore background warning subtle color
+  * doc: fixme comment
+  * feat: theme dark/light switcher
+  * fix: trix-content class + fadeIn/Out fix
+
 7.1.11 / 2024-08-03
 ===================
 
