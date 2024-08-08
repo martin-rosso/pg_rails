@@ -5,6 +5,7 @@ export default class extends Controller {
   dark () {
     document.documentElement.setAttribute('data-bs-theme', 'dark')
   }
+
   light () {
     document.documentElement.setAttribute('data-bs-theme', 'light')
   }
