@@ -91,8 +91,6 @@ module PgEngine
           # real sino filtro booleano por presencia de discarded_at
           return :boolean if campo.to_s == 'discarded'
 
-          pg_warn("no existe el campo: #{nombre_campo}")
-
           return
         end
         columna.type
