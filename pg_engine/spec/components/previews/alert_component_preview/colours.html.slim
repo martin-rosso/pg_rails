@@ -1,3 +1,36 @@
-- %w[danger warning info success].each do |status|
-  h1 class="text-#{status}" = status
-  h1 class="text-#{status}-emphasis" = "#{status} emphasis"
+.row
+  .col
+    - %w[danger warning info success].each do |status|
+      h1 class="text-#{status}" = status
+      h1 class="text-#{status}-emphasis" = "#{status} emphasis"
+
+  .col
+    - %w[danger warning info success].each do |status|
+      .alert class="alert-#{status}"
+        = "Alert #{status}"
+
+.row
+  .col
+    div class="p-3 mb-2 bg-primary text-white" .bg-primary
+    div class="p-3 mb-2 bg-primary-subtle text-primary-emphasis" .bg-primary-subtle
+    div class="p-3 mb-2 bg-secondary text-white" .bg-secondary
+    div class="p-3 mb-2 bg-secondary-subtle text-secondary-emphasis" .bg-secondary-subtle
+    div class="p-3 mb-2 bg-success text-white" .bg-success
+    div class="p-3 mb-2 bg-success-subtle text-success-emphasis" .bg-success-subtle
+    div class="p-3 mb-2 bg-danger text-white" .bg-danger
+    div class="p-3 mb-2 bg-danger-subtle text-danger-emphasis" .bg-danger-subtle
+    div class="p-3 mb-2 bg-warning text-dark" .bg-warning
+    div class="p-3 mb-2 bg-warning-subtle text-warning-emphasis" .bg-warning-subtle
+    div class="p-3 mb-2 bg-info text-dark" .bg-info
+  .col
+    div class="p-3 mb-2 bg-info-subtle text-info-emphasis" .bg-info-subtle
+    div class="p-3 mb-2 bg-light text-dark" .bg-light
+    div class="p-3 mb-2 bg-light-subtle text-light-emphasis" .bg-light-subtle
+    div class="p-3 mb-2 bg-dark-subtle text-dark-emphasis" .bg-dark-subtle
+    div class="p-3 mb-2 bg-body-secondary" .bg-body-secondary
+    div class="p-3 mb-2 bg-body-tertiary" .bg-body-tertiary
+    div class="p-3 mb-2 bg-dark text-white" .bg-dark
+    div class="p-3 mb-2 bg-body text-body" .bg-body
+    div class="p-3 mb-2 bg-black text-white" .bg-black
+    div class="p-3 mb-2 bg-white text-dark" .bg-white
+    div class="p-3 mb-2 bg-transparent text-body" .bg-transparent
