@@ -1,4 +1,11 @@
 
+v7.1.13 / 2024-08-12
+====================
+
+  * feat: allow only one tooltip instance at a time
+  * fix: modal event handling, turbo frames, tooltip style
+  * chore: quito sublime project
+
 7.1.12 / 2024-08-08
 ===================
 
