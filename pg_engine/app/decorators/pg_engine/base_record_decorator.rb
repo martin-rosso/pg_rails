@@ -61,8 +61,7 @@ module PgEngine
       return unless Pundit.policy!(Current.user, object).edit?
 
       helpers.content_tag :span, rel: :tooltip, title: 'Modificar' do
-        helpers.link_to edit_object_url, data: { turbo_frame: :main },
-                                         class: "btn btn-sm #{klass}" do
+        helpers.link_to edit_object_url, class: "btn btn-sm #{klass}" do
           helpers.content_tag(:span, nil, class: clase_icono('pencil')) + text
         end
       end
@@ -72,8 +71,7 @@ module PgEngine
       return unless Pundit.policy!(Current.user, object).show?
 
       helpers.content_tag :span, rel: :tooltip, title: 'Ver' do
-        helpers.link_to object_url, data: { turbo_frame: :main },
-                                    class: "btn btn-sm #{klass}" do
+        helpers.link_to object_url, class: "btn btn-sm #{klass}" do
           helpers.content_tag(:span, nil, class: clase_icono('eye-fill')) + text
         end
       end

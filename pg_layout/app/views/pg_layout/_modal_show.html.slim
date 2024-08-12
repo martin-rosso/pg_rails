@@ -7,7 +7,7 @@
           | Ir al #{object.class.nombre_singular.downcase}
         a.btn-close[type="button" data-bs-dismiss="modal" aria-label="Close"]
       .modal-body
-        = turbo_frame_tag :modal_generic, target: :_top do
+        = turbo_frame_tag :modal_generic do
           .float-end
             = object.edit_link
             = object.destroy_link

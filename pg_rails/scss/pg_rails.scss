@@ -21,6 +21,10 @@ $info:         #87accc;
 $warning-text-emphasis:  $orange;
 $danger-text-emphasis:   #910303;
 
+$tooltip-opacity: 1;
+$tooltip-bg:                     var(--bs-primary) !default;
+$tooltip-color:                        var(--bs-light) !default;
+
 $font-size-base: 0.9rem;
 $enable-validation-icons:       false;
 $focus-ring-width:              .05rem;

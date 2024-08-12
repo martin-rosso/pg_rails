@@ -12,10 +12,6 @@ export default class extends Controller {
     if (this.element.dataset.removeOnHide) {
       this.element.addEventListener('hidden.bs.modal', (e) => {
         this.element.remove()
-        // FIXME: handlear mejor
-        window.Stimulus.controllers.map((c) => { return c.calendar })
-          .filter((e) => { return e })
-          .forEach((c) => { c.refetchEvents() })
       })
     }
     this.modalPuntero.show()
@@ -36,6 +32,7 @@ export default class extends Controller {
 
   disconnect (e) {
     this.modalPuntero.hide()
+    this.element.dispatchEvent(new Event('hidden.bs.modal'))
     this.modalPuntero.dispose()
   }
 }
