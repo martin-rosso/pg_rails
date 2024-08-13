@@ -7,7 +7,7 @@ def system!(*args)
   system(*args, exception: true)
 end
 
-require 'pg_rails/lib/version'
+require_relative '../pg_rails/lib/version'
 
 newversion = PgRails::VERSION
 
