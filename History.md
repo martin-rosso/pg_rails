@@ -1,4 +1,12 @@
 
+7.1.15 / 2024-08-13
+===================
+
+  * feat: tooltips on contextmenu
+  * fix: dispatcheo hidden.bs.modal en el document
+  * fix: máximo 3 notifications, y fix de tooltip
+  * chore: release script
+
 7.1.14 / 2024-08-12
 ===================
 

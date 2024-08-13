@@ -35,4 +35,6 @@ File.write('pg_rails/lib/version.rb', newcontent)
 
 system! 'bundle'
 
+system! 'git release --no-empty-commit -c --semver patch'
+
 # system! 'bundle exec rake release_all'
