@@ -122,11 +122,6 @@ rescue
   playchord('failed')
 end
 
-desc 'Release all'
-task :release_all do Rake::Task['release'].invoke
-  system! "npm pack --pack-destination pkg && npm publish"
-end
-
 desc 'Alias for `rails routes`, to Annotate to use.'
 task :routes do
   require_relative "spec/dummy/config/environment"

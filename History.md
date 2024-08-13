@@ -1,4 +1,10 @@
 
+7.1.14 / 2024-08-12
+===================
+
+  * fix!: tooltips ahora se bindean con tooltip_controller
+  * fix: search bar y modal
+
 v7.1.13 / 2024-08-12
 ====================
 

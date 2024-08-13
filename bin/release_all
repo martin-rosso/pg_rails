@@ -1,1 +1,20 @@
-bundle exec rake release_all
+#!/usr/bin/env ruby
+
+require 'fileutils'
+require 'dotenv'
+
+def system!(*args)
+  system(*args, exception: true)
+end
+
+require 'pg_rails/lib/version'
+
+newversion = PgRails::VERSION
+
+gemfilename = "./pkg/pg_rails-#{newversion}.gem"
+system! "gem build --output=#{gemfilename}"
+system! "gem push #{gemfilename}"
+
+system! 'npm pack --pack-destination pkg'
+npmpkgname = "./pkg/pg_rails-#{newversion}.tgz"
+system! "npm publish #{npmpkgname}"
