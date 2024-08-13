@@ -32,7 +32,7 @@ export default class extends Controller {
 
   disconnect (e) {
     this.modalPuntero.hide()
-    this.element.dispatchEvent(new Event('hidden.bs.modal'))
+    document.dispatchEvent(new Event('hidden.bs.modal'))
     this.modalPuntero.dispose()
   }
 }
