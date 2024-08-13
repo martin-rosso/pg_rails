@@ -5,10 +5,24 @@ export default class extends Controller {
   tooltip = null
 
   connect () {
-    this.tooltip = new bootstrap.Tooltip(this.element)
+    if (this.element.dataset.bsTrigger === 'contextmenu') {
+      this.element.addEventListener('contextmenu', (ev) => {
+        ev.preventDefault()
+        if (!this.tooltip) {
+          this.tooltip = new bootstrap.Tooltip(this.element, {
+            trigger: 'focus'
+          })
+          this.tooltip.show()
+        }
+      })
+    } else {
+      this.tooltip = new bootstrap.Tooltip(this.element)
+    }
   }
 
   disconnect () {
-    this.tooltip.dispose()
+    if (this.tooltip) {
+      this.tooltip.dispose()
+    }
   }
 }
