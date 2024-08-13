@@ -7,4 +7,8 @@ class SearchBarComponent < ViewComponent::Base
 
     super
   end
+
+  def extra_fields(&)
+    @extra_fields = capture(&)
+  end
 end
