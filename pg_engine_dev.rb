@@ -18,7 +18,7 @@ group :development, :test do
   gem 'spring-commands-rspec', '~> 1.0.4'
 
   # Rspec
-  gem 'rspec-rails', '~> 6.0.4'
+  gem 'rspec-rails', '~> 6.1.3'
   gem 'factory_bot_rails', '~> 6.4.3'
   gem 'rails-controller-testing', '~> 1.0.5'
   gem 'faker', '~> 3.2.3'
@@ -39,7 +39,7 @@ group :development do
   gem 'stimulus-rails', '~> 1.3.3'
 
   # Bullet
-  gem 'bullet', '~> 7.1.6'
+  gem 'bullet', '~> 7.2.0'
 
   # Linters
   gem 'rubocop', '~> 1.64'

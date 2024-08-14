@@ -13,6 +13,11 @@ RSpec.describe Cosa do
     expect(cosa).to be_persisted
   end
 
+  it 'update columns enumerized' do
+    cosa.update_columns(tipo: :los)
+    expect(cosa.reload.tipo).to eq 'los'
+  end
+
   it 'usa el BaseRecordDecorator' do
     expect(cosa.decorate.class).to eq PgEngine::BaseRecordDecorator
   end

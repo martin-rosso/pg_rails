@@ -2,12 +2,13 @@ version: 2.1
 executors:
   ruby:
     docker:
-      - image: cimg/ruby:3.1.2-browsers
+      - image: cimg/ruby:3.3.4-browsers
         environment:
           PGHOST: 127.0.0.1
           PGUSER: postgres
           PGPASS: postgres
           RAILS_ENV: test
+          BUNDLER_VERSION: 2.5.17
           CC_TEST_REPORTER_ID: 06b784c7df61a8978ec796c2acbbf9c686eb701e336fba3900b997427b06076b
       - image: cimg/postgres:12.12
         environment:
@@ -31,7 +32,7 @@ commands:
       - run:
           name: Install Ruby Dependencies
           command: |
-            gem install bundler -v 2.4.22 --conservative --no-document
+            gem install bundler -v $BUNDLER_VERSION --conservative --no-document
             gem install slim_lint ruby-lint
             bundle config --local deployment true
             bundle config --local path vendor/bundle

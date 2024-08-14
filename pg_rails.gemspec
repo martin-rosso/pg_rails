@@ -26,7 +26,7 @@ Gem::Specification.new do |spec|
   #   raise 'RubyGems 2.0 or newer is required to protect against ' \
   #     'public gem pushes.'
   # end
-  spec.add_dependency 'rails', "~> 7.1.3.4"
+  spec.add_dependency 'rails', "~> 7.2.0"
   spec.add_dependency 'anycable', "= 1.5.0"
   spec.add_dependency 'anycable-rails', "~> 1.5.1"
   spec.add_dependency 'anycable-rails-jwt', "~> 0.2.0"
@@ -54,7 +54,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'slim-rails', "~> 3.6.3"
 
   # Better enums
-  spec.add_dependency 'enumerize', "~> 2.7.0"
+  spec.add_dependency 'enumerize', "~> 2.8.1"
 
   # XML parsing
   spec.add_dependency 'nokogiri', "~> 1.16"
@@ -70,7 +70,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'discard', "~> 1.3.0"
 
   # DB Audition
-  spec.add_dependency 'audited', "~> 5.4.3"
+  spec.add_dependency 'audited', "~> 5.7.0"
 
   # Access policies
   spec.add_dependency 'pundit', "~> 2.3.1"
@@ -105,9 +105,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'pg_search', "~> 2.3.6"
 
   # Ransack memory
+  spec.add_dependency 'ransack', '~> 4.2.1'
   spec.add_dependency 'ransack_memory', '~> 0.1'
 
-  spec.add_dependency 'view_component', '~> 3.12.1'
+  spec.add_dependency 'view_component', '~> 3.13'
 
   # Notifications
   spec.add_dependency 'noticed', '~> 2.3'
