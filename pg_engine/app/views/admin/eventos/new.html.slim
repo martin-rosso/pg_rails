@@ -3,8 +3,10 @@
 
   = f.input :type, as: :select, collection: @notifier_types
   - if params[:plain_text]
+    = link_to 'Change to rich text', url_for
     = f.input :message, as: :text
   - else
+    = link_to 'Change to plain text', url_for(plain_text: true)
     = f.rich_text_area :message
   = f.input :message_text, as: :text, hint: 'Solo para emails, para la plain/text part'
   = f.input :tooltip
