@@ -12,7 +12,7 @@ describe 'Resources' do
 
     it do
       visit "/admin/cosas/#{cosa.id}"
-      click_on 'Ver categoría'
+      click_on 'Ver categoría (modal)'
       expect(page.find('.modal')).to have_text 'show de categoria'
     end
   end

@@ -2,6 +2,7 @@
 // para que lo tomen los TurboCableStreamSourceElement's
 
 import './set_consumer'
+import './progress_bar'
 
 import '@hotwired/turbo-rails'
 
