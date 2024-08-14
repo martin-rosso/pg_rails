@@ -1,4 +1,10 @@
 
+7.2.0 / 2024-08-14
+==================
+
+  * build!: upgrade to Rails 7.2 & Ruby 3.3.4
+  * build!: update all ruby dependencies
+
 7.1.16 / 2024-08-14
 ===================
 
