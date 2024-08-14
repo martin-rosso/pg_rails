@@ -33,7 +33,7 @@ commands:
           name: Install Ruby Dependencies
           command: |
             gem install bundler -v $BUNDLER_VERSION --conservative --no-document
-            gem install slim_lint ruby-lint
+            gem install slim_lint
             bundle config --local deployment true
             bundle config --local path vendor/bundle
             bundle config --local without production

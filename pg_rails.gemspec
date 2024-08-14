@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
   #     'public gem pushes.'
   # end
   spec.add_dependency 'rails', "~> 7.2.0"
-  spec.add_dependency 'anycable', "= 1.5.0"
+  spec.add_dependency 'anycable', "= 1.5.1"
   spec.add_dependency 'anycable-rails', "~> 1.5.1"
   spec.add_dependency 'anycable-rails-jwt', "~> 0.2.0"
   spec.add_dependency 'cable_ready', "~> 5.0"
@@ -81,7 +81,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'puma', "~> 6.4"
   spec.add_dependency 'rollbar', "~> 3.5.1"
 
-  spec.add_dependency 'sprockets-rails', "~> 3.4.2"
+  spec.add_dependency 'sprockets-rails', "~> 3.5"
 
   spec.add_dependency 'jsbundling-rails', "~> 1.3"
   spec.add_dependency 'cssbundling-rails', "~> 1.3"

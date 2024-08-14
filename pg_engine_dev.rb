@@ -1,27 +1,27 @@
 # VCR
 group :test do
   gem 'vcr', '~> 6.2.0'
-  gem 'webmock', '~> 3.20.0'
+  gem 'webmock', '~> 3.23'
   # Capybara
   gem 'capybara', '~> 3.40.0'
   gem 'capybara-lockstep', '~> 2.2'
-  gem 'selenium-webdriver', '~> 4.17.0'
+  gem 'selenium-webdriver', '~> 4.23'
 end
 
 # Misc
 group :development, :test do
-  gem 'database_cleaner-active_record', '~> 2.1.0'
+  gem 'database_cleaner-active_record', '~> 2.2.0'
   gem 'byebug', '~> 11.1'
 
   # Spring
-  gem 'spring', '~> 4.1.3'
+  gem 'spring', '~> 4.2'
   gem 'spring-commands-rspec', '~> 1.0.4'
 
   # Rspec
   gem 'rspec-rails', '~> 6.1.3'
   gem 'factory_bot_rails', '~> 6.4.3'
   gem 'rails-controller-testing', '~> 1.0.5'
-  gem 'faker', '~> 3.2.3'
+  gem 'faker', '~> 3.4'
   gem 'parallel_tests', '~> 4.7'
 
   # Coverage
@@ -33,7 +33,7 @@ end
 # Misc
 group :development do
   gem 'overcommit', '~> 0.64'
-  gem 'letter_opener', '~> 1.8.1'
+  gem 'letter_opener', '~> 1.10'
   gem 'annotate', '~> 3.2.0'
   gem 'web-console', '~> 4.2.1'
   gem 'stimulus-rails', '~> 1.3.3'
@@ -42,14 +42,13 @@ group :development do
   gem 'bullet', '~> 7.2.0'
 
   # Linters
-  gem 'rubocop', '~> 1.64'
+  gem 'rubocop', '~> 1.65'
   gem 'rubocop-rails', '~> 2.25'
   gem 'rubocop-rspec', '~> 3.0'
   gem 'rubocop-capybara', '~> 2.21'
   gem 'rubocop-factory_bot', '~> 2.26'
   gem 'rubocop-rspec_rails', '~> 2.30'
-  gem 'slim_lint', '~> 0.26.0'
-  gem 'ruby-lint', '~> 0.9.1'
+  gem 'slim_lint', '~> 0.27'
   gem 'brakeman', '~> 6.1'
   gem 'bundler-audit', '~> 0.9.1'
 end

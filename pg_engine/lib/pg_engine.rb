@@ -65,7 +65,6 @@ if Rails.env.local?
   require 'rubocop-rails'
   require 'rubocop-rspec'
   require 'slim_lint'
-  require 'ruby-lint'
   require 'brakeman'
   require 'capybara'
   require 'selenium-webdriver'

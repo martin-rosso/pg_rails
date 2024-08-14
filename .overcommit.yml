@@ -29,9 +29,6 @@ PreCommit:
     exclude:
       - pg_scaffold/lib/generators/**/templates/**/*
 
-  RubyLint:
-    enabled: true
-
   SlimLint:
     enabled: true
     exclude:
