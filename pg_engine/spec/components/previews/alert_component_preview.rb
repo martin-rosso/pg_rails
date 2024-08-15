@@ -9,4 +9,6 @@ class AlertComponentPreview < ViewComponent::Preview
   def colours; end
 
   def tooltips; end
+
+  def list_group; end
 end

@@ -74,8 +74,8 @@ input[type=datetime-local], input[type=datetime] {
 }
 
 .list-group-item {
-  --bs-list-group-item-padding-y: 0px;
-  --bs-list-group-item-padding-x: 0.3rem;
+  --bs-list-group-item-padding-y: 0.3em;
+  --bs-list-group-item-padding-x: 1em;
 }
 
 // FILTROS

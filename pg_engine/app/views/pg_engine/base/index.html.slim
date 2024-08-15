@@ -43,7 +43,7 @@ div
         - available_page_sizes.each do |page_size|
           = link_to page_size,
             namespaced_path(@clase_modelo, page_size:),
-            class: "list-group-item #{'active' if current_page_size == page_size}"
+            class: "list-group-item py-0 px-1 #{'active' if current_page_size == page_size}"
   - elsif @records_filtered
     - i18n_key = "#{controller_key}.#{action_name}.index.empty_but_filtered"
     p.m-3
