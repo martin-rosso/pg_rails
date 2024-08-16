@@ -48,22 +48,23 @@ export default class extends Controller {
       responseKind: 'json'
     })
 
+    let json = null
     if (response.ok) {
-      const json = await response.json
+      json = await response.json
       fechaEl.value = json.date
       this.element.querySelector('button').removeAttribute('disabled')
       this.closePopover()
     } else {
       let message = 'Hubo un error'
       try {
-        const json = await response.json
+        json = await response.json
         message = json.html || 'Hubo un error'
-      } catch {
+      } catch (e) {
         // JSON parser error
+        Rollbar.error(e)
       }
       flashMessage(message, 'warning', true)
       this.element.querySelector('button').removeAttribute('disabled')
-      Rollbar.error('date jumper error', json)
     }
   }
 }
