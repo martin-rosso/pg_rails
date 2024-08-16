@@ -53,6 +53,7 @@ require 'pg_search'
 require 'view_component'
 require 'noticed'
 require 'ransack_memory'
+require 'holidays'
 
 if Rails.env.local?
   require 'letter_opener'

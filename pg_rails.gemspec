@@ -113,4 +113,6 @@ Gem::Specification.new do |spec|
   # Notifications
   spec.add_dependency 'noticed', '~> 2.3'
 
+  # Holidays
+  spec.add_dependency 'holidays', '~> 8.8'
 end
