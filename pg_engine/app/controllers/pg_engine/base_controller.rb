@@ -23,6 +23,7 @@ module PgEngine
     protect_from_forgery with: :exception
 
     rescue_from StandardError, with: :internal_error
+    rescue_from PgEngine::BadUserInput, with: :bad_user_input
     rescue_from ActionController::InvalidAuthenticityToken,
                 with: :invalid_authenticity_token
 
@@ -30,6 +31,10 @@ module PgEngine
     rescue_from PgEngine::PageNotFoundError, with: :page_not_found
     rescue_from Redirect do |e|
       redirect_to e.url
+    end
+
+    def bad_user_input(error)
+      render_my_component(BadUserInputComponent.new(error_msg: error.message), :bad_request)
     end
 
     def internal_error(error)
