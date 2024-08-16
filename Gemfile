@@ -6,7 +6,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 # development dependencies will be added by default to the :development group.
 gemspec
 
-eval File.read('pg_engine_dev.rb'), nil, 'pg_engine_dev.rb'
+eval File.read(__dir__ + '/pg_engine_dev.rb'), nil, 'pg_engine_dev.rb'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
