@@ -24,13 +24,12 @@ describe 'Date selector' do
   describe 'jump N days' do
     it do
       visitar
-      find('.categoria_de_cosa_fecha .date-selector').click
-      click_date_selector
-      select 'Días hábiles'
-      fill_in 'days', with: '3'
+      find('.categoria_de_cosa_fecha [data-controller="popover-toggler"]').click
+      fill_in 'quantity', with: '3'
+      select 'Días hábiles (L a V)'
       click_on 'Aceptar'
       click_on 'Actualizar Categoría de cosa'
-      expect(page).to have_text '15/8/2024'
+      expect(page).to have_text '15/08/2024'
     end
   end
 end

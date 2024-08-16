@@ -1,5 +1,11 @@
 module Users
   class DateJumperController < ApplicationController
+    before_action only: :jump do
+      if params[:quantity].blank?
+        raise PgEngine::BadUserInput, 'Cantidad incorrecta'
+      end
+    end
+
     def jump
       start_date = Date.parse(params[:start_date])
       quantity = params[:quantity].to_i
@@ -10,9 +16,9 @@ module Users
           start_date + (multiplier * quantity.days)
         when 'business_days', 'business_days_excluding_holidays'
           resolve_business_days(start_date, quantity)
-        when 'week'
+        when 'weeks'
           start_date + (multiplier * quantity.weeks)
-        when 'month'
+        when 'months'
           start_date + (multiplier * quantity.months)
         else
           raise PgEngine::Error, 'type no soportado'

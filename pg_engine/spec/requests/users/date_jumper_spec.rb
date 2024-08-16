@@ -90,7 +90,7 @@ RSpec.describe 'Users::DateJumpers' do
     end
 
     context 'when moving weeks' do
-      let(:type) { 'week' }
+      let(:type) { 'weeks' }
 
       context 'forward' do
         let(:direction) { 'forward' }
@@ -110,7 +110,7 @@ RSpec.describe 'Users::DateJumpers' do
     end
 
     context 'when moving months' do
-      let(:type) { 'month' }
+      let(:type) { 'months' }
 
       context 'forward' do
         let(:direction) { 'forward' }

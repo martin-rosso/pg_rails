@@ -5,8 +5,10 @@
       placeholder: 'Cantidad', class: 'form-control form-control-sm'
   = select_tag 'type', options_for_select(@types),
       class: 'form-select form-select-sm'
-  = select_tag 'direction',
-      options_for_select(['Hacia adelante', 'Hacia atrás']),
+  = select_tag 'direction', options_for_select(@directions),
       class: 'form-select form-select-sm'
-  = button_tag 'Aceptar', class: 'btn btn-sm btn-primary',
-      'data-action': 'date-selector#submit'
+  .d-flex.justify-content-between.w-100
+    = button_tag 'Aceptar', class: 'btn btn-sm btn-primary',
+        'data-action': 'date-selector#submit'
+    = button_tag 'Hoy', class: 'btn btn-sm btn-link float-end',
+        'data-action': 'date-selector#today'
