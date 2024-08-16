@@ -1,6 +1,11 @@
 require 'rails_helper'
 
 RSpec.describe 'Users::DateJumpers' do
+  before do
+    user = create :user
+    sign_in user
+  end
+
   describe 'GET /jump' do
     before do
       stubs if defined? stubs

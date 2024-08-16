@@ -1,5 +1,5 @@
 module Users
-  class NotificationsController < ApplicationController
+  class NotificationsController < PgEngine.config.users_controller
     def mark_as_unseen
       notification = Noticed::Notification.find(params[:id])
       notification.mark_as_unseen!

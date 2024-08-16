@@ -7,6 +7,8 @@ module PgEngine
     attr_accessor :sistema_iconos, :clase_botones_chicos, :boton_destroy, :boton_edit,
                   :boton_show, :boton_light, :icono_destroy, :icono_edit, :icono_show, :boton_export, :bootstrap_version
 
+    attr_accessor :users_controller
+
     def initialize
       @sistema_iconos = 'bi'
       @clase_botones_chicos = 'btn-sm'
@@ -19,6 +21,12 @@ module PgEngine
       @icono_edit = 'pencil'
       @icono_show = 'eye-fill'
       @bootstrap_version = 5
+
+      if defined? UsersController
+        @users_controller = UsersController
+      elsif defined? FrontendController
+        @users_controller = FrontendController
+      end
     end
   end
 end
