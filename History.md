@@ -1,4 +1,14 @@
 
+7.2.1 / 2024-08-16
+==================
+
+  * feat: Date jumper
+  * feat: popovers
+  * feat: bad user input error handling
+  * fix!: configurable users controller class
+  * build: add holidays dependency
+  * fix: list group styles padding
+
 7.2.0 / 2024-08-14
 ==================
 
