@@ -1,0 +1,29 @@
+import { Controller } from '@hotwired/stimulus'
+import * as bootstrap from 'bootstrap'
+
+export default class extends Controller {
+  popover = null
+
+  connect () {
+    this.popover = new bootstrap.Popover(this.element, {
+      // WARNING: don't use for user input html
+      sanitize: false,
+      template: `
+<div class="popover" role="tooltip" data-controller="popover">
+  <div class="popover-arrow"></div>
+  <div class="popover-header"></div>
+  <button type="button" class="btn-close position-absolute" data-action="popover#close" style="top: 1em; right: 1em;" aria-label="Close"></button>
+  <div class="popover-body">
+  </div>
+</div>
+      `,
+      container: 'body'
+    })
+  }
+
+  disconnect () {
+    if (this.popover) {
+      this.popover.dispose()
+    }
+  }
+}

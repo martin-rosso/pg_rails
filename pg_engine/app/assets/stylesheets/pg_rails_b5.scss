@@ -103,6 +103,11 @@ input[type=datetime-local], input[type=datetime] {
   width: min-content;
 }
 
+// Popover
+.modal-content, .popover {
+  box-shadow: 4px 4px 8px 0px rgba(0, 0, 0, 0.3);
+}
+
 // Modal
 .modal-content {
   box-shadow: 15px 15px 9px 0px rgba(0, 0, 0, 0.6);

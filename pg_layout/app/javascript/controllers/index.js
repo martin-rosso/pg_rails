@@ -11,6 +11,8 @@ import NotificationsController from './notifications_controller'
 import SelectizeController from './selectize_controller'
 import ThemeController from './theme_controller'
 import TooltipController from './tooltip_controller'
+import PopoverController from './popover_controller'
+import PopoverTogglerController from './popover_toggler_controller'
 
 application.register('navbar', NavbarController)
 application.register('nested', NestedController)
@@ -23,5 +25,7 @@ application.register('notifications', NotificationsController)
 application.register('selectize', SelectizeController)
 application.register('theme', ThemeController)
 application.register('tooltip', TooltipController)
+application.register('popover', PopoverController)
+application.register('popover-toggler', PopoverTogglerController)
 
 // TODO: testear con capybara todo lo que se pueda
