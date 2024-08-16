@@ -13,6 +13,7 @@ export default class extends Controller {
 
     today = yyyy + '-' + mm + '-' + dd
     fechaEl.value = today
+    return fechaEl.value
   }
 
   closePopover () {
@@ -21,6 +22,12 @@ export default class extends Controller {
   }
 
   async submit () {
+    const fechaEl = document.getElementById(this.element.dataset.fieldId)
+    let startDate = fechaEl.value
+    if (!startDate) {
+      startDate = this.today()
+    }
+
     const quantity = this.element.querySelector('input[name=quantity]').value
     if (!quantity) {
       this.closePopover()
@@ -28,8 +35,6 @@ export default class extends Controller {
     }
     const type = this.element.querySelector('select[name=type]').value
     const direction = this.element.querySelector('select[name=direction]').value
-    const fechaEl = document.getElementById(this.element.dataset.fieldId)
-    const startDate = fechaEl.value
     // console.log(quantity, type, direction)
     this.element.querySelector('button').setAttribute('disabled', 'true')
     // let input = this
@@ -49,9 +54,13 @@ export default class extends Controller {
       this.element.querySelector('button').removeAttribute('disabled')
       this.closePopover()
     } else {
-      const json = await response.json
-      // FIXME: handle JSON parse error
-      const message = json.html || 'Hubo un error'
+      let message = 'Hubo un error'
+      try {
+        const json = await response.json
+        message = json.html || 'Hubo un error'
+      } catch {
+        // JSON parser error
+      }
       flashMessage(message, 'warning', true)
       this.element.querySelector('button').removeAttribute('disabled')
       Rollbar.error('date jumper error', json)
