@@ -21,7 +21,9 @@ module Users
         when 'months'
           start_date + (multiplier * quantity.months)
         else
+          # :nocov:
           raise PgEngine::Error, 'type no soportado'
+          # :nocov:
         end
 
       render json: { date: }

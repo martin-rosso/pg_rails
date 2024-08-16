@@ -11,7 +11,9 @@ module PgEngine
       when :backward, 'backward'
         business_backward(days, exclude_holidays:)
       else
+        # :nocov:
         raise PgEngine::Error, 'direction not supported'
+        # :nocov:
       end
     end
 
@@ -44,7 +46,9 @@ module PgEngine
         safe_counter += 1
         aux = send(method, aux)
         if safe_counter > 10
+          # :nocov:
           raise 'las cosas'
+          # :nocov:
         end
         break unless Holidays.on(aux, :ar).any?
       end

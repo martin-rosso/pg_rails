@@ -14,11 +14,22 @@ RSpec.describe 'Users::DateJumpers' do
         quantity:,
         type:,
         direction:
-      }
+      }, headers: { accept: 'application/json' }
     end
 
     let(:start_date) { Date.new(2024, 8, 16) }
     let(:quantity) { 5 }
+
+    context 'when quantity is blank' do
+      let(:quantity) { '' }
+      let(:type) { 'calendar_days' }
+      let(:direction) { 'forward' }
+
+      it do
+        expect(response).to have_http_status(:bad_request)
+        expect(JSON.parse(response.body)['html']).to include 'Cantidad incorrecta'
+      end
+    end
 
     context 'when moving calendar days' do
       let(:type) { 'calendar_days' }

@@ -4,10 +4,11 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :sistema_iconos, :clase_botones_chicos, :boton_destroy, :boton_edit,
-                  :boton_show, :boton_light, :icono_destroy, :icono_edit, :icono_show, :boton_export, :bootstrap_version
-
-    attr_accessor :users_controller
+    attr_accessor :sistema_iconos, :clase_botones_chicos,
+                  :boton_destroy, :boton_edit, :boton_show,
+                  :boton_light, :icono_destroy, :icono_edit,
+                  :icono_show, :boton_export, :bootstrap_version,
+                  :users_controller
 
     def initialize
       @sistema_iconos = 'bi'
