@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   namespace :users, path: 'u' do
     post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
     post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
+    get 'date_jumper/jump'
   end
   namespace :admin, path: 'a' do
     pg_resource(:emails)

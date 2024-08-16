@@ -13,6 +13,7 @@ import ThemeController from './theme_controller'
 import TooltipController from './tooltip_controller'
 import PopoverController from './popover_controller'
 import PopoverTogglerController from './popover_toggler_controller'
+import DateSelectorController from './date_selector_controller'
 
 application.register('navbar', NavbarController)
 application.register('nested', NestedController)
@@ -27,5 +28,6 @@ application.register('theme', ThemeController)
 application.register('tooltip', TooltipController)
 application.register('popover', PopoverController)
 application.register('popover-toggler', PopoverTogglerController)
+application.register('date-selector', DateSelectorController)
 
 // TODO: testear con capybara todo lo que se pueda

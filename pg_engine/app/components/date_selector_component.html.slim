@@ -1,0 +1,12 @@
+.d-flex.flex-column.align-items-start.gap-2[
+  data-controller="date-selector" data-field-id="#{@field_id}"
+]
+  = number_field_tag 'quantity', nil,
+      placeholder: 'Cantidad', class: 'form-control form-control-sm'
+  = select_tag 'type', options_for_select(@types),
+      class: 'form-select form-select-sm'
+  = select_tag 'direction',
+      options_for_select(['Hacia adelante', 'Hacia atrás']),
+      class: 'form-select form-select-sm'
+  = button_tag 'Aceptar', class: 'btn btn-sm btn-primary',
+      'data-action': 'date-selector#submit'

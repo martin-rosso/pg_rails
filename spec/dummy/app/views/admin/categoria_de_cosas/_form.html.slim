@@ -6,7 +6,7 @@ div style="max-width: 32em" data-controller="pg_form"
 
     = hidden_field_tag :asociable, true if asociable
     = f.input :nombre
-    = f.input :fecha
+    = f.input :fecha, date_selector: true
     = f.input :tiempo, html5: true
     = f.input :tipo
 
