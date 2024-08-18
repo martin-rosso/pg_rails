@@ -1,14 +1,17 @@
 / # locals: (object: nil)
 
-div style="max-width: 22em" data-controller="pg_form"
-  = pg_form_for(@email || object) do |f|
-    / = f.input :from_address
-    / = f.input :from_name
-    / = f.input :reply_to
-    / = f.input :to
-    / = f.input :subject
-    / = f.input :body_input, as: :text
-    = f.input :status
+- object ||= @email
+div style="max-width: 52em" data-controller="pg_form"
+  = pg_form_for(object) do |f|
+    - if object.persisted?
+      = f.input :status
+    - else
+      = f.input :from_name
+      = f.input :from_address
+      = f.input :to
+      = f.input :subject
+      = f.input :reply_to
+      = f.input :body_input, as: :text, input_html: { rows: 5 }
 
     .mt-2
     = f.button :submit

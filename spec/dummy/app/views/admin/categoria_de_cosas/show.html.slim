@@ -3,44 +3,16 @@
 
 - content_for :title do
   = @categoria_de_cosa.to_s
+
 - content_for :actions do
   = @categoria_de_cosa.destroy_link_redirect
   .ms-1
   = @categoria_de_cosa.edit_link
-.container
-  = turbo_frame_tag :el_frame, 'data-turbo-action': :advance do
-    a href="#" data-controller="tooltip" data-bs-title="Las cosas" el tooltip hover
-    br
-    a[href="#" data-controller="tooltip" data-bs-trigger="contextmenu"
-      data-bs-title="Las cosas"] el tooltip context
-    div data-controller="cosa"
-      = link_to 'Fade in', 'javascript:void(0)', 'data-action': 'cosa#doFadeIn'
-      | &nbsp;&nbsp;
-      = link_to 'Fade out', 'javascript:void(0)', 'data-action': 'cosa#doFadeOut'
-      h1.init-invisible Fade INN
 
-    = img_placeholder(src: 'facturabien.png', fade_in: true, width: '500px', height: '500px',
-                                         class: 'animation-long')
-    = img_placeholder(src: 'facturabien.png', fade_in: true)
-    = img_placeholder
+= render @categoria_de_cosa
 
-table.table.table-borderless.table-sm.w-auto.mb-0.m-3
-  - atributos_para_mostrar.each do |att|
-    tr
-      th = @clase_modelo.human_attribute_name(att)
-      td = @categoria_de_cosa.send(att)
-  tr
-    th = t('attributes.creado_por')
-    td = @categoria_de_cosa.creado_por
-  tr
-    th = t('attributes.created_at')
-    td = @categoria_de_cosa.created_at
-  tr
-    th = t('attributes.actualizado_por')
-    td = @categoria_de_cosa.actualizado_por
-  tr
-    th = t('attributes.updated_at')
-    td = @categoria_de_cosa.updated_at
-  tr
-    th = t('attributes.discarded_at')
-    td = @categoria_de_cosa.discarded_at
+/ div
+  = img_placeholder(src: 'facturabien.png', fade_in: true, width: '500px', height: '500px',
+                                       class: 'animation-long')
+  = img_placeholder(src: 'facturabien.png', fade_in: true)
+  = img_placeholder

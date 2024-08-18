@@ -31,6 +31,8 @@ class CategoriaDeCosa < ApplicationRecord
   include Discard::Model
   include Hashid::Rails
 
+  self.default_modal = true
+
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 

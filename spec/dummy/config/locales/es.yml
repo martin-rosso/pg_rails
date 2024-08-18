@@ -1,5 +1,12 @@
 es:
   app_name: PgRails!
+  helpers:
+    # submit_default_value
+    submit:
+      cosa:
+        create: Cargar %{model}
+      categoria_de_cosa:
+        create: Agregar %{model}
   activerecord:
     attributes:
       categoria_de_cosa:

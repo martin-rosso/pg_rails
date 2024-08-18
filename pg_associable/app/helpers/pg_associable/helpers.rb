@@ -3,11 +3,10 @@ module PgAssociable
     MAX_RESULTS = 8
 
     def pg_respond_abrir_modal
-      respond_to do |format|
-        format.turbo_stream do
-          render turbo_stream: turbo_stream.append_all('body', partial: 'pg_associable_modal')
-        end
-      end
+      content = FormModalComponent.new(@clase_modelo.new.decorate)
+                                  .render_in(view_context)
+      modal = AsociableModalComponent.new(modal_id: params[:id]).with_content(content)
+      render turbo_stream: turbo_stream.append_all('body', modal)
     end
 
     def pg_respond_buscar

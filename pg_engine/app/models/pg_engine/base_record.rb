@@ -13,6 +13,10 @@ module PgEngine
     before_create :setear_creado_y_actualizado_por
     before_update :setear_actualizado_por
 
+    class << self
+      attr_accessor :default_modal
+    end
+
     scope :query, ->(param) { param.present? ? where(id: param) : all }
 
     def self.ransackable_associations(_auth_object = nil)
@@ -45,6 +49,10 @@ module PgEngine
       else
         super
       end
+    end
+
+    def actions_component
+      ActionsComponent.new(self)
     end
 
     # Para el dom_id (index.html)

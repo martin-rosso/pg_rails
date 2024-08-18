@@ -31,6 +31,8 @@ class Cosa < ApplicationRecord
   audited
   include Discard::Model
 
+  self.default_modal = true
+
   belongs_to :categoria_de_cosa
 
   belongs_to :creado_por, optional: true, class_name: 'User'

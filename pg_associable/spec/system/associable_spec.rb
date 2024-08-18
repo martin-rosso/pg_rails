@@ -17,8 +17,8 @@ describe 'Associable' do
     find('.cosa_categoria_de_cosa .list-group-item').click
     fill_in 'categoria_de_cosa_nombre', with: 'la categoría'
     select 'Completar', from: 'categoria_de_cosa_tipo'
-    click_on 'Crear Categoría de cosa'
-    click_on 'Crear Coso'
+    click_on 'Agregar Categoría de cosa'
+    click_on 'Cargar Coso'
     expect(page).to have_text 'Creado por'
   end
 end

@@ -1,11 +1,5 @@
 require 'rails_helper'
 
-RSpec::Matchers.define :include_modal_hidden_input do
-  match do |actual|
-    actual.include?('<input type="hidden" name="modal" id="modal" value="true"')
-  end
-end
-
 describe PgEngine::FormHelper do
   subject do
     view_context.pg_form_for(cosa, **options) do |f|
@@ -14,10 +8,10 @@ describe PgEngine::FormHelper do
   end
 
   let(:options) do
-    { modal: }
+    {}
   end
 
-  let(:modal) { false }
+  let(:using_modal) { false }
 
   let(:view_context) do
     cont = Admin::CosasController.new
@@ -33,22 +27,6 @@ describe PgEngine::FormHelper do
   it 'renders the form and the button' do
     expect(subject).to include 'ACEPTAR'
     expect(subject).to include '<form'
-  end
-
-  context 'when rendering modal' do
-    let(:modal) { true }
-
-    it 'renders the modal hidden input' do
-      expect(subject).to include_modal_hidden_input
-    end
-  end
-
-  context 'when not rendering modal' do
-    let(:modal) { false }
-
-    it do
-      expect(subject).not_to include_modal_hidden_input
-    end
   end
 
   context 'when there are errors' do

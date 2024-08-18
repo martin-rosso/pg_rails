@@ -7,6 +7,16 @@ module PgEngine
       clazz.helper_method :current_page_size
       clazz.helper_method :show_filters?
       clazz.helper_method :available_page_sizes
+
+      clazz.layout :set_layout
+    end
+
+    def set_layout
+      if action_name == 'index'
+        'pg_layout/base'
+      else
+        'pg_layout/containerized'
+      end
     end
 
     # Public endpoints
@@ -25,18 +35,40 @@ module PgEngine
     end
 
     def show
-      add_breadcrumb instancia_modelo.to_s_short, instancia_modelo.target_object
-
       pg_respond_show
     end
 
+    def respond_with_modal(klass_or_string)
+      if klass_or_string.is_a?(Class)
+        content = klass_or_string.new(instancia_modelo).render_in(view_context)
+      elsif klass_or_string.is_a?(String)
+        content = ModalContentComponent.new.with_body_content(klass_or_string)
+                                       .render_in(view_context)
+      end
+
+      if can_open_modal?
+        modal = ModalComponent.new.with_content(content)
+        render turbo_stream: turbo_stream.append_all('body', modal)
+      else
+        render html: content
+      end
+    end
+
     def new
-      add_breadcrumb instancia_modelo.submit_default_value
+      if respond_with_modal?
+        respond_with_modal(FormModalComponent)
+      else
+        add_breadcrumb instancia_modelo.submit_default_value
+      end
     end
 
     def edit
-      add_breadcrumb instancia_modelo.to_s_short, instancia_modelo.target_object
-      add_breadcrumb 'Editando'
+      if respond_with_modal?
+        respond_with_modal(FormModalComponent)
+      else
+        add_breadcrumb instancia_modelo.to_s_short, instancia_modelo.target_object
+        add_breadcrumb 'Editando'
+      end
     end
 
     def create
@@ -93,57 +125,53 @@ module PgEngine
 
     def pg_respond_update
       object = instancia_modelo
-      respond_to do |format|
-        if (@saved = object.save)
-          format.html { redirect_to object.decorate.target_object }
-          format.json { render json: object.decorate }
+      if (@saved = object.save)
+        if in_modal?
+          body = <<~HTML.html_safe
+            <pg-event data-event-name="pg:record-created" data-turbo-temporary
+              data-response='#{object.decorate.to_json}'></pg-event>
+          HTML
+          render html: ModalContentComponent.new.with_body_content(body)
+                                            .render_in(view_context)
         else
-          # TODO: esto solucionaría el problema?
-          # self.instancia_modelo = instancia_modelo.decorate
-          format.html { render :edit, status: :unprocessable_entity }
-          format.json { render json: object.errors, status: :unprocessable_entity }
+          redirect_to object.decorate.target_object
         end
+      elsif in_modal?
+        render html: FormModalComponent.new(instancia_modelo.decorate)
+                                       .render_in(view_context)
+      else
+        add_breadcrumb instancia_modelo.decorate.to_s_short, instancia_modelo.decorate.target_object
+        add_breadcrumb 'Editando'
+        # TODO: esto solucionaría el problema?
+        # self.instancia_modelo = instancia_modelo.decorate
+        #
+        render :edit, status: :unprocessable_entity
       end
     end
 
     def pg_respond_create
       object = instancia_modelo
-      respond_to do |format|
-        if (@saved = object.save)
-          # TODO: 'asociable' lo cambiaría por 'in_modal' o algo así
-          if params[:asociable]
-            format.turbo_stream do
-              render turbo_stream:
-                turbo_stream.update_all('.modal.show .pg-associable-form', <<~HTML
-                  <div data-modal-target="response" data-response='#{object.decorate.to_json}'></div>
-                HTML
-                )
-              # FIXME: handlear json
-              # render json: object.decorate, content_type: 'application/json'
-            end
-          end
-          format.html do
-            if params[:save_and_next] == 'true'
-              new_path = "#{url_for(@clase_modelo)}/new"
-              redirect_to new_path, notice: "#{@clase_modelo.nombre_singular} creado."
-            else
-              redirect_to object.decorate.target_object
-            end
-          end
-          format.json { render json: object.decorate }
+      if (@saved = object.save)
+        if in_modal?
+          body = <<~HTML.html_safe
+            <pg-event data-event-name="pg:record-created" data-turbo-temporary
+              data-response='#{object.decorate.to_json}'></pg-event>
+          HTML
+          render html: ModalContentComponent.new.with_body_content(body)
+                                            .render_in(view_context)
+
         else
-          # TODO: esto solucionaría el problema?
-          # self.instancia_modelo = instancia_modelo.decorate
-          if params[:asociable]
-            format.turbo_stream do
-              # FIXME: agregar , status: :unprocessable_entity
-              render turbo_stream:
-                turbo_stream.update_all('.modal.show .pg-associable-form', partial: 'form', locals: { asociable: true })
-            end
-          end
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: object.errors.full_messages, status: :unprocessable_entity }
+          redirect_to object.decorate.target_object
         end
+      elsif in_modal?
+        render html: FormModalComponent.new(instancia_modelo.decorate)
+                                       .render_in(view_context)
+      else
+        add_breadcrumb instancia_modelo.decorate.submit_default_value
+        # TODO: esto solucionaría el problema?
+        # self.instancia_modelo = instancia_modelo.decorate
+
+        render :new, status: :unprocessable_entity
       end
     end
 
@@ -159,83 +187,87 @@ module PgEngine
       end
     end
 
-    def pg_respond_show(object = nil)
-      object ||= instancia_modelo
-      if params[:modal].present?
-        respond_to do |format|
-          format.html
-          format.turbo_stream do
-            render turbo_stream: turbo_stream.append_all(
-              'body', partial: 'pg_layout/modal_show', locals: { object: }
-            )
-          end
-        end
+    def accepts_turbo_stream?
+      request.headers['Accept'].present? &&
+        request.headers['Accept'].include?('text/vnd.turbo-stream.html')
+    end
+
+    def in_modal?
+      request.headers['turbo-frame'] == 'modal_generic'
+    end
+
+    def respond_with_modal?
+      can_open_modal? || in_modal?
+    end
+
+    def can_open_modal?
+      request.get? &&
+        params[:start_modal] == 'true' &&
+        accepts_turbo_stream? &&
+        !in_modal?
+    end
+
+    def pg_respond_show
+      if respond_with_modal?
+        respond_with_modal(ShowModalComponent)
       else
-        respond_to do |format|
-          format.json { render json: object }
-          format.html
-        end
+        add_breadcrumb instancia_modelo.to_s_short, instancia_modelo.target_object
       end
+    end
+
+    def destroyed_message(model)
+      "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
     end
 
     def pg_respond_destroy(model, redirect_url = nil)
       if destroy_model(model)
-        msg = "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
-        respond_to do |format|
-          if redirect_url.present?
-            format.html do
-              redirect_to redirect_url, notice: msg, status: :see_other
-            end
-          else
-            format.turbo_stream do
-              # Esto no es totalmente limpio pero funciona tanto en los listados como en los
-              # modal show
-              render turbo_stream: turbo_stream.remove(model) + turbo_stream.remove_all('.modal')
-            end
-            format.html do
-              redirect_back(fallback_location: root_path, notice: msg, status: 303)
-            end
-            format.json { head :no_content }
-          end
+        if respond_with_modal?
+          body = <<~HTML.html_safe
+            <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>
+            </pg-event>
+          HTML
+          respond_with_modal(body)
+        elsif redirect_url.present?
+          redirect_to redirect_url, notice: destroyed_message(model), status: :see_other
+        elsif accepts_turbo_stream?
+          body = <<~HTML.html_safe
+            <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>
+            </pg-event>
+          HTML
+          render turbo_stream: turbo_stream.append_all('body', body)
+        else
+          redirect_back(fallback_location: root_path,
+                        notice: destroyed_message(model), status: 303)
         end
-      else
-        respond_to do |format|
-          format.html do
-            if model.respond_to?(:associated_elements) && model.associated_elements.present?
-              @model = model
-              render destroy_error_details_view
-            else
-              flash[:alert] = @error_message
-              redirect_back(fallback_location: root_path, status: 303)
-            end
-          end
-          format.json { render json: { error: @error_message }, status: :unprocessable_entity }
-        end
-      end
-    end
+      elsif in_modal?
 
-    # TODO: crear esta vista en pg_rails
-    def destroy_error_details_view
-      'destroy_error_details'
+        flash.now[:alert] = @error_message
+        render turbo_stream: render_turbo_stream_flash_messages(to: '.modal-body .flash')
+      elsif accepts_turbo_stream?
+        flash.now[:alert] = @error_message
+        render turbo_stream: render_turbo_stream_flash_messages
+      else
+        flash[:alert] = @error_message
+        redirect_back(fallback_location: root_path, status: 303)
+      end
     end
 
     def destroy_model(model)
       @error_message = 'No se pudo eliminar el registro'
+
       begin
         destroy_method = model.respond_to?(:discard) ? :discard : :destroy
         return true if model.send(destroy_method)
 
-        @error_message = model.errors.full_messages.join(', ')
+        @error_message = model.errors.full_messages.join(', ').presence || @error_message
+
         false
       rescue ActiveRecord::InvalidForeignKey => e
-        # class_name = /from table \"(?<table_name>[\p{L}_]*)\"/.match(e.message)[:table_name].singularize.camelcase
-        # # pk_id = /from table \"(?<pk_id>[\p{L}_]*)\"/.match(e.message)[:pk_id].singularize.camelcase
-        # clazz = Object.const_get class_name
-        # objects = clazz.where(model.class.table_name.singularize => model)
         model_name = t("activerecord.models.#{model.class.name.underscore}")
         @error_message = "#{model_name} no se pudo borrar porque tiene elementos asociados."
-        logger.debug e.message
+        pg_warn(e)
       end
+
       false
     end
 

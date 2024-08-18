@@ -1,1 +1,23 @@
-h1 el partiaaal
+.mb-3
+  = @cosa.categoria_de_cosa.decorate.show_link(text: 'Ver categoría')
+
+table.table.table-borderless.table-sm.w-auto.mb-0
+  - atributos_para_mostrar.each do |att|
+    tr
+      th = @clase_modelo.human_attribute_name(att)
+      td = @cosa.send(att)
+  tr
+    th = t('attributes.creado_por')
+    td = @cosa.creado_por
+  tr
+    th = t('attributes.created_at')
+    td = @cosa.created_at
+  tr
+    th = t('attributes.actualizado_por')
+    td = @cosa.actualizado_por
+  tr
+    th = t('attributes.updated_at')
+    td = @cosa.updated_at
+  tr
+    th = t('attributes.discarded_at')
+    td = @cosa.discarded_at

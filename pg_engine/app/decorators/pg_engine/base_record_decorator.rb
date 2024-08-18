@@ -42,7 +42,11 @@ module PgEngine
     # rubocop:enable Style/MissingRespondToMissing
 
     def destroy_link_redirect
-      destroy_link(redirect_to: helpers.url_for(target_index))
+      if helpers.using_modal?
+        destroy_link
+      else
+        destroy_link(redirect_to: helpers.url_for(target_index))
+      end
     end
 
     def destroy_link(confirm_text: '¿Estás seguro?', klass: 'btn-light', redirect_to: nil)
@@ -60,18 +64,28 @@ module PgEngine
     def edit_link(text: ' Modificar', klass: 'btn-warning')
       return unless Pundit.policy!(Current.user, object).edit?
 
+      start_modal = !helpers.using_modal? && object.class.default_modal
+
       helpers.content_tag :span, rel: :tooltip, title: 'Modificar' do
-        helpers.link_to edit_object_url, class: "btn btn-sm #{klass}" do
+        helpers.link_to edit_object_url + url_suffix(start_modal:), class: "btn btn-sm #{klass}",
+                                                                    'data-turbo-stream': start_modal do
           helpers.content_tag(:span, nil, class: clase_icono('pencil')) + text
         end
       end
     end
 
+    def url_suffix(start_modal: nil)
+      start_modal ? '?start_modal=true' : ''
+    end
+
     def show_link(text: '', klass: 'btn-light')
       return unless Pundit.policy!(Current.user, object).show?
 
+      start_modal = !helpers.using_modal? && object.class.default_modal
+
       helpers.content_tag :span, rel: :tooltip, title: 'Ver' do
-        helpers.link_to object_url, class: "btn btn-sm #{klass}" do
+        helpers.link_to object_url + url_suffix(start_modal:), class: "btn btn-sm #{klass}",
+                                                               'data-turbo-stream': start_modal do
           helpers.content_tag(:span, nil, class: clase_icono('eye-fill')) + text
         end
       end
@@ -88,12 +102,14 @@ module PgEngine
       end
     end
 
-    def new_link(remote: nil, klass: 'btn-warning')
+    def new_link(klass: 'btn-warning')
       return unless Pundit.policy!(Current.user, object).new?
 
+      start_modal = !helpers.using_modal? && object.class.default_modal
+
       helpers.content_tag :span, rel: :tooltip, title: submit_default_value do
-        helpers.link_to(new_object_url, class: "btn btn-sm #{klass}",
-                                        remote:) do
+        helpers.link_to(new_object_url + url_suffix(start_modal:), class: "btn btn-sm #{klass}",
+                                                                   'data-turbo-stream': start_modal) do
           helpers.content_tag(:span, nil,
                               class: clase_icono('plus').to_s) + "<span class='d-none d-sm-inline'> #{submit_default_value}</span>".html_safe
         end
@@ -105,7 +121,7 @@ module PgEngine
     end
 
     def new_object_url
-      "#{helpers.url_for(target_index)}/new"
+      helpers.url_for(target_new)
     end
 
     def object_url
@@ -116,6 +132,11 @@ module PgEngine
       pg_namespace.present? ? [pg_namespace, object] : object
     end
 
+    def target_new
+      mod_name_sing = object.class.model_name.singular.to_sym
+      pg_namespace.present? ? [:new, pg_namespace, mod_name_sing] : [:new, mod_name_sing]
+    end
+
     def target_index
       pg_namespace.present? ? [pg_namespace, object.class] : object.class
     end
@@ -123,7 +144,7 @@ module PgEngine
     # actionview-7.1.3.2/lib/action_view/helpers/form_helper.rb
     def submit_default_value
       key = :create
-      model = object.model_name.human
+      model = object.model_name.human.downcase
       defaults = []
       defaults << :"helpers.submit.#{object.model_name.i18n_key}.#{key}"
       defaults << :"helpers.submit.#{key}"

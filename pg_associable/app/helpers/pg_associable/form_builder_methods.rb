@@ -31,9 +31,7 @@ module PgAssociable
     def collection_pc(atributo, _options)
       klass = clase_asociacion(atributo)
       user = Current.user
-      # FIXME: use @using_modal
-      in_modal =
-      puede_crear = !in_modal && Pundit::PolicyFinder.new(klass).policy.new(user, klass).new?
+      puede_crear = !template.using_modal? && Pundit::PolicyFinder.new(klass).policy.new(user, klass).new?
       collection = Pundit::PolicyFinder.new(klass).scope.new(user, klass).resolve
       [collection, puede_crear]
     end
