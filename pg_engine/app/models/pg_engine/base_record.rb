@@ -58,6 +58,9 @@ module PgEngine
 
     def to_s
       %i[nombre name].each do |campo|
+        # Using `_in_database` for consistent breadcrumbs when editing the name
+        campo = :"#{campo}_in_database"
+
         return "#{send(campo)} ##{to_param}" if try(campo).present?
       end
       if to_param.present?
