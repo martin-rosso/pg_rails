@@ -19,20 +19,20 @@ def pg_err(*args)
   pg_log(:error, *args)
 end
 
-def pg_warn(*args)
-  pg_log(:warn, *args)
+def pg_warn(*)
+  pg_log(:warn, *)
 end
 
-def pg_info(*args)
-  pg_log(:info, *args)
+def pg_info(*)
+  pg_log(:info, *)
 end
 
-def pg_debug(*args)
-  pg_log(:debug, *args)
+def pg_debug(*)
+  pg_log(:debug, *)
 end
 
-def pg_log(*args)
-  PgEngine::PgLogger.log(*args)
+def pg_log(*)
+  PgEngine::PgLogger.log(*)
 end
 
 module PgEngine
@@ -42,8 +42,8 @@ module PgEngine
     end
 
     class << self
-      def log(type, *args)
-        notify_all(build_msg(*args), type)
+      def log(type, *)
+        notify_all(build_msg(*), type)
       end
 
       private

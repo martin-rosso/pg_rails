@@ -2,6 +2,10 @@
 - content_for :actions do
   - @actions&.each do |link_args|
     = link_to(*link_args)
+  = link_to request.url, class: 'btn btn-sm btn-outline-primary',
+                         data: { controller: :tooltip, 'bs-title': 'Actualizar' } do
+    i.bi.bi-arrow-clockwise
+  .ms-1
   - if @filtros.present?
     = render SearchBarTogglerComponent.new
     .ms-1

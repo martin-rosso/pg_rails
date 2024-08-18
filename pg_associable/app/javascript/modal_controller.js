@@ -3,7 +3,6 @@ import * as bootstrap from 'bootstrap'
 
 export default class extends Controller {
   static outlets = ['asociable']
-  static targets = ['response']
 
   modalPuntero = null
 
@@ -15,15 +14,28 @@ export default class extends Controller {
       })
     }
     this.modalPuntero.show()
+
+    this.element.addEventListener('pg:record-created', (ev) => {
+      const el = ev.data
+      if (this.asociableOutlets.length > 0) {
+        const newObject = JSON.parse(el.dataset.response)
+        this.asociableOutlet.completarCampo(newObject)
+        ev.stopPropagation()
+      }
+      this.modalPuntero.hide()
+    })
+
+    this.element.addEventListener('pg:record-updated', (ev) => {
+      this.modalPuntero.hide()
+    })
+
+    this.element.addEventListener('pg:record-destroyed', (ev) => {
+      this.modalPuntero.hide()
+    })
+
     document.addEventListener('turbo:before-cache', () => {
       this.element.remove()
     }, { once: true })
-  }
-
-  responseTargetConnected (e) {
-    const newObject = JSON.parse(e.dataset.response)
-    this.asociableOutlet.completarCampo(newObject)
-    this.element.remove()
   }
 
   openModal () {

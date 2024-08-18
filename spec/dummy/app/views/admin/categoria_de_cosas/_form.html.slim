@@ -1,7 +1,7 @@
-/ # locals: (object: nil, asociable: false)
+/ # locals: (object: nil)
 
-div style="max-width: 32em" data-controller="xpg_form"
-  = pg_form_for(@categoria_de_cosa || object, modal: true) do |f|
+div style="max-width: 32em" data-controller="pg_form"
+  = pg_form_for(@categoria_de_cosa || object) do |f|
     = f.input :nombre
     = f.input :fecha, date_selector: true
     = f.input :tiempo, html5: true

@@ -9,7 +9,7 @@ div style="max-width: 52em" data-controller="cosa"
       = f.label :rico, class: 'form-label'
       = f.rich_text_area :rico
     = f.pg_associable :categoria_de_cosa,
-                      preload: CategoriaDeCosa.limit(2), placeholder: 'el placeholder',
+                      preload: CategoriaDeCosa.kept.limit(2), placeholder: 'el placeholder',
                       wrapper_html: { 'xdata-placeholder': 'dale, escribí' }
     .mt-2
     = f.button :submit

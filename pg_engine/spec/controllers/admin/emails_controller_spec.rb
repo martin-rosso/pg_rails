@@ -153,9 +153,9 @@ RSpec.describe Admin::EmailsController do
       expect { subject }.to change(Email, :count).by(-1)
     end
 
-    it 'quita el elemento de la lista' do
+    it 'envía el pg-event' do
       subject
-      expect(response.body).to include('turbo-stream action="remove"')
+      expect(response.body).to include('<pg-event data-event-name="pg:record-destroyed"')
     end
 
     context 'si hay redirect_to' do

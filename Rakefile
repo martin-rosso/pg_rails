@@ -27,7 +27,7 @@ PATHS_TO_TEST='spec pg_scaffold/spec pg_associable/spec pg_engine/spec pg_layout
 
 desc "Testear rápido"
 task :test_spring do |t, args|
-  system! "bundle exec spring rspec --fail-fast #{PATHS_TO_TEST} #{args.to_a.join(' ')}"
+  system! "bundle exec spring rspec #{PATHS_TO_TEST} #{args.to_a.join(' ')}"
 end
 
 desc "Preparar y testear"

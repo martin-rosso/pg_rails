@@ -1,0 +1,7 @@
+/ FIXME: when asociable, dont remove on hide
+.modal[class="xfade #{@klass} modal-#{@modal_id}" tabindex="-1" data-controller="modal"
+       data-modal-asociable-outlet=".asociable-#{@modal_id}"
+       data-remove-on-hide="true" data-turbo-temporary="true"]
+  .modal-dialog
+    .modal-content
+      = content

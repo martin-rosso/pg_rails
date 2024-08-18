@@ -1,37 +1,6 @@
 - content_for :title do
   = @cosa.to_s
 - content_for :actions do
-  = @cosa.destroy_link_redirect
-  .ms-1
-  = @cosa.edit_link
+  = render @cosa.actions_component
 
-= turbo_frame_tag :el_frame, 'data-turbo-action': :advance do
-  table.table.table-borderless.table-sm.w-auto.mb-0.m-3
-    = link_to 'Ver categoría (frame)',
-        admin_categoria_de_cosa_path(@cosa.categoria_de_cosa)
-    br
-    = link_to \
-        'Ver categoría (modal)',
-        admin_categoria_de_cosa_path(@cosa.categoria_de_cosa, modal: true),
-        'data-turbo-stream': true
-
-    - atributos_para_mostrar.each do |att|
-      tr
-        th = @clase_modelo.human_attribute_name(att)
-        td = @cosa.send(att)
-    tr
-      th = t('attributes.creado_por')
-      td = @cosa.creado_por
-    tr
-      th = t('attributes.created_at')
-      td = @cosa.created_at
-    tr
-      th = t('attributes.actualizado_por')
-      td = @cosa.actualizado_por
-    tr
-      th = t('attributes.updated_at')
-      td = @cosa.updated_at
-    tr
-      th = t('attributes.discarded_at')
-      td = @cosa.discarded_at
-  div style="height:30em"
+= render @cosa

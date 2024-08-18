@@ -13,9 +13,6 @@ module Admin
 
     before_action(only: :index) { authorize CategoriaDeCosa }
 
-    # Para testear la progress bar en turbo frames
-    before_action(only: :show) { sleep 1 }
-
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
     add_breadcrumb CategoriaDeCosa.nombre_plural, :admin_categoria_de_cosas_path

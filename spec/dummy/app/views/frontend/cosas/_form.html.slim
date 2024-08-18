@@ -1,17 +1,10 @@
 / # locals: (object: nil)
 
-- ret = capture do
-  div style="max-width: 22em"
-    = pg_form_for(@cosa || object) do |f|
-      = f.input :nombre
-      = f.input :tipo
-      = f.pg_associable :categoria_de_cosa
-      / = f.association :categoria_de_cosa
-      .mt-2
-      = f.button :submit
-
-- if using_modal?
-  = turbo_frame_tag :modal_generic do
-    = ret
-- else
-  = ret
+div style="max-width: 22em"
+  = pg_form_for(@cosa || object) do |f|
+    = f.input :nombre
+    = f.input :tipo
+    = f.pg_associable :categoria_de_cosa
+    / = f.association :categoria_de_cosa
+    .mt-2
+    = f.button :submit

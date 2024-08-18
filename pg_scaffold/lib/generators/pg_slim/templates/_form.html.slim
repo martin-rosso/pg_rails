@@ -1,16 +1,9 @@
 / # locals: (object: nil)
 
-- ret = capture do
-  div style="max-width: 22em" data-controller="pg_form"
-    = pg_form_for(@<%= singular_name %> || object) do |f|
-    <%- attributes.each do |attribute| -%>
-      = f.<%= attribute.reference? ? :pg_associable : :input %> :<%= attribute.name %>
-    <%- end -%>
-      .mt-2
-      = f.button :submit
-
-- if using_modal?
-  = turbo_frame_tag :modal_generic do
-    = ret
-- else
-  = ret
+div style="max-width: 22em" data-controller="pg_form"
+  = pg_form_for(@<%= singular_name %> || object) do |f|
+  <%- attributes.each do |attribute| -%>
+    = f.<%= attribute.reference? ? :pg_associable : :input %> :<%= attribute.name %>
+  <%- end -%>
+    .mt-2
+    = f.button :submit

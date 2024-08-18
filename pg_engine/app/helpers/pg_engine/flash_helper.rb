@@ -1,7 +1,11 @@
 module PgEngine
   module FlashHelper
-    def render_turbo_stream_flash_messages
-      turbo_stream.prepend 'flash', partial: 'pg_layout/flash'
+    def render_turbo_stream_flash_messages(to: nil)
+      if to.present?
+        turbo_stream.prepend_all to, partial: 'pg_layout/flash'
+      else
+        turbo_stream.prepend 'flash', partial: 'pg_layout/flash'
+      end
     end
 
     def render_turbo_stream_title
