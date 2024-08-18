@@ -1,8 +1,6 @@
 <h2><%= t(".change_your_password") %></h2>
 
 <%= pg_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f| %>
-  <%= f.mensajes_de_error %>
-
   <%= f.input :reset_password_token, as: :hidden %>
   <%= f.full_error :reset_password_token %>
 

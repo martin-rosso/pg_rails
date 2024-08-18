@@ -1,4 +1,4 @@
-/ # locals: (object: nil, asociable: false)
+/ # locals: (object: nil)
 
 .d-none
   / Preload
@@ -8,10 +8,7 @@
     h2 Ponete en contacto
     .d-inline-block style="width: 30em; max-width: 100%"
       div data-controller="pg_form"
-        = pg_form_for(@mensaje_contacto || object, asociable:) do |f|
-          = f.mensajes_de_error
-
-          = hidden_field_tag :asociable, true if asociable
+        = pg_form_for(@mensaje_contacto || object) do |f|
           - unless user_signed_in?
             = f.input :nombre, input_html: { style: 'max-width: 22em' }
             = f.input :email, input_html: { style: 'max-width: 23em' }

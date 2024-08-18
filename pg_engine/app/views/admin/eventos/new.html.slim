@@ -1,6 +1,4 @@
 = pg_form_for @event, url: admin_eventos_path do |f|
-  = f.mensajes_de_error
-
   = f.input :type, as: :select, collection: @notifier_types
   - if params[:plain_text]
     = link_to 'Change to rich text', url_for

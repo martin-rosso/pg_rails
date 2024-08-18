@@ -2,7 +2,8 @@
 
 module PgEngine
   module FormHelper
-    def pg_form_for(object, *args, &)
+    # rubocop:disable Metrics/CyclomaticComplexity
+    def pg_form_for(object, *args, &block_passed)
       resource = object
       if object.is_a? PgEngine::BaseRecordDecorator
         object = object.target_object
@@ -27,8 +28,21 @@ module PgEngine
         options[:html][:data][:errors] = resource.errors.details.to_json
       end
 
-      simple_form_for(object, *(args << options), &)
+      if options[:render_errors].nil?
+        options[:render_errors] = true
+      end
+
+      block_with_additives = lambda do |f|
+        ret = ''.html_safe
+        ret += f.mensajes_de_error if options[:render_errors]
+        ret += hidden_field_tag :modal, true if options[:modal]
+        ret += capture(f, &block_passed)
+        ret
+      end
+
+      simple_form_for(object, *(args << options), &block_with_additives)
     end
+    # rubocop:enable Metrics/CyclomaticComplexity
 
     def url_change_format(url, formato)
       uri = URI.parse(url)

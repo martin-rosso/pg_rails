@@ -1,10 +1,7 @@
-/ # locals: (object: nil, asociable: false)
+/ # locals: (object: nil)
 
 div style="max-width: 52em" data-controller="cosa"
-  = pg_form_for(@cosa || object, asociable:) do |f|
-    = f.mensajes_de_error
-
-    = hidden_field_tag :asociable, true if asociable
+  = pg_form_for(@cosa || object) do |f|
     = f.input :nombre
     = f.input :tipo
     = f.pg_associable :creado_por

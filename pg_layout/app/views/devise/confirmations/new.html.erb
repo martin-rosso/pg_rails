@@ -1,5 +1,4 @@
 <%= pg_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f| %>
-  <%= f.mensajes_de_error %>
   <%= f.full_error :confirmation_token %>
 
   <div class="form-inputs">

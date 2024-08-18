@@ -1,10 +1,7 @@
-/ # locals: (object: nil, asociable: false)
+/ # locals: (object: nil)
 
 div style="max-width: 22em" data-controller="pg_form"
-  = pg_form_for(@email || object, asociable:) do |f|
-    = f.mensajes_de_error
-
-    / = hidden_field_tag :asociable, true if asociable
+  = pg_form_for(@email || object) do |f|
     / = f.input :from_address
     / = f.input :from_name
     / = f.input :reply_to

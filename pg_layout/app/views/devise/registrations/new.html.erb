@@ -1,8 +1,6 @@
 <h2><%= t(".sign_up") %></h2>
 <div id="form-signup" data-controller="pg_form">
   <%= pg_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= f.mensajes_de_error %>
-
     <div class="form-inputs">
       <%= f.input :nombre, required: true, autofocus: true %>
       <%= f.input :apellido, required: true %>
