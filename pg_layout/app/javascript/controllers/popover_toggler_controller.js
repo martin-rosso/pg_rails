@@ -5,9 +5,11 @@ export default class extends Controller {
   popover = null
 
   connect () {
+    const container = this.element.closest('.modal-body') ? '.modal-body' : 'body'
     this.popover = new bootstrap.Popover(this.element, {
       // WARNING: don't use for user input html
       sanitize: false,
+      container,
       template: `
 <div class="popover" role="tooltip" data-controller="popover">
   <div class="popover-arrow"></div>
@@ -16,8 +18,7 @@ export default class extends Controller {
   <div class="popover-body">
   </div>
 </div>
-      `,
-      container: 'body'
+      `
     })
   }
 
