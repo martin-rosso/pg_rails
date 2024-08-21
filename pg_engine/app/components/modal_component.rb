@@ -1,7 +1,7 @@
 class ModalComponent < ViewComponent::Base
-  def initialize(modal_id: nil)
-    @klass = 'modal-xl'
-    @modal_id = modal_id
+  def initialize(klass: 'modal-xl')
+    @klass = klass
+
     super
   end
 

@@ -5,7 +5,7 @@ module PgAssociable
     def pg_respond_abrir_modal
       content = FormModalComponent.new(@clase_modelo.new.decorate)
                                   .render_in(view_context)
-      modal = ModalComponent.new(modal_id: params[:id]).with_content(content)
+      modal = AsociableModalComponent.new(modal_id: params[:id]).with_content(content)
       render turbo_stream: turbo_stream.append_all('body', modal)
     end
 
