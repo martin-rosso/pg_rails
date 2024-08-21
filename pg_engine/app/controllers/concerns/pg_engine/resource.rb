@@ -131,7 +131,6 @@ module PgEngine
             <pg-event data-event-name="pg:record-created" data-turbo-temporary
               data-response='#{object.decorate.to_json}'></pg-event>
           HTML
-          # render turbo_stream: turbo_stream.append_all('.modal-body', body)
           render html: ModalContentComponent.new.with_body_content(body)
                                             .render_in(view_context)
         else
