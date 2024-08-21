@@ -1,4 +1,13 @@
 
+7.3.0 / 2024-08-21
+==================
+
+  * feat!: allow modals to be rendered on modal
+  * refactor: render common form components automatically
+  * fix: breadcrumb consistence when editing name
+  * fix: allow popovers on modals
+  * fix: kaminari config for ransack memory
+
 7.2.3 / 2024-08-16
 ==================
 
