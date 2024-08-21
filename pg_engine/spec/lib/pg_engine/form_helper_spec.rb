@@ -11,8 +11,6 @@ describe PgEngine::FormHelper do
     {}
   end
 
-  let(:using_modal) { false }
-
   let(:view_context) do
     cont = Admin::CosasController.new
     cont.request = ActionDispatch::TestRequest.create
