@@ -36,6 +36,8 @@ class Email < ApplicationRecord
   include Hashid::Rails
   audited
 
+  self.default_modal = true
+
   after_commit do
     associated.email_updated(self) if associated.respond_to? :email_updated
   end

@@ -13,7 +13,7 @@ describe 'Enviar email' do
     # click_on 'Enviar'
     # expect(page).to have_text 'revisá los campos obligatorios'
     fill_in 'email_to', with: Faker::Internet.email
-    click_on 'Enviar'
+    click_on 'Crear Email'
   end
 
   around do |example|

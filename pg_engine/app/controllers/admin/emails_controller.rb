@@ -14,26 +14,9 @@ module Admin
 
     add_breadcrumb Email.nombre_plural, :admin_emails_path
 
-    def new
-      render template: 'admin/emails/_send', locals: { email: @email },
-             layout: 'pg_layout/containerized'
-    end
-
-    def create
-      saved = false
-      ActiveRecord::Base.transaction do
-        # TODO: acá la transaction jode porque el ActiveJob no puede deserializar el Email
-        # Con rails 7.2 esto se debería arreglar
-        if (saved = @email.save)
-          PgEngine::AdminMailer.with(email_object: @email).admin_mail.deliver_later
-        end
-      end
-      if saved
-        redirect_to @email.decorate.target_object
-      else
-        render template: 'admin/emails/_send',
-               layout: 'pg_layout/containerized', status: :unprocessable_entity,
-               locals: { email: @email }
+    after_action only: :create do
+      if @saved
+        PgEngine::AdminMailer.with(email_object: @email).admin_mail.deliver_later
       end
     end
 
