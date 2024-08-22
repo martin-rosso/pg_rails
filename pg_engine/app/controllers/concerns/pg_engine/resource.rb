@@ -99,12 +99,12 @@ module PgEngine
       idtf = cur_route[:controller] + '#' + cur_route[:action] + '#open-filters'
 
       if params[:ocultar_filtros]
-        session[idtf] = nil
+        session[idtf] = false
       elsif params[:mostrar_filtros]
         session[idtf] = true
       end
 
-      session[idtf]
+      session[idtf].nil? || session[idtf]
     end
 
     def current_page_size
