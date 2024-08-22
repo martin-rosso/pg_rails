@@ -3,9 +3,9 @@ class DateSelectorComponent < ViewComponent::Base
     @field_id = field_id
 
     @types = [
-      ['Días corridos (L a D)', 'calendar_days'],
-      ['Días hábiles (L a V)', 'business_days'],
       ['Días hábiles no feriados', 'business_days_excluding_holidays'],
+      ['Días hábiles (L a V)', 'business_days'],
+      ['Días corridos (L a D)', 'calendar_days'],
       ['Semanas', 'weeks'],
       ['Meses', 'months']
     ]
