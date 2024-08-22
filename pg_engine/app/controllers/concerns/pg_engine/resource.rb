@@ -87,7 +87,7 @@ module PgEngine
     protected
 
     def default_sort
-      nil
+      'id desc'
     end
 
     def available_page_sizes
