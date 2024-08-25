@@ -1,14 +1,17 @@
-a href="javascript:void(0)" data-controller="tooltip" data-bs-title="Las cosas" el tooltip hover
-br
-a[href="javascript:void(0)" data-controller="tooltip" data-bs-trigger="contextmenu"
-  data-bs-title="Las cosas"] el tooltip context
-div data-controller="cosa"
-  = link_to 'Fade in', 'javascript:void(0)', 'data-action': 'cosa#doFadeIn'
-  | &nbsp;&nbsp;
-  = link_to 'Fade out', 'javascript:void(0)', 'data-action': 'cosa#doFadeOut'
-  h1.init-invisible Fade INN
-- if @categoria_de_cosa.cosas.any?
-  = link_to 'la cosa', @categoria_de_cosa.cosas.first.decorate.target_object
+.row
+  .col
+    a href="javascript:void(0)" data-controller="tooltip" data-bs-title="Las cosas" el tooltip hover
+    br
+    a[href="javascript:void(0)" data-controller="tooltip" data-bs-trigger="contextmenu"
+      data-bs-title="Las cosas"] el tooltip context
+  .col
+    div data-controller="cosa"
+      = link_to 'Fade in', 'javascript:void(0)', 'data-action': 'cosa#doFadeIn'
+      | &nbsp;&nbsp;
+      = link_to 'Fade out', 'javascript:void(0)', 'data-action': 'cosa#doFadeOut'
+      h1.init-invisible Fade INN
+    - if @categoria_de_cosa.cosas.any?
+      = link_to 'la cosa', @categoria_de_cosa.cosas.first.decorate.target_object
 
 table.table.table-borderless.table-sm.w-auto.mb-0
   - atributos_para_mostrar.each do |att|

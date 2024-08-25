@@ -10,7 +10,7 @@ class CategoriaDeCosaDecorator < PgEngine::BaseRecordDecorator
   end
 
   def cosas_f
-    object.cosas.map(&:to_s).join(', ')
+    object.cosas.limit(4).map(&:to_s).join(', ')
   end
 
   # Define presentation-specific methods here. Helpers are accessed through

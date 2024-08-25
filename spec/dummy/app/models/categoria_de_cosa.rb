@@ -36,7 +36,7 @@ class CategoriaDeCosa < ApplicationRecord
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
-  has_many :cosas
+  has_many :cosas, -> { kept }
   accepts_nested_attributes_for :cosas, allow_destroy: true
 
   enumerize :tipo, in: { completar: 0, los: 1, valores: 2 }

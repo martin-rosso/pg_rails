@@ -5,8 +5,10 @@
 class CosaPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
-      # scope.where.not(tipo: :los)
       scope.all
+      #
+      # FIXME: testear
+      # scope.where.not(tipo: :los)
     end
   end
 

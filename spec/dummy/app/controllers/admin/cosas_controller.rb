@@ -22,7 +22,7 @@ module Admin
     private
 
     def default_sort
-      'nombre asc'
+      'cosas.nombre asc'
     end
 
     def atributos_permitidos
