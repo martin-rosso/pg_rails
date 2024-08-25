@@ -31,6 +31,8 @@ $focus-ring-width:              .05rem;
 $alert-padding-y:               0.5rem;
 $alert-margin-bottom:           0.5rem;
 
+$breadcrumb-margin-bottom: 0;
+
 @import 'bootstrap_pre';
 @import 'bootstrap_overrides';
 @import 'bootstrap_post';
@@ -63,8 +65,13 @@ $alert-margin-bottom:           0.5rem;
 
 
 $warning-border-emphasis:   shade-color($yellow, 60%);
-.bg-primary-subtle .btn-warning {
+.btn-toolbar .btn-warning {
   border: 1px solid $warning-border-emphasis;
+}
+
+$light-border-emphasis:   shade-color($light, 60%);
+.btn-toolbar .btn-light {
+  border: 1px solid $light-border-emphasis;
 }
 
 .listado tr:has(td:hover):has(.bi-eye-fill) td {

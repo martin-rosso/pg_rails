@@ -1,5 +1,5 @@
 - content_for :content do
-  .container-fluid.pt-3
+  div class="pt-3 #{modal_targeted? ? '' : 'container-fluid'}"
     = content_for?(:containerized_content) ? yield(:containerized_content) : yield
 
 = render template: 'layouts/pg_layout/base'

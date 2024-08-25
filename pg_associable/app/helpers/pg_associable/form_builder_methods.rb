@@ -16,6 +16,14 @@ module PgAssociable
     end
 
     def pg_associable(atributo, options = {})
+      # Si es new y tiene el nested asignado, no permito que se modifique
+      # porque de todos modos se pisaría en el create
+      if !object.persisted? &&
+         template.nested_record.present? &&
+         object.send(template.nested_key) == (template.nested_record.id)
+        options[:disabled] = true
+      end
+
       return input(atributo, options) if options[:disabled]
 
       collection, puede_crear = collection_pc(atributo, options)

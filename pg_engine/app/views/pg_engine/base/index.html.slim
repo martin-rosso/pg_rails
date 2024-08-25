@@ -46,7 +46,7 @@ div
       ul.list-group.list-group-horizontal
         - available_page_sizes.each do |page_size|
           = link_to page_size,
-            namespaced_path(@clase_modelo, page_size:),
+            url_for(page_size:),
             class: "list-group-item py-0 px-1 #{'active' if current_page_size == page_size}"
   - elsif @records_filtered
     - i18n_key = "#{controller_key}.#{action_name}.index.empty_but_filtered"
@@ -54,7 +54,7 @@ div
       = t(i18n_key, default: :'.empty_but_filtered', model: @clase_modelo.nombre_plural.downcase)
       | :
       span.ms-2
-      = clear_filter(title: 'Limpiar búsqueda')
+      = link_to 'Limpiar búsqueda', url_for + '?cancel_filter=true'
   - else
     - i18n_key = "#{controller_key}.#{action_name}.index.empty"
     p.m-3 = t(i18n_key, default: :'.empty', model: @clase_modelo.nombre_plural.downcase)

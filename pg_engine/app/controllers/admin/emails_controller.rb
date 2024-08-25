@@ -6,7 +6,7 @@ module Admin
   class EmailsController < AdminController
     include PgEngine::Resource
 
-    before_action { @clase_modelo = Email }
+    self.clase_modelo = Email
 
     before_action(only: :index) { authorize Email }
 

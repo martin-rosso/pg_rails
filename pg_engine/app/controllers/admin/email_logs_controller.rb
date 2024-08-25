@@ -6,7 +6,7 @@ module Admin
   class EmailLogsController < AdminController
     include PgEngine::Resource
 
-    before_action { @clase_modelo = EmailLog }
+    self.clase_modelo = EmailLog
 
     before_action(only: :index) { authorize EmailLog }
 

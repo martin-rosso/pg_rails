@@ -14,7 +14,6 @@ describe PgEngine::Resource do
       allow(request).to receive_messages(filtered_parameters: { id: 321 },
                                          parameters: { id: 321 })
       allow(instancia).to receive(:request).and_return(request)
-      instancia.set_clase_modelo
     end
 
     it do
@@ -34,7 +33,6 @@ describe PgEngine::Resource do
       allow(request).to receive_messages(filtered_parameters: { id: categoria_de_cosa.to_param },
                                          parameters: { id: categoria_de_cosa.to_param })
       allow(instancia).to receive(:request).and_return(request)
-      instancia.set_clase_modelo
     end
 
     it do

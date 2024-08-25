@@ -25,3 +25,17 @@ document.addEventListener('pg:record-destroyed', (ev) => {
     Turbo.cache.clear()
   }, 1000)
 })
+
+document.addEventListener('turbo:before-fetch-request', (ev) => {
+  // Si es POST, quito la opción text/vnd.turbo-stream.html para que
+  // on successful redirect no haya posibilidad de que se abra un modal
+  // FIXME: buscar una manera mejor de hacerlo porque es para problemas
+  //        quizás, con la movida de abrir modales desde JS
+  if (ev.detail.fetchOptions.method === 'post') {
+    ev.detail.fetchOptions.headers.Accept = 'text/html, application/xhtml+xml'
+  }
+
+  if (document.querySelector('.modal.show')) {
+    ev.detail.fetchOptions.headers['Modal-Opened'] = true
+  }
+})

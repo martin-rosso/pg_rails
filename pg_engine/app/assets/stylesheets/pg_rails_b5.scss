@@ -9,6 +9,11 @@
   --bs-form-invalid-border-color: #b50000;
 }
 
+// Navs
+nav[aria-label=breadcrumb] a {
+  font-weight: bold;
+}
+
 // Toasts
 .toast.show {
   display: inline-block;

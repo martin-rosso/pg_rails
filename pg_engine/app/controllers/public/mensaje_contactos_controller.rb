@@ -6,7 +6,7 @@ module Public
   class MensajeContactosController < PublicController
     include PgEngine::Resource
 
-    before_action { @clase_modelo = MensajeContacto }
+    self.clase_modelo = MensajeContacto
 
     before_action(only: :index) { authorize MensajeContacto }
 

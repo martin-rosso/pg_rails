@@ -7,7 +7,6 @@ describe 'Filtros de cosas' do
 
   let(:visitar) do
     visit path
-    click_on 'Filtrar'
   end
   let(:user) { create :user, :developer }
   let(:listado) { page.find('.listado') }

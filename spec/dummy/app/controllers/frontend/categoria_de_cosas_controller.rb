@@ -6,7 +6,7 @@ module Frontend
   class CategoriaDeCosasController < FrontendController
     include PgEngine::Resource
 
-    before_action { @clase_modelo = CategoriaDeCosa }
+    self.clase_modelo = CategoriaDeCosa
 
     before_action(only: :index) { authorize CategoriaDeCosa }
 

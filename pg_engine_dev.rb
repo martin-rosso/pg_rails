@@ -1,3 +1,5 @@
+gem 'ransack_memory', github: 'mrosso10/ransack_memory', branch: 'support-turbo-frames'
+
 # VCR
 group :test do
   gem 'vcr', '~> 6.2.0'

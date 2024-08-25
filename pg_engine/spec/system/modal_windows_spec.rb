@@ -24,11 +24,11 @@ describe 'Modal windows' do
     it do
       visitar
       click_on 'Cargar coso'
-      select 'Completar'
-      select categoria_de_cosa.to_s
+      select 'Completar', from: 'cosa_tipo'
+      select categoria_de_cosa.to_s, from: 'cosa_categoria_de_cosa_id'
       find('.modal input[type=submit]').click
       expect(page).to have_text 'Por favor, revisá los campos obligatorios'
-      fill_in 'Nombre', with: 'bla'
+      fill_in 'cosa_nombre', with: 'bla'
       find('.modal input[type=submit]').click
       expect(page).to have_text 'bla'
     end
@@ -68,7 +68,7 @@ describe 'Modal windows' do
       accept_confirm do
         find('.modal span[title=Eliminar] a').click
       end
-      expect(page).to have_text 'No hay cosos aún'
+      expect(page).to have_text 'No hay cosos que mostrar'
     end
 
     context 'cuando da error' do

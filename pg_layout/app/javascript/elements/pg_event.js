@@ -1,6 +1,7 @@
 class PgEventElement extends HTMLElement {
   connectedCallback () {
-    this.dispatchEvent(new MessageEvent(this.dataset.eventName, { bubbles: true, data: this }))
+    const event = new MessageEvent(this.dataset.eventName, { bubbles: true, data: this })
+    this.dispatchEvent(event)
   }
 
   disconnectedCallback () {

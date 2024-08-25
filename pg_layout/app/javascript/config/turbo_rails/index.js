@@ -9,7 +9,10 @@ import '@hotwired/turbo-rails'
 // TODO: testear con capybara
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('#flash .alert').forEach((el) => {
-    el.remove()
+    // FIXME: en los destroy desde main frame, turbo llama a before-cache
+    // después de renderear el redirect, por eso no puedo hacer el remove
+    //
+    // el.remove()
   })
   document.querySelectorAll('.offcanvas-backdrop').forEach((el) => {
     el.remove()

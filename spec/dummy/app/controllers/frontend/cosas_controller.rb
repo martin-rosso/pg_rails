@@ -6,7 +6,7 @@ module Frontend
   class CosasController < FrontendController
     include PgEngine::Resource
 
-    before_action { @clase_modelo = Cosa }
+    self.clase_modelo = Cosa
 
     before_action(only: :index) { authorize Cosa }
 
