@@ -14,7 +14,7 @@ es:
   pg_engine:
     base:
       index:
-        empty: 'No hay %{model} aún'
+        empty: 'No hay %{model} que mostrar'
         empty_but_filtered: 'No hay %{model} para los filtros aplicados'
   attributes:
     external_labels: Etiquetas externas
