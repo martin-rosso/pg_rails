@@ -1,4 +1,13 @@
 
+7.3.1 / 2024-08-29
+==================
+
+  * feat!: modals & nested frames
+  * fix: change date jumper options order
+  * fix: show filters by default
+  * fix: sort records by id by default
+  * fix: ransack memory support for turbo frames
+
 7.3.0 / 2024-08-21
 ==================
 
