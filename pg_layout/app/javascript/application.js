@@ -31,7 +31,7 @@ document.addEventListener('turbo:before-fetch-request', (ev) => {
   // on successful redirect no haya posibilidad de que se abra un modal
   // FIXME: buscar una manera mejor de hacerlo porque es para problemas
   //        quizás, con la movida de abrir modales desde JS
-  if (ev.detail.fetchOptions.method === 'post') {
+  if (ev.detail.fetchOptions.method.toLowerCase() === 'post') {
     ev.detail.fetchOptions.headers.Accept = 'text/html, application/xhtml+xml'
   }
 
