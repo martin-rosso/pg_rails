@@ -1,4 +1,9 @@
 
+7.3.5 / 2024-08-30
+==================
+
+  * fix: skip turbo frame accept header when POST fetch
+
 7.3.4 / 2024-08-30
 ==================
 
