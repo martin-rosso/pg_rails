@@ -1,6 +1,9 @@
 module PgEngine
   class DeviseController < ApplicationController
     before_action :configure_permitted_parameters
+    before_action do
+      @no_main_frame = true
+    end
 
     layout :layout_by_user
 
