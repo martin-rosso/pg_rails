@@ -9,12 +9,14 @@ export default class extends Controller {
 
   connect (e) {
     this.modalPuntero = new bootstrap.Modal(this.element)
-    if (this.element.dataset.removeOnHide) {
+    if (this.element.dataset.removeOnHide === 'true') {
       this.element.addEventListener('hidden.bs.modal', (e) => {
         this.element.remove()
       })
     }
-    this.modalPuntero.show()
+    if (this.element.dataset.autoShow === 'true') {
+      this.modalPuntero.show()
+    }
 
     this.element.addEventListener('turbo:frame-render', (ev) => {
       if (ev.detail.fetchResponse.response.ok && ev.target.id === 'modal_content') {

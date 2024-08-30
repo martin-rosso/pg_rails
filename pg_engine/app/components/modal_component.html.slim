@@ -1,5 +1,6 @@
-.modal[class="#{@klass}" tabindex="-1" data-controller="modal"
-       data-remove-on-hide="true" data-turbo-temporary="true"]
+.modal[id="#{@id}" class="#{@klass}" tabindex="-1" data-controller="modal"
+       data-remove-on-hide="#{@remove_on_hide}" data-turbo-temporary="true"
+       data-auto-show="#{@auto_show}"]
   .modal-dialog
     .modal-content
       = content
