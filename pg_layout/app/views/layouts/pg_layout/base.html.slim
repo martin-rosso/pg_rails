@@ -101,13 +101,13 @@ html
                       hacer un container con position absolute para los toasts
             = yield(:filtros)
             = content
-          - unless @no_main_frame
+          - if @no_main_frame
+            = captured_content
+          - else
             / FIXME: rename to main, use a constant
             = turbo_frame_tag current_turbo_frame || 'top',
                 **{ 'data-turbo-action': (turbo_frame? ? nil : :advance) }.compact do
               = captured_content
-          - else
-            = captured_content
 
           div style="width:100%; height: 10em"
           .d-flex.gap-1.justify-content-center.opacity-50 data-controller="theme"
