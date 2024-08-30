@@ -64,11 +64,13 @@ module PgEngine
     def edit_link(text: ' Modificar', klass: 'btn-warning')
       return unless Pundit.policy!(Current.user, object).edit?
 
+      modal = object.class.default_modal
+
       helpers.content_tag :span, rel: :tooltip, title: 'Modificar' do
         helpers.link_to edit_object_url,
                         class: "btn btn-sm #{klass}",
-                        'data-turbo-frame': 'modal_content',
-                        'data-turbo-stream': true do
+                        'data-turbo-frame': modal ? 'modal_content' : '_top',
+                        'data-turbo-stream': modal do
           helpers.content_tag(:span, nil, class: clase_icono('pencil')) + text
         end
       end
@@ -77,11 +79,13 @@ module PgEngine
     def show_link(text: '', klass: 'btn-light')
       return unless Pundit.policy!(Current.user, object).show?
 
+      modal = object.class.default_modal
+
       helpers.content_tag :span, rel: :tooltip, title: 'Ver' do
         helpers.link_to object_url,
                         class: "btn btn-sm #{klass}",
-                        'data-turbo-frame': 'modal_content',
-                        'data-turbo-stream': true do
+                        'data-turbo-frame': modal ? 'modal_content' : '_top',
+                        'data-turbo-stream': modal do
           helpers.content_tag(:span, nil, class: clase_icono('eye-fill')) + text
         end
       end
@@ -101,11 +105,13 @@ module PgEngine
     def new_link(klass: 'btn-warning')
       return unless Pundit.policy!(Current.user, object).new?
 
+      modal = object.class.default_modal
+
       helpers.content_tag :span, rel: :tooltip, title: submit_default_value do
         helpers.link_to(new_object_url,
                         class: "btn btn-sm #{klass}",
-                        'data-turbo-frame': 'modal_content',
-                        'data-turbo-stream': true) do
+                        'data-turbo-frame': modal ? 'modal_content' : '_top',
+                        'data-turbo-stream': modal) do
           helpers.content_tag(:span, nil,
                               class: clase_icono('plus').to_s) + "<span class='d-none d-sm-inline'> #{submit_default_value}</span>".html_safe
         end
