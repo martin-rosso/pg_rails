@@ -379,7 +379,7 @@ module PgEngine
     def render_listing
       total = @collection.count
       current_page = params[:page].presence&.to_i || 1
-      if current_page_size * (current_page - 1) > total
+      if current_page_size * (current_page - 1) >= total
         current_page = (total.to_f / current_page_size).ceil
       end
       @collection = @collection.page(current_page).per(current_page_size)
