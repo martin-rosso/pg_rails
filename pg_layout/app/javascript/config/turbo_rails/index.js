@@ -3,8 +3,9 @@
 
 import './set_consumer'
 import './progress_bar'
-
 import '@hotwired/turbo-rails'
+import { flashMessage } from 'pg_rails/utils'
+import Rollbar from 'rollbar'
 
 // TODO: testear con capybara
 document.addEventListener('turbo:before-cache', () => {
@@ -22,6 +23,25 @@ document.addEventListener('turbo:before-cache', () => {
   })
 })
 
+document.addEventListener('turbo:frame-missing', (ev) => {
+  Rollbar.error('Turbo Frame missing')
+  ev.preventDefault()
+  const html = `
+    <div>
+      <div class="mb-1">
+        Ocurrió algo inesperado
+      </div>
+      Por favor, intentá nuevamente
+      <br>
+      o <a class="text-decoration-underline" href="/contacto" data-turbo="false">dejá un mensaje</a>
+      para que te avisemos
+      <br>
+      cuando el problema esté resuelto 🙏
+    </div>
+  `
+
+  flashMessage(html, 'alert')
+})
 // document.addEventListener('turbo:before-stream-render', function () { console.log('turbo:before-stream-render') })
 // document.addEventListener('turbo:render', function () { console.log('turbo:render') })
 // document.addEventListener('turbo:before-render', function () { console.log('turbo:before-render') })

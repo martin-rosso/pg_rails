@@ -15,7 +15,7 @@ class InternalErrorComponent < BaseComponent
       </div>
       Por favor, intentá nuevamente
       <br>
-      o <a class="text-decoration-underline" href="<%= new_public_mensaje_contacto_path %>">dejá un mensaje</a>
+      o <a class="text-decoration-underline" href="<%= new_public_mensaje_contacto_path %>" data-turbo="false">dejá un mensaje</a>
       para que te avisemos
       <br>
       cuando el problema esté resuelto 🙏
