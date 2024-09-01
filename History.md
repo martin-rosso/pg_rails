@@ -1,4 +1,12 @@
 
+7.6.2 / 2024-09-30
+==================
+
+  * feat: check websocket server in health controller
+  * fix: dont create Account on signup when tenant present
+  * fix(minor): gender locale for devise fields
+  * ci: install only chrome, not firefox
+
 7.6.1 / 2024-09-30
 ==================
 

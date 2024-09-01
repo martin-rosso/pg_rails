@@ -55,6 +55,8 @@ require 'noticed'
 require 'ransack'
 require 'ransack_memory'
 require 'holidays'
+require 'faye/websocket'
+require 'eventmachine'
 
 if Rails.env.local?
   require 'letter_opener'

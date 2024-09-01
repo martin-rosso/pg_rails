@@ -31,6 +31,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'anycable-rails', "~> 1.5.1"
   spec.add_dependency 'anycable-rails-jwt', "~> 0.2.0"
   spec.add_dependency 'cable_ready', "~> 5.0"
+  spec.add_dependency 'faye-websocket', "~> 0.11"
 
   spec.add_dependency 'acts_as_tenant', '~> 1.0'
 
