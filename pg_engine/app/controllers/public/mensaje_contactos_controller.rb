@@ -4,6 +4,16 @@
 
 module Public
   class MensajeContactosController < PublicController
+    prepend_before_action only: :create do
+      rate_limiting(
+        to: 3,
+        within: 1.hour,
+        by: -> { request.remote_ip },
+        with: -> { head :too_many_requests },
+        store: cache_store
+      )
+    end
+
     include PgEngine::Resource
 
     self.clase_modelo = MensajeContacto
