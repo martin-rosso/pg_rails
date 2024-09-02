@@ -28,7 +28,8 @@ html
     meta name="cable-history-timestamp" content="#{Time.now.to_i}"
     = csrf_meta_tags
     = csp_meta_tag
-    = action_cable_with_jwt_meta_tag
+    - if defined? Anycable
+      = action_cable_with_jwt_meta_tag
 
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
     = javascript_include_tag 'application', 'data-turbo-track': 'reload', type: 'module'

@@ -96,7 +96,7 @@ module PgEngine
       @navbar_chevron_class = navbar_expanded ? 'bi-chevron-left' : 'bi-chevron-right'
       @navbar = Navbar.new(Current.user)
 
-      if Rollbar.configuration.enabled && Rails.application.credentials.rollbar.present?
+      if defined?(Rollbar) && Rollbar.configuration.enabled && Rails.application.credentials.rollbar.present?
         @rollbar_token = Rails.application.credentials.rollbar.access_token_client
       end
 

@@ -35,7 +35,9 @@ Rails.application.routes.draw do
     pg_resource(:user_accounts)
     get 'login_as', to: 'users#login_as'
   end
-  ActiveAdmin.routes(self)
+  if defined? ActiveAdmin
+    ActiveAdmin.routes(self)
+  end
 end
 
 #                                       Prefix Verb   URI Pattern                                                                                       Controller#Action
