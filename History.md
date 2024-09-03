@@ -1,4 +1,12 @@
 
+7.4.0 / 2024-09-02
+==================
+
+  * build: dont require faker/factory_bot on production
+  * feat: rate limiting on public controllers
+  * fix: handle turbo:frame-missing event
+  * fix: pagination overflow fixed
+
 7.3.5 / 2024-08-30
 ==================
 
