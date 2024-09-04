@@ -1,0 +1,16 @@
+h1 Tables
+
+table.table
+  tr
+    td = Faker::Lorem.sentence(word_count: 80)
+    td = Faker::Lorem.sentence(word_count: 40)
+
+table.table
+  tr
+    td.column-truncate-30 = Faker::Lorem.sentence(word_count: 80)
+    td.column-truncate-70 = Faker::Lorem.sentence(word_count: 40)
+
+table.table
+  tr
+    td.column-truncate-80 = Faker::Lorem.sentence(word_count: 80)
+    td = Faker::Lorem.sentence(word_count: 4)

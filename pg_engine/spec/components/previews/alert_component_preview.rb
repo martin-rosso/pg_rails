@@ -11,4 +11,6 @@ class AlertComponentPreview < ViewComponent::Preview
   def tooltips; end
 
   def list_group; end
+
+  def tables; end
 end

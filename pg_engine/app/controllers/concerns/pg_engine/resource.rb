@@ -21,6 +21,7 @@ module PgEngine
       clazz.helper_method :current_page_size
       clazz.helper_method :show_filters?
       clazz.helper_method :available_page_sizes
+      clazz.helper_method :column_options_for
 
       clazz.before_action do
         # TODO: quitar esto, que se use el attr_accessor
@@ -64,6 +65,10 @@ module PgEngine
       clazz.layout :set_layout
     end
     # rubocop:enable Metrics/PerceivedComplexity
+
+    def column_options_for(_object, _attribute)
+      { class: 'text-nowrap' }
+    end
 
     def referred_by?(object)
       url_for(object.decorate.target_object) == request.referer

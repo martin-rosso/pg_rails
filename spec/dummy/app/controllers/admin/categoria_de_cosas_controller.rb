@@ -11,6 +11,14 @@ module Admin
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
+    def column_options_for(object, attribute)
+      if attribute == :nombre_f
+        { class: 'column-truncate-80', title: object.send(attribute) }
+      else
+        super
+      end
+    end
+
     private
 
     def default_page_size

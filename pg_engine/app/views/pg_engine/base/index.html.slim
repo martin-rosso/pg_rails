@@ -31,7 +31,7 @@ div
             - object = object.decorate
             tr id="#{dom_id(object)}"
               - atributos_para_listar.each do |att, _sort_field|
-                td.text-nowrap = object.send(att)
+                = column_for object, att
               td.text-nowrap.text-end.ps-5
                 .actions-wrapper
                   = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
