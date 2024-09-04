@@ -94,10 +94,10 @@ module PgEngine
     end
   end
 
-  def self.redis_url
+  def self.redis_url(host: '127.0.0.1', port: '6379')
     env_value = ENV.fetch('TEST_ENV_NUMBER', nil)
     db = (env_value.nil? ? 1 : (env_value.presence || 1)).to_i - 1
-    "redis://127.0.0.1:6379/#{db}"
+    "redis://#{host}:#{port}/#{db}"
   end
 
   GOOGLE_FONTS_URL =
