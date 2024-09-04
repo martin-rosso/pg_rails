@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    pg_rails (7.4.0)
+    pg_rails (7.4.1)
       activeadmin (~> 3.2.2)
       anycable (= 1.5.1)
       anycable-rails (~> 1.5.1)

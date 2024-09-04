@@ -35,6 +35,9 @@ File.write('pg_rails/lib/version.rb', newcontent)
 
 system! 'bundle'
 
-system! "git release #{newversion} --no-empty-commit -c "
+system! "git changelog"
+system! "git commit --amend --no-edit -a"
+
+system! "git release #{newversion} --no-empty-commit"
 
 # system! 'bundle exec rake release_all'
