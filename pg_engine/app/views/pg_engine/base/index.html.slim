@@ -22,7 +22,7 @@ div
         thead.table-light
           tr
             - atributos_para_listar.each do |att|
-              th = encabezado att, ordenable: true
+              th.text-nowrap style="font-size: 0.8em" = encabezado att, ordenable: true
             th.text-end
               - unless @export_link == false
                 = @clase_modelo.new.decorate.export_link(request.url)
