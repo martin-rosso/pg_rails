@@ -26,15 +26,16 @@ module Admin
     end
 
     def atributos_permitidos
-      %i[nombre tipo fecha tiempo].push(cosas_attributes: %i[id nombre tipo _destroy])
+      %i[account_id nombre tipo fecha tiempo].push(cosas_attributes: %i[id nombre tipo _destroy])
     end
 
     def atributos_para_buscar
-      %i[nombre tipo_in fecha tiempo]
+      %i[account nombre tipo_in fecha tiempo]
     end
 
     def atributos_para_listar
       [
+        [:account, %i[account_nombre]],
         :nombre_f,
         [:tipo_text, %i[tipo fecha]],
         :cosas_f,

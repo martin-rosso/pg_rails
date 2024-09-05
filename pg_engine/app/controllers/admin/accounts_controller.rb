@@ -17,19 +17,19 @@ module Admin
     private
 
     def atributos_permitidos
-      %i[plan nombre]
+      %i[plan nombre domain subdomain]
     end
 
     def atributos_para_buscar
-      %i[plan nombre]
+      atributos_permitidos
     end
 
     def atributos_para_listar
-      %i[plan nombre]
+      atributos_permitidos
     end
 
     def atributos_para_mostrar
-      %i[plan nombre]
+      atributos_permitidos
     end
   end
 end

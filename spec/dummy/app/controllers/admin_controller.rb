@@ -14,9 +14,7 @@ class AdminController < ApplicationController
 
   around_action :set_without_tenant
 
-  def set_without_tenant
-    ActsAsTenant.without_tenant do
-      yield
-    end
+  def set_without_tenant(&)
+    ActsAsTenant.without_tenant(&)
   end
 end

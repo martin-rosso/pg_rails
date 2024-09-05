@@ -27,4 +27,12 @@ class CosaPolicy < ApplicationPolicy
   # def acceso_total?
   #   user.developer?
   # end
+
+  def base_access_to_record?
+    true
+  end
+
+  def base_access_to_collection?
+    true
+  end
 end
