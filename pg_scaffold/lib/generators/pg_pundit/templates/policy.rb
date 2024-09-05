@@ -31,7 +31,7 @@ class <%= class_name %>Policy < ApplicationPolicy
   # end
 
   # def base_access_to_record?
-  #   base_access_to_collection? && record.account == Current.account
+  #   base_access_to_collection? && record.account == ActsAsTenant.current_tenant
   # end
 
   # def base_access_to_collection?

@@ -32,4 +32,8 @@ class Account < ApplicationRecord
   enumerize :plan, in: { completar: 0, los: 1, valores: 2 }
 
   validates :plan, :nombre, presence: true
+
+  def to_s
+    nombre
+  end
 end

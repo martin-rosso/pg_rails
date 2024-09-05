@@ -37,7 +37,18 @@ class User < ApplicationRecord
   include Discard::Model
 
   has_many :user_accounts
+
+  # Hace falta?
   has_many :accounts, through: :user_accounts
+
+  # Para qué tener el tenant?
+  # * Para el login en custom domains
+  # * Para el listado de users en de admins de accounts
+  #     no, para ese caso tiene que usar las user_accounts que siempre van tenanteadas
+  # attr_accessor :account_id
+  # acts_as_tenant :account, through: :user_accounts, optional: true
+  # FIXME: poner la scope a mano
+
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
   validates :nombre, :apellido, presence: true
@@ -63,8 +74,11 @@ class User < ApplicationRecord
 
   def create_account
     account = Account.create(nombre: email, plan: 0)
-    ua = user_accounts.create(account:)
-    raise(ActiveRecord::Rollback) unless ua.persisted?
+    ua = nil
+    ActsAsTenant.with_tenant(account) do
+      ua = user_accounts.create
+    end
+    raise(ActiveRecord::Rollback) unless ua&.persisted?
   end
 
   def password_required?
@@ -87,9 +101,20 @@ class User < ApplicationRecord
 
   class Error < PgEngine::Error; end
 
-  def current_account
+  def default_account
+    # FIXME: hacer el account switcher
     raise Error, 'El usuario debe tener cuenta' if accounts.empty?
 
-    accounts.first
+    user_accounts.first.account
+    # throw :warden, scope: :user, message: :user_not_belongs_to_account
+  end
+
+  # FIXME: deprecar
+  def current_account
+    ActsAsTenant.current_tenant
+    # account
+    # raise Error, 'El usuario debe tener cuenta' if accounts.empty?
+
+    # accounts.first
   end
 end

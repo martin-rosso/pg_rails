@@ -2,6 +2,7 @@
 
 div style="max-width: 32em" data-controller="pg_form"
   = pg_form_for(@categoria_de_cosa || object) do |f|
+    = f.pg_associable :account
     = f.input :nombre
     = f.input :fecha, date_selector: true
     = f.input :tiempo, html5: true

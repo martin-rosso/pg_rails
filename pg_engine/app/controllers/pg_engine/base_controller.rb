@@ -3,11 +3,25 @@
 module PgEngine
   # rubocop:disable Rails/ApplicationController
   class BaseController < ActionController::Base
+    set_current_tenant_by_subdomain_or_domain(:account, :subdomain, :domain)
+    set_current_tenant_through_filter
+
     before_action do
+      Current.user = current_user
+
+      if Current.user.present? && ActsAsTenant.current_tenant.blank?
+        # FIXME: ensure is the global domain
+        # FIXME: ensure has only one account
+        account = nil
+        ActsAsTenant.without_tenant do
+          account = Current.user.default_account
+        end
+        set_current_tenant(account)
+      end
       Current.controller = self
     end
-
     # rubocop:enable Rails/ApplicationController
+
     include Pundit::Authorization
     include PrintHelper
     include PostgresHelper
@@ -61,10 +75,6 @@ module PgEngine
     # Para cachear el html y guardarlo en public/500.html
     def internal_error_but_with_status200
       render_my_component(InternalErrorComponent.new, :ok)
-    end
-
-    before_action do
-      Current.user = current_user
     end
 
     helper_method :dev_user_or_env?

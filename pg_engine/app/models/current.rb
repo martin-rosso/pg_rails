@@ -4,9 +4,14 @@ class Current < ActiveSupport::CurrentAttributes
 
   # resets { Time.zone = nil }
 
-  def user=(user)
-    super
-    self.account = user&.current_account
-    # Time.zone    = user.time_zone
+  # def user=(user)
+  #   super
+  #
+  #   Time.zone    = user.time_zone
+  # end
+
+  def account
+    # FIXME: deprecar
+    ActsAsTenant.current_tenant
   end
 end

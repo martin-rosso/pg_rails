@@ -12,8 +12,6 @@ module Frontend
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
-    add_breadcrumb CategoriaDeCosa.nombre_plural, :frontend_categoria_de_cosas_path
-
     private
 
     def atributos_permitidos

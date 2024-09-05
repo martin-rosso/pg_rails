@@ -6,7 +6,7 @@ require 'rainbow'
 # TODO: loguear paralelamente a otro file
 
 def pg_err(*args)
-  if ENV.fetch('RAISE_ERRORS', false)
+  if ENV.fetch('RAISE_ERRORS', false) == '1'
     # :nocov:
     raise args.first if args.first.is_a?(Exception)
 

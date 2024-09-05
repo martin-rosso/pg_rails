@@ -25,7 +25,7 @@ class UserAccount < ApplicationRecord
   audited
 
   belongs_to :user
-  belongs_to :account
+  acts_as_tenant :account
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

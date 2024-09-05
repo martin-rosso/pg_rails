@@ -130,7 +130,7 @@ RSpec.describe Admin::AccountsController do
 
       it 'redirects to the created account' do
         post :create, params: { account: valid_attributes }
-        expect(response).to redirect_to(Account.last.decorate.target_object)
+        expect(response).to redirect_to([:admin, Account.last])
       end
     end
 
@@ -163,7 +163,7 @@ RSpec.describe Admin::AccountsController do
       it 'redirects to the account' do
         account = create(:account)
         put :update, params: { id: account.to_param, account: valid_attributes }
-        expect(response).to redirect_to(account.decorate.target_object)
+        expect(response).to redirect_to([:admin, Account.last])
       end
     end
 

@@ -12,7 +12,6 @@ module PgEngine
             object.decorator_class <= PgEngine::BaseRecordDecorator
         object = object.decorate.target_object
       end
-      # byebug
       options = args.extract_options!
 
       options[:builder] = PgFormBuilder

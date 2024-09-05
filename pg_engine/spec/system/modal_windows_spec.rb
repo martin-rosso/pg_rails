@@ -9,7 +9,7 @@ require 'rails_helper'
 # DRIVER=selenium rspec
 describe 'Modal windows' do
   subject(:visitar) do
-    visit '/admin/cosas'
+    visit '/a/cosas'
   end
 
   let(:logged_user) { create :user, :developer }
@@ -38,7 +38,7 @@ describe 'Modal windows' do
     let!(:cosa) { create :cosa, categoria_de_cosa: }
 
     it do
-      visit '/admin/cosas/' + cosa.to_param
+      visit '/a/cosas/' + cosa.to_param
       click_on 'Ver categoría'
       expect(page).to have_css '.modal', text: categoria_de_cosa.nombre
     end
@@ -48,7 +48,7 @@ describe 'Modal windows' do
     let!(:cosa) { create :cosa, categoria_de_cosa: }
 
     it do
-      visit '/admin/cosas/' + cosa.to_param
+      visit '/a/cosas/' + cosa.to_param
       click_on 'Modificar'
       fill_in 'Nombre', with: ''
       find('.modal input[type=submit]').click
@@ -63,7 +63,7 @@ describe 'Modal windows' do
     before { create :cosa, categoria_de_cosa: }
 
     it do
-      visit '/admin/cosas'
+      visit '/a/cosas'
       find('span[title=Ver] a').click
       accept_confirm do
         find('.modal span[title=Eliminar] a').click
@@ -77,7 +77,7 @@ describe 'Modal windows' do
       end
 
       it do
-        visit '/admin/cosas'
+        visit '/a/cosas'
         find('span[title=Ver] a').click
         accept_confirm do
           find('.modal span[title=Eliminar] a').click

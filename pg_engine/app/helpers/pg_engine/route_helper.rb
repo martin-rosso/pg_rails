@@ -3,21 +3,25 @@
 module PgEngine
   module RouteHelper
     class NamespaceDeductor
-      def self.request(context)
+      def self.controller(context)
         if context.respond_to?(:request) && context.request
           # Controllers
-          context.request
+          context
         elsif context.respond_to?(:helpers) && context.helpers
           # Decorators
-          context.helpers.request
+          context.helpers.controller
         elsif context.respond_to?(:template) && context.template
           # FormBuilders
-          context.template.request
+          context.template.controller
         end
       end
 
       def self.current_route(context)
-        req = request(context)
+        controller = controller(context)
+        # Sólo si hay un controller de verdá
+        return if controller.instance_of? ApplicationController
+
+        req = controller.request
         Rails.application.routes.recognize_path(req.path, method: req.env['REQUEST_METHOD'])
       end
 
@@ -25,6 +29,8 @@ module PgEngine
         return Current.namespace if Current.namespace.present?
 
         route = current_route(context)
+        return if route.blank?
+
         parts = route[:controller].split('/')
         return unless parts.length > 1
 

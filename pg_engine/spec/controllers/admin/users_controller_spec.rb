@@ -104,7 +104,7 @@ RSpec.describe Admin::UsersController do
 
       it 'redirects to the created user' do
         post :create, params: { user: valid_attributes }
-        expect(response).to redirect_to(User.last.decorate.target_object)
+        expect(response).to redirect_to([:admin, User.last])
       end
     end
 
@@ -137,7 +137,7 @@ RSpec.describe Admin::UsersController do
       it 'redirects to the user' do
         user = create(:user)
         put :update, params: { id: user.to_param, user: valid_attributes }
-        expect(response).to redirect_to(user.decorate.target_object)
+        expect(response).to redirect_to([:admin, user.decorate])
       end
     end
 

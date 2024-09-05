@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/mrosso10/acts_as_tenant.git
+  revision: 9424e2d9706ee1fd257b20da63217e83258d8279
+  branch: tenantable
+  specs:
+    acts_as_tenant (1.0.1)
+      rails (>= 6.0)
+
+GIT
   remote: https://github.com/mrosso10/ransack_memory.git
   revision: 2f0b72411da69b767a0822f222c9bba5684d883a
   branch: support-turbo-frames
@@ -140,8 +148,6 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
-    acts_as_tenant (1.0.1)
-      rails (>= 6.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     annotate (3.2.0)
@@ -621,6 +627,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  acts_as_tenant!
   annotate (~> 3.2.0)
   bootsnap
   brakeman (~> 6.1)

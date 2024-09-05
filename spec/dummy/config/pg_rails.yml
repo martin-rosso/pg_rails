@@ -25,11 +25,20 @@ sidebar.signed_in:
     name: Users
     path: admin_users_path
   -
+    name: Accounts
+    path: admin_accounts_path
+  -
+    name: User Accounts
+    path: admin_user_accounts_path
+  -
     name: Categorias
     path: admin_categoria_de_cosas_path
   -
     name: Cosas
     path: admin_cosas_path
+  -
+    name: Categorias front
+    path: frontend_categoria_de_cosas_path
   -
     name: Cosas front
     path: frontend_cosas_path

@@ -28,7 +28,7 @@ describe 'Filtros de cosas' do
     let!(:otro_tipo) { Cosa.tipo.values.reject { _1 == cosa.tipo }.sample }
     let!(:otra_cosa) { create :cosa, tipo: otro_tipo }
     let(:controller_class) { Admin::CosasController }
-    let(:path) { '/admin/cosas' }
+    let(:path) { '/a/cosas' }
 
     describe 'default sort' do
       before do
@@ -148,7 +148,7 @@ describe 'Filtros de cosas' do
 
   describe 'Categorías' do
     let(:controller_class) { Admin::CategoriaDeCosasController }
-    let(:path) { '/admin/categoria_de_cosas' }
+    let(:path) { '/a/categoria_de_cosas' }
     let(:search_fields) { %i[fecha] }
 
     let!(:categoria) { create :categoria_de_cosa }
