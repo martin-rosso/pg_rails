@@ -32,6 +32,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'anycable-rails-jwt', "~> 0.2.0"
   spec.add_dependency 'cable_ready', "~> 5.0"
 
+  spec.add_dependency 'acts_as_tenant', '~> 1.0'
+
   spec.add_dependency 'caxlsx_rails', "~> 0.6.3"
 
   spec.add_dependency 'draper', "~> 4.0.2"

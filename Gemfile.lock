@@ -10,6 +10,7 @@ PATH
   specs:
     pg_rails (7.4.3)
       activeadmin (~> 3.2.2)
+      acts_as_tenant (~> 1.0)
       anycable (= 1.5.1)
       anycable-rails (~> 1.5.1)
       anycable-rails-jwt (~> 0.2.0)
@@ -139,6 +140,8 @@ GEM
       minitest (>= 5.1)
       securerandom (>= 0.3)
       tzinfo (~> 2.0, >= 2.0.5)
+    acts_as_tenant (1.0.1)
+      rails (>= 6.0)
     addressable (2.8.7)
       public_suffix (>= 2.0.2, < 7.0)
     annotate (3.2.0)
