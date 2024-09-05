@@ -3,6 +3,7 @@
 require 'rainbow'
 
 # TODO: poder pasar blocks
+# TODO: loguear paralelamente a otro file
 
 def pg_err(*args)
   if ENV.fetch('RAISE_ERRORS', false)

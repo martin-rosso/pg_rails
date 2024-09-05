@@ -90,6 +90,7 @@ module PgEngine
     def nested_record
       return if nested_id.blank?
 
+      # FIXME: handle not found
       nested_class.find(nested_id)
     end
 
