@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
+ActiveRecord::Schema[7.2].define(version: 2024_09_05_155334) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -24,6 +24,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
     t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "domain"
+    t.string "subdomain"
     t.index ["actualizado_por_id"], name: "index_accounts_on_actualizado_por_id"
     t.index ["creado_por_id"], name: "index_accounts_on_creado_por_id"
   end
@@ -95,6 +97,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
     t.string "remote_address"
     t.string "request_uuid"
     t.datetime "created_at"
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_audits_on_account_id"
     t.index ["associated_type", "associated_id"], name: "associated_index"
     t.index ["auditable_type", "auditable_id", "version"], name: "auditable_index"
     t.index ["created_at"], name: "index_audits_on_created_at"
@@ -112,6 +116,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
     t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_categoria_de_cosas_on_account_id"
     t.index ["actualizado_por_id"], name: "index_categoria_de_cosas_on_actualizado_por_id"
     t.index ["creado_por_id"], name: "index_categoria_de_cosas_on_creado_por_id"
   end
@@ -125,6 +131,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
     t.datetime "discarded_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_cosas_on_account_id"
     t.index ["actualizado_por_id"], name: "index_cosas_on_actualizado_por_id"
     t.index ["categoria_de_cosa_id"], name: "index_cosas_on_categoria_de_cosa_id"
     t.index ["creado_por_id"], name: "index_cosas_on_creado_por_id"
@@ -140,6 +148,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
     t.string "message_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_email_logs_on_account_id"
     t.index ["email_id"], name: "index_email_logs_on_email_id"
   end
 
@@ -164,6 +174,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
     t.bigint "actualizado_por_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "account_id"
+    t.index ["account_id"], name: "index_emails_on_account_id"
     t.index ["actualizado_por_id"], name: "index_emails_on_actualizado_por_id"
     t.index ["associated_type", "associated_id"], name: "index_emails_on_associated"
     t.index ["creado_por_id"], name: "index_emails_on_creado_por_id"
@@ -250,12 +262,17 @@ ActiveRecord::Schema[7.1].define(version: 2024_06_14_131655) do
   add_foreign_key "accounts", "users", column: "creado_por_id"
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "audits", "accounts"
+  add_foreign_key "categoria_de_cosas", "accounts"
   add_foreign_key "categoria_de_cosas", "users", column: "actualizado_por_id"
   add_foreign_key "categoria_de_cosas", "users", column: "creado_por_id"
+  add_foreign_key "cosas", "accounts"
   add_foreign_key "cosas", "categoria_de_cosas"
   add_foreign_key "cosas", "users", column: "actualizado_por_id"
   add_foreign_key "cosas", "users", column: "creado_por_id"
+  add_foreign_key "email_logs", "accounts"
   add_foreign_key "email_logs", "emails"
+  add_foreign_key "emails", "accounts"
   add_foreign_key "emails", "users", column: "actualizado_por_id"
   add_foreign_key "emails", "users", column: "creado_por_id"
   add_foreign_key "user_accounts", "accounts"

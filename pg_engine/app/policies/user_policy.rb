@@ -6,7 +6,9 @@ class UserPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     def resolve
       if policy.acceso_total?
-        if Current.account.present?
+        if ActsAsTenant.unscoped?
+          scope.all
+        elsif Current.account.present?
           scope.joins(:user_accounts).where('user_accounts.account_id': Current.account.id)
         else
           scope.none

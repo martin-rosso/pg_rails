@@ -28,6 +28,7 @@
 #
 
 class Cosa < ApplicationRecord
+  acts_as_tenant :account
   audited
   include Discard::Model
 
