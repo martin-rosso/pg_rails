@@ -1,15 +1,17 @@
 GIT
+  remote: https://github.com/mrosso10/acts_as_tenant.git
+  revision: 9424e2d9706ee1fd257b20da63217e83258d8279
+  branch: tenantable
+  specs:
+    acts_as_tenant (1.0.1)
+      rails (>= 6.0)
+
+GIT
   remote: https://github.com/mrosso10/ransack_memory.git
   revision: 2f0b72411da69b767a0822f222c9bba5684d883a
   branch: support-turbo-frames
   specs:
     ransack_memory (0.1.0)
-
-PATH
-  remote: ../acts_as_tenant
-  specs:
-    acts_as_tenant (1.0.1)
-      rails (>= 6.0)
 
 PATH
   remote: .

@@ -1,16 +1,17 @@
 ActsAsTenant.configure do |config|
-  config.require_tenant = lambda do |options|
-    if options[:scope] == User && true # global_domain?
-      # FIXME: el global domain
-      # tal vez en algunos casos de devise sí requeriría el tenant?
-      #   creería que no, el único lugar en donde se debería queriar
-      #   User es en devise y es para obtener el current_user
-      #   hay que ver luego qué pasa con invitable
-      false
-    else
-      true
-    end
-  end
+  config.require_tenant = true
+  # config.require_tenant = lambda do |options|
+  #   # if options[:scope] == User && true # global_domain?
+  #   #   # FIXME: el global domain
+  #   #   # tal vez en algunos casos de devise sí requeriría el tenant?
+  #   #   #   creería que no, el único lugar en donde se debería queriar
+  #   #   #   User es en devise y es para obtener el current_user
+  #   #   #   hay que ver luego qué pasa con invitable
+  #   #   false
+  #   # else
+  #   #   true
+  #   # end
+  # end
 
   # Customize the query for loading the tenant in background jobs
   # config.job_scope = ->{ all }
