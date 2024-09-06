@@ -1,28 +1,37 @@
 ActsAsTenant.configure do |config|
-  config.require_tenant = true
+  config.require_tenant = lambda do |options|
+    if options[:scope] == User && true # global_domain?
+      # tal vez en algunos casos de devise sí requeriría el tenant?
+      #   creería que no, el único lugar en donde se debería queriar 
+      #   User es en devise y es para obtener el current_user
+      #   hay que ver luego qué pasa con invitable
+      false
+    else
+      true
+    end
+  end
 
   # Customize the query for loading the tenant in background jobs
   # config.job_scope = ->{ all }
 end
 
-Warden::Manager.after_set_user do |record, warden, options|
-  scope = options[:scope]
-  env   = warden.request.env
-
-  if record && warden.authenticated?(scope) && !ActsAsTenant.unscoped?
-
-    proxy = Devise::Hooks::Proxy.new(warden)
-
-    if ActsAsTenant.current_tenant.blank?
-      # Devise.sign_out_all_scopes ? proxy.sign_out : proxy.sign_out(scope)
-      # throw :warden, scope: scope, message: :account_not_set
-      # FIXME: ensure is the global domain
-
-    elsif record.user_accounts
-                .where(account_id: ActsAsTenant.current_tenant.id).none?
-      Devise.sign_out_all_scopes ? proxy.sign_out : proxy.sign_out(scope)
-      throw :warden, scope: scope, message: :user_not_belongs_to_account
-    end
+SET_TENANT_PROC = lambda do
+  if defined?(Rails::Console)
+    puts "> ActsAsTenant.current_tenant = Account.first"
+    ActsAsTenant.current_tenant = Account.first
   end
 end
 
+Rails.application.configure do
+  if Rails.env.development?
+    # Set the tenant to the first account in development on load
+    config.after_initialize do
+      SET_TENANT_PROC.call
+    end
+
+    # Reset the tenant after calling 'reload!' in the console
+    ActiveSupport::Reloader.to_complete do
+      SET_TENANT_PROC.call
+    end
+  end
+end

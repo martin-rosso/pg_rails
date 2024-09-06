@@ -8,8 +8,9 @@ class UserPolicy < ApplicationPolicy
       if policy.acceso_total?
         if ActsAsTenant.unscoped?
           scope.all
-        elsif Current.account.present?
-          scope.joins(:user_accounts).where('user_accounts.account_id': Current.account.id)
+        elsif ActsAsTenant.current_tenant.present?
+          # FIXME: remove, ya lo debería hacer acts_as_tenant
+          scope.joins(:user_accounts).where('user_accounts.account_id': ActsAsTenant.current_tenant.id)
         else
           scope.none
         end

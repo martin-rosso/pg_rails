@@ -1,13 +1,16 @@
 require "active_support/core_ext/integer/time"
+require_dependency 'acts_as_tenant/test_tenant_middleware'
 
 # The test environment is used exclusively to run your application's
 # test suite. You never need to work with it otherwise. Remember that
 # your test database is "scratch space" for the test suite and is wiped
 # and recreated between test runs. Don't rely on the data there!
 
+
 Rails.application.configure do
-  config.middleware.insert_before 0, Capybara::Lockstep::Middleware
   # Settings specified here will take precedence over those in config/application.rb.
+  config.middleware.insert_before 0, Capybara::Lockstep::Middleware
+  config.middleware.use ActsAsTenant::TestTenantMiddleware
 
   config.after_initialize do
     # Don't forget to configure URL

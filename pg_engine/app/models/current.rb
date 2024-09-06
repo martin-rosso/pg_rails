@@ -6,7 +6,11 @@ class Current < ActiveSupport::CurrentAttributes
 
   def user=(user)
     super
-    self.account = user&.current_account
     # Time.zone    = user.time_zone
+  end
+
+  def account
+    # FIXME: deprecar
+    ActsAsTenant.current_tenant
   end
 end
