@@ -4,7 +4,7 @@ div style="max-width: 52em" data-controller="cosa pg_form"
   = pg_form_for(@cosa || object) do |f|
     = f.input :nombre
     = f.input :tipo
-    = f.pg_associable :creado_por
+    = f.association :creado_por
     .mb-3(class="#{'is-invalid' if @cosa.errors[:rico].any? }")
       = f.label :rico, class: 'form-label'
       = f.rich_text_area :rico

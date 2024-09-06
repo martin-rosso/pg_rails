@@ -34,8 +34,10 @@ describe 'Al Registrarse' do
         check 'user_accept_terms'
       end
 
+      pending 'expect new account created also'
+
       it 'guarda el user' do
-        expect { subject }.to change(User, :count).by(1)
+        expect { subject }.to change(User.unscoped, :count).by(1)
         expect(page).to have_text('Te enviamos un correo electrónico con instrucciones')
       end
     end

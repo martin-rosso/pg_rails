@@ -5,6 +5,7 @@ div style="max-width: 22em"
     = f.input :nombre
     = f.input :tipo
     = f.pg_associable :categoria_de_cosa
+    = f.association :creado_por
     / = f.association :categoria_de_cosa
     .mt-2
     = f.button :submit

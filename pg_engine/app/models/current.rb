@@ -10,8 +10,9 @@ class Current < ActiveSupport::CurrentAttributes
   #   Time.zone    = user.time_zone
   # end
 
+  deprecate :account, deprecator: PgEngine.deprecator
+
   def account
-    # FIXME: deprecar
     ActsAsTenant.current_tenant
   end
 end

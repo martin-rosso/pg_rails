@@ -17,7 +17,6 @@ describe 'Associable' do
     find('.cosa_categoria_de_cosa input[type=text]').click
     expect(page).to have_text :all, 'Nuevo'
     find('.cosa_categoria_de_cosa .list-group-item').click
-    # FIXME: ver por qué hay 2 accounts
     select Account.first.to_s
     fill_in 'categoria_de_cosa_nombre', with: 'la categoría'
     select 'Completar', from: 'categoria_de_cosa_tipo'

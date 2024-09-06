@@ -123,7 +123,6 @@ RSpec.describe Frontend::CategoriaDeCosasController do
 
       it 'redirects to the created categoria_de_cosa' do
         post :create, params: { categoria_de_cosa: valid_attributes }
-        # FIXME: ver que en el scaffold se esté generando así
         expect(response).to redirect_to([:frontend, CategoriaDeCosa.last])
       end
     end

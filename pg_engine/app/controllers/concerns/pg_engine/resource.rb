@@ -90,8 +90,10 @@ module PgEngine
     def nested_record
       return if nested_id.blank?
 
-      # FIXME: handle not found
       nested_class.find(nested_id)
+    rescue ActiveRecord::RecordNotFound => e
+      pg_warn(e)
+      raise PgEngine::PageNotFoundError
     end
 
     def accepts_turbo_stream?

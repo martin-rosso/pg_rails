@@ -18,6 +18,7 @@ module Admin
 
     def create
       @user.skip_confirmation!
+      @user.orphan = true
 
       pg_respond_create
     end

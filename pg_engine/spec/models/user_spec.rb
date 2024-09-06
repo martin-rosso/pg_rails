@@ -12,9 +12,7 @@ RSpec.describe User do
   end
 
   it do
-    ActsAsTenant.without_tenant do
-      expect(user.default_account).to be_present
-    end
+    expect(user.default_account).to be_present
   end
 
   context 'si es orphan' do
@@ -30,6 +28,13 @@ RSpec.describe User do
   end
 
   context 'Si falla la creación de cuenta, que rollbackee la transaction de create user' do
+    # rubocop:disable Lint/SuppressedException
+    subject do
+      user.save
+    rescue User::Error
+    end
+    # rubocop:enable Lint/SuppressedException
+
     let(:user) do
       build(:user)
     end
@@ -43,11 +48,11 @@ RSpec.describe User do
     end
 
     it do
-      expect { user.save }.not_to change(described_class, :count)
+      expect { subject }.not_to change(described_class, :count)
     end
 
     it do
-      user.save
+      subject
       expect(user).not_to be_persisted
     end
   end

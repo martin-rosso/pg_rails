@@ -41,13 +41,17 @@ class User < ApplicationRecord
   # Hace falta?
   has_many :accounts, through: :user_accounts
 
-  # Para qué tener el tenant?
-  # * Para el login en custom domains
-  # * Para el listado de users en de admins de accounts
-  #     no, para ese caso tiene que usar las user_accounts que siempre van tenanteadas
-  # attr_accessor :account_id
-  # acts_as_tenant :account, through: :user_accounts, optional: true
-  # FIXME: poner la scope a mano
+  default_scope lambda {
+    if ActsAsTenant.current_tenant.present?
+      joins(:user_accounts).where('user_accounts.account_id': ActsAsTenant.current_tenant.id)
+    else
+      raise ActsAsTenant::Errors::NoTenantSet unless Current.user.blank? || ActsAsTenant.unscoped?
+
+      # Aún no autenticó devise o es el admin
+      all
+
+    end
+  }
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
@@ -68,17 +72,27 @@ class User < ApplicationRecord
   attr_accessor :orphan
 
   after_create do
-    # TODO: si fue invitado, sumar a la account del invitador
     create_account unless orphan
   end
 
   def create_account
-    account = Account.create(nombre: email, plan: 0)
-    ua = nil
-    ActsAsTenant.with_tenant(account) do
-      ua = user_accounts.create
-    end
-    raise(ActiveRecord::Rollback) unless ua&.persisted?
+    # rubocop:disable Rails/Presence
+    account =
+      if ActsAsTenant.current_tenant.present?
+        # FIXME: raise PgEngine::Error unless invited
+        ActsAsTenant.current_tenant
+      else
+        Account.create(nombre: email, plan: 0)
+      end
+    # rubocop:enable Rails/Presence
+
+    # Es problemático por las validaciones que hace automáticamente acts_as_tenant
+    # sobre el belongs_to :user de UserAccount
+    # ActsAsTenant.with_tenant(account) do
+
+    ua = user_accounts.create(account:)
+
+    raise(Error, 'no se pudo crear la cuenta') unless ua&.persisted?
   end
 
   def password_required?
@@ -102,19 +116,16 @@ class User < ApplicationRecord
   class Error < PgEngine::Error; end
 
   def default_account
-    # FIXME: hacer el account switcher
+    # FIXME!: hacer el account switcher
     raise Error, 'El usuario debe tener cuenta' if accounts.empty?
 
     user_accounts.first.account
     # throw :warden, scope: :user, message: :user_not_belongs_to_account
   end
 
-  # FIXME: deprecar
+  deprecate :current_account, deprecator: PgEngine.deprecator
+
   def current_account
     ActsAsTenant.current_tenant
-    # account
-    # raise Error, 'El usuario debe tener cuenta' if accounts.empty?
-
-    # accounts.first
   end
 end

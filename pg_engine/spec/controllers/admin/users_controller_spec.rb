@@ -99,12 +99,18 @@ RSpec.describe Admin::UsersController do
       it 'creates a new User' do
         expect do
           post :create, params: { user: valid_attributes }
-        end.to change(User, :count).by(1)
+        end.to change(User.unscoped, :count).by(1)
+      end
+
+      it 'dont creates a new account' do
+        expect do
+          post :create, params: { user: valid_attributes }
+        end.not_to change(Account.unscoped, :count)
       end
 
       it 'redirects to the created user' do
         post :create, params: { user: valid_attributes }
-        expect(response).to redirect_to([:admin, User.last])
+        expect(response).to redirect_to([:admin, User.unscoped.last])
       end
     end
 

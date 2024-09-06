@@ -7,6 +7,8 @@ module Frontend
     include PgEngine::Resource
 
     self.clase_modelo = Cosa
+    self.nested_class = CategoriaDeCosa
+    self.nested_key = :categoria_de_cosa_id
 
     before_action(only: :index) { authorize Cosa }
 

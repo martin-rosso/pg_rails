@@ -64,7 +64,8 @@ module PgEngine
       @filtros[campo][:scope_asociacion] = block
     end
 
-    # FIXME: deprecar
+    deprecate :filtrar, deprecator: PgEngine.deprecator
+
     def filtrar(query, parametros = nil)
       parametros_controller if parametros.nil?
 

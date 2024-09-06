@@ -3,7 +3,9 @@ include PgEngine::RouteHelpers
 Rails.application.routes.draw do
   namespace :frontend, path: 'u' do
     pg_resource(:cosas)
-    pg_resource(:categoria_de_cosas)
+    pg_resource(:categoria_de_cosas) do
+      pg_resource(:cosas)
+    end
   end
   namespace :admin, path: 'a' do
     pg_resource(:cosas)

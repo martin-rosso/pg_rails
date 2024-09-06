@@ -3,24 +3,43 @@
 module PgEngine
   # rubocop:disable Rails/ApplicationController
   class BaseController < ActionController::Base
+    # Importante que esta línea esté al principio
+    protect_from_forgery with: :exception
+
     set_current_tenant_by_subdomain_or_domain(:account, :subdomain, :domain)
     set_current_tenant_through_filter
 
     before_action do
       Current.user = current_user
-
-      if Current.user.present? && ActsAsTenant.current_tenant.blank?
-        # FIXME: ensure is the global domain
-        # FIXME: ensure has only one account
-        account = nil
-        ActsAsTenant.without_tenant do
-          account = Current.user.default_account
-        end
-        set_current_tenant(account)
-      end
       Current.controller = self
+
+      if ActsAsTenant.current_tenant.blank? && !global_domain?
+        raise ActsAsTenant::Errors::NoTenantSet
+      end
+
+      if Current.user.present?
+        if ActsAsTenant.current_tenant.present?
+          unless Current.user.user_accounts.exists?(account: ActsAsTenant.current_tenant)
+            sign_out(Current.user)
+            throw :warden, scope: :user, message: :invalid
+          end
+
+        else
+          account = nil
+          ActsAsTenant.without_tenant do
+            account = Current.user.default_account
+          end
+          set_current_tenant(account)
+        end
+      end
     end
     # rubocop:enable Rails/ApplicationController
+
+    def global_domain?
+      return true if Rails.env.test?
+
+      request.host.in? PgEngine.config.global_domains
+    end
 
     include Pundit::Authorization
     include PrintHelper
@@ -39,10 +58,11 @@ module PgEngine
       end
     end
 
-    protect_from_forgery with: :exception
-
     rescue_from StandardError, with: :internal_error
+    rescue_from ActsAsTenant::Errors::NoTenantSet, with: :internal_error
+
     rescue_from PgEngine::BadUserInput, with: :bad_user_input
+
     rescue_from ActionController::InvalidAuthenticityToken,
                 with: :invalid_authenticity_token
 

@@ -4,30 +4,16 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :sistema_iconos, :clase_botones_chicos,
-                  :boton_destroy, :boton_edit, :boton_show,
-                  :boton_light, :icono_destroy, :icono_edit,
-                  :icono_show, :boton_export, :bootstrap_version,
-                  :users_controller
+    attr_accessor :users_controller, :global_domains
 
     def initialize
-      @sistema_iconos = 'bi'
-      @clase_botones_chicos = 'btn-sm'
-      @boton_destroy = 'light'
-      @boton_export = 'warning'
-      @boton_edit = 'light'
-      @boton_show = 'light'
-      @boton_light = 'light'
-      @icono_destroy = 'trash-fill'
-      @icono_edit = 'pencil'
-      @icono_show = 'eye-fill'
-      @bootstrap_version = 5
-
       if defined? UsersController
         @users_controller = UsersController
       elsif defined? FrontendController
         @users_controller = FrontendController
       end
+
+      @global_domains = ['app.localhost.com', 'test.host', 'localhost']
     end
   end
 end

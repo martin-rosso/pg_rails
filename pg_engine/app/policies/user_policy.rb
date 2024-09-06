@@ -4,20 +4,6 @@
 
 class UserPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    def resolve
-      if policy.acceso_total?
-        if ActsAsTenant.unscoped?
-          scope.all
-        elsif ActsAsTenant.current_tenant.present?
-          # FIXME: remove, ya lo debería hacer acts_as_tenant
-          scope.joins(:user_accounts).where('user_accounts.account_id': ActsAsTenant.current_tenant.id)
-        else
-          scope.none
-        end
-      else
-        scope.none
-      end
-    end
   end
 
   # def puede_editar?
@@ -32,7 +18,11 @@ class UserPolicy < ApplicationPolicy
   #   acceso_total? && !record.readonly?
   # end
 
-  def acceso_total?
-    user.present?
-  end
+  # def base_access_to_record?
+  #   user.present?
+  # end
+
+  # def base_access_to_collection?
+  #   user&.present?
+  # end
 end
