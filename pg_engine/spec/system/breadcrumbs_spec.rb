@@ -12,7 +12,7 @@ describe 'Breadcrumbs' do
     visit path
   end
 
-  let(:path) { "/admin/cosas/#{cosa.id}" }
+  let(:path) { "/a/cosas/#{cosa.id}" }
   let(:cosa) { create :cosa }
   let(:logged_user) { create :user, :developer }
   let(:account) { logged_user.current_account }
@@ -25,20 +25,20 @@ describe 'Breadcrumbs' do
     it do
       visitar
 
-      expect(page).to have_css('nav ol.breadcrumb li').exactly(2)
+      expect(page).to have_css('nav ol.breadcrumb li').exactly(3)
       expect(page).to have_css('nav ol.breadcrumb li a').exactly(1)
     end
 
     context 'cuando es con nested' do
       let(:path) do
         hashid = cosa.categoria_de_cosa.hashid
-        "/admin/categoria_de_cosas/#{hashid}/cosas/#{cosa.id}"
+        "/a/categoria_de_cosas/#{hashid}/cosas/#{cosa.id}"
       end
 
       it do
         visitar
 
-        expect(page).to have_css('nav ol.breadcrumb li').exactly(3)
+        expect(page).to have_css('nav ol.breadcrumb li').exactly(4)
         expect(page).to have_css('nav ol.breadcrumb li a').exactly(1)
       end
     end
@@ -46,14 +46,14 @@ describe 'Breadcrumbs' do
     context 'cuando es con nested y modal' do
       let(:path) do
         hashid = cosa.categoria_de_cosa.hashid
-        "/admin/categoria_de_cosas/#{hashid}"
+        "/a/categoria_de_cosas/#{hashid}"
       end
 
       it do
         visitar
         find('td span[title=Ver] a').click
 
-        expect(page).to have_css('.modal nav ol.breadcrumb li').exactly(3)
+        expect(page).to have_css('.modal nav ol.breadcrumb li').exactly(4)
         expect(page).to have_no_css('.modal nav ol.breadcrumb li a')
       end
     end

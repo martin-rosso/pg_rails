@@ -12,7 +12,9 @@ RSpec.describe User do
   end
 
   it do
-    expect(user.current_account).to be_present
+    ActsAsTenant.without_tenant do
+      expect(user.default_account).to be_present
+    end
   end
 
   context 'si es orphan' do
@@ -23,7 +25,7 @@ RSpec.describe User do
     end
 
     it do
-      expect { user.current_account }.to raise_error(User::Error)
+      expect { user.default_account }.to raise_error(User::Error)
     end
   end
 

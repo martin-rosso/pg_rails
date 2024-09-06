@@ -88,13 +88,15 @@ RSpec.configure do |config|
   # ActsAsTenant
   config.before(:suite) do |example|
     # Make the default tenant globally available to the tests
+    DatabaseCleaner.clean_with(:truncation)
     $default_account = FactoryBot.create(:account)
   end
 
   config.before(:each) do |example|
-    if example.metadata[:type] == :request
+    if example.metadata[:type].in? %i(request controller system)
       # Set the `test_tenant` value for integration tests
       ActsAsTenant.test_tenant = $default_account
+      # ActsAsTenant.current_tenant = $default_account
     else
       # Otherwise just use current_tenant
       ActsAsTenant.current_tenant = $default_account

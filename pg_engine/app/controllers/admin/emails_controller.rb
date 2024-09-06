@@ -12,8 +12,6 @@ module Admin
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
-    add_breadcrumb Email.nombre_plural, :admin_emails_path
-
     after_action only: :create do
       if @saved
         PgEngine::AdminMailer.with(email_object: @email).admin_mail.deliver_later

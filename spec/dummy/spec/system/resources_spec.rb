@@ -11,7 +11,7 @@ describe 'Resources' do
     let!(:cosa) { create :cosa }
 
     it do
-      visit "/admin/cosas/#{cosa.id}"
+      visit "/a/cosas/#{cosa.id}"
       click_on 'Ver categoría'
       expect(page.find('.modal')).to have_text 'Fade in'
     end
@@ -23,7 +23,7 @@ describe 'Resources' do
     end
 
     it do
-      visit '/admin/categoria_de_cosas?mostrar_filtros=1'
+      visit '/a/categoria_de_cosas?mostrar_filtros=1'
       expect(page.find('input[placeholder="Tipo filtro"]')).to be_present
       expect(page.find('.listado')).to have_text 'Tipo header'
     end

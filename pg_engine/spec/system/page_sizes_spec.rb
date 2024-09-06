@@ -17,9 +17,9 @@ describe 'Page sizes' do
 
   describe 'some case' do
     it do
-      visit '/admin/cosas?page_size=2'
+      visit '/a/cosas?page_size=2'
       expect(page).to have_css('.page-item', count: 6)
-      visit '/admin/cosas?page_size=5'
+      visit '/a/cosas?page_size=5'
       expect(page).to have_css('.page-item', count: 4)
     end
   end

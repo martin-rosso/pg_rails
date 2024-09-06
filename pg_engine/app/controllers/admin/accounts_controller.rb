@@ -12,8 +12,6 @@ module Admin
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
-    add_breadcrumb Account.nombre_plural, :admin_accounts_path
-
     private
 
     def atributos_permitidos

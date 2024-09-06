@@ -12,7 +12,6 @@ module PgEngine
       if Current.user.present? && ActsAsTenant.current_tenant.blank?
         # FIXME: ensure is the global domain
         # FIXME: ensure has only one account
-        # FIXME: 
         account = nil
         ActsAsTenant.without_tenant do
           account = Current.user.default_account

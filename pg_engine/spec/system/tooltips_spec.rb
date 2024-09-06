@@ -3,7 +3,6 @@ require 'rails_helper'
 describe 'Tooltips' do
   context 'en desktop' do
     before do
-      # byebug
       driven_by :selenium_chrome_headless
       # Capybara.current_driver = :selenium_chrome
     end

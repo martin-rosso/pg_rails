@@ -123,7 +123,8 @@ RSpec.describe Frontend::CategoriaDeCosasController do
 
       it 'redirects to the created categoria_de_cosa' do
         post :create, params: { categoria_de_cosa: valid_attributes }
-        expect(response).to redirect_to(CategoriaDeCosa.last.decorate.target_object)
+        # FIXME: ver que en el scaffold se esté generando así
+        expect(response).to redirect_to([:frontend, CategoriaDeCosa.last])
       end
     end
 
@@ -156,7 +157,7 @@ RSpec.describe Frontend::CategoriaDeCosasController do
       it 'redirects to the categoria_de_cosa' do
         categoria_de_cosa = create(:categoria_de_cosa)
         put :update, params: { id: categoria_de_cosa.to_param, categoria_de_cosa: valid_attributes }
-        expect(response).to redirect_to(categoria_de_cosa.decorate.target_object)
+        expect(response).to redirect_to([:frontend, categoria_de_cosa])
       end
     end
 

@@ -19,7 +19,7 @@ describe 'Sign in' do
     before do
       create_list :cosa, 5
       login_as user
-      visit '/frontend/cosas'
+      visit '/a/cosas'
     end
 
     it do
@@ -40,12 +40,12 @@ describe 'Sign in' do
 
     before do
       login_as user
-      visit "/frontend/cosas/#{cosa.to_param}"
+      visit "/a/cosas/#{cosa.to_param}"
     end
 
     it 'muestra el flash' do
       subject
-      expect(page).to have_current_path('/frontend/cosas')
+      expect(page).to have_current_path('/a/cosas')
       expect(page).to have_text('Coso borrado')
     end
   end

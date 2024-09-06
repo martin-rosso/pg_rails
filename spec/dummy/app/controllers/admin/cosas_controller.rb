@@ -29,7 +29,7 @@ module Admin
     end
 
     def atributos_permitidos
-      %i[nombre tipo categoria_de_cosa_id rico]
+      %i[account_id nombre tipo categoria_de_cosa_id rico]
     end
 
     def inside_categoria?
@@ -40,7 +40,7 @@ module Admin
       if inside_categoria?
         %i[nombre tipo_in creado_por]
       else
-        %i[nombre tipo_in categoria_de_cosa_id_in categoria_de_cosa_nombre_cont creado_por]
+        %i[account nombre tipo_in categoria_de_cosa_id_in categoria_de_cosa_nombre_cont creado_por]
       end
     end
 
@@ -52,6 +52,7 @@ module Admin
         ]
       else
         [
+          %i[account account_nombre],
           :nombre,
           :tipo_text,
           %i[categoria_de_cosa categoria_de_cosa_nombre]
@@ -60,7 +61,7 @@ module Admin
     end
 
     def atributos_para_mostrar
-      %i[nombre tipo categoria_de_cosa rico]
+      %i[account nombre tipo categoria_de_cosa rico]
     end
   end
 end

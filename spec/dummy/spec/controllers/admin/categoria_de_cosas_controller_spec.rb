@@ -33,7 +33,7 @@ RSpec.describe Admin::CategoriaDeCosasController do
   # CategoriaDeCosa. As you add validations to CategoriaDeCosa, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    attributes_for(:categoria_de_cosa)
+    attributes_for(:categoria_de_cosa, account_id: ActsAsTenant.current_tenant.id)
   end
 
   let(:invalid_attributes) do
@@ -123,7 +123,7 @@ RSpec.describe Admin::CategoriaDeCosasController do
 
       it 'redirects to the created categoria_de_cosa' do
         post :create, params: { categoria_de_cosa: valid_attributes }
-        expect(response).to redirect_to(CategoriaDeCosa.last.decorate.target_object)
+        expect(response).to redirect_to([:admin, CategoriaDeCosa.last])
       end
 
       it 'assigns creado_por' do
@@ -161,7 +161,7 @@ RSpec.describe Admin::CategoriaDeCosasController do
       it 'redirects to the categoria_de_cosa' do
         categoria_de_cosa = create(:categoria_de_cosa)
         put :update, params: { id: categoria_de_cosa.to_param, categoria_de_cosa: valid_attributes }
-        expect(response).to redirect_to(categoria_de_cosa.decorate.target_object)
+        expect(response).to redirect_to([:admin, categoria_de_cosa])
       end
     end
 

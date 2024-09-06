@@ -31,7 +31,7 @@ RSpec.describe Admin::UserAccountsController do
   render_views
   let!(:user) { create :user }
 
-  let!(:account) { create :account }
+  let!(:account) { ActsAsTenant.current_tenant }
 
   # This should return the minimal set of attributes required to create a valid
   # UserAccount. As you add validations to UserAccount, be sure to
@@ -125,7 +125,7 @@ RSpec.describe Admin::UserAccountsController do
 
       it 'redirects to the created user_account' do
         post :create, params: { user_account: valid_attributes }
-        expect(response).to redirect_to(UserAccount.last.decorate.target_object)
+        expect(response).to redirect_to([:admin, UserAccount.last])
       end
     end
 
@@ -151,7 +151,8 @@ RSpec.describe Admin::UserAccountsController do
       it 'redirects to the user_account' do
         user_account = create(:user_account)
         put :update, params: { id: user_account.to_param, user_account: valid_attributes }
-        expect(response).to redirect_to(user_account.decorate.target_object)
+
+        expect(response).to redirect_to([:admin, UserAccount.last])
       end
     end
 

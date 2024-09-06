@@ -35,7 +35,7 @@ RSpec.describe Admin::CosasController do
   # Cosa. As you add validations to Cosa, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    attributes_for(:cosa).merge(categoria_de_cosa_id: categoria_de_cosa.id)
+    attributes_for(:cosa).merge(categoria_de_cosa_id: categoria_de_cosa.id, account_id: ActsAsTenant.current_tenant.id)
   end
 
   let(:invalid_attributes) do
@@ -52,7 +52,7 @@ RSpec.describe Admin::CosasController do
 
   describe 'routing' do
     it 'routes GET index correctly' do
-      route = { get: '/admin/cosas' }
+      route = { get: '/a/cosas' }
       expect(route).to route_to(controller: 'admin/cosas', action: 'index')
     end
   end
@@ -137,7 +137,7 @@ RSpec.describe Admin::CosasController do
 
       it 'redirects to the created cosa' do
         post :create, params: { cosa: valid_attributes }
-        expect(response).to redirect_to(Cosa.last.decorate.target_object)
+        expect(response).to redirect_to([:admin, Cosa.last])
       end
     end
 
@@ -170,7 +170,7 @@ RSpec.describe Admin::CosasController do
       it 'redirects to the cosa' do
         cosa = create(:cosa)
         put :update, params: { id: cosa.to_param, cosa: valid_attributes }
-        expect(response).to redirect_to(cosa.decorate.target_object)
+        expect(response).to redirect_to([:admin, cosa])
       end
     end
 

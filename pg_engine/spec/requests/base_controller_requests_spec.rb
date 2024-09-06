@@ -13,7 +13,7 @@ describe 'Base requests' do
   end
 
   describe 'invalid authenticity token' do
-    subject { get '/admin/cosas', headers: }
+    subject { get '/a/cosas', headers: }
 
     before do
       sign_in create(:user, :developer)

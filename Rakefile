@@ -43,7 +43,7 @@ end
 
 desc "Testear sin spring"
 task :rspec do
-  system! "LCOV=true bundle exec rspec --fail-fast #{PATHS_TO_TEST}"
+  system! "RAISE_ERRORS=0 LCOV=true bundle exec rspec #{PATHS_TO_TEST}"
 end
 
 desc "Static analysis"

@@ -28,13 +28,24 @@
 #
 
 class Cosa < ApplicationRecord
-  acts_as_tenant :account
   audited
   include Discard::Model
 
   self.default_modal = true
 
-  belongs_to :categoria_de_cosa
+  # Conviene tener account_id en todos los modelos aunque estén
+  # el tenant sea deducible a través de sus asociaciones (ej:
+  # categoría)
+  #   * Para facilitar las queries
+  acts_as_tenant :account
+  tenantable_belongs_to :categoria_de_cosa
+
+  before_validation do
+    # FIXME: esto debería hacerlo el tenantable?
+    if account.blank? && categoria_de_cosa.present?
+      self.account_id = categoria_de_cosa.account_id
+    end
+  end
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

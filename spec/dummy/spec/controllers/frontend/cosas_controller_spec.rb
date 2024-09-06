@@ -125,7 +125,7 @@ RSpec.describe Frontend::CosasController do
 
       it 'redirects to the created cosa' do
         post :create, params: { cosa: valid_attributes }
-        expect(response).to redirect_to(Cosa.last.decorate.target_object)
+        expect(response).to redirect_to([:frontend, Cosa.last])
       end
     end
 
@@ -158,7 +158,7 @@ RSpec.describe Frontend::CosasController do
       it 'redirects to the cosa' do
         cosa = create(:cosa)
         put :update, params: { id: cosa.to_param, cosa: valid_attributes }
-        expect(response).to redirect_to(cosa.decorate.target_object)
+        expect(response).to redirect_to([:frontend, cosa.decorate])
       end
     end
 

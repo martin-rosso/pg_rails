@@ -16,8 +16,6 @@ module Admin
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
-    add_breadcrumb User.nombre_plural, :admin_users_path
-
     def create
       @user.skip_confirmation!
 

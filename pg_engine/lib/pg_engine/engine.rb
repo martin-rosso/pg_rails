@@ -59,7 +59,6 @@ module PgEngine
 
     initializer 'byebug_bullet' do
       if Rails.env.local?
-        # Byebug
         # :nocov:
         if ENV['RUBY_DEBUG_OPEN']
           require 'byebug/core'

@@ -12,8 +12,6 @@ module Admin
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
-    add_breadcrumb EmailLog.nombre_plural, :admin_email_logs_path
-
     before_action do
       @actions = [
         ["Mailgun sync: #{ENV.fetch('MAILGUN_DOMAIN', nil)}", mailgun_sync_admin_email_logs_path, {
