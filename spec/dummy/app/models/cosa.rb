@@ -38,14 +38,7 @@ class Cosa < ApplicationRecord
   # categoría)
   #   * Para facilitar las queries
   acts_as_tenant :account
-  tenantable_belongs_to :categoria_de_cosa
-
-  before_validation do
-    # FIXME: esto debería hacerlo el tenantable?
-    if account.blank? && categoria_de_cosa.present?
-      self.account_id = categoria_de_cosa.account_id
-    end
-  end
+  tenantable_belongs_to :categoria_de_cosa, nil, assign_tenant_from_associated: true
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

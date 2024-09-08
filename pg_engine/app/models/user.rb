@@ -41,17 +41,17 @@ class User < ApplicationRecord
   # Hace falta?
   has_many :accounts, through: :user_accounts
 
-  default_scope lambda {
-    if ActsAsTenant.current_tenant.present?
-      joins(:user_accounts).where('user_accounts.account_id': ActsAsTenant.current_tenant.id)
-    else
-      raise ActsAsTenant::Errors::NoTenantSet unless Current.user.blank? || ActsAsTenant.unscoped?
+  # default_scope lambda {
+  #   if ActsAsTenant.current_tenant.present?
+  #     joins(:user_accounts).where('user_accounts.account_id': ActsAsTenant.current_tenant.id)
+  #   else
+  #     raise ActsAsTenant::Errors::NoTenantSet unless Current.user.blank? || ActsAsTenant.unscoped?
 
-      # Aún no autenticó devise o es el admin
-      all
+  #     # Aún no autenticó devise o es el admin
+  #     all
 
-    end
-  }
+  #   end
+  # }
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 

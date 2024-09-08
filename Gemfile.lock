@@ -1,7 +1,7 @@
 GIT
   remote: https://github.com/mrosso10/acts_as_tenant.git
-  revision: 9424e2d9706ee1fd257b20da63217e83258d8279
-  branch: tenantable
+  revision: 4f8e63b7cc31244e9524efdbd7641c587c330fcd
+  branch: tenantable_belongs_to
   specs:
     acts_as_tenant (1.0.1)
       rails (>= 6.0)
