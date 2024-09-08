@@ -2,6 +2,7 @@
 
 module PgEngine
   # rubocop:disable Rails/ApplicationController
+  # rubocop:disable Metrics/ClassLength
   class BaseController < ActionController::Base
     # Importante que esta línea esté al principio
     protect_from_forgery with: :exception
@@ -25,12 +26,15 @@ module PgEngine
           end
 
         else
-          account = nil
-          ActsAsTenant.without_tenant do
-            account = Current.user.default_account
-          end
+          account = if session['current_user_account'].present?
+                      UserAccount.where(id: session['current_user_account']).first&.account
+                    elsif Current.user.user_accounts.count == 1
+                      Current.user.user_accounts.first
+                    end
           set_current_tenant(account)
+          # FIXME: un concern que redirija al switcher si no hay current tenant
         end
+        Current.account = ActsAsTenant.current_tenant
       end
     end
     # rubocop:enable Rails/ApplicationController
@@ -59,7 +63,7 @@ module PgEngine
     end
 
     rescue_from StandardError, with: :internal_error
-    rescue_from ActsAsTenant::Errors::NoTenantSet, with: :internal_error
+    rescue_from ActsAsTenant::Errors::NoTenantSet, with: :redirect_to_switcher
 
     rescue_from PgEngine::BadUserInput, with: :bad_user_input
 
@@ -70,6 +74,10 @@ module PgEngine
     rescue_from PgEngine::PageNotFoundError, with: :page_not_found
     rescue_from Redirect do |e|
       redirect_to e.url
+    end
+
+    def redirect_to_switcher
+      redirect_to users_account_switcher_path
     end
 
     def bad_user_input(error)
@@ -211,4 +219,5 @@ module PgEngine
       redirect_back fallback_location: root_path
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end

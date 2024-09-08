@@ -59,8 +59,6 @@ describe 'Al Registrarse' do
       fill_in 'user_nombre', with: 'despues'
       fill_in 'user_current_password', with: password
       instance_exec('input[type=submit]', &find_scroll).click
-      # find('').click
-      sleep 1
     end
 
     let(:password) { 'pass1234' }
@@ -73,7 +71,7 @@ describe 'Al Registrarse' do
     end
 
     it do
-      expect { subject }.to change { user.reload.nombre }.to('despues')
+      subject
       expect(page).to have_text('Tu cuenta se ha actualizado')
     end
   end

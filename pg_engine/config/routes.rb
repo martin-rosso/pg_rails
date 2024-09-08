@@ -21,6 +21,10 @@ Rails.application.routes.draw do
     post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
     post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
     get 'date_jumper/jump'
+    scope controller: 'account_switcher', path: 'switcher' do
+      get '', action: 'list', as: 'account_switcher'
+      post ':user_account_id', action: 'switch', as: 'account_switch'
+    end
   end
   namespace :admin, path: 'a' do
     pg_resource(:emails)

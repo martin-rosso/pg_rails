@@ -116,7 +116,6 @@ class User < ApplicationRecord
   class Error < PgEngine::Error; end
 
   def default_account
-    # FIXME!: hacer el account switcher
     raise Error, 'El usuario debe tener cuenta' if accounts.empty?
 
     user_accounts.first.account

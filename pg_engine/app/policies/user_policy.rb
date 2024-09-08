@@ -18,9 +18,9 @@ class UserPolicy < ApplicationPolicy
   #   acceso_total? && !record.readonly?
   # end
 
-  # def base_access_to_record?
-  #   user.present?
-  # end
+  def base_access_to_record?
+    user.developer? || user == record
+  end
 
   # def base_access_to_collection?
   #   user&.present?

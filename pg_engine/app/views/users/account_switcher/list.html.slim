@@ -1,0 +1,6 @@
+h1 Switcher
+
+ul
+  - @user_accounts.each do |user_account|
+    li = link_to user_account.account, users_account_switch_path(user_account),
+                 'data-turbo-method': :post

@@ -23,17 +23,10 @@
 
 class UserAccount < ApplicationRecord
   audited
+  include Hashid::Rails
 
   belongs_to :user
   belongs_to :account
-
-  default_scope lambda {
-    if Current.user.present?
-      where(user: Current.user)
-    else
-      all
-    end
-  }
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

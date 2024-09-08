@@ -6,7 +6,10 @@
     <% if user_signed_in? %>
       <span class="d-inline-block px-3 text-end text-light"><%= Current.user %></span>
       <% if Rails.env.development? %>
-        <span class="d-block px-3 text-secondary">Cuenta: <%= ActsAsTenant.current_tenant || 'Global' %></span>
+        <%= link_to users_account_switcher_path do %>
+          <span class="d-block px-3 text-secondary">Tenant: <%= ActsAsTenant.current_tenant || 'Global' %></span>
+          <span class="d-block px-3 text-secondary">Cuenta: <%= Current.account || 'Global' %></span>
+        <% end %>
       <% end %>
       <hr>
     <% end %>
