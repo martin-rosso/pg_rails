@@ -10,7 +10,6 @@ describe 'Associable' do
     visit path
   end
 
-  # rubocop:disable RSpec/ExampleLength
   it do
     fill_in 'cosa_nombre', with: 'La cosa'
     select 'Los', from: 'cosa_tipo'
@@ -24,7 +23,6 @@ describe 'Associable' do
     click_on 'Cargar Coso'
     expect(page).to have_text 'La cosa'
   end
-  # rubocop:enable RSpec/ExampleLength
 
   context 'cuando crea desde el nested' do
     let!(:categ) { create :categoria_de_cosa }

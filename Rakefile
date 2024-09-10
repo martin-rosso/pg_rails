@@ -102,7 +102,7 @@ task :frepush do
   focuss = ENV['FOCUS'] ? '-t focus' : ''
   # command = spring.present? ? 'rspec' : 'parallel_rspec'
   command = 'rspec'
-  system! "LCOV=true EAGER_LOAD=true bundle exec #{command} #{PATHS_TO_TEST} --fail-fast #{focuss}"
+  system! "RAISE_ERRORS=0 LCOV=true EAGER_LOAD=true bundle exec #{command} #{PATHS_TO_TEST} --fail-fast #{focuss}"
 
   system! "undercover --compare origin/main"
 

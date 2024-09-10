@@ -1,5 +1,7 @@
 module Users
   class AccountSwitcherController < PgEngine.config.users_controller
+    rescue_from ActsAsTenant::Errors::NoTenantSet, with: :internal_error
+
     before_action do
       @no_main_frame = true
     end

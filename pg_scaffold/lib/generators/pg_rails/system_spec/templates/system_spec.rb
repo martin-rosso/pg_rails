@@ -13,7 +13,7 @@ describe '<%= name %>' do
   end
 
   let(:logged_user) { create :user }
-  let(:account) { logged_user.current_account }
+  let(:account) { ActsAsTenant.current_tenant }
 
   before do
     login_as logged_user

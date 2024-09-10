@@ -14,9 +14,9 @@ module PgEngine
       Current.user = current_user
       Current.controller = self
 
-      if ActsAsTenant.current_tenant.blank? && !global_domain?
-        raise ActsAsTenant::Errors::NoTenantSet
-      end
+      # if ActsAsTenant.current_tenant.blank? && !global_domain?
+      #   raise ActsAsTenant::Errors::NoTenantSet
+      # end
 
       if Current.user.present?
         if ActsAsTenant.current_tenant.present?
@@ -39,11 +39,13 @@ module PgEngine
     end
     # rubocop:enable Rails/ApplicationController
 
+    # :nocov:
     def global_domain?
       return true if Rails.env.test?
 
       request.host.in? PgEngine.config.global_domains
     end
+    # :nocov:
 
     include Pundit::Authorization
     include PrintHelper
@@ -63,7 +65,7 @@ module PgEngine
     end
 
     rescue_from StandardError, with: :internal_error
-    rescue_from ActsAsTenant::Errors::NoTenantSet, with: :redirect_to_switcher
+    rescue_from ActsAsTenant::Errors::NoTenantSet, with: :no_tenant_set
 
     rescue_from PgEngine::BadUserInput, with: :bad_user_input
 
@@ -76,7 +78,9 @@ module PgEngine
       redirect_to e.url
     end
 
-    def redirect_to_switcher
+    def no_tenant_set(error)
+      return internal_error(error) if Current.user.blank?
+
       redirect_to users_account_switcher_path
     end
 
