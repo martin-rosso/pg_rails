@@ -5,6 +5,7 @@
 module Frontend
   class CategoriaDeCosasController < FrontendController
     include PgEngine::Resource
+    include PgEngine::RequireTenantSet
 
     self.clase_modelo = CategoriaDeCosa
 

@@ -29,10 +29,9 @@ module PgEngine
           account = if session['current_user_account'].present?
                       UserAccount.where(id: session['current_user_account']).first&.account
                     elsif Current.user.user_accounts.count == 1
-                      Current.user.user_accounts.first
+                      Current.user.user_accounts.first.account
                     end
           set_current_tenant(account)
-          # FIXME: un concern que redirija al switcher si no hay current tenant
         end
         Current.account = ActsAsTenant.current_tenant
       end

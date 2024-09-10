@@ -1,4 +1,10 @@
 
+7.5.1 / 2024-09-10
+==================
+
+  * fix: set current tenant
+  * refactor: require tenant concern
+
 7.5.0 / 2024-09-10
 ==================
 
