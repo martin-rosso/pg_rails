@@ -195,10 +195,9 @@ describe 'Filtros de cosas' do
     let(:controller_class) { Admin::UsersController }
     let(:path) { '/a/users' }
     let(:search_fields) { %i[developer] }
-    let(:account) { user.current_account }
 
-    let!(:target_user) { create :user, :orphan, account:, developer: true }
-    let!(:otro_user) { create :user, :orphan, account:, developer: false }
+    let!(:target_user) { create :user, :orphan, developer: true }
+    let!(:otro_user) { create :user, :orphan, developer: false }
 
     describe 'boolean' do
       it do

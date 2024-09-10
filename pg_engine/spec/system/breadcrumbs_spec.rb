@@ -15,7 +15,6 @@ describe 'Breadcrumbs' do
   let(:path) { "/a/cosas/#{cosa.id}" }
   let(:cosa) { create :cosa }
   let(:logged_user) { create :user, :developer }
-  let(:account) { logged_user.current_account }
 
   before do
     login_as logged_user

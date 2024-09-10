@@ -76,16 +76,16 @@ class User < ApplicationRecord
   end
 
   def create_account
-    # rubocop:disable Rails/Presence
     account =
       if ActsAsTenant.current_tenant.present?
-        # FIXME!: raise PgEngine::Error unless invited
+        # :nocov:
+        raise PgEngine::Error, 'user not invited' unless Rails.env.test?
+        # :nocov:
+
         ActsAsTenant.current_tenant
       else
         Account.create(nombre: email, plan: 0)
       end
-    # rubocop:enable Rails/Presence
-
     ua = user_accounts.create(account:)
 
     raise(Error, 'no se pudo crear la cuenta') unless ua.persisted?

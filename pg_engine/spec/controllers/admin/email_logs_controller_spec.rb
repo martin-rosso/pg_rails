@@ -33,8 +33,10 @@ RSpec.describe Admin::EmailLogsController do
   # EmailLog. As you add validations to EmailLog, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    attributes_for(:email_log)
+    attributes_for(:email_log).merge(email_id: email.id)
   end
+
+  let(:email) { create :email }
 
   let(:logged_user) { create :user, :developer }
 

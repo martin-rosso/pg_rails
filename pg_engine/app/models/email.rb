@@ -46,7 +46,10 @@ class Email < ApplicationRecord
 
   has_one_attached :encoded_eml
 
-  belongs_to :associated, polymorphic: true, optional: true
+  acts_as_tenant :account, optional: true
+
+  tenantable_belongs_to :associated, polymorphic: true, optional: true,
+                                     assign_tenant_from_associated: true
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

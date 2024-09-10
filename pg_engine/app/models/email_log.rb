@@ -23,7 +23,8 @@
 class EmailLog < ApplicationRecord
   audited
 
-  belongs_to :email, optional: true
+  acts_as_tenant :account, optional: true
+  tenantable_belongs_to :email, optional: true, assign_tenant_from_associated: true
 
   after_create_commit do
     email.update_status! if email.present?

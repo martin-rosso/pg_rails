@@ -38,7 +38,7 @@ class Cosa < ApplicationRecord
   # categoría)
   #   * Para facilitar las queries
   acts_as_tenant :account
-  tenantable_belongs_to :categoria_de_cosa, nil, assign_tenant_from_associated: true
+  tenantable_belongs_to :categoria_de_cosa, assign_tenant_from_associated: true
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

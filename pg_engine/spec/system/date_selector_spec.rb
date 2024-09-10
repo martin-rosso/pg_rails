@@ -13,7 +13,6 @@ describe 'Date selector' do
   end
 
   let(:logged_user) { create :user, :developer }
-  let(:account) { logged_user.current_account }
   let(:categoria_de_cosa) { create :categoria_de_cosa, fecha: }
   let(:fecha) { Date.new(2024, 8, 12) }
 

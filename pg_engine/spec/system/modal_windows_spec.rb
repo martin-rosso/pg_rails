@@ -13,7 +13,6 @@ describe 'Modal windows' do
   end
 
   let(:logged_user) { create :user, :developer }
-  let(:account) { logged_user.current_account }
   let!(:categoria_de_cosa) { create :categoria_de_cosa }
 
   before do

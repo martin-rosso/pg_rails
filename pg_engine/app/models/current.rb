@@ -9,4 +9,6 @@ class Current < ActiveSupport::CurrentAttributes
   #
   #   Time.zone    = user.time_zone
   # end
+
+  deprecate :account, deprecator: PgEngine.deprecator
 end

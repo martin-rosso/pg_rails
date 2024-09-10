@@ -8,9 +8,8 @@
       <%= link_to users_account_switcher_path do %>
         <% if Rails.env.development? %>
           <span class="d-block px-3 text-secondary">Tenant: <%= ActsAsTenant.current_tenant || 'Global' %></span>
-          <span class="d-block px-3 text-secondary">Cuenta: <%= Current.account || 'Global' %></span>
-        <% elsif Current.account.present? %>
-          <span class="d-block px-3 text-secondary"><%= Current.account %></span>
+        <% else %>
+          <span class="d-block px-3 text-secondary"><%= ActsAsTenant.current_tenant %></span>
         <% end %>
       <% end %>
       <hr>

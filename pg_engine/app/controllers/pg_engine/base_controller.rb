@@ -33,7 +33,6 @@ module PgEngine
                     end
           set_current_tenant(account)
         end
-        Current.account = ActsAsTenant.current_tenant
       end
     end
     # rubocop:enable Rails/ApplicationController
