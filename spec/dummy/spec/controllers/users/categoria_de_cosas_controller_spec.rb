@@ -27,15 +27,13 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe Frontend::CosasController do
+RSpec.describe Users::CategoriaDeCosasController do
   render_views
-  let(:categoria_de_cosa) { create :categoria_de_cosa }
-
   # This should return the minimal set of attributes required to create a valid
-  # Cosa. As you add validations to Cosa, be sure to
+  # CategoriaDeCosa. As you add validations to CategoriaDeCosa, be sure to
   # adjust the attributes here as well.
   let(:valid_attributes) do
-    attributes_for(:cosa).merge(categoria_de_cosa_id: categoria_de_cosa.id)
+    attributes_for(:categoria_de_cosa)
   end
 
   let(:invalid_attributes) do
@@ -55,7 +53,7 @@ RSpec.describe Frontend::CosasController do
       get :index, params: {}
     end
 
-    let(:cosa) { create :cosa }
+    let(:categoria_de_cosa) { create :categoria_de_cosa }
 
     it 'returns a success response' do
       subject
@@ -72,7 +70,7 @@ RSpec.describe Frontend::CosasController do
     end
 
     context 'when está descartado' do
-      before { cosa.discard! }
+      before { categoria_de_cosa.discard! }
 
       it do
         subject
@@ -94,8 +92,8 @@ RSpec.describe Frontend::CosasController do
 
   describe 'GET #show' do
     it 'returns a success response' do
-      cosa = create(:cosa)
-      get :show, params: { id: cosa.to_param }
+      categoria_de_cosa = create(:categoria_de_cosa)
+      get :show, params: { id: categoria_de_cosa.to_param }
       expect(response).to be_successful
     end
   end
@@ -109,34 +107,34 @@ RSpec.describe Frontend::CosasController do
 
   describe 'GET #edit' do
     it 'returns a success response' do
-      cosa = create(:cosa)
-      get :edit, params: { id: cosa.to_param }
+      categoria_de_cosa = create(:categoria_de_cosa)
+      get :edit, params: { id: categoria_de_cosa.to_param }
       expect(response).to be_successful
     end
   end
 
   describe 'POST #create' do
     context 'with valid params' do
-      it 'creates a new Cosa' do
+      it 'creates a new CategoriaDeCosa' do
         expect do
-          post :create, params: { cosa: valid_attributes }
-        end.to change(Cosa, :count).by(1)
+          post :create, params: { categoria_de_cosa: valid_attributes }
+        end.to change(CategoriaDeCosa, :count).by(1)
       end
 
-      it 'redirects to the created cosa' do
-        post :create, params: { cosa: valid_attributes }
-        expect(response).to redirect_to([:frontend, Cosa.last])
+      it 'redirects to the created categoria_de_cosa' do
+        post :create, params: { categoria_de_cosa: valid_attributes }
+        expect(response).to redirect_to([:users, CategoriaDeCosa.last])
       end
     end
 
     context 'with invalid params' do
       it 'returns a unprocessable_entity response' do
-        post :create, params: { cosa: invalid_attributes }
+        post :create, params: { categoria_de_cosa: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'renders the new template' do
-        post :create, params: { cosa: invalid_attributes }
+        post :create, params: { categoria_de_cosa: invalid_attributes }
         expect(response).to render_template(:new)
       end
     end
@@ -145,33 +143,33 @@ RSpec.describe Frontend::CosasController do
   describe 'PUT #update' do
     context 'with valid params' do
       let(:new_attributes) do
-        attributes_for(:cosa)
+        attributes_for(:categoria_de_cosa)
       end
 
-      it 'updates the requested cosa' do
-        cosa = create(:cosa)
-        put :update, params: { id: cosa.to_param, cosa: new_attributes }
-        cosa.reload
-        expect(cosa.nombre).to eq new_attributes[:nombre]
+      it 'updates the requested categoria_de_cosa' do
+        categoria_de_cosa = create(:categoria_de_cosa)
+        put :update, params: { id: categoria_de_cosa.to_param, categoria_de_cosa: new_attributes }
+        categoria_de_cosa.reload
+        expect(categoria_de_cosa.nombre).to eq new_attributes[:nombre]
       end
 
-      it 'redirects to the cosa' do
-        cosa = create(:cosa)
-        put :update, params: { id: cosa.to_param, cosa: valid_attributes }
-        expect(response).to redirect_to([:frontend, cosa.decorate])
+      it 'redirects to the categoria_de_cosa' do
+        categoria_de_cosa = create(:categoria_de_cosa)
+        put :update, params: { id: categoria_de_cosa.to_param, categoria_de_cosa: valid_attributes }
+        expect(response).to redirect_to([:users, categoria_de_cosa])
       end
     end
 
     context 'with invalid params' do
       it 'returns a unprocessable_entity response' do
-        cosa = create(:cosa)
-        put :update, params: { id: cosa.to_param, cosa: invalid_attributes }
+        categoria_de_cosa = create(:categoria_de_cosa)
+        put :update, params: { id: categoria_de_cosa.to_param, categoria_de_cosa: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'renders the edit template' do
-        cosa = create(:cosa)
-        put :update, params: { id: cosa.to_param, cosa: invalid_attributes }
+        categoria_de_cosa = create(:categoria_de_cosa)
+        put :update, params: { id: categoria_de_cosa.to_param, categoria_de_cosa: invalid_attributes }
         expect(response).to render_template(:edit)
       end
     end
@@ -180,19 +178,19 @@ RSpec.describe Frontend::CosasController do
   describe 'DELETE #destroy' do
     subject do
       request.headers['Accept'] = 'text/vnd.turbo-stream.html,text/html'
-      delete :destroy, params: { id: cosa.to_param, redirect_to: redirect_url }
+      delete :destroy, params: { id: categoria_de_cosa.to_param, redirect_to: redirect_url }
     end
 
-    let!(:cosa) { create :cosa }
+    let!(:categoria_de_cosa) { create :categoria_de_cosa }
     let(:redirect_url) { nil }
 
-    it 'destroys the requested cosa' do
-      expect { subject }.to change(Cosa.kept, :count).by(-1)
+    it 'destroys the requested categoria_de_cosa' do
+      expect { subject }.to change(CategoriaDeCosa.kept, :count).by(-1)
     end
 
     it 'setea el discarded_at' do
       subject
-      expect(cosa.reload.discarded_at).to be_present
+      expect(categoria_de_cosa.reload.discarded_at).to be_present
     end
 
     it 'envía el pg-event' do
@@ -201,11 +199,11 @@ RSpec.describe Frontend::CosasController do
     end
 
     context 'si hay redirect_to' do
-      let(:redirect_url) { frontend_cosas_url }
+      let(:redirect_url) { users_categoria_de_cosas_url }
 
-      it 'redirects to the cosas list' do
+      it 'redirects to the categoria_de_cosas list' do
         subject
-        expect(response).to redirect_to(frontend_cosas_url)
+        expect(response).to redirect_to(users_categoria_de_cosas_url)
       end
     end
   end

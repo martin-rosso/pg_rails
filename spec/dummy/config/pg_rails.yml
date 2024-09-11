@@ -38,10 +38,10 @@ sidebar.signed_in:
     path: admin_cosas_path
   -
     name: Categorias front
-    path: frontend_categoria_de_cosas_path
+    path: users_categoria_de_cosas_path
   -
     name: Cosas front
-    path: frontend_cosas_path
+    path: users_cosas_path
   -
     name: Mi perfil
     path: edit_user_registration_path

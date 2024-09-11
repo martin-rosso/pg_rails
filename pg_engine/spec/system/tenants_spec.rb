@@ -42,6 +42,7 @@ describe 'Tenants' do
         visitar
 
         click_on other_account.to_s
+        visit '/u/categoria_de_cosas'
         expect(page).to have_text 'No hay categorías de cosas que mostrar'
       end
 

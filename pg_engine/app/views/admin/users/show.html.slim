@@ -5,7 +5,7 @@
   .ms-1
   = @user.edit_link
   .ms-1
-  = link_to admin_login_as_path(id: @user.id), class: 'btn btn-light btn-sm' do
+  = link_to login_as_path(id: @user.id), class: 'btn btn-light btn-sm' do
     span.bi.bi-arrow-right
     |  Login as
 

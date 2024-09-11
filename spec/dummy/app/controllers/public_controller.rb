@@ -1,2 +1,2 @@
-class PublicController < ApplicationController
+class PublicController < PgEngine::BasePublicController
 end

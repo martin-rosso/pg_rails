@@ -5,7 +5,7 @@ require 'rails_helper'
 describe 'Sign in' do
   shared_examples 'sign_in' do
     subject do
-      visit '/users/sign_in'
+      visit '/u/categoria_de_cosas'
       fill_in 'user_email', with: user.email
       fill_in 'user_password', with: password
       find('input[type=submit]').click

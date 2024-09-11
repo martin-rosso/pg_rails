@@ -1,4 +1,11 @@
 
+7.5.2 / 2024-09-11
+==================
+
+  * refactor!: users & admin controller in pg_engine
+  * fix: tooltip dispose
+  * fix: tenant en email, email_log y audits
+
 7.5.1 / 2024-09-10
 ==================
 

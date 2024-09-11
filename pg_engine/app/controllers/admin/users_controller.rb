@@ -28,23 +28,6 @@ module Admin
       pg_respond_update
     end
 
-    # TODO: sacar este método a otro lado, que no sea AdminController
-    skip_before_action :authenticate_user!, only: [:login_as]
-
-    # :nocov:
-    def login_as
-      return unless dev_user_or_env?
-
-      usuario = User.find(params[:id])
-      if usuario.confirmed_at.present?
-        sign_in(:user, usuario)
-        redirect_to after_sign_in_path_for(usuario)
-      else
-        go_back('No está confirmado')
-      end
-    end
-    # :nocov:
-
     private
 
     def atributos_permitidos

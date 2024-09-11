@@ -2,10 +2,9 @@
 
 # generado con pg_rails
 
-module Frontend
-  class CategoriaDeCosasController < FrontendController
+module Users
+  class CategoriaDeCosasController < UsersController
     include PgEngine::Resource
-    include PgEngine::RequireTenantSet
 
     self.clase_modelo = CategoriaDeCosa
 

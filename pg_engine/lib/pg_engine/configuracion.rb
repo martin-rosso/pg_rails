@@ -9,8 +9,6 @@ module PgEngine
     def initialize
       if defined? UsersController
         @users_controller = UsersController
-      elsif defined? FrontendController
-        @users_controller = FrontendController
       end
 
       @global_domains = ['app.localhost.com', 'test.host', 'localhost']

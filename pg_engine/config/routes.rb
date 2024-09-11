@@ -13,6 +13,9 @@ Rails.application.routes.draw do
     pg_resource(:mensaje_contactos, only: [:new, :create], path: 'contacto')
     post 'webhook/mailgun', to: 'webhooks#mailgun'
   end
+
+  get 'login_as', to: 'public#login_as'
+
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
     registrations: 'users/registrations'
@@ -26,6 +29,9 @@ Rails.application.routes.draw do
       post ':user_account_id', action: 'switch', as: 'account_switch'
     end
   end
+
+  get '/u', to: 'users#home', as: :users_root
+
   namespace :admin, path: 'a' do
     pg_resource(:emails)
     pg_resource(:eventos)
@@ -37,7 +43,6 @@ Rails.application.routes.draw do
     pg_resource(:users)
     pg_resource(:accounts)
     pg_resource(:user_accounts)
-    get 'login_as', to: 'users#login_as'
   end
   if defined? ActiveAdmin
     ActiveAdmin.routes(self)
