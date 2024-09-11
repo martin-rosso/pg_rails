@@ -105,9 +105,14 @@ export default class extends Controller {
     //        this.modalPuntero.hide()
     // pero tiraba a veces error:
     // TypeError: can't convert null to object, _isWithActiveTrigger
-    document.querySelectorAll('.modal-backdrop').forEach((el) => {
-      el.remove()
-    })
+    // document.querySelectorAll('.modal-backdrop').forEach((el) => {
+    //   el.remove()
+    // })
+    // UPDATE: 11-09-2024, vuelvo a poner el hide, porque en parece que
+    // el problema de _isWithActiveTrigger viene por el lado de los
+    // tooltips:
+    // https://github.com/twbs/bootstrap/issues/37474
+    this.modalPuntero.hide()
     document.dispatchEvent(new Event('hidden.bs.modal'))
     this.modalPuntero.dispose()
   }

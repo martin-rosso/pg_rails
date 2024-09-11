@@ -30,7 +30,11 @@ export default class extends Controller {
 
   disconnect () {
     if (this.tooltip) {
-      this.tooltip.dispose()
+      // setTimeout because of:
+      // https://github.com/twbs/bootstrap/issues/37474
+      setTimeout(() => {
+        this.tooltip.dispose()
+      }, 300)
     }
   }
 }

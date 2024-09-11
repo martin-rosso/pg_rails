@@ -24,7 +24,11 @@ export default class extends Controller {
 
   disconnect () {
     if (this.popover) {
-      this.popover.dispose()
+      // setTimeout because of:
+      // https://github.com/twbs/bootstrap/issues/37474
+      setTimeout(() => {
+        this.popover.dispose()
+      }, 300)
     }
   }
 }
