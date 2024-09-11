@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# FIXME: reemplazar por requests spec
 # generado con pg_rails
 
 require 'rails_helper'
