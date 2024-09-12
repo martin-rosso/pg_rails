@@ -99,7 +99,19 @@ class User < ApplicationRecord
   #   true
   # end
 
+  # DEPRECATED
   scope :query, ->(param) { where('email ILIKE ?', "%#{param}%") }
+
+  ransacker :search do |parent|
+    Arel::Nodes::InfixOperation.new(
+      '||',
+      Arel::Nodes::InfixOperation.new(
+        '||',
+        parent.table[:nombre], parent.table[:apellido]
+      ),
+      parent.table[:email]
+    )
+  end
 
   def to_s
     nombre_completo

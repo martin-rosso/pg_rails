@@ -26,10 +26,10 @@ class CategoriaDeCosaPolicy < ApplicationPolicy
   # end
 
   def base_access_to_record?
-    true
+    user.present?
   end
 
   def base_access_to_collection?
-    true
+    user.present?
   end
 end

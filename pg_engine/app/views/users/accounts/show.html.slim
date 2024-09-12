@@ -1,0 +1,13 @@
+h1
+  |> Usuarios de la cuenta:
+  = @account
+
+div style="max-width: 30em"
+  table.table.table-sm
+    tr
+      th Nombre
+      th Roles
+    - @account.user_accounts.each do |user_account|
+      tr
+        td = user_account.user
+        td = user_account.profiles.texts.join(', ')

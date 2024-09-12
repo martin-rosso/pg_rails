@@ -22,6 +22,7 @@
 class Account < ApplicationRecord
   audited
   include Discard::Model
+  include Hashid::Rails
 
   has_many :user_accounts
   has_many :users, through: :user_accounts
@@ -32,6 +33,10 @@ class Account < ApplicationRecord
   enumerize :plan, in: { completar: 0, los: 1, valores: 2 }
 
   validates :plan, :nombre, presence: true
+
+  ransacker :search do |parent|
+    parent.table[:nombre]
+  end
 
   def to_s
     nombre

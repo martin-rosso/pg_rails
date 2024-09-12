@@ -25,11 +25,12 @@ module PgEngine
             throw :warden, scope: :user, message: :invalid
           end
 
+          @current_tenant_set_by_domain_or_subdomain = true
         else
-          account = if session['current_user_account'].present?
-                      UserAccount.where(id: session['current_user_account']).first&.account
-                    elsif Current.user.user_accounts.count == 1
+          account = if Current.user.user_accounts.count == 1
                       Current.user.user_accounts.first.account
+                    elsif session['current_user_account'].present?
+                      UserAccount.where(id: session['current_user_account']).first&.account
                     end
           set_current_tenant(account)
         end

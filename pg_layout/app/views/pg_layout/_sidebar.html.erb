@@ -5,13 +5,20 @@
     </div>
     <% if user_signed_in? %>
       <span class="d-inline-block px-3 text-end text-light"><%= Current.user %></span>
-      <%= link_to users_account_switcher_path do %>
-        <% if Rails.env.development? %>
-          <span class="d-block px-3 text-secondary">Tenant: <%= ActsAsTenant.current_tenant || 'Global' %></span>
+      <span class="d-block px-3 text-secondary">
+        <% if Current.user.user_accounts.count > 1 %>
+          <%= link_to ActsAsTenant.current_tenant, [:users, ActsAsTenant.current_tenant] if ActsAsTenant.current_tenant.present? %>
+          <%= link_to users_account_switcher_path do %>
+            <% if ActsAsTenant.current_tenant.present? %>
+              (Cambiar)
+            <% else %>
+              Elegir cuenta
+            <% end %>
+          <% end %>
         <% else %>
-          <span class="d-block px-3 text-secondary"><%= ActsAsTenant.current_tenant %></span>
+          <%= link_to ActsAsTenant.current_tenant, [:users, ActsAsTenant.current_tenant] if ActsAsTenant.current_tenant.present? %>
         <% end %>
-      <% end %>
+      </span>
       <hr>
     <% end %>
     <ul class="list-unstyled ps-0">

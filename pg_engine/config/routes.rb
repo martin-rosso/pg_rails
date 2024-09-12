@@ -28,6 +28,9 @@ Rails.application.routes.draw do
       get '', action: 'list', as: 'account_switcher'
       post ':user_account_id', action: 'switch', as: 'account_switch'
     end
+
+    pg_resource(:accounts, path: 'cuentas', only: [:show])
+    # get 'account', to: 'accounts#show'
   end
 
   get '/u', to: 'users#home', as: :users_root

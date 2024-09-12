@@ -14,7 +14,15 @@ module PgAssociable
       resultados_prefix = 'resultados-inline'
       query = params[:query]
       timeout_id = params[:timeout_id]
-      @collection = policy_scope(@clase_modelo).kept.query(query).limit(MAX_RESULTS)
+      @collection = policy_scope(@clase_modelo).kept
+
+      @collection = if @clase_modelo.ransackable_attributes.include?('search')
+                      @collection.ransack(search_cont: query).result
+                    else
+                      @collection.where(id: query)
+                    end
+
+      @collection = @collection.limit(MAX_RESULTS)
       render turbo_stream:
         turbo_stream.update("#{resultados_prefix}-#{params[:id]}",
                             partial:, locals: { collection: @collection, query:, timeout_id: })

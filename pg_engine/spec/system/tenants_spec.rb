@@ -35,7 +35,7 @@ describe 'Tenants' do
       it 'shows the switcher' do
         visitar
 
-        expect(page).to have_text 'Switcher'
+        expect(page).to have_text 'Cambiar a otra cuenta'
       end
 
       it 'switches to account' do

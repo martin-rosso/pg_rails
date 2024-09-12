@@ -2,36 +2,34 @@
 
 # generado con pg_rails
 
-module Admin
-  class UserAccountsController < AdminController
+module Users
+  class AccountsController < UsersController
     include PgEngine::Resource
 
-    self.clase_modelo = UserAccount
+    self.clase_modelo = Account
+    add_breadcrumb 'Cuentas'
+    self.skip_default_breadcrumb = true
 
-    before_action(only: :index) { authorize UserAccount }
+    before_action(only: :index) { authorize Account }
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
     private
 
     def atributos_permitidos
-      [
-        :user_id,
-        :account_id,
-        { profiles: [] }
-      ]
+      %i[plan nombre domain subdomain]
     end
 
     def atributos_para_buscar
-      %i[user account profiles]
+      atributos_permitidos
     end
 
     def atributos_para_listar
-      %i[user account profiles]
+      atributos_permitidos
     end
 
     def atributos_para_mostrar
-      %i[user account profiles]
+      atributos_permitidos
     end
   end
 end

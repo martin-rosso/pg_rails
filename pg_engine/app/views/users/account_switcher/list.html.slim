@@ -1,6 +1,20 @@
-h1 Switcher
+h1 Cambiar a otra cuenta
 
-ul
+- if @current_tenant_set_by_domain_or_subdomain
+  p Estás en el dominio de #{ActsAsTenant.current_tenant} (#{request.host})
+  p
+    | Para cambiar de cuenta vas a tener que iniciar sesión en el dominio
+    |< de Bien o de la cuenta específica a la que quieras cambiar
+
+ul.m-auto.list-group style="max-width: 20em"
   - @user_accounts.each do |user_account|
-    li = link_to user_account.account, users_account_switch_path(user_account),
-                 'data-turbo-method': :post
+    li.list-group-item
+      - if @current_tenant_set_by_domain_or_subdomain
+        = user_account.account
+      - elsif user_account.account == ActsAsTenant.current_tenant
+        b
+          = user_account.account
+          |  (Actual)
+      - else
+        = link_to user_account.account, users_account_switch_path(user_account),
+                  'data-turbo-method': :post

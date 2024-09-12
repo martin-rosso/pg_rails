@@ -1,15 +1,17 @@
-ActsAsTenant.without_tenant do
-  DatabaseCleaner.clean_with(:truncation, except: %w(ar_internal_metadata))
+DatabaseCleaner.clean_with(:truncation, except: %w(ar_internal_metadata))
 
 
-  bien = FactoryBot.create :account, nombre: 'Bien', subdomain: 'bien'
-  uno = FactoryBot.create :user, email: 'mrosso10@gmail.com', nombre: 'Martín', apellido: 'Rosso', password: 'admin123',
-                           confirmed_at: Time.now, developer: true, orphan: true
-  bien.users << uno
+bien = FactoryBot.create(:account, nombre: 'Bien', subdomain: 'bien')
+rosso = FactoryBot.create(:user, email: 'mrosso10@gmail.com', nombre: 'Martín', apellido: 'Rosso', password: 'admin123',
+                                 confirmed_at: Time.now, developer: true, orphan: true)
 
-  mal = FactoryBot.create :account, nombre: 'Mal', subdomain: 'mal'
-  otro = FactoryBot.create :user, email: 'mal@gmail.com', nombre: 'Mal', apellido: 'Mal', password: 'admin123',
-                           confirmed_at: Time.now, developer: true, orphan: true
+bien.user_accounts.create(user: rosso, profiles: [:admin])
 
-  mal.users << otro
-end
+racionalismo = FactoryBot.create(:account, nombre: 'Racionalismo', subdomain: 'racionalismo')
+baruch = FactoryBot.create(:user, email: 'baruch@bien.com', nombre: 'Baruch', apellido: 'Spinoza', password: 'admin123',
+                                  confirmed_at: Time.now, orphan: true)
+rené = FactoryBot.create(:user, email: 'rene@bien.com', nombre: 'René', apellido: 'Descartes', password: 'admin123',
+                                confirmed_at: Time.now, orphan: true)
+
+racionalismo.user_accounts.create(user: baruch, profiles: [:admin])
+racionalismo.user_accounts.create(user: rené, profiles: [:editor])

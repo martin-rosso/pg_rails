@@ -66,7 +66,7 @@ export default class extends Controller {
     }
     const doSearchBounce = debounce((force) => {
       this.doSearch(force)
-    }, 900)
+    }, 200)
 
     this.input.addEventListener('blur', () => {
       this.input.placeholder = this.originalPlaceholder

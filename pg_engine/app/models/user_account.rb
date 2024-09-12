@@ -21,6 +21,7 @@
 #  fk_rails_...  (user_id => users.id)
 #
 
+# FIXME: add column active?
 class UserAccount < ApplicationRecord
   audited
   include Hashid::Rails
@@ -33,7 +34,6 @@ class UserAccount < ApplicationRecord
 
   enumerize :profiles, in: {
     admin: 1,
-    dueño: 2,
-    invitado: 3
+    editor: 2
   }, multiple: true
 end

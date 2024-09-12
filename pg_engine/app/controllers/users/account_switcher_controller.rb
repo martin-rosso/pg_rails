@@ -7,6 +7,8 @@ module Users
       @no_main_frame = true
     end
 
+    layout 'pg_layout/centered'
+
     def list
       @user_accounts = Current.user.user_accounts
     end
