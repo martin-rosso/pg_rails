@@ -1,20 +1,25 @@
 h1 Cambiar a otra cuenta
 
-- if @current_tenant_set_by_domain_or_subdomain
-  p Estás en el dominio de #{ActsAsTenant.current_tenant} (#{request.host})
-  p
-    | Para cambiar de cuenta vas a tener que iniciar sesión en el dominio
-    |< de Bien o de la cuenta específica a la que quieras cambiar
+/ FIXME!: if account is discarded not allow to set tenant
+/ FIXME!: user_accounts add discarded or active column
+- if @user_accounts.empty?
+  p No tenés ninguna cuenta disponible
+- else
+  - if @current_tenant_set_by_domain_or_subdomain
+    p Estás en el dominio de #{ActsAsTenant.current_tenant} (#{request.host})
+    p
+      | Para cambiar de cuenta vas a tener que iniciar sesión en el dominio
+      |< de Bien o de la cuenta específica a la que quieras cambiar
 
-ul.m-auto.list-group style="max-width: 20em"
-  - @user_accounts.each do |user_account|
-    li.list-group-item
-      - if @current_tenant_set_by_domain_or_subdomain
-        = user_account.account
-      - elsif user_account.account == ActsAsTenant.current_tenant
-        b
+  ul.m-auto.list-group style="max-width: 20em"
+    - @user_accounts.each do |user_account|
+      li.list-group-item
+        - if @current_tenant_set_by_domain_or_subdomain
           = user_account.account
-          |  (Actual)
-      - else
-        = link_to user_account.account, users_account_switch_path(user_account),
-                  'data-turbo-method': :post
+        - elsif user_account.account == ActsAsTenant.current_tenant
+          b
+            = user_account.account
+            |  (Actual)
+        - else
+          = link_to user_account.account, users_account_switch_path(user_account),
+                    'data-turbo-method': :post
