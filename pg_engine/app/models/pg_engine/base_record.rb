@@ -19,9 +19,6 @@ module PgEngine
       attr_accessor :default_modal
     end
 
-    # DEPRECATED
-    scope :query, ->(param) { param.present? ? where(id: param) : all }
-
     # ransacker :search do |parent|
     #   parent.table[:nombre]
     # end

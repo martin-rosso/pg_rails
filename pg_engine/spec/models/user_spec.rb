@@ -56,4 +56,11 @@ RSpec.describe User do
       expect(user).not_to be_persisted
     end
   end
+
+  describe 'search ransacker' do
+    it 'searchs' do
+      results = described_class.ransack(search_cont: user.nombre).result.to_a
+      expect(results).to eq [user]
+    end
+  end
 end

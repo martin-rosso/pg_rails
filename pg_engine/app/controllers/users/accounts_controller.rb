@@ -14,22 +14,22 @@ module Users
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
-    private
+    # private
 
-    def atributos_permitidos
-      %i[plan nombre domain subdomain]
-    end
+    # def atributos_permitidos
+    #   %i[plan nombre domain subdomain]
+    # end
 
-    def atributos_para_buscar
-      atributos_permitidos
-    end
+    # def atributos_para_buscar
+    #   atributos_permitidos
+    # end
 
-    def atributos_para_listar
-      atributos_permitidos
-    end
+    # def atributos_para_listar
+    #   atributos_permitidos
+    # end
 
-    def atributos_para_mostrar
-      atributos_permitidos
-    end
+    # def atributos_para_mostrar
+    #   atributos_permitidos
+    # end
   end
 end
