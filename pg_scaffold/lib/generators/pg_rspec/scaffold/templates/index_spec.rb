@@ -9,7 +9,7 @@ RSpec.describe "<%= ruta_vistas %>/index", <%= type_metatag(:view) %> do
   helper <%= mountable_engine? %>::Engine.routes.url_helpers
 <% end -%>
 
-  let(:user) { create(:user, :admin) }
+  let(:user) { create(:user, :developer) }
   let!(:<%= plural_name %>) { create_list(:<%= nombre_tabla_completo_singular %>, rand(10..20))}
 
   before(:each) do

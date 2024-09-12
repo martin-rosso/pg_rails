@@ -33,7 +33,8 @@ class UserAccount < ApplicationRecord
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
   enumerize :profiles, in: {
-    admin: 1,
-    editor: 2
+    administracion: 1,
+    operacion: 2,
+    lectura: 3,
   }, multiple: true
 end

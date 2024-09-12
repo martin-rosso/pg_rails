@@ -9,7 +9,7 @@ RSpec.describe "<%= ruta_vistas %>/edit", <%= type_metatag(:view) %> do
   helper <%= mountable_engine? %>::Engine.routes.url_helpers
 <% end -%>
 
-  let(:user) { create(:user, :admin) }
+  let(:user) { create(:user, :developer) }
 
   before(:each) do
     sign_in user

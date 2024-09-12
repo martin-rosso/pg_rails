@@ -43,7 +43,7 @@ RSpec.describe Admin::UsersController do
     }
   end
 
-  let(:logged_user) { create :user, :admin }
+  let(:logged_user) { create :user, :developer }
 
   before do
     sign_in logged_user

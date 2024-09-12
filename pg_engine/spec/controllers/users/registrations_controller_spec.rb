@@ -51,7 +51,7 @@ describe Users::RegistrationsController do
   describe '#edit' do
     subject { get :edit }
 
-    let(:logger_user) { create :user, :admin }
+    let(:logger_user) { create :user, :developer }
 
     before do
       sign_in logger_user

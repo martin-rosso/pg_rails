@@ -58,7 +58,11 @@ FactoryBot.define do
     end
 
     trait :admin do
-      developer { true }
+      developer do
+        pg_deprecation 'trait "admin"', 'use trait "developer" instead',
+                       deprecator: PgEngine.deprecator
+        true
+      end
     end
 
     trait :developer do

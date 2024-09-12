@@ -44,7 +44,7 @@ RSpec.describe Admin::CosasController do
     }
   end
 
-  let(:user) { create :user, :admin }
+  let(:user) { create :user, :developer }
 
   before do
     sign_in user if user.present?
