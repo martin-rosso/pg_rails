@@ -32,7 +32,7 @@
   <br>
   <br>
   <ul style="max-width: 500px">
-    <% User.order(:id).each do |user| %>
+    <% User.kept.order(:id).each do |user| %>
       <li><%= link_to user, login_as_path(id: user.id) %></li>
     <% end %>
   </ul>

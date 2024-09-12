@@ -71,6 +71,15 @@ class User < ApplicationRecord
 
   attr_accessor :orphan
 
+  def active_for_authentication?
+    super && kept?
+  end
+
+  # TODO: test
+  def inactive_message
+    kept? ? super : :locked
+  end
+
   after_create do
     create_account unless orphan
   end
