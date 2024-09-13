@@ -65,8 +65,6 @@ require 'factory_bot_rails'
 require 'devise'
 # require 'enumerize'
 
-require 'pg_rails/current_attributes_support'
-
 begin
   ActiveRecord::Migration.maintain_test_schema!
 rescue ActiveRecord::PendingMigrationError => e

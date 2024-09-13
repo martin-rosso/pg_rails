@@ -1,5 +1,9 @@
 module PgEngine
   class BasePublicController < ApplicationController
+    before_action do
+      Current.namespace = :public
+    end
+
     # :nocov:
     def login_as
       return head :bad_request unless dev_user_or_env?

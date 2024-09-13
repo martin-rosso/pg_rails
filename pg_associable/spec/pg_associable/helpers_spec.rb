@@ -1,6 +1,20 @@
 require 'rails_helper'
 
 describe PgAssociable::Helpers do
+  include ActiveSupport::CurrentAttributes::TestHelper
+
+  describe 'current attributes gets reset' do
+    it 'sets a current attribute' do
+      Current.user = 1
+      expect(Current.namespace).to be_nil
+    end
+
+    it 'the attribute gets reset' do
+      Current.namespace = 2
+      expect(Current.user).to be_nil
+    end
+  end
+
   # DEPRECATED
   describe '#pg_respond_buscar with query scope' do
     let(:ctrl) do
