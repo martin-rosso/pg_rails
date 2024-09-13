@@ -9,7 +9,7 @@ module PgEngine
     def require_tenant_set
       return if ActsAsTenant.current_tenant.present?
 
-      redirect_to users_account_switcher_path
+      raise ActsAsTenant::Errors::NoTenantSet
     end
   end
 end
