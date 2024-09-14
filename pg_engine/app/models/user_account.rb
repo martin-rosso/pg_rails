@@ -35,6 +35,6 @@ class UserAccount < ApplicationRecord
   enumerize :profiles, in: {
     administracion: 1,
     operacion: 2,
-    lectura: 3,
+    lectura: 3
   }, multiple: true
 end

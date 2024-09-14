@@ -41,7 +41,6 @@ def pg_deprecation(method, message = nil, deprecator:)
   deprecator.warn(deprecator.deprecation_warning(method, message), caller_locations(3))
 end
 
-
 module PgEngine
   class PgLogger
     def self.test_logged_messages
