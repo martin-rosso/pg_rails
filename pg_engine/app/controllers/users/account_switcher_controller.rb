@@ -10,11 +10,13 @@ module Users
     layout 'pg_layout/centered'
 
     def list
-      @user_accounts = Current.user.user_accounts
+      @user_accounts = Current.user.user_accounts.kept
     end
 
     def switch
-      user_account = UserAccount.find(params[:user_account_id])
+      # FIXME: handle not found
+      scope = Current.user.user_accounts.kept
+      user_account = scope.find(UserAccount.decode_id(params[:user_account_id]))
       session['current_user_account'] = user_account.id
       redirect_to root_path
     end

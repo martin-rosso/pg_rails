@@ -18,11 +18,17 @@ module PgEngine
       #   raise ActsAsTenant::Errors::NoTenantSet
       # end
       # FIXME: if current_tenant.present? check it's not discarded
-
+      # FIXME: if session['current_user_account'] present? check
+      #        user belongs to it, and if not, cleanup
       if Current.user.present?
         user_accounts = Current.user.user_accounts.kept
         if ActsAsTenant.current_tenant.present?
           unless user_accounts.exists?(account: ActsAsTenant.current_tenant)
+            pg_warn <<~WARN
+              #{Current.user.to_gid} not belongs to \
+              #{ActsAsTenant.current_tenant.to_gid}. Signed out
+            WARN
+
             sign_out(Current.user)
             throw :warden, scope: :user, message: :invalid
           end
@@ -32,8 +38,9 @@ module PgEngine
           account = if user_accounts.count == 1
                       user_accounts.first.account
                     elsif session['current_user_account'].present?
-                      UserAccount.where(id: session['current_user_account']).first&.account
+                      user_accounts.where(id: session['current_user_account']).first&.account
                     end
+
           set_current_tenant(account)
         end
       end
