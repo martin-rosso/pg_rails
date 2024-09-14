@@ -26,6 +26,16 @@ describe 'redirection' do
     expect(response).to have_http_status(:ok)
   end
 
+  context 'when account is discarded' do
+    it do
+      get '/u/cosas'
+      expect(response.body).to include 'No hay cosos que mostrar'
+      logged_user.user_accounts.first.account.discard!
+      get '/u/cosas'
+      expect(response).to redirect_to users_account_switcher_path
+    end
+  end
+
   context 'when has been removed from account' do
     let!(:other_account) { create :account }
     let!(:other_user_account) { logged_user.user_accounts.create(account: other_account) }
@@ -48,7 +58,7 @@ describe 'redirection' do
       expect(response.body).to include other_account.to_s
       expect(response.body).to include 'No hay cosos que mostrar'
       other_user_account.destroy!
-      get '/'
+      get '/u/cosas'
       expect(response).to redirect_to users_account_switcher_path
     end
   end

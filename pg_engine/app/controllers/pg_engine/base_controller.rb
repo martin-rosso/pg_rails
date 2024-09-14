@@ -17,18 +17,20 @@ module PgEngine
       # if ActsAsTenant.current_tenant.blank? && !global_domain?
       #   raise ActsAsTenant::Errors::NoTenantSet
       # end
+      # FIXME: if current_tenant.present? check it's not discarded
 
       if Current.user.present?
+        user_accounts = Current.user.user_accounts.kept
         if ActsAsTenant.current_tenant.present?
-          unless Current.user.user_accounts.exists?(account: ActsAsTenant.current_tenant)
+          unless user_accounts.exists?(account: ActsAsTenant.current_tenant)
             sign_out(Current.user)
             throw :warden, scope: :user, message: :invalid
           end
 
           @current_tenant_set_by_domain_or_subdomain = true
         else
-          account = if Current.user.user_accounts.count == 1
-                      Current.user.user_accounts.first.account
+          account = if user_accounts.count == 1
+                      user_accounts.first.account
                     elsif session['current_user_account'].present?
                       UserAccount.where(id: session['current_user_account']).first&.account
                     end
