@@ -11,6 +11,11 @@ RSpec.describe Email do
     expect(email).to be_persisted
   end
 
+  it 'se persiste cuando no hay tenant' do
+    ActsAsTenant.current_tenant = nil
+    expect(email).to be_persisted
+  end
+
   describe 'update_status!' do
     context 'cuando hay accepted y delivered' do
       subject do

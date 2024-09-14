@@ -5,6 +5,10 @@ describe PgEngine::Mailgun::LogSync, vcr: { cassette_name: 'mailgun/log_sync_dow
                                             match_requests_on: %i[method host] } do
   let(:instancia) { described_class }
 
+  before do
+    ActsAsTenant.current_tenant = nil
+  end
+
   describe '#download' do
     subject do
       instancia.download

@@ -33,6 +33,18 @@ module PgEngine
           end
         end
 
+        def failure_message_when_negated
+          msg = "expected not to #{@level || log}"
+          msg << "with text: #{@text}" if @text.present?
+          return msg unless @new_messages.any?
+
+          msg << "\nLogged messages:"
+          @new_messages.each do |level, message|
+            msg << "\n  #{level}: #{message[0..500]}"
+          end
+          msg
+        end
+
         def failure_message
           msg = "expected to #{@level || log}"
           msg << "with text: #{@text}" if @text.present?
@@ -40,7 +52,7 @@ module PgEngine
 
           msg << "\nLogged messages:"
           @new_messages.each do |level, message|
-            msg << "\n  #{level}: #{message[0..200]}"
+            msg << "\n  #{level}: #{message[0..500]}"
           end
           msg
         end

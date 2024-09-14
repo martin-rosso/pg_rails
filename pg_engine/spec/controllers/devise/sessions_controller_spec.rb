@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe Devise::SessionsController do
   before do
+    ActsAsTenant.current_tenant = nil
     # rubocop:disable RSpec/InstanceVariable
     @request.env['devise.mapping'] = Devise.mappings[:user]
     # rubocop:enable RSpec/InstanceVariable
