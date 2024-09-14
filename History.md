@@ -1,4 +1,15 @@
 
+7.5.4 / 2024-09-13
+==================
+
+  * fix: invalidate login if user is discarded
+  * fix: deny to login to discarded accounts
+  * fix: only require_tenant on users controllers
+  * test: tenant on devise email send
+  * test: current attributes
+  * refactor: RequireTenantSet concern (now raises)
+  * refactor: user account profile rename
+
 7.5.3 / 2024-09-12
 ==================
 
