@@ -92,9 +92,9 @@ es:
       new:
         sign_up: Crear una cuenta
     passwords:
-      send_instructions: Vas a recibir un correo con instrucciones sobre cómo resetear tu contraseña en unos pocos minutos.
+      send_instructions: Vas a recibir un correo con instrucciones para restablecer tu contraseña en unos pocos minutos.
       new:
-        send_me_reset_password_instructions: Enviar instrucciones para restablecer contraseña
+        send_me_reset_password_instructions: Restablecer contraseña
         forgot_your_password: ¿Olvidaste tu contraseña?
     shared:
       links:
