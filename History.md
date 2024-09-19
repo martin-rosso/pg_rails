@@ -1,4 +1,10 @@
 
+7.5.6 / 2024-09-19
+==================
+
+  * fix: acts_as_tenant en User y UserAccount
+  * fix(minor): i18n devise
+
 7.5.5 / 2024-09-14
 ==================
 

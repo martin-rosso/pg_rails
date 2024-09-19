@@ -29,7 +29,9 @@ describe 'Tenants' do
       let(:other_account) { create :account }
 
       before do
-        logged_user.user_accounts.create!(account: other_account)
+        ActsAsTenant.with_tenant(other_account) do
+          logged_user.user_accounts.create!
+        end
       end
 
       it 'shows the switcher' do

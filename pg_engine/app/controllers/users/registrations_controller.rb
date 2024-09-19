@@ -7,15 +7,19 @@ module Users
     def create
       build_resource(sign_up_params)
 
-      resource.save
-      yield resource if block_given?
-      if resource.persisted?
-        expire_data_after_sign_in!
-        render_message
-      else
-        clean_up_passwords resource
-        set_minimum_password_length
-        respond_with resource
+      ActiveRecord::Base.transaction do
+        resource.save
+        yield resource if block_given?
+        if resource.persisted?
+          create_account_for(resource)
+
+          expire_data_after_sign_in!
+          render_message
+        else
+          clean_up_passwords resource
+          set_minimum_password_length
+          respond_with resource
+        end
       end
     end
 
@@ -26,6 +30,13 @@ module Users
         </div>
       HTML
       render turbo_stream: turbo_stream.update('form-signup', msg)
+    end
+
+    private
+
+    def create_account_for(user)
+      account = Account.create!(nombre: user.email)
+      user.user_accounts.create!(account:)
     end
   end
 end

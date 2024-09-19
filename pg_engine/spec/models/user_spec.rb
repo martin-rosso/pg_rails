@@ -15,52 +15,34 @@ RSpec.describe User do
     expect(user.default_account).to be_present
   end
 
-  context 'si es orphan' do
-    let(:user) { create(:user, orphan: true) }
-
-    it do
-      expect(user.accounts).to be_empty
-    end
-
-    it do
-      expect { user.default_account }.to raise_error(User::Error)
-    end
-  end
-
-  context 'Si falla la creación de cuenta, que rollbackee la transaction de create user' do
-    # rubocop:disable Lint/SuppressedException
-    subject do
-      user.save
-    rescue User::Error
-    end
-    # rubocop:enable Lint/SuppressedException
-
-    let(:user) do
-      build(:user)
-    end
-
-    before do
-      # rubocop:disable RSpec/MessageChain
-      allow(user).to receive_message_chain(:user_accounts, :create) {
-                       instance_double(UserAccount, persisted?: false)
-                     }
-      # rubocop:enable RSpec/MessageChain
-    end
-
-    it do
-      expect { subject }.not_to change(described_class, :count)
-    end
-
-    it do
-      subject
-      expect(user).not_to be_persisted
-    end
-  end
-
   describe 'search ransacker' do
     it 'searchs' do
       results = described_class.ransack(search_cont: user.nombre).result.to_a
       expect(results).to eq [user]
+    end
+  end
+
+  describe 'default scope' do
+    before do
+      ActsAsTenant.current_tenant = nil
+      ActsAsTenant.test_tenant = nil
+      Current.reset
+    end
+
+    it 'scopes according to tenant' do
+      account = create(:account)
+      other_account = create(:account)
+      usr1 = usr2 = usr3 = usr4 = nil
+      ActsAsTenant.with_tenant(other_account) do
+        usr3 = create(:user)
+        usr4 = create(:user)
+      end
+      ActsAsTenant.with_tenant(account) do
+        usr1 = create(:user)
+        usr2 = create(:user)
+        expect(described_class.all).to contain_exactly(usr1, usr2)
+      end
+      expect(described_class.all).to contain_exactly(usr1, usr2, usr3, usr4)
     end
   end
 end

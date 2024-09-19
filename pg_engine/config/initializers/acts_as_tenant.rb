@@ -1,6 +1,6 @@
 ActsAsTenant.configure do |config|
-  config.require_tenant = lambda do
-    Current.namespace == :users
+  config.require_tenant = lambda do |options|
+    Current.namespace.present? || !options[:model].in?([User, UserAccount, Email, EmailLog])
   end
 
   # Customize the query for loading the tenant in background jobs

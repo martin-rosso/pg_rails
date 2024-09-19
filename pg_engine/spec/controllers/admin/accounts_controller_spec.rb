@@ -38,7 +38,7 @@ RSpec.describe Admin::AccountsController do
 
   let(:invalid_attributes) do
     {
-      plan: nil
+      nombre: nil
     }
   end
 

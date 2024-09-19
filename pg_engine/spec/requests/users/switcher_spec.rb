@@ -38,11 +38,17 @@ describe 'redirection' do
 
   context 'when has been removed from account' do
     let!(:other_account) { create :account }
-    let!(:other_user_account) { logged_user.user_accounts.create(account: other_account) }
+    let!(:other_user_account) do
+      ActsAsTenant.with_tenant(other_account) do
+        logged_user.user_accounts.create!
+      end
+    end
 
     before do
       third_account = create :account
-      logged_user.user_accounts.create(account: third_account)
+      ActsAsTenant.with_tenant(third_account) do
+        logged_user.user_accounts.create!
+      end
     end
 
     it 'redirects to switcher' do

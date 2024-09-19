@@ -1,16 +1,8 @@
 require 'rails_helper'
 
-describe Users::RegistrationsController do
-  render_views
-
-  before do
-    # rubocop:disable RSpec/InstanceVariable
-    @request.env['devise.mapping'] = Devise.mappings[:user]
-    # rubocop:enable RSpec/InstanceVariable
-  end
-
+describe 'registrations controller' do
   describe '#new' do
-    subject { get :new }
+    subject { get '/users/sign_up' }
 
     it do
       subject
@@ -20,7 +12,12 @@ describe Users::RegistrationsController do
 
   describe '#create' do
     subject do
-      post :create, params: { user: { nombre:, apellido:, email:, password:, password_confirmation: } }
+      post '/users', params: { user: { nombre:, apellido:, email:, password:, password_confirmation: } }
+    end
+
+    before do
+      ActsAsTenant.current_tenant = nil
+      ActsAsTenant.test_tenant = nil
     end
 
     let(:nombre) { Faker::Name.first_name }
@@ -31,6 +28,14 @@ describe Users::RegistrationsController do
 
     it do
       expect { subject }.to change(User, :count).by(1)
+    end
+
+    it do
+      expect { subject }.to change(UserAccount, :count).by(1)
+    end
+
+    it do
+      expect { subject }.to change(Account, :count).by(1)
     end
 
     it do
@@ -46,10 +51,28 @@ describe Users::RegistrationsController do
         expect(response).not_to be_successful
       end
     end
+
+    context 'cuando falla la creación de la UserAccount' do
+      before do
+        allow_any_instance_of(Users::RegistrationsController).to receive(:create_account_for).and_raise(StandardError)
+      end
+
+      it do
+        expect { subject }.not_to change(User, :count)
+      end
+
+      it do
+        expect { subject }.not_to change(UserAccount, :count)
+      end
+
+      it do
+        expect { subject }.not_to change(Account, :count)
+      end
+    end
   end
 
   describe '#edit' do
-    subject { get :edit }
+    subject { get '/users/edit' }
 
     let(:logger_user) { create :user, :developer }
 

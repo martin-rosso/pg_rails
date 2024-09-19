@@ -38,6 +38,10 @@ class Account < ApplicationRecord
     parent.table[:nombre]
   end
 
+  before_validation do
+    self.plan = 0 if plan.blank?
+  end
+
   def to_s
     nombre
   end

@@ -22,7 +22,7 @@ class UserPolicy < ApplicationPolicy
     user.developer? || user == record
   end
 
-  # def base_access_to_collection?
-  #   user&.present?
-  # end
+  def base_access_to_collection?
+    user.present?
+  end
 end

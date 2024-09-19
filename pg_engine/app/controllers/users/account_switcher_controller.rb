@@ -9,6 +9,12 @@ module Users
 
     layout 'pg_layout/centered'
 
+    around_action :set_without_tenant
+
+    def set_without_tenant(&)
+      ActsAsTenant.without_tenant(&)
+    end
+
     def list
       @user_accounts = Current.user.user_accounts.kept
     end

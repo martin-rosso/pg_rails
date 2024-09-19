@@ -91,6 +91,8 @@ RSpec.configure do |config|
   end
 
   config.before(:each) do |example|
+    Current.reset
+
     if example.metadata[:type].in? %i(request controller system)
       # Set the `test_tenant` value for integration tests
       ActsAsTenant.test_tenant = $default_account

@@ -41,17 +41,7 @@ class User < ApplicationRecord
   # Hace falta?
   has_many :accounts, through: :user_accounts
 
-  # default_scope lambda {
-  #   if ActsAsTenant.current_tenant.present?
-  #     joins(:user_accounts).where('user_accounts.account_id': ActsAsTenant.current_tenant.id)
-  #   else
-  #     raise ActsAsTenant::Errors::NoTenantSet unless Current.user.blank? || ActsAsTenant.unscoped?
-
-  #     # Aún no autenticó devise o es el admin
-  #     all
-
-  #   end
-  # }
+  acts_as_tenant :account, through: :user_accounts
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
@@ -78,26 +68,6 @@ class User < ApplicationRecord
   # TODO: test
   def inactive_message
     kept? ? super : :locked
-  end
-
-  after_create do
-    create_account unless orphan
-  end
-
-  def create_account
-    account =
-      if ActsAsTenant.current_tenant.present?
-        # :nocov:
-        raise PgEngine::Error, 'user not invited' unless Rails.env.test?
-        # :nocov:
-
-        ActsAsTenant.current_tenant
-      else
-        Account.create(nombre: email, plan: 0)
-      end
-    ua = user_accounts.create(account:)
-
-    raise(Error, 'no se pudo crear la cuenta') unless ua.persisted?
   end
 
   def password_required?
