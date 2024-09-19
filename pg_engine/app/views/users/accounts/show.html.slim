@@ -8,7 +8,7 @@ div style="max-width: 30em"
       th Nombre
       th Email
       th Roles
-    - @account.user_accounts.each do |user_account|
+    - @account.user_accounts.kept.each do |user_account|
       tr
         td = user_account.user
         td = user_account.user.email
