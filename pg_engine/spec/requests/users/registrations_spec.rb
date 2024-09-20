@@ -69,6 +69,25 @@ describe 'registrations controller' do
         expect { subject }.not_to change(Account, :count)
       end
     end
+
+    context 'cuando hay tenant' do
+      before do
+        host! 'bien.localhost.com'
+        create :account, subdomain: 'bien'
+      end
+
+      it do
+        expect { subject }.to change(User, :count).by(1)
+      end
+
+      it do
+        expect { subject }.to change(UserAccount, :count).by(1)
+      end
+
+      it do
+        expect { subject }.not_to change(Account, :count)
+      end
+    end
   end
 
   describe '#edit' do

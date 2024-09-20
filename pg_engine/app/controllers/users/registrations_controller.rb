@@ -11,7 +11,7 @@ module Users
         resource.save
         yield resource if block_given?
         if resource.persisted?
-          create_account_for(resource)
+          create_account_for(resource) if ActsAsTenant.current_tenant.blank?
 
           expire_data_after_sign_in!
           render_message
