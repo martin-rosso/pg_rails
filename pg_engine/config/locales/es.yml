@@ -16,6 +16,11 @@ es:
       index:
         empty: 'No hay %{model} que mostrar'
         empty_but_filtered: 'No hay %{model} para los filtros aplicados'
+  gender:
+    reset_password_token: m
+    confirmation_token: m
+    unlock_token: m
+    current_password: f
   attributes:
     external_labels: Etiquetas externas
     external_source: Fuente externa
