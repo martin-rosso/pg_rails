@@ -1,4 +1,12 @@
 
+7.5.7 / 2024-09-20
+==================
+
+  * fix: patch ActiveStorage::BaseController for without_tenant
+  * fix: login as
+  * feat(admin): nested user accounts in account show
+  * ci: install ruby-vips & cache apt packages
+
 7.5.6 / 2024-09-19
 ==================
 
