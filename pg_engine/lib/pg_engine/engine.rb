@@ -19,6 +19,14 @@ module PgEngine
       Dir.glob("#{overrides}/**/*.rb").each do |override|
         load override
       end
+
+      ActiveStorage::BaseController.class_eval do
+        around_action :set_without_tenant
+
+        def set_without_tenant(&)
+          ActsAsTenant.without_tenant(&)
+        end
+      end
     end
 
     initializer 'pg_engine.set_exceptions_app' do

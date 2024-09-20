@@ -42,6 +42,10 @@ class CategoriaDeCosa < ApplicationRecord
 
   accepts_nested_attributes_for :cosas, allow_destroy: true
 
+  has_one_attached :file do |attachable|
+    attachable.variant :thumb, resize_to_limit: [100, 100], preprocessed: true
+  end
+
   enumerize :tipo, in: { completar: 0, los: 1, valores: 2 }
 
   scope :query, ->(param) { param.present? ? where('nombre ilike ?', "%#{param}%") : all }
