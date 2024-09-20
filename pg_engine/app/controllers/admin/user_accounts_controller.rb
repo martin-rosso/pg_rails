@@ -7,6 +7,8 @@ module Admin
     include PgEngine::Resource
 
     self.clase_modelo = UserAccount
+    self.nested_class = Account
+    self.nested_key = :account_id
 
     before_action(only: :index) { authorize UserAccount }
 

@@ -44,7 +44,9 @@ Rails.application.routes.draw do
       end
     end
     pg_resource(:users)
-    pg_resource(:accounts)
+    pg_resource(:accounts) do
+      pg_resource(:user_accounts)
+    end
     pg_resource(:user_accounts)
   end
   if defined? ActiveAdmin

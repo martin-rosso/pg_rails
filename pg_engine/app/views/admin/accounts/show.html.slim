@@ -25,3 +25,5 @@ table.table.table-borderless.table-sm.w-auto.mb-0.m-3
   tr
     th = t('attributes.discarded_at')
     td = @account.discarded_at
+
+= embed_index @account, :user_accounts
