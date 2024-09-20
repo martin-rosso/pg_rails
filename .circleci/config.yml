@@ -103,7 +103,12 @@ jobs:
     steps:
       - node/install:
           node-version: '20.11.0'
-      - browser-tools/install-browser-tools
+
+      # Instalo solo el chrome
+      #- browser-tools/install-browser-tools
+      - browser-tools/install-chrome
+      - browser-tools/install-chromedriver
+
       - checkout
       - bundle_install
       - set_up_database
