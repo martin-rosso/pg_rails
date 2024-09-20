@@ -24,11 +24,29 @@ commands:
           keys:
             - bundle-v1-{{ arch }}-{{ checksum ".ruby-version" }}-{{ checksum "Gemfile.lock" }}
             - bundle-v1-{{ arch }}-{{ checksum ".ruby-version" }}-
-      - run: sudo apt-get --allow-releaseinfo-change update && sudo apt-get install -y libmagic-dev # libmagic (requerido por carrierwave-magic)
-      - run: sudo apt-get install -y poppler-utils # requerido por PdfPreviewGenerator, para el binario pdftoppm
+      - restore_cache:
+          keys:
+            - packages-v1
 
-      # TODO: ver qué onda, si se puede evitar, pesa 250mbbbb
-      # - run: sudo apt-get install -y ruby-vips # requerido por image_processing
+      - run: sudo apt-get --allow-releaseinfo-change update
+      - run:
+          command: |
+            if ! [[ -d vendor/apt ]]; then
+              mkdir -p vendor/apt
+            fi
+
+      # ruby-vips requerido por active storage previews (image_processing)
+      # poppler-utils requerido por PdfPreviewGenerator, para el binario pdftoppm
+      - run:
+          command: |
+            if ! [[ -d vendor/apt/archives ]]; then
+              sudo apt-get install --download-only ruby-vips poppler-utils
+              sudo cp -R /var/cache/apt vendor/
+              sudo chown -R circleci:circleci vendor/apt
+            fi
+
+            sudo dpkg -i vendor/apt/archives/*.deb
+
       - run:
           name: Install Ruby Dependencies
           command: |
@@ -42,6 +60,11 @@ commands:
           paths:
             - ./vendor/bundle
           key: bundle-v1-{{ arch }}-{{ checksum ".ruby-version" }}-{{ checksum "Gemfile.lock" }}
+
+      - save_cache:
+          paths:
+            - vendor/apt
+          key: packages-v1
   set_up_database:
     steps:
       - run:
