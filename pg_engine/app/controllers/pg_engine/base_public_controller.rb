@@ -9,6 +9,8 @@ module PgEngine
       # FIXME: make a POST route
       return head :bad_request unless dev_user_or_env?
 
+      Current.namespace = nil
+
       usuario = User.find(params[:id])
       if usuario.confirmed_at.present?
         sign_in(:user, usuario)
