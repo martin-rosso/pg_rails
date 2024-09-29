@@ -79,10 +79,10 @@ jobs:
     executor: ruby
     steps:
       - node/install:
-          install-yarn: true
           node-version: '20.11.0'
       - checkout
       - bundle_install
+      - run: corepack enable
       - run: yarn install
       - run:
           name: Run Overcommit
@@ -102,7 +102,6 @@ jobs:
     executor: ruby
     steps:
       - node/install:
-          install-yarn: true
           node-version: '20.11.0'
       - browser-tools/install-browser-tools
       - checkout
@@ -119,6 +118,7 @@ jobs:
             ./cc-test-reporter before-build
             export PARALLEL_TEST_PROCESSORS=4
             #RAILS_ENV=test bundle exec rails db:migrate
+            corepack enable
             yarn install
             yarn build
             yarn build:css
