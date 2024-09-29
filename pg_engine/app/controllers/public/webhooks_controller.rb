@@ -2,6 +2,12 @@ module Public
   class WebhooksController < PublicController
     skip_before_action :verify_authenticity_token
 
+    # TODO: mover a un namespace de webhooks
+    around_action :set_without_tenant
+    def set_without_tenant(&)
+      ActsAsTenant.without_tenant(&)
+    end
+
     before_action :verify_signature, only: :mailgun
 
     rescue_from StandardError do |err|

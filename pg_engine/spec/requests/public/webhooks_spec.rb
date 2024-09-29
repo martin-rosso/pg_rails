@@ -26,14 +26,18 @@ def build_body(log_id, signature, timestamp)
   JSON
 end
 
-describe Public::WebhooksController do
+describe 'webhooks' do
   include ActiveSupport::Testing::TimeHelpers
 
-  before { travel_to Time.zone.at(1_716_564_587) }
+  before do
+    travel_to Time.zone.at(1_716_564_587)
+    ActsAsTenant.current_tenant = nil
+    ActsAsTenant.test_tenant = nil
+  end
 
   describe '#mailgun' do
     subject do
-      post :mailgun, body:, as: :json
+      post '/webhook/mailgun', params: body, headers: { 'content-type': 'application/json' }
     end
 
     let(:signature) { 'c524037907046276117758afae8a340e77a43a6e48eb35a9521426e7a3ff675b' }
@@ -114,11 +118,15 @@ describe Public::WebhooksController do
 
     context 'cuando ya se usó el token' do
       subject do
-        post :mailgun, body: build_body('otro id', signature, timestamp), as: :json
+        post '/webhook/mailgun',
+             params: build_body('otro id', signature, timestamp),
+             headers: { 'content-type': 'application/json' }
       end
 
       before do
-        post :mailgun, body: build_body(log_id, signature, timestamp), as: :json
+        post '/webhook/mailgun',
+             params: build_body(log_id, signature, timestamp),
+             headers: { 'content-type': 'application/json' }
       end
 
       it_behaves_like 'todo bien pero no guarda el log'
