@@ -20,7 +20,7 @@ module PgAssociable
       # porque de todos modos se pisaría en el create
       if !object.persisted? &&
          template.nested_record.present? &&
-         object.send(template.nested_key) == (template.nested_record.id)
+         object.send(atributo) == (template.nested_record)
         options[:disabled] = true
       end
 
