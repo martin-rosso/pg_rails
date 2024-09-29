@@ -1,4 +1,16 @@
 
+7.6.0 / 2024-09-29
+==================
+
+  * fix!: new object-oriented navigation schema
+  * fix: handle unknown format
+  * fix: show unscoped accounts in switcher
+  * fix: pg_asociable disable nested model
+  * fix: clear timeout with timeoutId in DOM
+  * fix: webhooks controller without tenant
+  * build!: yarn 4
+  * build: ostruct gem
+
 7.5.7 / 2024-09-20
 ==================
 
