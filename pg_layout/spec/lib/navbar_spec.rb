@@ -2,7 +2,11 @@ require 'rails_helper'
 
 describe Navbar do
   let(:user) { create :user }
-  let(:instancia) { described_class.new(user) }
+  let(:instancia) { described_class.new }
+
+  before do
+    Current.user = user
+  end
 
   describe '#add_html' do
     subject { instancia.add_html(some_html) }

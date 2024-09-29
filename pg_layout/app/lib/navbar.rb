@@ -4,10 +4,9 @@ class Navbar
   attr_reader :extensiones
   attr_accessor :logo, :logo_xl, :logo_xl_url
 
-  def initialize(user)
-    @user = user
-    @yaml_data = YAML.load_file("#{Rails.application.root}/config/pg_rails.yml")
-    @yaml_data = ActiveSupport::HashWithIndifferentAccess.new(@yaml_data)
+  def initialize
+    @user = Current.user
+    @yaml_data = ActiveSupport::HashWithIndifferentAccess.new({})
     @extensiones = []
   end
 
@@ -31,15 +30,21 @@ class Navbar
     return [] if bar_data.blank?
 
     # rubocop:disable Security/Eval
+    # rubocop:disable Style/MultilineBlockChain:
+    orig_idx = 0
     bar_data.map do |item|
+      orig_idx += 1
       {
         title: item['name'],
         attributes: item['attributes']&.html_safe,
         path: eval(item['path']),
-        show: item['policy'] ? eval(item['policy']) : true
+        show: item['policy'] ? eval(item['policy']) : true,
+        priority: item['priority'] || 999_999,
+        orig_idx:
       }
-    end
+    end.sort_by { |a| [a[:priority], a[:orig_idx]] }
     # rubocop:enable Security/Eval
+    # rubocop:enable Style/MultilineBlockChain:
   end
 
   def all_children_hidden?(entry)

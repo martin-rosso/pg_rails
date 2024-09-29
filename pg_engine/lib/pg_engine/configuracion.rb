@@ -4,14 +4,11 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :users_controller, :global_domains
+    attr_accessor :users_controller, :global_domains, :navigators
 
     def initialize
-      if defined? UsersController
-        @users_controller = UsersController
-      end
-
       @global_domains = ['app.localhost.com', 'test.host', 'localhost']
+      @navigators = [PgEngine::Navigator.new]
     end
   end
 end

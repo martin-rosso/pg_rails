@@ -149,7 +149,10 @@ module PgEngine
       navbar_expanded = cookies[:navbar_expand] != 'false'
       @navbar_opened_class = navbar_expanded ? 'opened' : ''
       @navbar_chevron_class = navbar_expanded ? 'bi-chevron-left' : 'bi-chevron-right'
-      @navbar = Navbar.new(Current.user)
+      @navbar = Navbar.new
+      PgEngine.configuracion.navigators.each do |navigator|
+        navigator.configure(@navbar)
+      end
 
       if defined?(Rollbar) && Rollbar.configuration.enabled && Rails.application.credentials.rollbar.present?
         @rollbar_token = Rails.application.credentials.rollbar.access_token_client
