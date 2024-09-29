@@ -19,6 +19,7 @@ spec/dummy/tmp/
 spec/dummy/app/assets/builds/*
 
 node_modules/
+.yarn/
 dist/
 
 spec/examples.txt
