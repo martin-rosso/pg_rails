@@ -55,7 +55,7 @@ describe 'redirection' do
       get '/u/cosas'
       expect(response).to redirect_to users_account_switcher_path
       follow_redirect!
-      expect(response.body).to include 'Cambiar a otra cuenta'
+      expect(response.body).to include '¿Qué cuenta te gustaría utilizar?'
       post "/u/switcher/#{other_user_account.to_param}"
       expect(response).to redirect_to(root_path)
       follow_redirect!
