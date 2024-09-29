@@ -14,3 +14,4 @@ eval File.read(__dir__ + '/pg_engine_dev.rb'), nil, 'pg_engine_dev.rb'
 # your gem to rubygems.org.
 
 gem "bootsnap", require: false
+gem 'ostruct'
