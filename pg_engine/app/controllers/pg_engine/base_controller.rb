@@ -76,6 +76,7 @@ module PgEngine
     rescue_from ActsAsTenant::Errors::NoTenantSet, with: :no_tenant_set
 
     rescue_from PgEngine::BadUserInput, with: :bad_user_input
+    rescue_from ActionController::UnknownFormat, with: :unknown_format
 
     rescue_from ActionController::InvalidAuthenticityToken,
                 with: :invalid_authenticity_token
@@ -94,6 +95,10 @@ module PgEngine
 
     def bad_user_input(error)
       render_my_component(BadUserInputComponent.new(error_msg: error.message), :bad_request)
+    end
+
+    def unknown_format(_error)
+      render_my_component(BadUserInputComponent.new(error_msg: 'Formato incorrecto'), :bad_request)
     end
 
     def internal_error(error)

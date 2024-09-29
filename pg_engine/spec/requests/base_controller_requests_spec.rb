@@ -76,4 +76,15 @@ describe 'Base requests' do
       include_examples 'manda el status correcto'
     end
   end
+
+  describe 'unknown format' do
+    subject do
+      get '/users/sign_in', headers: { accept: 'application/json' }
+    end
+
+    it 'returns bad request' do
+      subject
+      expect(response).to have_http_status(:bad_request)
+    end
+  end
 end
