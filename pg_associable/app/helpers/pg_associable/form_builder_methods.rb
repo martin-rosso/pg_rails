@@ -41,6 +41,7 @@ module PgAssociable
       user = Current.user
       puede_crear = !template.using_modal? && Pundit::PolicyFinder.new(klass).policy.new(user, klass).new?
       collection = Pundit::PolicyFinder.new(klass).scope.new(user, klass).resolve
+      collection = collection.kept if collection.respond_to?(:kept)
       [collection, puede_crear]
     end
 
