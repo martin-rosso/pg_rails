@@ -8,7 +8,6 @@ describe 'Notifications' do
   let(:user) { create :user }
 
   before do
-    driven_by ENV['DRIVER']&.to_sym || :selenium_chrome_headless_iphone
     login_as user
   end
 

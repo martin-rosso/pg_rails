@@ -111,7 +111,7 @@ RSpec.configure do |config|
 
   # Selenium
   config.before(:each, type: :system) do
-    driven_by ENV['DRIVER']&.to_sym || :selenium_chrome_headless_iphone
+    driven_by ENV.fetch('DRIVER', :selenium_chrome_headless_iphone).to_sym, using: ENV.fetch('BROWSER', :headless_chrome).to_sym
   end
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false

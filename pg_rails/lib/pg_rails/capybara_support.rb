@@ -49,4 +49,4 @@ Capybara.register_driver :selenium_chrome_headless_iphone,
                          &chrome_driver_gen(headless: true, emulate_device: 'iPhone 6')
 Capybara.register_driver :selenium_chrome_debugger, &chrome_driver_gen(headless: false, debugger: true)
 
-Capybara.javascript_driver = ENV.fetch('WEBDRIVER') { 'selenium_chrome_notebook' }.to_sym
+Capybara.javascript_driver = ENV.fetch('DRIVER') { 'selenium_chrome_notebook' }.to_sym

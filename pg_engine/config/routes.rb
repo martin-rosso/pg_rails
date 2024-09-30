@@ -21,6 +21,7 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }, failure_app: PgEngine::DeviseFailureApp
   namespace :users, path: 'u' do
+    get 'dashboard', to: 'dashboard#dashboard'
     post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
     post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
     get 'date_jumper/jump'
@@ -33,7 +34,7 @@ Rails.application.routes.draw do
     # get 'account', to: 'accounts#show'
   end
 
-  get '/u', to: 'users#home', as: :users_root
+  get '/u', to: 'users/dashboard#dashboard', as: :users_root
 
   namespace :admin, path: 'a' do
     pg_resource(:emails)

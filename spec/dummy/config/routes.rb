@@ -13,7 +13,7 @@ Rails.application.routes.draw do
       pg_resource(:cosas)
     end
   end
-  root to: 'users#home'
+  root to: 'users/dashboard#dashboard'
 
   get :action_with_redirect, to: 'dummy_base#action_with_redirect'
   get :check_dev_user, to: 'dummy_base#check_dev_user'
