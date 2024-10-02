@@ -1,4 +1,10 @@
 
+7.6.3 / 2024-10-10
+==================
+
+  * feat: inline edit
+  * fix: pg_asociable filter out discarded items
+
 7.6.2 / 2024-09-30
 ==================
 

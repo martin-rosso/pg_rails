@@ -14,7 +14,7 @@ class CategoriaDeCosaPolicy < ApplicationPolicy
   end
 
   # def puede_editar?
-  #   acceso_total? && !record.readonly?
+  #   false
   # end
 
   # def puede_crear?
