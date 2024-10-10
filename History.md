@@ -1,4 +1,11 @@
 
+7.6.6 / 2024-10-10
+==================
+
+  * feat: allow multiple modals for pg_associable from a modal
+  * fix: deny user creation from associable
+  * fix: inline edit in listings
+
 7.6.5 / 2024-10-10
 ==================
 

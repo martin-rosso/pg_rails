@@ -24,7 +24,8 @@ describe 'Modal windows' do
       visitar
       click_on 'Cargar coso'
       select 'Completar', from: 'cosa_tipo'
-      select categoria_de_cosa.to_s, from: 'cosa_categoria_de_cosa_id'
+      find("input[placeholder='el placeholder'").click
+      click_on categoria_de_cosa.to_s
       find('.modal input[type=submit]').click
       expect(page).to have_text 'Por favor, revisá los campos obligatorios'
       fill_in 'cosa_nombre', with: 'bla'

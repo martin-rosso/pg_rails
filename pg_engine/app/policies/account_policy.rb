@@ -28,6 +28,11 @@ class AccountPolicy < ApplicationPolicy
   # def acceso_total?
   #   user.developer?
   # end
+
+  def new_from_associable?
+    false
+  end
+
   def base_access_to_record?
     ActsAsTenant.unscoped? ||
       record.user_accounts.pluck(:user_id).include?(user.id)

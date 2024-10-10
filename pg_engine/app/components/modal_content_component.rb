@@ -1,5 +1,6 @@
 class ModalContentComponent < ViewComponent::Base
-  def initialize(src: nil)
+  def initialize(src: nil, turbo_frame_id: :modal_content)
+    @turbo_frame_id = turbo_frame_id
     @src = src
     with_content(loading_html) if @src.present?
 
@@ -20,7 +21,7 @@ class ModalContentComponent < ViewComponent::Base
         <div class="flash position-relative w-100 d-flex justify-content-center">
         </div>
       </div>
-      <%= helpers.turbo_frame_tag :modal_content,
+      <%= helpers.turbo_frame_tag @turbo_frame_id,
                                   **{ src: @src, refresh: :morph }.compact do %>
         <%= content %>
       <% end %>
