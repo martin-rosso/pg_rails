@@ -17,7 +17,9 @@ module Users
     def column_options_for(object, attribute)
       case attribute
       when :nombre
-        { class: 'column-truncate-80', title: object.send(attribute).to_s }
+        { class: 'column-truncate-30', title: object.send(attribute).to_s }
+      when :rico
+        { class: 'column-truncate-40', title: object.send(attribute).to_s }
       else
         super
       end
@@ -26,7 +28,7 @@ module Users
     private
 
     def atributos_permitidos
-      %i[nombre tipo categoria_de_cosa_id]
+      %i[nombre tipo categoria_de_cosa_id rico]
     end
 
     def atributos_para_buscar
@@ -34,7 +36,7 @@ module Users
     end
 
     def atributos_para_listar
-      %i[nombre tipo_text categoria_de_cosa]
+      %i[nombre tipo_text categoria_de_cosa rico]
     end
 
     def atributos_para_mostrar

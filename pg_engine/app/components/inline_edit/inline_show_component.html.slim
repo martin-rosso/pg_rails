@@ -1,8 +1,8 @@
 - if @model.class.inline_editable?(@unsuffixed_attribute) && helpers.policy(@model).edit?
   = helpers.turbo_frame_tag(@frame_id, class: 'inline-edit')
     = link_to users_inline_edit_path(model: @model.to_gid, attribute: @attribute),
-              class: 'text-body-tertiary', style: 'font-size: 0.8em' do
+              class: 'text-body-tertiary edit-link', style: 'font-size: 0.8em' do
       i.bi.bi-pencil
-    span.ms-1 = @model.decorate.send(@attribute)
+    span = @model.decorate.send(@attribute)
 - else
   = @model.decorate.send(@attribute)

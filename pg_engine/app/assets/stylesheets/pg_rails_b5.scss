@@ -204,11 +204,18 @@ input[type=datetime-local], input[type=datetime] {
 // Inline edit
 
 .inline-edit {
-  // text-decoration: underline;
-  // text-decoration-style: dotted;
-  // text-decoration-color: #262626;
   border-bottom: 1px dotted #333;
   padding-bottom: 1px;
+
+  &:not(:has(.trix-content)) .edit-link {
+    margin-right: 0.25em;
+  }
+
+  &:has(.trix-content) .edit-link {
+    margin-bottom: 0.55em;
+    display: inline-block;
+    border-bottom: 1px dotted #333;
+  }
 
   a:hover {
     i {
@@ -216,12 +223,45 @@ input[type=datetime-local], input[type=datetime] {
     }
   }
 
+  form {
+    display: flex;
+    align-items: start;
+    gap: 0.25rem;
+
+    &:has(trix-editor) {
+      display: block;
+
+      .actions {
+        margin-top: 0.25rem;
+      }
+    }
+  }
+
   input[type=text] {
     min-width: 22em;
+  }
+
+  select {
+    max-width: 45em;
   }
 
   // To display correctly in tables with fixed witdh columns
   .form-select {
     width: initial;
+  }
+}
+
+// WIP, inline rich text en listados
+.listado {
+  .inline-edit {
+    display: flex!important;
+    align-items: center;
+    gap: 0.25em;
+
+    &:has(.trix-content) .edit-link {
+      margin-bottom: 0;
+      display: inline;
+      border-bottom: none;
+    }
   }
 }

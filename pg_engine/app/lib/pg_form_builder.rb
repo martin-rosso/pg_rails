@@ -31,6 +31,8 @@ class PgFormBuilder < SimpleForm::FormBuilder
 
     if find_on_all_associations(model.class, attribute_name).present?
       pg_associable(attribute_name, options)
+    elsif model.respond_to?("rich_text_#{attribute_name}")
+      rich_text_area attribute_name
     else
       input(attribute_name, options, &)
     end
