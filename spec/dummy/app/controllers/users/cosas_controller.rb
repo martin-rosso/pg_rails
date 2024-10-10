@@ -28,7 +28,7 @@ module Users
     private
 
     def atributos_permitidos
-      %i[nombre tipo categoria_de_cosa_id rico]
+      %i[nombre tipo categoria_de_cosa_id rico creado_por_id]
     end
 
     def atributos_para_buscar
@@ -40,7 +40,7 @@ module Users
     end
 
     def atributos_para_mostrar
-      %i[nombre tipo categoria_de_cosa]
+      %i[nombre tipo categoria_de_cosa creado_por]
     end
   end
 end

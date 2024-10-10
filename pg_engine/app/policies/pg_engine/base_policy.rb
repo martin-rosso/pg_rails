@@ -25,6 +25,10 @@ module PgEngine
       create?
     end
 
+    def new_from_associable?
+      new?
+    end
+
     def update?
       puede_editar? && !objeto_borrado?
     end

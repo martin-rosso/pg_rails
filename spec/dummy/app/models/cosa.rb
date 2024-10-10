@@ -32,7 +32,7 @@ class Cosa < ApplicationRecord
   include Discard::Model
 
   self.default_modal = true
-  self.inline_editable_fields = %i[nombre tipo categoria_de_cosa rico]
+  self.inline_editable_fields = %i[nombre tipo categoria_de_cosa rico creado_por]
 
   # Conviene tener account_id en todos los modelos aunque estén
   # el tenant sea deducible a través de sus asociaciones (ej:
