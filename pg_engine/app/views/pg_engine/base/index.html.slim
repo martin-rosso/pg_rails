@@ -14,9 +14,9 @@
 - if @filtros.present?
   = render SearchBarComponent.new(@q, @filtros)
 
-div
+.table-responsive style="padding-bottom: 15em"
   - if @collection.any?
-    .table-responsive
+    .xtable-responsive
       table.table.table-sm.listado.xpg-revert-width.xborder-end
         caption.ps-3 = page_entries_info @collection
         thead.table-light

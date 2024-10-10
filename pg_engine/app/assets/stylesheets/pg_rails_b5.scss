@@ -250,18 +250,3 @@ input[type=datetime-local], input[type=datetime] {
     width: initial;
   }
 }
-
-// WIP, inline rich text en listados
-.listado {
-  .inline-edit {
-    display: flex!important;
-    align-items: center;
-    gap: 0.25em;
-
-    &:has(.trix-content) .edit-link {
-      margin-bottom: 0;
-      display: inline;
-      border-bottom: none;
-    }
-  }
-}

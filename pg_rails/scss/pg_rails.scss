@@ -76,6 +76,10 @@ $values: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
     text-overflow: ellipsis;
     white-space: nowrap;
     min-width: 30em * $value * 0.01;
+
+    &:has(form) {
+      min-width: 28em;
+    }
   }
 }
 
