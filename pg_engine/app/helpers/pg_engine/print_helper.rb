@@ -51,6 +51,12 @@ module PgEngine
       date.strftime('%d/%m/%Y %H:%M')
     end
 
+    def hhmm(time)
+      return if time.blank?
+
+      time.strftime('%H:%M')
+    end
+
     def dmy(date)
       return if date.blank?
 

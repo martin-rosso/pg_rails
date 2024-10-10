@@ -1,7 +1,10 @@
 - if @model.class.inline_editable?(@unsuffixed_attribute) && helpers.policy(@model).edit?
   = helpers.turbo_frame_tag(@frame_id, class: 'inline-edit')
     = link_to users_inline_edit_path(model: @model.to_gid, attribute: @attribute),
-              class: 'text-body-tertiary edit-link', style: 'font-size: 0.8em' do
+              data: { \
+                controller: :tooltip,
+                'bs-title': "Modificar #{@model.class.human_attribute_name(@attribute).downcase}" },
+                class: 'text-body-tertiary edit-link', style: 'font-size: 0.8em' do
       i.bi.bi-pencil
     span = @model.decorate.send(@attribute)
 - else

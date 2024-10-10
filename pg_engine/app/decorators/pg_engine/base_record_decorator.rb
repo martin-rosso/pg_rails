@@ -34,7 +34,12 @@ module PgEngine
       if valor.instance_of?(Date)
         dmy(valor)
       elsif valor.instance_of?(ActiveSupport::TimeWithZone)
-        dmy_time(valor)
+        column = object.class.columns.find { |c| c.name == method_name.to_s }
+        if column.present? && column.type == :time
+          hhmm(valor)
+        else
+          dmy_time(valor)
+        end
       else
         super
       end

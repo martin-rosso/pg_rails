@@ -61,6 +61,8 @@ module PgAssociable
 
     def select_comun(atributo, options, collection)
       options[:collection] = collection
+      options[:include_blank] = 'Ninguno'
+      options[:prompt] = nil
       association atributo, options
     end
 

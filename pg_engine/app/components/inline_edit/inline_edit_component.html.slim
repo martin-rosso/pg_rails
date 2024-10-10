@@ -4,9 +4,10 @@
 
     / html5 solo aplica a datetime
     / date_selector solo aplica a date
-    / ambos casos son inocuos para el resto de los types
-    = f.field @unsuffixed_attribute, label: false, html5: true, date_selector: true
-
+    / ignore_date y prompt solo aplica a time
+    / cada caso es inocuo para el resto de los types
+    = f.field @unsuffixed_attribute, label: false, date_selector: true, minute_step: 15,
+                                     ignore_date: true, prompt: { hour: 'hh', minute: 'mm' }
     .actions.d-flex.gap-1
       = button_tag class: 'btn btn-sm btn-primary',
                    data: { controller: 'tooltip', 'bs-title': 'Guardar' } do

@@ -141,6 +141,16 @@ SimpleForm.setup do |config|
     b.use :hint, wrap_with: { class: 'form-text' }
   end
 
+  config.wrappers :inline_multi_select, class: '' do |b|
+    b.use :html5
+    b.optional :readonly
+    b.wrapper class: 'd-flex flex-row justify-content-between align-items-center' do |ba|
+      ba.use :input, class: 'form-select form-select-sm mx-1', error_class: 'is-invalid'
+    end
+    b.use :error, wrap_with: { class: 'invalid-feedback d-block' }
+    b.use :hint, wrap_with: { class: 'form-text' }
+  end
+
   # vertical range input
   config.wrappers :vertical_range, class: 'mb-3' do |b|
     b.use :html5

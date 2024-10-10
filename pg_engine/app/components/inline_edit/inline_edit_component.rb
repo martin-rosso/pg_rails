@@ -5,6 +5,7 @@ class InlineEditComponent < InlineComponent
       pg_associable: :inline_form_control,
       date: :inline_form_control,
       datetime: :inline_form_control,
+      time: :inline_multi_select,
       select: :inline_form_select
     }
 
