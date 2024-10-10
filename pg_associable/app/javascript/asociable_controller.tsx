@@ -311,6 +311,10 @@ export default class extends Controller {
       this.element.dataset.object = object
       const event = new CustomEvent('pg_associable:changed', { detail: object })
       this.element.dispatchEvent(event)
+      const inlineEdit = this.element.closest('.inline-edit')
+      if (inlineEdit) {
+        inlineEdit.querySelector('button[type=submit]').click()
+      }
     } else {
       hiddenField.value = null
       textField.value = null
