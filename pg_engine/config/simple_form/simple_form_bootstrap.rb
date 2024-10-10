@@ -270,6 +270,21 @@ SimpleForm.setup do |config|
   # inline forms
   #
   # inline default_wrapper
+  config.wrappers :inline_form_grow, class: 'flex-grow-1' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.optional :maxlength
+    b.optional :minlength
+    b.optional :pattern
+    b.optional :min_max
+    b.optional :readonly
+    b.use :label, class: 'visually-hidden'
+
+    b.use :input, class: 'form-control form-control-sm', error_class: 'is-invalid'
+    b.use :error, wrap_with: { class: 'invalid-feedback' }
+    b.optional :hint, wrap_with: { class: 'form-text' }
+  end
+
   config.wrappers :inline_form_control, class: '' do |b|
     b.use :html5
     b.use :placeholder

@@ -1,4 +1,9 @@
 
+7.6.4 / 2024-10-10
+==================
+
+  * fix: support inline edit suffixed attributes
+
 7.6.3 / 2024-10-10
 ==================
 

@@ -14,6 +14,15 @@ module Users
 
     before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
 
+    def column_options_for(object, attribute)
+      case attribute
+      when :nombre
+        { class: 'column-truncate-80', title: object.send(attribute).to_s }
+      else
+        super
+      end
+    end
+
     private
 
     def atributos_permitidos
@@ -25,7 +34,7 @@ module Users
     end
 
     def atributos_para_listar
-      %i[nombre tipo categoria_de_cosa]
+      %i[nombre tipo_text categoria_de_cosa]
     end
 
     def atributos_para_mostrar

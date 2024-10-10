@@ -1,6 +1,6 @@
 {
   "name": "pg_rails",
-  "version": "7.6.3",
+  "version": "7.6.4",
   "dependencies": {
     "@anycable/web": "0.8.0",
     "@hotwired/stimulus": "^3.2.2",

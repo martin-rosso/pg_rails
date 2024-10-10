@@ -3,7 +3,7 @@
                         html: { class: 'd-flex align-items-start gap-1' }) do |f|
     = hidden_field_tag :inline_attribute, @attribute
 
-    = f.field @attribute, label: false, html5: true
+    = f.field @unsuffixed_attribute, label: false, html5: true
 
     = button_tag class: 'btn btn-sm btn-primary',
                  data: { controller: 'tooltip', 'bs-title': 'Guardar' } do

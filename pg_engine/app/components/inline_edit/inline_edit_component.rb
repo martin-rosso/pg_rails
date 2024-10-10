@@ -1,11 +1,7 @@
-class InlineEditComponent < ViewComponent::Base
-  def initialize(model, attribute)
-    @model = model
-    @attribute = attribute
-    @frame_id = dom_id(model, "#{attribute}_inline_edit")
-
+class InlineEditComponent < InlineComponent
+  def initialize(*)
     @wrapper_mappings = {
-      string: :inline_form_control,
+      string: :inline_form_grow,
       pg_associable: :inline_form_control,
       date: :inline_form_control,
       datetime: :inline_form_control,
@@ -13,11 +9,5 @@ class InlineEditComponent < ViewComponent::Base
     }
 
     super
-  end
-
-  def before_render
-    return unless controller.in_modal?
-
-    controller.instance_variable_set(:@using_modal, true)
   end
 end

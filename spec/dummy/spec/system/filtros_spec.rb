@@ -158,12 +158,12 @@ describe 'Filtros de cosas' do
     describe 'fechas' do
       it do
         visitar
-        expect(listado).to have_text otra_categoria.nombre
+        expect(listado).to have_text otra_categoria.decorate.nombre_f
         fill_in 'Fecha desde', with: categoria.fecha
         fill_in 'Fecha hasta', with: categoria.fecha
         buscar
-        expect(listado).to have_text categoria.nombre
-        expect(listado).to have_no_text otra_categoria.nombre
+        expect(listado).to have_text categoria.decorate.nombre_f
+        expect(listado).to have_no_text otra_categoria.decorate.nombre_f
       end
     end
 

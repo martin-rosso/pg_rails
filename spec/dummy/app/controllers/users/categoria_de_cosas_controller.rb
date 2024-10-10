@@ -23,7 +23,7 @@ module Users
     end
 
     def atributos_para_listar
-      %i[nombre tipo fecha tiempo]
+      %i[nombre_f tipo fecha tiempo]
     end
 
     def atributos_para_mostrar

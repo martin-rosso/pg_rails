@@ -207,6 +207,8 @@ input[type=datetime-local], input[type=datetime] {
   // text-decoration: underline;
   // text-decoration-style: dotted;
   // text-decoration-color: #262626;
+  border-bottom: 1px dotted #333;
+  padding-bottom: 1px;
 
   a:hover {
     i {
@@ -216,5 +218,10 @@ input[type=datetime-local], input[type=datetime] {
 
   input[type=text] {
     min-width: 22em;
+  }
+
+  // To display correctly in tables with fixed witdh columns
+  .form-select {
+    width: initial;
   }
 }
