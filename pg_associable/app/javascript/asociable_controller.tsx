@@ -27,7 +27,6 @@ export default class extends Controller {
     this.subWrapper.setAttribute('id', `resultados-inline-${this.elemId}`)
     this.subWrapper.classList.add('sub-wrapper')
     this.subWrapper.classList.add('position-absolute')
-    this.subWrapper.classList.add('z-1')
     result.appendChild(this.subWrapper)
     this.input.parentNode.appendChild(result)
 

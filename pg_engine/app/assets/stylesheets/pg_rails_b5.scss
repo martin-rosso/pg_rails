@@ -211,6 +211,10 @@ input[type=datetime-local], input[type=datetime] {
   border-bottom: 1px dotted #333;
   padding-bottom: 1px;
 
+  .edit-link {
+    color: rgba(33, 37, 41, 0.21);
+  }
+
   &:not(:has(.trix-content)) .edit-link {
     margin-right: 0.25em;
   }
@@ -221,8 +225,8 @@ input[type=datetime-local], input[type=datetime] {
     border-bottom: 1px dotted #333;
   }
 
-  a:hover {
-    i {
+  &:hover {
+    .edit-link i {
       color: black;
     }
   }

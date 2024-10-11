@@ -3,7 +3,7 @@
   div data-controller="clear-timeout" data-timeout-id="#{timeout_id}"
   ul.list-group.list-group-flush
     - if count.positive?
-      .text-center.fst-italic style="font-size:0.7em"
+      .text-center.fst-italic.text-secondary.pt-1 style="font-size:0.7em"
         | #{count} resultados para "#{query}"
       - collection.each do |object|
         = link_to object.to_s, 'javascript:void(0)',
