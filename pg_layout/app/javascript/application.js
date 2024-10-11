@@ -48,10 +48,12 @@ document.addEventListener('pg:record-created', (ev) => {
 })
 
 document.addEventListener('pg:record-updated', (ev) => {
-  Turbo.visit(window.location)
-  setTimeout(() => {
-    Turbo.cache.clear()
-  }, 1000)
+  if (!ev.data.dataset.inline) {
+    Turbo.visit(window.location)
+    setTimeout(() => {
+      Turbo.cache.clear()
+    }, 1000)
+  }
 })
 
 document.addEventListener('pg:record-destroyed', (ev) => {
