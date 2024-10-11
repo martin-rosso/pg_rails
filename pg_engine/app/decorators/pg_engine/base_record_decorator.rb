@@ -26,6 +26,13 @@ module PgEngine
       truncate(object.to_s)
     end
 
+    def text_for_new
+      klass = object.class
+      # TODO: no está bueno tener que hacer el new, gender debería estar en la clase
+      verb = klass.new.gender == 'f' ? 'Nueva' : 'Nuevo'
+      "#{verb} #{klass.model_name.human.downcase}"
+    end
+
     # rubocop:disable Style/MissingRespondToMissing
     def method_missing(method_name, *args, &)
       valor = object.attributes[method_name.to_s]

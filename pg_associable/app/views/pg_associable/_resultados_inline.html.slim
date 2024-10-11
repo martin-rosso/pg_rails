@@ -9,4 +9,11 @@
                   data: { action: 'asociable#selectItem',
                           id: object.id, object: object.decorate.to_json, field_name: }
     - else
-      li.px-3.py-1 style="font-size: 0.85em" No hay resultados para "#{query}"
+      li class="list-group-item text-center text-warning-emphasis py-2" style="font-size: 0.85em" No hay resultados para "#{query}"
+
+    - if policy(clase_modelo).new_from_associable?
+      / TODO: unificar código repetido en asociable_controller.js
+      a key="new" href="javascript:void(0)" class="list-group-item" data-action="asociable#crearItem"
+        i class="bi bi-stars"
+        | &nbsp;
+        = clase_modelo.new.decorate.text_for_new

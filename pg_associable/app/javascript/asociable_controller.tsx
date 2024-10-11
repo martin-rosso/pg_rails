@@ -144,7 +144,9 @@ export default class extends Controller {
            className="list-group-item"
            data-action="asociable#crearItem"
         >
-          Nuevo
+          <i className="bi bi-stars"/>
+          &nbsp;
+          {this.element.dataset.puedeCrear}
         </a>
       )
     }
@@ -279,7 +281,6 @@ export default class extends Controller {
         <input type="hidden" name="id" value={this.elemId} />
         <input type="hidden" name="query" value={this.input.value} />
         <input type="hidden" name="timeout_id" value={timeouts} />
-        <input type="hidden" name="puede_crear" value={this.element.dataset.puedeCrear} />
       </form>
     )
     const form = document.createElement('div')

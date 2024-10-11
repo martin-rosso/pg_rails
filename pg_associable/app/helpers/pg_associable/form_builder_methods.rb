@@ -27,13 +27,18 @@ module PgAssociable
       return input(atributo, options) if options[:disabled]
 
       collection, puede_crear = collection_pc(atributo, options)
-      options.deep_merge!({ wrapper_html: { 'data-puede-crear': 'true' } }) if puede_crear
+      options.deep_merge!({ wrapper_html: { 'data-puede-crear': text_for_new(atributo) } }) if puede_crear
 
       if !puede_crear && collection.count <= MAXIMO_PARA_SELECT
         select_comun(atributo, options, collection)
       else
         select_pro(atributo, options, collection)
       end
+    end
+
+    def text_for_new(atributo)
+      klass = clase_asociacion(atributo)
+      klass.new.decorate.text_for_new
     end
 
     def collection_pc(atributo, _options)

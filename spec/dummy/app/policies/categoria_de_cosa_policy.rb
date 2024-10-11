@@ -25,6 +25,10 @@ class CategoriaDeCosaPolicy < ApplicationPolicy
   #   acceso_total? && !record.readonly?
   # end
 
+  # def new_from_associable?
+  #   false
+  # end
+
   def base_access_to_record?
     user.present?
   end
