@@ -138,18 +138,6 @@ export default class extends Controller {
   resetResultados () {
     this.lastValue = null
     const rows = []
-    if (this.element.dataset.puedeCrear) {
-      rows.push(
-        <a key="new" href="javascript:void(0)"
-           className="list-group-item"
-           data-action="asociable#crearItem"
-        >
-          <i className="bi bi-stars"/>
-          &nbsp;
-          {this.element.dataset.puedeCrear}
-        </a>
-      )
-    }
     if (this.element.dataset.preload) {
       JSON.parse(this.element.dataset.preload).forEach((object) => {
         rows.push(
@@ -163,6 +151,18 @@ export default class extends Controller {
           </a>
         )
       })
+    }
+    if (this.element.dataset.puedeCrear) {
+      rows.push(
+        <a key="new" href="javascript:void(0)"
+           className="list-group-item mt-3 text-center"
+           data-action="asociable#crearItem"
+        >
+          <i className="bi bi-stars"/>
+          &nbsp;
+          {this.element.dataset.puedeCrear}
+        </a>
+      )
     }
     this.subWrapper.innerHTML = renderToStaticMarkup(
       <div className="resultados" tabIndex={-1}>

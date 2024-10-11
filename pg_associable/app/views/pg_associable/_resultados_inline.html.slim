@@ -1,19 +1,23 @@
-/ # locals: (collection:, query:, timeout_id:, field_name: nil)
+/ # locals: (collection:, query:, timeout_id:, count:, field_name: nil)
 .resultados.inline tabindex="-1"
   div data-controller="clear-timeout" data-timeout-id="#{timeout_id}"
   ul.list-group.list-group-flush
-    - if collection.any?
+    - if count.positive?
+      .text-center.fst-italic style="font-size:0.7em"
+        | #{count} resultados para "#{query}"
       - collection.each do |object|
         = link_to object.to_s, 'javascript:void(0)',
                   class: 'list-group-item',
                   data: { action: 'asociable#selectItem',
                           id: object.id, object: object.decorate.to_json, field_name: }
     - else
-      li class="list-group-item text-center text-warning-emphasis py-2" style="font-size: 0.85em" No hay resultados para "#{query}"
+      li [class="list-group-item text-center text-warning-emphasis py-2" style="font-size: 0.85em"]
+        | No hay resultados para "#{query}"
 
     - if policy(clase_modelo).new_from_associable?
       / TODO: unificar código repetido en asociable_controller.js
-      a key="new" href="javascript:void(0)" class="list-group-item" data-action="asociable#crearItem"
+      a [key="new" href="javascript:void(0)" class="list-group-item mt-3 text-center"
+         data-action="asociable#crearItem"]
         i class="bi bi-stars"
         | &nbsp;
         = clase_modelo.new.decorate.text_for_new

@@ -6,7 +6,7 @@ module PgAssociable
       mod.include PgEngine::RouteHelper
     end
 
-    MAXIMO_PARA_SELECT = 10
+    LIMIT_TO_AUTOPRELOAD = 10
     # TODO: si está entre 10 y 50, habilitar un buscador por js
 
     def pg_associable_pro(atributo, options = {})
@@ -27,12 +27,13 @@ module PgAssociable
       return input(atributo, options) if options[:disabled]
 
       collection, puede_crear = collection_pc(atributo, options)
+      collection_count = collection.count
       options.deep_merge!({ wrapper_html: { 'data-puede-crear': text_for_new(atributo) } }) if puede_crear
 
-      if !puede_crear && collection.count <= MAXIMO_PARA_SELECT
+      if !puede_crear && collection_count <= LIMIT_TO_AUTOPRELOAD
         select_comun(atributo, options, collection)
       else
-        select_pro(atributo, options, collection)
+        select_pro(atributo, options, collection, collection_count)
       end
     end
 
@@ -50,7 +51,12 @@ module PgAssociable
       [collection, puede_crear]
     end
 
-    def select_pro(atributo, options, collection)
+    def select_pro(atributo, options, collection, collection_count = nil)
+      if collection_count.present? && collection_count.positive? &&
+         collection_count < LIMIT_TO_AUTOPRELOAD && options[:preload].blank?
+        options[:preload] = collection
+      end
+
       if (preload = options.delete(:preload))
         collection = preload.is_a?(Integer) ? collection.limit(preload) : preload
         options.deep_merge!({ wrapper_html: { 'data-preload': collection.decorate.to_json } })

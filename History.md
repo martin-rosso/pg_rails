@@ -1,4 +1,10 @@
 
+7.6.9 / 2024-10-11
+==================
+
+  * feat: autosubmit inline forms
+  * fix: asociable UX improvements
+
 7.6.8 / 2024-10-11
 ==================
 
