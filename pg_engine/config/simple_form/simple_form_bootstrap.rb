@@ -310,6 +310,21 @@ SimpleForm.setup do |config|
     b.optional :hint, wrap_with: { class: 'form-text' }
   end
 
+  config.wrappers :inline_form_control_autosubmit, class: '' do |b|
+    b.use :html5
+    b.use :placeholder
+    b.optional :maxlength
+    b.optional :minlength
+    b.optional :pattern
+    b.optional :min_max
+    b.optional :readonly
+    b.use :label, class: 'visually-hidden'
+
+    b.use :input, class: 'form-control form-control-sm', error_class: 'is-invalid', 'data-action': 'pg_form#submit'
+    b.use :error, wrap_with: { class: 'invalid-feedback' }
+    b.optional :hint, wrap_with: { class: 'form-text' }
+  end
+
   config.wrappers :inline_form_select, class: '' do |b|
     b.use :html5
     b.use :placeholder
@@ -320,7 +335,7 @@ SimpleForm.setup do |config|
     b.optional :readonly
     b.use :label, class: 'visually-hidden'
 
-    b.use :input, class: 'form-select form-select-sm', error_class: 'is-invalid'
+    b.use :input, class: 'form-select form-select-sm', error_class: 'is-invalid', 'data-action': 'pg_form#submit'
     b.use :error, wrap_with: { class: 'invalid-feedback' }
     b.optional :hint, wrap_with: { class: 'form-text' }
   end

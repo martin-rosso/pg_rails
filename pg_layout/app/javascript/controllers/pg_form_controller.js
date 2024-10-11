@@ -34,4 +34,19 @@ export default class extends Controller {
       }
     }
   }
+
+  submit () {
+    let form = null
+    if (this.element instanceof HTMLFormElement) {
+      form = this.element
+    } else {
+      form = this.element.querySelector('form')
+    }
+    if (form) {
+      form.requestSubmit()
+    } else {
+      Rollbar.error('No form found')
+      console.error('No form found')
+    }
+  }
 }
