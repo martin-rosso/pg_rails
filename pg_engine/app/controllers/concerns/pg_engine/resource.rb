@@ -258,7 +258,8 @@ module PgEngine
         respond_to do |format|
           format.html do
             if params[:inline_attribute].present?
-              render InlineShowComponent.new(object, params[:inline_attribute]), layout: false
+              render InlineShowComponent.new(object, params[:inline_attribute], record_updated: true),
+                     layout: false
             elsif in_modal?
               body = <<~HTML.html_safe
                 <pg-event data-event-name="pg:record-updated" data-turbo-temporary

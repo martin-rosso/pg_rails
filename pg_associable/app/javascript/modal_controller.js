@@ -37,7 +37,12 @@ export default class extends Controller {
     })
 
     this.element.addEventListener('pg:record-updated', (ev) => {
-      this.back(ev)
+      if (ev.data.dataset.inline) {
+        this.reloadTop()
+        ev.stopPropagation()
+      } else {
+        this.back(ev)
+      }
     })
 
     this.element.addEventListener('pg:record-destroyed', (ev) => {

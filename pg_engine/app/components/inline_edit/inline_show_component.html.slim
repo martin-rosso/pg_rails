@@ -1,5 +1,8 @@
 - if @model.class.inline_editable?(@unsuffixed_attribute) && helpers.policy(@model).edit?
   = helpers.turbo_frame_tag(@frame_id, class: 'inline-edit')
+    - if @record_updated
+      pg-event[data-event-name="pg:record-updated" data-inline="true" data-turbo-temporary=""
+               data-response='#{@model.decorate.to_json}']
     = link_to users_inline_edit_path(model: @model.to_gid, attribute: @attribute),
               data: { \
                 controller: :tooltip,
