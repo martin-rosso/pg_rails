@@ -6,7 +6,7 @@ class CreateCategoriaDeCosas < ActiveRecord::Migration[7.1]
       t.string :nombre, null: false
       t.integer :tipo, null: false
       t.date :fecha
-      t.datetime :tiempo
+      t.time :tiempo
 
 
       t.references :creado_por, index: true

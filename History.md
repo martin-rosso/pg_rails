@@ -1,4 +1,11 @@
 
+7.6.7 / 2024-10-10
+==================
+
+  * feat: inline edit time fields
+  * feat: date jumper en inline edit
+  * feat: automatically save inline edit when created associable object
+
 7.6.6 / 2024-10-10
 ==================
 

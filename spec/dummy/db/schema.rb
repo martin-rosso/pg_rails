@@ -110,7 +110,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_09_05_155334) do
     t.string "nombre", null: false
     t.integer "tipo", null: false
     t.date "fecha"
-    t.datetime "tiempo"
+    t.time "tiempo"
     t.bigint "creado_por_id"
     t.bigint "actualizado_por_id"
     t.datetime "discarded_at"
