@@ -8,12 +8,6 @@ class InlineComponent < ViewComponent::Base
     super
   end
 
-  def before_render
-    return unless controller.in_modal?
-
-    controller.instance_variable_set(:@using_modal, true)
-  end
-
   SUFIJOS = %i[f text].freeze
   def unsuffixed(attribute)
     ret = attribute.to_s.dup
