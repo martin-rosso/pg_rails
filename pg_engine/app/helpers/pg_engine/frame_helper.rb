@@ -23,7 +23,8 @@ module PgEngine
     end
 
     def modal_targeted?
-      current_turbo_frame == 'modal_content'
+      current_turbo_frame.present? &&
+        current_turbo_frame.start_with?('modal_content')
     end
 
     def frame_embedded?
