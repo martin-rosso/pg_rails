@@ -1,4 +1,10 @@
 
+7.6.14 / 2024-10-11
+==================
+
+  * fix: max size for trix attachments
+  * fix: date autosubmit dont work
+
 7.6.13 / 2024-10-11
 ==================
 

@@ -2,6 +2,7 @@ import './config'
 import './channels'
 import './controllers'
 import './elements'
+import { flashMessage } from './utils/utils'
 
 import { Turbo } from '@hotwired/turbo-rails'
 
@@ -29,6 +30,14 @@ document.addEventListener('trix-before-initialize', (ev) => {
   Trix.config.lang.unlink = 'Deslinkear'
   Trix.config.lang.url = 'URL'
   Trix.config.lang.urlPlaceholder = 'Ingresá una URL'
+})
+
+window.addEventListener('trix-file-accept', function (event) {
+  const maxFileSize = 1024 * 1024 * 10 // 10MB
+  if (event.file.size > maxFileSize) {
+    event.preventDefault()
+    flashMessage('Lo siento mucho pero el tamaño máximo por archivo es de 10MB', 'warning')
+  }
 })
 
 document.addEventListener('pg:record-created', (ev) => {

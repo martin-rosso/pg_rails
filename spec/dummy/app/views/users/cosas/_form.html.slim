@@ -1,11 +1,12 @@
 / # locals: (object: nil)
 
-div style="max-width: 22em"
+div style="max-width: 50em"
   = pg_form_for(@cosa || object) do |f|
     = f.input :nombre
     = f.input :tipo
     = f.pg_associable :categoria_de_cosa
     = f.association :creado_por
+    = f.field :rico
     / = f.association :categoria_de_cosa
     .mt-2
     = f.button :submit
