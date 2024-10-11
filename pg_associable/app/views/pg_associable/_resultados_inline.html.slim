@@ -1,7 +1,8 @@
-/ # locals: (collection:, query:, timeout_id:, count:, field_name: nil)
+/ # locals: (collection:, query:, timeout_id:, field_name: nil, clase_modelo: nil)
 .resultados.inline tabindex="-1"
   div data-controller="clear-timeout" data-timeout-id="#{timeout_id}"
   ul.list-group.list-group-flush
+    - count = collection.count
     - if count.positive?
       .text-center.fst-italic.text-secondary.pt-1 style="font-size:0.7em"
         | #{count} resultados para "#{query}"
@@ -14,7 +15,7 @@
       li [class="list-group-item text-center text-warning-emphasis py-2" style="font-size: 0.85em"]
         | No hay resultados para "#{query}"
 
-    - if policy(clase_modelo).new_from_associable?
+    - if clase_modelo.present? && policy(clase_modelo).new_from_associable?
       / TODO: unificar código repetido en asociable_controller.js
       a [key="new" href="javascript:void(0)" class="list-group-item mt-3 text-center"
          data-action="asociable#crearItem"]

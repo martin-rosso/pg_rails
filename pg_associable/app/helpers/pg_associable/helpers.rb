@@ -16,10 +16,9 @@ module PgAssociable
       query = params[:query]
       timeout_id = params[:timeout_id]
       @collection = search_in_scope(query)
-      @count = @collection.count
       render turbo_stream:
         turbo_stream.update("#{resultados_prefix}-#{params[:id]}",
-                            partial:, locals: { collection: @collection, query:, timeout_id:, count: @count })
+                            partial:, locals: { collection: @collection, query:, timeout_id:, clase_modelo: })
     end
 
     def search_in_scope(query)
