@@ -34,6 +34,10 @@ nav[aria-label=breadcrumb] a {
   border: 1px solid $red;
 }
 
+.trix-content figure a:hover {
+  text-decoration: underline;
+}
+
 input[disabled] {
   background-color: #e9e9ed;
   color: black;

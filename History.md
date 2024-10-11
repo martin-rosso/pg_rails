@@ -1,4 +1,10 @@
 
+7.6.8 / 2024-10-11
+==================
+
+  * feat: show file attachments in trix
+  * fix: using modal was broken
+
 7.6.7 / 2024-10-10
 ==================
 
