@@ -1,4 +1,9 @@
 
+7.6.17 / 2024-10-14
+==================
+
+  * fix: naming concern to share with noticed models
+
 7.6.16 / 2024-10-14
 ==================
 

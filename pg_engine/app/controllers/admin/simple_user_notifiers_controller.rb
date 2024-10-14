@@ -17,25 +17,25 @@ module Admin
 
     # rubocop:disable Metrics/MethodLength
     def create
-      @event = SimpleUserNotifier.new(modelo_params)
-      # @event.message.save!
-      unless @event.valid?
+      @simple_user_notifier = SimpleUserNotifier.new(modelo_params)
+      # @simple_user_notifier.message.save!
+      unless @simple_user_notifier.valid?
         render :new, status: :unprocessable_entity
         return
       end
       json_params_for_event = {
-        message: @event.message,
-        tooltip: @event.tooltip
+        message: @simple_user_notifier.message,
+        tooltip: @simple_user_notifier.tooltip
       }
       notifier = SimpleUserNotifier.with(json_params_for_event)
 
-      case @event.target
+      case @simple_user_notifier.target
       when 'todos'
         notifier.deliver(User.all)
       when 'devs'
         notifier.deliver(User.where(developer: true))
       when 'user_ids'
-        notifier.deliver(User.where(email: @event.user_ids.split(',')))
+        notifier.deliver(User.where(email: @simple_user_notifier.user_ids.split(',')))
       else
         # :nocov:
         'shouldnt happen'
@@ -46,6 +46,7 @@ module Admin
     rescue StandardError => e
       # :nocov:
       flash.now[:alert] = e.to_s
+      # @simple_user_notifier = @simple_user_notifier.decorate
       render :new, status: :unprocessable_entity
       # :nocov:
     end

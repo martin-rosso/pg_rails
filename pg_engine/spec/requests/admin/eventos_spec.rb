@@ -16,28 +16,23 @@ describe 'Eventos' do
   end
 
   it 'renders the event index' do
-    get '/a/eventos'
+    get '/a/simple_user_notifiers'
 
-    expect(response.body).to include 'New post'
+    expect(response.body).to include 'Crear simple user notifier'
   end
 
   describe 'posting events' do
     subject do
-      get '/a/eventos/new'
+      get '/a/simple_user_notifiers/new'
       expect(response.body).to include 'Tooltip'
-      post '/a/eventos', params: {
-        evento: {
-          type:,
+      post '/a/simple_user_notifiers', params: {
+        simple_user_notifier: {
           message: 'hola',
-          message_text:,
-          subject: asunto,
           user_ids:,
-          record_type: 'User',
-          record_id:,
           target:
         }
       }
-      get "/a/eventos/new?event_id=#{Noticed::Event.last.id}"
+      # get "/a/eventos/new?event_id=#{Noticed::Event.last.id}"
     end
 
     let(:record_id) { nil }
@@ -83,10 +78,9 @@ describe 'Eventos' do
 
     context 'cuando hay error' do
       subject do
-        post '/a/eventos', params: {
-          evento: {
-            type:,
-            message: 'hola',
+        post '/a/simple_user_notifiers', params: {
+          simple_user_notifier: {
+            message: nil,
             target:
           }
         }

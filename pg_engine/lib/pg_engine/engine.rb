@@ -27,6 +27,10 @@ module PgEngine
           ActsAsTenant.without_tenant(&)
         end
       end
+      Noticed::ApplicationRecord.class_eval do
+        extend Enumerize
+        include PgEngine::Naming
+      end
     end
 
     initializer 'pg_engine.set_exceptions_app' do

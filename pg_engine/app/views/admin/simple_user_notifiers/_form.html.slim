@@ -1,4 +1,4 @@
-= pg_form_for @simple_user_notifier do |f|
+= pg_form_for @simple_user_notifier.decorate do |f|
   - if params[:plain_text]
     = link_to 'Change to rich text', url_for
     = f.input :message, as: :text

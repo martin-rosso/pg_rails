@@ -46,4 +46,8 @@ class SimpleUserNotifier < ApplicationNotifier
   def self.policy_class
     ApplicationPolicy
   end
+
+  def self.decorator_class
+    PgEngine::BaseRecordDecorator
+  end
 end
