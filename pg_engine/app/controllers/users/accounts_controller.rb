@@ -10,10 +10,6 @@ module Users
     add_breadcrumb 'Cuentas'
     self.skip_default_breadcrumb = true
 
-    before_action(only: :index) { authorize Account }
-
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     # private
 
     # def atributos_permitidos

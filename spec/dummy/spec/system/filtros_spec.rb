@@ -52,7 +52,7 @@ describe 'Filtros de cosas' do
         visitar
         fill_in 'Nombre', with: 'asd'
         buscar
-        expect(page).to have_text 'No hay cosos para los filtros aplicados'
+        expect(page).to have_text 'No hay ningún coso para los filtros aplicados'
       end
     end
 
@@ -170,9 +170,10 @@ describe 'Filtros de cosas' do
     describe 'ocultar filtros' do
       it do
         visitar
-        expect(page).to have_no_text 'Filtrar'
+        expect(page).to have_css 'button .bi-search'
+        find("[data-bs-title='Más opciones'] button").click
         click_on 'Ocultar filtros'
-        expect(page).to have_text 'Filtrar'
+        expect(page).to have_no_css 'button .bi-search'
       end
     end
 

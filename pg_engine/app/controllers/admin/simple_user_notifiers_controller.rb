@@ -4,8 +4,6 @@ module Admin
 
     self.clase_modelo = SimpleUserNotifier
 
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     def column_options_for(object, attribute)
       case attribute
       when :message

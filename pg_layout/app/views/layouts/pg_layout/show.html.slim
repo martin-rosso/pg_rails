@@ -1,0 +1,10 @@
+- content_for(:actions) do
+  = instancia_modelo.edit_link
+  = instancia_modelo.archive_link
+  = instancia_modelo.restore_link
+  = instancia_modelo.destroy_link_redirect
+
+- content_for :content do
+  = yield
+
+= render template: 'layouts/pg_layout/base'

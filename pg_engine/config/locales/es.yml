@@ -11,11 +11,6 @@ es:
       gt: 'desde'
       lteq: 'hasta'
       gteq: 'desde'
-  pg_engine:
-    base:
-      index:
-        empty: 'No hay %{model} que mostrar'
-        empty_but_filtered: 'No hay %{model} para los filtros aplicados'
   gender:
     reset_password_token: m
     confirmation_token: m
@@ -27,7 +22,7 @@ es:
     external_id: ID externo
     created_at: Fecha de creación
     updated_at: Fecha de actualización
-    discarded_at: Fecha de borrado
+    discarded_at: Fecha de archivado
     confirmed_at: Fecha de confirmación
     actualizado_por: Actualizado por
     creado_por: Creado por

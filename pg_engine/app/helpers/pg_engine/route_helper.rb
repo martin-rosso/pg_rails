@@ -63,5 +63,9 @@ module PgEngine
 
       polymorphic_url(target.flatten.compact, options.merge(only_path: true))
     end
+
+    def path_for(array)
+      url_for(array.push({ only_path: true }))
+    end
   end
 end

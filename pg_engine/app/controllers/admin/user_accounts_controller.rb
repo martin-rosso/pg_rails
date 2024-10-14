@@ -10,10 +10,6 @@ module Admin
     self.nested_class = Account
     self.nested_key = :account_id
 
-    before_action(only: :index) { authorize UserAccount }
-
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     private
 
     def atributos_permitidos

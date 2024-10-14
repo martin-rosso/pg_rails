@@ -192,19 +192,14 @@ RSpec.describe Admin::CosasController do
   describe 'DELETE #destroy' do
     subject do
       request.headers['Accept'] = 'text/vnd.turbo-stream.html,text/html'
-      delete :destroy, params: { id: cosa.to_param, redirect_to: redirect_url }
+      delete :destroy, params: { id: cosa.to_param, land_on: }
     end
 
     let!(:cosa) { create :cosa }
-    let(:redirect_url) { nil }
+    let(:land_on) { nil }
 
     it 'destroys the requested cosa' do
       expect { subject }.to change(Cosa.kept, :count).by(-1)
-    end
-
-    it 'setea el discarded_at' do
-      subject
-      expect(cosa.reload.discarded_at).to be_present
     end
 
     it 'envía el pg-event' do
@@ -212,8 +207,8 @@ RSpec.describe Admin::CosasController do
       expect(response.body).to include('<pg-event data-event-name="pg:record-destroyed"')
     end
 
-    context 'si hay redirect_to' do
-      let(:redirect_url) { admin_cosas_url }
+    context 'si hay land_on' do
+      let(:land_on) { :index }
 
       it 'redirects to the cosas list' do
         subject

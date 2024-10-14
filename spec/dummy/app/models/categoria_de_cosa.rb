@@ -39,7 +39,9 @@ class CategoriaDeCosa < ApplicationRecord
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
-  has_many :cosas, -> { undiscarded }
+  # El problema con esto es que falla el destroy por los children discarded
+  # has_many :cosas, -> { undiscarded }, dependent: :destroy
+  has_many :cosas, dependent: :destroy
 
   accepts_nested_attributes_for :cosas, allow_destroy: true
 
@@ -54,6 +56,10 @@ class CategoriaDeCosa < ApplicationRecord
   validates :nombre, :tipo, presence: true
 
   validates_associated :cosas
+
+  after_initialize do
+    self.tipo = :valores if tipo.blank?
+  end
 
   attr_accessor :validate_created_at, :validate_base
 

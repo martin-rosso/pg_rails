@@ -13,17 +13,17 @@ class AccountPolicy < ApplicationPolicy
     # end
   end
 
-  # def puede_editar?
-  #   acceso_total? && !record.readonly?
-  # end
+  def puede_editar?
+    user.developer?
+  end
 
-  # def puede_crear?
-  #   acceso_total? || user.asesor?
-  # end
+  def puede_crear?
+    user.developer?
+  end
 
-  # def puede_borrar?
-  #   acceso_total? && !record.readonly?
-  # end
+  def puede_borrar?
+    user.developer?
+  end
 
   # def acceso_total?
   #   user.developer?

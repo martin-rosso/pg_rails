@@ -8,34 +8,27 @@ require 'rails_helper'
 #
 # DRIVER=selenium rspec
 describe 'Breadcrumbs' do
-  subject(:visitar) do
-    visit path
-  end
-
-  let(:path) { "/a/cosas/#{cosa.id}" }
   let(:cosa) { create :cosa }
-  let(:logged_user) { create :user, :developer }
 
   before do
-    login_as logged_user
+    login_as create :user, :developer
+
+    # just to sort a circumvent a capybara issue
+    create_list :cosa, 1, categoria_de_cosa: cosa.categoria_de_cosa
   end
 
   describe 'some case' do
     it do
-      visitar
+      visit "/a/cosas/#{cosa.id}"
 
       expect(page).to have_css('nav ol.breadcrumb li').exactly(3)
       expect(page).to have_css('nav ol.breadcrumb li a').exactly(1)
     end
 
     context 'cuando es con nested' do
-      let(:path) do
-        hashid = cosa.categoria_de_cosa.hashid
-        "/a/categoria_de_cosas/#{hashid}/cosas/#{cosa.id}"
-      end
-
       it do
-        visitar
+        hashid = cosa.categoria_de_cosa.hashid
+        visit "/a/categoria_de_cosas/#{hashid}/cosas/#{cosa.id}"
 
         expect(page).to have_css('nav ol.breadcrumb li').exactly(4)
         expect(page).to have_css('nav ol.breadcrumb li a').exactly(1)
@@ -43,14 +36,9 @@ describe 'Breadcrumbs' do
     end
 
     context 'cuando es con nested y modal' do
-      let(:path) do
-        hashid = cosa.categoria_de_cosa.hashid
-        "/a/categoria_de_cosas/#{hashid}"
-      end
-
       it do
-        visitar
-        find('td span[title=Ver] a').click
+        visit "/a/categoria_de_cosas/#{cosa.categoria_de_cosa.hashid}"
+        find_all('td span[title=Ver] a').first.click
 
         expect(page).to have_css('.modal nav ol.breadcrumb li').exactly(4)
         expect(page).to have_no_css('.modal nav ol.breadcrumb li a')

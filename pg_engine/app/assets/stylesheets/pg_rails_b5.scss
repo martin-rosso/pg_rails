@@ -71,11 +71,18 @@ input[type=datetime-local], input[type=datetime] {
 .listado {
   td, th {
     padding: 0.25rem 1rem;
+
+    &:has(.actions-wrapper) {
+      width: 0.1%;
+      border-right: 1px solid #c1c1c1;
+      padding: 0 1rem;
+      vertical-align: middle;
+    }
   }
 }
 .listado .actions-wrapper {
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
   gap: 4px;
 
   .btn-sm {

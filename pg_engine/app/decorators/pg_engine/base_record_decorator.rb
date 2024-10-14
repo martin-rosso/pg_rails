@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 module PgEngine
   class BaseRecordDecorator < Draper::Decorator
     include ActionView::Helpers
@@ -28,8 +29,7 @@ module PgEngine
 
     def text_for_new
       klass = object.class
-      # TODO: no está bueno tener que hacer el new, gender debería estar en la clase
-      verb = klass.new.gender == 'f' ? 'Nueva' : 'Nuevo'
+      verb = klass.gender == 'f' ? 'Nueva' : 'Nuevo'
       "#{verb} #{klass.model_name.human.downcase}"
     end
 
@@ -57,18 +57,46 @@ module PgEngine
       if helpers.using_modal?
         destroy_link
       else
-        destroy_link(redirect_to: helpers.url_for(target_index))
+        destroy_link(land_on: :index)
       end
     end
 
-    def destroy_link(confirm_text: '¿Confirmás que querés borrar el registro?', klass: 'btn-light', redirect_to: nil)
+    def destroy_link(confirm_text: '¿Confirmás que querés borrar el registro?', klass: 'btn-light', land_on: nil)
       return unless Pundit.policy!(Current.user, object).destroy?
 
-      helpers.content_tag :span, rel: :tooltip, title: 'Eliminar' do
-        helpers.link_to object_url + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
+      helpers.content_tag :span, rel: :tooltip, title: 'Eliminar definitivamente' do
+        helpers.link_to object_url + (land_on.present? ? "?land_on=#{land_on}" : ''),
                         data: { 'turbo-confirm': confirm_text, 'turbo-method': :delete },
-                        class: "btn btn-sm #{klass}" do
+                        class: "btn btn-sm #{klass} text-danger" do
           helpers.content_tag :span, nil, class: clase_icono('trash-fill')
+        end
+      end
+    end
+
+    def archive_link(klass: 'btn-light')
+      return unless Pundit.policy!(Current.user, object).archive?
+
+      target_archive = [:archive, pg_namespace, nested_record, object]
+
+      helpers.content_tag :span, rel: :tooltip, title: 'Archivar' do
+        helpers.link_to helpers.url_for(target_archive),
+                        data: { 'turbo-method': :post, 'turbo-stream': true },
+                        class: "btn btn-sm #{klass}" do
+          helpers.content_tag :span, nil, class: clase_icono('archive-fill')
+        end
+      end
+    end
+
+    def restore_link(klass: 'btn-light')
+      return unless Pundit.policy!(Current.user, object).restore?
+
+      target_archive = [:restore, pg_namespace, nested_record, object]
+
+      helpers.content_tag :span, rel: :tooltip, title: 'Desarchivar' do
+        helpers.link_to helpers.url_for(target_archive),
+                        data: { 'turbo-method': :post, 'turbo-stream': true },
+                        class: "btn btn-sm #{klass}" do
+          helpers.content_tag(:span, nil, class: clase_icono('arrow-counterclockwise')) + ' Desarchivar'
         end
       end
     end
@@ -103,14 +131,11 @@ module PgEngine
       end
     end
 
-    def export_link(url, text: '', klass: 'btn-info')
+    def export_link(url, text: '')
       return unless Pundit.policy!(Current.user, object).export?
 
-      helpers.content_tag :span, rel: :tooltip, title: 'Exportar en excel' do
-        helpers.content_tag :a, target: '_blank',
-                                class: "btn btn-sm #{klass}", href: url_change_format(url, 'xlsx') do
-          "#{helpers.content_tag(:span, nil, class: clase_icono('file-earmark-excel-fill'))} #{text}".html_safe
-        end
+      helpers.content_tag :a, target: '_blank', class: 'icon-link dropdown-item lh-1', href: url_change_format(url, 'xlsx') do
+        "#{helpers.content_tag(:span, nil, class: clase_icono('file-earmark-excel-fill'))} #{text}".html_safe
       end
     end
 
@@ -182,3 +207,4 @@ module PgEngine
     end
   end
 end
+# rubocop:enable Metrics/ClassLength

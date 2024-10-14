@@ -22,7 +22,7 @@ describe 'Tenants' do
     it do
       visitar
 
-      expect(page).to have_text 'No hay cosos que mostrar'
+      expect(page).to have_text 'No hay ningún coso que mostrar'
     end
 
     context 'when belongs to multiple accounts' do
@@ -45,7 +45,7 @@ describe 'Tenants' do
 
         click_on other_account.to_s
         visit '/u/categoria_de_cosas'
-        expect(page).to have_text 'No hay categorías de cosas que mostrar'
+        expect(page).to have_text 'No hay ninguna categoría de cosa que mostrar'
       end
 
       it 'shows the profile form' do

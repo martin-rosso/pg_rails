@@ -8,10 +8,6 @@ module Admin
 
     self.clase_modelo = EmailLog
 
-    before_action(only: :index) { authorize EmailLog }
-
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     before_action do
       @actions = [
         ["Mailgun sync: #{ENV.fetch('MAILGUN_DOMAIN', nil)}", mailgun_sync_admin_email_logs_path, {

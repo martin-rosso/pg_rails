@@ -243,11 +243,11 @@ RSpec.describe <%= controller_class_name %>Controller do
   describe 'DELETE #destroy' do
     subject do
       request.headers['Accept'] = 'text/vnd.turbo-stream.html,text/html'
-      delete :destroy, params: { id: <%= file_name %>.to_param, redirect_to: redirect_url }
+      delete :destroy, params: { id: <%= file_name %>.to_param, land_on: }
     end
 
     let!(:<%= nombre_tabla_completo_singular %>) { create :<%= nombre_tabla_completo_singular %> }
-    let(:redirect_url) { nil }
+    let(:land_on) { nil }
 
     it 'destroys the requested <%= nombre_tabla_completo_singular %>' do
 <% if options[:discard] -%>
@@ -259,20 +259,13 @@ RSpec.describe <%= controller_class_name %>Controller do
 <% end -%>
     end
 
-<% if options[:discard] -%>
-    it 'setea el discarded_at' do
-      subject
-      expect(<%= nombre_tabla_completo_singular %>.reload.discarded_at).to be_present
-    end
-
-<% end -%>
     it 'envía el pg-event' do
       subject
       expect(response.body).to include('<pg-event data-event-name="pg:record-destroyed"')
     end
 
-    context 'si hay redirect_to' do
-      let(:redirect_url) { <%= index_helper %>_url }
+    context 'si hay land_on' do
+      let(:land_on) { :index }
 
       it 'redirects to the <%= table_name %> list' do
         subject

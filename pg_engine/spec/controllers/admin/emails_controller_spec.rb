@@ -143,11 +143,11 @@ RSpec.describe Admin::EmailsController do
   describe 'DELETE #destroy' do
     subject do
       request.headers['Accept'] = 'text/vnd.turbo-stream.html,text/html'
-      delete :destroy, params: { id: email.to_param, redirect_to: redirect_url }
+      delete :destroy, params: { id: email.to_param, land_on: }
     end
 
     let!(:email) { create :email }
-    let(:redirect_url) { nil }
+    let(:land_on) { nil }
 
     it 'destroys the requested email' do
       expect { subject }.to change(Email, :count).by(-1)
@@ -158,8 +158,8 @@ RSpec.describe Admin::EmailsController do
       expect(response.body).to include('<pg-event data-event-name="pg:record-destroyed"')
     end
 
-    context 'si hay redirect_to' do
-      let(:redirect_url) { admin_emails_url }
+    context 'si hay land_on' do
+      let(:land_on) { :index }
 
       it 'redirects to the emails list' do
         subject

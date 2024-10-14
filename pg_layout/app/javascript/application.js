@@ -65,10 +65,12 @@ document.addEventListener('pg:record-destroyed', (ev) => {
 
 document.addEventListener('turbo:before-fetch-request', (ev) => {
   // Si es POST, quito la opción text/vnd.turbo-stream.html para que
-  // on successful redirect no haya posibilidad de que se abra un modal
+  // on successful redirect no haya posibilidad de que se abra un modal.
+  // Si el link o form tiene data-turbo-stream entonces no se pisa el header.
   // FIXME: buscar una manera mejor de hacerlo porque es para problemas
   //        quizás, con la movida de abrir modales desde JS
-  if (ev.detail.fetchOptions.method.toLowerCase() === 'post') {
+  if (ev.detail.fetchOptions.method.toLowerCase() === 'post' &&
+      ev.target.dataset.turboStream === undefined) {
     ev.detail.fetchOptions.headers.Accept = 'text/html, application/xhtml+xml'
   }
 

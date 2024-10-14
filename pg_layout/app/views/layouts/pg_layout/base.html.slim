@@ -74,6 +74,7 @@ html
 
                   .btn-toolbar.gap-1
                     = yield(:actions)
+                    = yield(:extra_actions)
                 - if using_modal?
                   .px-2.d-flex.align-items-center.border.border-start-0
                     = button_tag type: :button, class: 'btn btn-sm btn-link',

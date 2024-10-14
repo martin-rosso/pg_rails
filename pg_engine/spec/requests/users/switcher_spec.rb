@@ -29,7 +29,7 @@ describe 'redirection' do
   context 'when account is discarded' do
     it do
       get '/u/cosas'
-      expect(response.body).to include 'No hay cosos que mostrar'
+      expect(response.body).to include 'No hay ningún coso que mostrar'
       logged_user.user_accounts.first.account.discard!
       get '/u/cosas'
       expect(response).to redirect_to users_account_switcher_path
@@ -62,7 +62,7 @@ describe 'redirection' do
       get '/u/cosas'
       expect(response).to have_http_status(:ok)
       expect(response.body).to include other_account.to_s
-      expect(response.body).to include 'No hay cosos que mostrar'
+      expect(response.body).to include 'No hay ningún coso que mostrar'
       other_user_account.destroy!
       get '/u/cosas'
       expect(response).to redirect_to users_account_switcher_path

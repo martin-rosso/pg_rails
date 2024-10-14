@@ -18,13 +18,13 @@ module PgEngine
         sort_field = sort_field.to_s.sub(/_text\z/, '')
       end
 
+      # Unsuffixed
       campo = campo.to_s.sub(/_f\z/, '')
       campo = campo.to_s.sub(/_text\z/, '')
 
       clase = options[:clase] || @clase_modelo
-      key = [controller_name, action_name, 'listado_header', campo].join('.')
-      dflt = :"activerecord.attributes.#{clase.model_name.i18n_key}.#{campo}"
-      human_name = clase.human_attribute_name(key, default: dflt)
+
+      human_name = scoped_human_attr_name(clase, campo, 'listado_header')
 
       if options[:ordenable]
         if sort_field.is_a? Array
@@ -35,6 +35,20 @@ module PgEngine
       else
         human_name
       end
+    end
+
+    def scoped_human_attr_name(clase, campo, scope)
+      action_key = build_scoped_key(clase, campo, scope, action_name)
+      scope_key = build_scoped_key(clase, campo, scope)
+
+      I18n.t(action_key, default: [scope_key, clase.human_attribute_name(campo)])
+    end
+
+    def build_scoped_key(clase, campo, scope = nil, subscope = nil)
+      campo = "#{campo}/scoped" if scope.present?
+      scope = "#{subscope}/#{scope}" if subscope.present?
+
+      ['activerecord.attributes', clase.model_name.i18n_key, campo, scope].compact.join('.').to_sym
     end
 
     def default_order(campo)

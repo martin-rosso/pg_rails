@@ -34,6 +34,8 @@ class Account < ApplicationRecord
 
   validates :plan, :nombre, presence: true
 
+  has_many :audits, dependent: :nullify, class_name: 'Audited::Audit'
+
   ransacker :search do |parent|
     parent.table[:nombre]
   end
