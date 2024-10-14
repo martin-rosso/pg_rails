@@ -8,8 +8,10 @@
   .ms-1
   - if @filtros.present?
     = render SearchBarTogglerComponent.new
-    .ms-1
-  = @clase_modelo.new.decorate.new_link
+  = link_to 'Archivado', [:archived, pg_namespace, nested_record, @clase_modelo].compact, class: 'btn btn-link btn-sm'
+  .ms-1
+  - if nested_record.present? && nested_record.kept?
+    = @clase_modelo.new.decorate.new_link
 
 - if @filtros.present?
   = render SearchBarComponent.new(@q, @filtros)
@@ -38,6 +40,9 @@
                   = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
                   = object.show_link
                   = object.edit_link(text: '', klass: 'btn-light')
+                  = object.archive_link
+                  - if object.discarded?
+                    = object.restore_link
                   = object.destroy_link
 
     .d-flex.justify-content-center

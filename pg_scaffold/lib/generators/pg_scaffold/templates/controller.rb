@@ -15,8 +15,6 @@ class <%= controller_class_name.split('::').last %>Controller < <%= parent_contr
 
   before_action(only: :index) { authorize <%= class_name.split('::').last %> }
 
-  before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
   private
 
   def atributos_permitidos

@@ -27,7 +27,7 @@ es:
     external_id: ID externo
     created_at: Fecha de creación
     updated_at: Fecha de actualización
-    discarded_at: Fecha de borrado
+    discarded_at: Fecha de archivado
     confirmed_at: Fecha de confirmación
     actualizado_por: Actualizado por
     creado_por: Creado por

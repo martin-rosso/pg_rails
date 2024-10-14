@@ -10,8 +10,6 @@ module Users
 
     before_action(only: :index) { authorize CategoriaDeCosa }
 
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     private
 
     def atributos_permitidos

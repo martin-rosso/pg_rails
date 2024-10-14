@@ -10,6 +10,9 @@ module PgEngine
         # TODO: separar los endpoints de la lógica de filtros para evitar esta variable
         # en Agenda
         attr_accessor :skip_default_breadcrumb
+
+        # Skip set_instancia_modelo
+        attr_accessor :skip_default_hooks
       end
       clazz.delegate :nested_key, :nested_class, :clase_modelo, to: clazz
 
@@ -28,6 +31,14 @@ module PgEngine
         #       o sea, quitar todas las referencias a @clase_modelo
         @clase_modelo = clase_modelo
       end
+
+      # FIXME: quitar de todos lados
+      clazz.before_action(only: %i[index archived], unless: -> { clazz.skip_default_hooks }) do
+        authorize Cosa
+      end
+
+      clazz.before_action :set_instancia_modelo, only: %i[new create show edit update destroy archive restore],
+                                                 unless: -> { clazz.skip_default_hooks }
 
       clazz.before_action unless: -> { clazz.skip_default_breadcrumb } do
         if nested_record.present?
@@ -113,7 +124,7 @@ module PgEngine
     end
 
     def set_layout
-      if action_name == 'index'
+      if action_name.in? %w[index archived]
         'pg_layout/base'
       else
         'pg_layout/containerized'
@@ -129,10 +140,18 @@ module PgEngine
       pg_respond_buscar
     end
 
+    def archived
+      add_breadcrumb 'Archivado'
+
+      @collection = filtros_y_policy(atributos_para_buscar, default_sort, archived: true)
+
+      pg_respond_index(archived: true)
+    end
+
     def index
       @collection = filtros_y_policy(atributos_para_buscar, default_sort)
 
-      pg_respond_index
+      pg_respond_index(archived: false)
     end
 
     def show
@@ -186,7 +205,43 @@ module PgEngine
     end
 
     def destroy
-      pg_respond_destroy(instancia_modelo, params[:redirect_to])
+      pg_respond_destroy(instancia_modelo, params[:redirect_to], really_destroy: true)
+    end
+
+    def archive
+      pg_respond_destroy(instancia_modelo, params[:redirect_to], really_destroy: false)
+    end
+
+    def restore
+      object = instancia_modelo
+      @saved = instancia_modelo.update(discarded_at: nil)
+
+      if (@saved)
+        respond_to do |format|
+          format.html do
+            if in_modal?
+              body = <<~HTML.html_safe
+                <pg-event data-event-name="pg:record-updated" data-turbo-temporary
+                  data-response='#{object.decorate.to_json}'></pg-event>
+              HTML
+              render html: ModalContentComponent.new.with_content(body)
+                                                .render_in(view_context)
+            else
+              redirect_to object.decorate.target_object
+            end
+          end
+          format.json do
+            render json: object.decorate.as_json
+          end
+        end
+      else
+        add_breadcrumb instancia_modelo.decorate.to_s_short, instancia_modelo.decorate.target_object
+        add_breadcrumb 'Modificando'
+        # TODO: esto solucionaría el problema?
+        # self.instancia_modelo = instancia_modelo.decorate
+        #
+        render :edit, status: :unprocessable_entity
+      end
     end
     # End public endpoints
 
@@ -309,10 +364,10 @@ module PgEngine
       end
     end
 
-    def pg_respond_index
+    def pg_respond_index(archived:)
       respond_to do |format|
         format.json { render json: @collection }
-        format.html { render_listing }
+        format.html { render_listing(archived:) }
         format.xlsx do
           render xlsx: 'download',
                  filename: "#{clase_modelo.nombre_plural.gsub(' ', '-').downcase}" \
@@ -331,13 +386,18 @@ module PgEngine
       end
     end
 
-    def destroyed_message(model)
-      "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
+    def destroyed_message(model, really_destroy)
+      if really_destroy
+        "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
+      else
+        nil
+        # "#{model.model_name.human} #{model.gender == 'f' ? 'archivada' : 'archivado'}"
+      end
     end
 
     # rubocop:disable Metrics/PerceivedComplexity
-    def pg_respond_destroy(model, redirect_url = nil)
-      if destroy_model(model)
+    def pg_respond_destroy(model, redirect_url = nil, really_destroy: false)
+      if destroy_model(model, really_destroy:)
         # FIXME: rename to main
         if turbo_frame? && current_turbo_frame != 'top'
           body = <<~HTML.html_safe
@@ -346,7 +406,7 @@ module PgEngine
           HTML
           render turbo_stream: turbo_stream.append(current_turbo_frame, body)
         elsif redirect_url.present?
-          redirect_to redirect_url, notice: destroyed_message(model), status: :see_other
+          redirect_to redirect_url, notice: destroyed_message(model, really_destroy), status: :see_other
         elsif accepts_turbo_stream?
           body = <<~HTML.html_safe
             <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>
@@ -355,7 +415,7 @@ module PgEngine
           render turbo_stream: turbo_stream.append_all('body', body)
         else
           redirect_back(fallback_location: root_path,
-                        notice: destroyed_message(model), status: 303)
+                        notice: destroyed_message(model, really_destroy), status: 303)
         end
       elsif in_modal?
 
@@ -371,11 +431,11 @@ module PgEngine
     end
     # rubocop:enable Metrics/PerceivedComplexity
 
-    def destroy_model(model)
+    def destroy_model(model, really_destroy: false)
       @error_message = 'No se pudo eliminar el registro'
 
       begin
-        destroy_method = model.respond_to?(:discard) ? :discard : :destroy
+        destroy_method = really_destroy ? :destroy : :discard
         return true if model.send(destroy_method)
 
         @error_message = model.errors.full_messages.join(', ').presence || @error_message
@@ -390,14 +450,15 @@ module PgEngine
       false
     end
 
-    def render_listing
+    def render_listing(archived:)
       total = @collection.count
       current_page = params[:page].presence&.to_i || 1
       if current_page_size * (current_page - 1) >= total
         current_page = (total.to_f / current_page_size).ceil
       end
       @collection = @collection.page(current_page).per(current_page_size)
-      @records_filtered = default_scope_for_current_model.any? if @collection.empty?
+      @records_filtered = default_scope_for_current_model(archived:).any? if @collection.empty?
+      render :index
     end
 
     def buscar_instancia
@@ -450,7 +511,7 @@ module PgEngine
       clase_modelo.name.underscore
     end
 
-    def filtros_y_policy(campos, dflt_sort = nil)
+    def filtros_y_policy(campos, dflt_sort = nil, archived: false)
       @filtros = PgEngine::FiltrosBuilder.new(
         self, clase_modelo, campos
       )
@@ -458,9 +519,17 @@ module PgEngine
 
       if nested_id.present?
         scope = scope.where(nested_key => nested_id)
-        scope = scope.undiscarded if scope.respond_to?(:undiscarded)
+        if archived
+          scope = scope.discarded if scope.respond_to?(:discarded)
+        else
+          scope = scope.undiscarded if scope.respond_to?(:undiscarded)
+        end
       elsif scope.respond_to?(:kept)
-        scope = scope.kept
+        if archived
+          scope = scope.discarded
+        else
+          scope = scope.kept
+        end
       end
       # Soft deleted
 
@@ -471,7 +540,7 @@ module PgEngine
       shared_context.evaluate(@q)
     end
 
-    def default_scope_for_current_model
+    def default_scope_for_current_model(archived: false)
       scope = policy_scope(clase_modelo)
 
       if nested_id.present?
@@ -480,7 +549,11 @@ module PgEngine
         # Skip nested discarded check
         scope = scope.undiscarded if scope.respond_to?(:undiscarded)
       elsif scope.respond_to?(:kept)
-        scope = scope.kept
+        if archived
+          scope = scope.discarded
+        else
+          scope = scope.kept
+        end
       end
       # Soft deleted, including nested discarded check
 

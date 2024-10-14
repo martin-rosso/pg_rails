@@ -17,6 +17,7 @@ module Public
     include PgEngine::Resource
 
     self.clase_modelo = MensajeContacto
+    self.skip_default_hooks = true
 
     before_action(only: :index) { authorize MensajeContacto }
 

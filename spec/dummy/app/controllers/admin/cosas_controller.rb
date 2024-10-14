@@ -16,8 +16,6 @@ module Admin
     before_action(only: :index) { authorize Cosa }
     # before_action(only: :index) { @sidebar = false }
 
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     before_action(only: :show) do
       CosaMailer.with(cosa: @cosa).cosa.deliver_later if params[:send_mail] == 'true'
     end

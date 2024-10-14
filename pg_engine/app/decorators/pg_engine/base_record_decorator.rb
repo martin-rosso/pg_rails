@@ -64,11 +64,41 @@ module PgEngine
     def destroy_link(confirm_text: '¿Confirmás que querés borrar el registro?', klass: 'btn-light', redirect_to: nil)
       return unless Pundit.policy!(Current.user, object).destroy?
 
-      helpers.content_tag :span, rel: :tooltip, title: 'Eliminar' do
+      helpers.content_tag :span, rel: :tooltip, title: 'Eliminar definitivamente' do
         helpers.link_to object_url + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
                         data: { 'turbo-confirm': confirm_text, 'turbo-method': :delete },
-                        class: "btn btn-sm #{klass}" do
+                        class: "btn btn-sm #{klass} text-danger" do
           helpers.content_tag :span, nil, class: clase_icono('trash-fill')
+        end
+      end
+    end
+
+    def archive_link(klass: 'btn-light', redirect_to: nil)
+      return unless Pundit.policy!(Current.user, object).archive?
+
+      mod_name_sing = object.class.model_name.singular.to_sym
+      target_archive = [:archive, pg_namespace, nested_record, object]
+
+      helpers.content_tag :span, rel: :tooltip, title: 'Archivar' do
+        helpers.link_to helpers.url_for(target_archive) + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
+                        data: { 'turbo-method': :post },
+                        class: "btn btn-sm #{klass}" do
+          helpers.content_tag :span, nil, class: clase_icono('archive-fill')
+        end
+      end
+    end
+
+    def restore_link(klass: 'btn-light', redirect_to: nil)
+      return unless Pundit.policy!(Current.user, object).restore?
+
+      mod_name_sing = object.class.model_name.singular.to_sym
+      target_archive = [:restore, pg_namespace, nested_record, object]
+
+      helpers.content_tag :span, rel: :tooltip, title: 'Restaurar' do
+        helpers.link_to helpers.url_for(target_archive) + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
+                        data: { 'turbo-method': :post },
+                        class: "btn btn-sm #{klass}" do
+          helpers.content_tag :span, nil, class: clase_icono('arrow-counterclockwise')
         end
       end
     end

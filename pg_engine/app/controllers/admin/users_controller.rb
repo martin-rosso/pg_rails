@@ -14,8 +14,6 @@ module Admin
       params[:user].delete(:password) if params[:user][:password].blank?
     end
 
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     def create
       @user.skip_confirmation!
       @user.orphan = true
