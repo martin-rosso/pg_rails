@@ -1,5 +1,6 @@
 import { Controller } from '@hotwired/stimulus'
 import * as bootstrap from 'bootstrap'
+import { Rollbar } from 'rollbar'
 
 export default class extends Controller {
   static outlets = ['asociable']
@@ -41,7 +42,13 @@ export default class extends Controller {
         this.reloadTop()
         ev.stopPropagation()
       } else {
-        this.back(ev)
+        if (ev.data.dataset.reload) {
+          this.reload()
+          this.reloadTop()
+          ev.stopPropagation()
+        } else {
+          this.back(ev)
+        }
       }
     })
 
@@ -70,6 +77,15 @@ export default class extends Controller {
       } else {
         tooltip.setContent('Restaurar')
       }
+    }
+  }
+
+  reload () {
+    const frame = this.element.querySelector('turbo-frame')
+    if (frame.attributes.src) {
+      frame.reload()
+    } else {
+      Rollbar.error('Modal without frame')
     }
   }
 

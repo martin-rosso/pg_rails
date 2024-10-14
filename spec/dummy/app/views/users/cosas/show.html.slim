@@ -1,10 +1,5 @@
-- content_for :title do
-  = @cosa.to_s
-- content_for :actions do
-  = @cosa.destroy_link_redirect
-  .ms-1
-  = @cosa.edit_link
-
+.mb-3
+  = @cosa.categoria_de_cosa.decorate.show_link(text: 'Ver categoría')
 table.table.table-borderless.table-sm.w-auto.mb-0.m-3
   - atributos_para_mostrar.each do |att|
     tr

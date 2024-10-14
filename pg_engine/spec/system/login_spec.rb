@@ -16,7 +16,7 @@ describe 'Sign in' do
 
     it do
       subject
-      expect(page).to have_text :all, 'No hay categorías de cosas que mostrar'
+      expect(page).to have_text :all, 'No hay ninguna categoría de cosa que mostrar'
     end
   end
 

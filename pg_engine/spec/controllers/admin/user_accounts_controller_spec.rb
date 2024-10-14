@@ -174,11 +174,11 @@ RSpec.describe Admin::UserAccountsController do
   describe 'DELETE #destroy' do
     subject do
       request.headers['Accept'] = 'text/vnd.turbo-stream.html,text/html'
-      delete :destroy, params: { id: user_account.to_param, redirect_to: redirect_url }
+      delete :destroy, params: { id: user_account.to_param, land_on: }
     end
 
     let!(:user_account) { create :user_account }
-    let(:redirect_url) { nil }
+    let(:land_on) { nil }
 
     it 'destroys the requested user_account' do
       expect { subject }.to change(UserAccount, :count).by(-1)
@@ -189,8 +189,8 @@ RSpec.describe Admin::UserAccountsController do
       expect(response.body).to include('<pg-event data-event-name="pg:record-destroyed"')
     end
 
-    context 'si hay redirect_to' do
-      let(:redirect_url) { admin_user_accounts_url }
+    context 'si hay land_on' do
+      let(:land_on) { :index }
 
       it 'redirects to the user_accounts list' do
         subject

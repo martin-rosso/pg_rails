@@ -5,6 +5,7 @@ module PgEngine
     include ActionView::Helpers
     include ActionView::Context
     include PostgresHelper
+    include IndexHelper
     attr_accessor :controller
 
     # El orden de los sufijos es importante
@@ -140,16 +141,13 @@ module PgEngine
 
     def placeholder_campo(campo)
       suf = extraer_sufijo(campo)
-      key = [controller_name, action_name, 'filter', sin_sufijo(campo)].join('.')
-      dflt = :"activerecord.attributes.#{@clase_modelo.model_name.i18n_key}.#{sin_sufijo(campo)}"
-      human_name = @clase_modelo.human_attribute_name(key, default: dflt)
+      human_name = scoped_human_attr_name(@clase_modelo, sin_sufijo(campo), 'filter')
 
-      ret =
-        if suf.present?
-          "#{human_name} #{I18n.t(suf, scope: 'ransack.predicates')}"
-        else
-          human_name
-        end
+      ret = if suf.present?
+              "#{human_name} #{I18n.t(suf, scope: 'ransack.predicates')}"
+            else
+              human_name
+            end
 
       ret.strip.downcase.tap { _1[0] = _1[0].capitalize }
     end

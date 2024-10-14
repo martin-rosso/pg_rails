@@ -8,7 +8,7 @@ describe 'Sign in' do
   shared_examples 'destroy from index' do
     subject do
       accept_confirm do
-        find("##{dom_id(cosa)} span[title=Eliminar] a").click
+        find("##{dom_id(cosa)} span[title=\"Eliminar definitivamente\"] a").click
       end
       sleep 1
     end
@@ -30,7 +30,7 @@ describe 'Sign in' do
   shared_examples 'destroy from show' do
     subject do
       accept_confirm do
-        find('.btn-toolbar span[title=Eliminar] a').click
+        find('.btn-toolbar span[title="Eliminar definitivamente"] a').click
       end
       sleep 1
     end
@@ -46,7 +46,7 @@ describe 'Sign in' do
     it 'muestra el flash' do
       subject
       expect(page).to have_current_path('/a/cosas')
-      expect(page).to have_text('Coso borrado')
+      expect(page).to have_text('Se eliminó el coso')
     end
   end
 

@@ -36,7 +36,7 @@ class User < ApplicationRecord
   audited
   include Discard::Model
 
-  has_many :user_accounts
+  has_many :user_accounts, dependent: :destroy
 
   # Hace falta?
   has_many :accounts, through: :user_accounts

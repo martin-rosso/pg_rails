@@ -24,7 +24,7 @@ describe 'Resources' do
 
     it do
       visit '/a/categoria_de_cosas?mostrar_filtros=1'
-      expect(page.find('input[placeholder="Tipo filtro"]')).to be_present
+      expect(page.find('input[placeholder="Tipo filter default"]')).to be_present
       expect(page.find('.listado')).to have_text 'Tipo header'
     end
   end

@@ -66,23 +66,23 @@ describe 'Modal windows' do
       visit '/a/cosas'
       find('span[title=Ver] a').click
       accept_confirm do
-        find('.modal span[title=Eliminar] a').click
+        find('.modal span[title="Eliminar definitivamente"] a').click
       end
-      expect(page).to have_text 'No hay cosos que mostrar'
+      expect(page).to have_text 'No hay ningún coso que mostrar'
     end
 
     context 'cuando da error' do
       before do
-        allow_any_instance_of(Cosa).to receive(:discard).and_return(false)
+        allow_any_instance_of(Cosa).to receive(:destroy).and_return(false)
       end
 
       it do
         visit '/a/cosas'
         find('span[title=Ver] a').click
         accept_confirm do
-          find('.modal span[title=Eliminar] a').click
+          find('.modal span[title="Eliminar definitivamente"] a').click
         end
-        expect(page).to have_text 'No se pudo eliminar el registro'
+        expect(page).to have_text 'Hubo un error al intentar eliminar el coso'
       end
     end
   end

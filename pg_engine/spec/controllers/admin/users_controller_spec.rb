@@ -169,19 +169,14 @@ RSpec.describe Admin::UsersController do
   describe 'DELETE #destroy' do
     subject do
       request.headers['Accept'] = 'text/vnd.turbo-stream.html,text/html'
-      delete :destroy, params: { id: user.to_param, redirect_to: redirect_url }
+      delete :destroy, params: { id: user.to_param, land_on: }
     end
 
     let!(:user) { create :user }
-    let(:redirect_url) { nil }
+    let(:land_on) { nil }
 
     it 'destroys the requested user' do
       expect { subject }.to change(User.kept, :count).by(-1)
-    end
-
-    it 'setea el discarded_at' do
-      subject
-      expect(user.reload.discarded_at).to be_present
     end
 
     it 'envía el pg-event' do
@@ -189,8 +184,8 @@ RSpec.describe Admin::UsersController do
       expect(response.body).to include('<pg-event data-event-name="pg:record-destroyed"')
     end
 
-    context 'si hay redirect_to' do
-      let(:redirect_url) { admin_users_url }
+    context 'si hay land_on' do
+      let(:land_on) { :index }
 
       it 'redirects to the users list' do
         subject
