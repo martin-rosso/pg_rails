@@ -1,0 +1,29 @@
+- content_for :actions do
+  = @simple_user_notifier.destroy_link_redirect
+  .ms-1
+  = @simple_user_notifier.edit_link
+
+table.table.table-borderless.table-sm.w-auto.mb-0.m-3
+  - atributos_para_mostrar.each do |att|
+    tr
+      th = @clase_modelo.human_attribute_name(att)
+      td = render InlineShowComponent.new(@simple_user_notifier.object, att)
+  tr
+    th = t('attributes.created_at')
+    td = @simple_user_notifier.created_at
+  tr
+    th = t('attributes.updated_at')
+    td = @simple_user_notifier.updated_at
+
+.bg-secondary-subtle.p-4.mt-3.trix-content
+  = @simple_user_notifier.message.html_safe
+
+div style="max-width: 30em"
+  table.table.table-sm
+    tr
+      th Destinatario
+      th Visto
+    - @simple_user_notifier.notifications.order('seen_at desc nulls last').each do |notification|
+      tr
+        td = notification.recipient
+        td = dmy_time notification.seen_at

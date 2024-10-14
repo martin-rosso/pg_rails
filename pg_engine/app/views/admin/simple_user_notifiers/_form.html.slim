@@ -1,0 +1,14 @@
+= pg_form_for @simple_user_notifier do |f|
+  - if params[:plain_text]
+    = link_to 'Change to rich text', url_for
+    = f.input :message, as: :text
+  - else
+    = link_to 'Change to plain text', url_for(plain_text: true)
+    = f.rich_text_area :message
+  = f.input :tooltip
+  / = f.input :record_type
+  / = f.input :record_id
+  - unless @simple_user_notifier.persisted?
+    = f.input :target
+    = f.input :user_ids, label: 'User emails'
+  = f.submit

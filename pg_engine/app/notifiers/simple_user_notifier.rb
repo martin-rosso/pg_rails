@@ -29,4 +29,21 @@ class SimpleUserNotifier < ApplicationNotifier
   # Add required params
   #
   required_param :message
+
+  attr_accessor :target, :user_ids
+
+  enumerize :target, in: { todos: 0, devs: 1, user_ids: 2 }
+
+  %i[message message_text tooltip subject].each do |field|
+    define_method :"#{field}" do
+      params[field]
+    end
+    define_method :"#{field}=" do |value|
+      params[field] = value
+    end
+  end
+
+  def self.policy_class
+    ApplicationPolicy
+  end
 end

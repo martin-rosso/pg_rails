@@ -39,7 +39,7 @@ module PgEngine
 
       navbar.add_item('sidebar.signed_in', {
                         name: 'Eventos',
-                        path: 'admin_eventos_path'
+                        path: 'admin_simple_user_notifiers_path'
                       })
       navbar.add_item('sidebar.signed_in', {
                         name: 'Emails',
