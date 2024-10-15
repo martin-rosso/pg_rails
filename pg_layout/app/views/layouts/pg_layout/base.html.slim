@@ -75,7 +75,8 @@ html
                   .btn-toolbar.gap-1
                     - if content_for?(:actions)
                       = yield(:actions)
-                    - elsif respond_to?(:instancia_modelo) && instancia_modelo.present? && action_name == 'show'
+                    - elsif respond_to?(:instancia_modelo) && \
+                            instancia_modelo.present? && action_name == 'show'
                       = instancia_modelo.edit_link
                       = instancia_modelo.archive_link
                       = instancia_modelo.restore_link

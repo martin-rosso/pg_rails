@@ -1,29 +1,7 @@
 {
   "ignored_warnings": [
-    {
-      "warning_type": "Remote Code Execution",
-      "warning_code": 24,
-      "fingerprint": "0828908e3dd7c85dec75eea2ac12af0b039bf055717058416cd9f188928d5e52",
-      "check_name": "UnsafeReflection",
-      "message": "Unsafe reflection method `constantize` called on model attribute",
-      "file": "pg_engine/app/controllers/admin/eventos_controller.rb",
-      "line": 49,
-      "link": "https://brakemanscanner.org/docs/warning_types/remote_code_execution/",
-      "code": "Evento.new(event_params).type.constantize",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "Admin::EventosController",
-        "method": "create"
-      },
-      "user_input": "Evento.new(event_params).type",
-      "confidence": "Medium",
-      "cwe_id": [
-        470
-      ],
-      "note": ""
-    }
+
   ],
-  "updated": "2024-08-20 16:20:38 -0300",
+  "updated": "2024-10-15 20:18:46 -0300",
   "brakeman_version": "6.1.2"
 }

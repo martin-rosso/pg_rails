@@ -40,9 +40,11 @@ module PgEngine
         authorize clase_modelo
       end
 
-      clazz.before_action :set_instancia_modelo, if: lambda {
-                                                       action_name.in? %w[new create show edit update destroy archive restore].push(*clazz.set_instancia_modelo_methods)
-                                                     },
+      if_clause = lambda {
+        ary = %w[new create show edit update destroy archive restore]
+        action_name.in? ary.push(*clazz.set_instancia_modelo_methods)
+      }
+      clazz.before_action :set_instancia_modelo, if: if_clause,
                                                  unless: -> { clazz.skip_default_hooks }
 
       clazz.before_action unless: -> { clazz.skip_default_breadcrumb } do
@@ -232,8 +234,6 @@ module PgEngine
 
       if @saved
         respond_to do |format|
-          format.turbo_stream do
-          end
           format.html do
             if redirect_url.present?
               redirect_to redirect_url
@@ -398,12 +398,9 @@ module PgEngine
     end
 
     def destroyed_message(model, really_destroy)
-      if really_destroy
-        "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
-      else
-        nil
-        # "#{model.model_name.human} #{model.gender == 'f' ? 'archivada' : 'archivado'}"
-      end
+      return unless really_destroy
+
+      "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
     end
 
     # rubocop:disable Metrics/PerceivedComplexity
@@ -422,8 +419,6 @@ module PgEngine
           else
             redirect_to model.decorate.target_object
           end
-        elsif redirect_url.present?
-          redirect_to redirect_url, notice: destroyed_message(model, really_destroy), status: :see_other
         elsif accepts_turbo_stream?
           body = <<~HTML.html_safe
             <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>
@@ -538,19 +533,9 @@ module PgEngine
 
       if nested_id.present?
         scope = scope.where(nested_key => nested_id)
-        if archived
-          scope = scope.discarded if scope.respond_to?(:discarded)
-        elsif scope.respond_to?(:undiscarded)
-          scope = scope.undiscarded
-        end
-      elsif scope.respond_to?(:kept)
-        scope = if archived
-                  scope.unkept
-                else
-                  scope.kept
-                end
       end
-      # Soft deleted
+
+      scope = soft_delete_filter(scope, archived:)
 
       shared_context = Ransack::Adapters::ActiveRecord::Context.new(scope)
       @q = clase_modelo.ransack(params[:q], context: shared_context)
@@ -559,28 +544,30 @@ module PgEngine
       shared_context.evaluate(@q)
     end
 
+    def soft_delete_filter(scope, archived:)
+      return unless scope.respond_to?(:discarded)
+
+      if nested_id.present?
+        if archived
+          scope.discarded
+        else
+          scope.undiscarded
+        end
+      elsif archived
+        scope.unkept
+      else
+        scope.kept
+      end
+    end
+
     def default_scope_for_current_model(archived: false)
       scope = policy_scope(clase_modelo)
 
       if nested_id.present?
         scope = scope.where(nested_key => nested_id)
-
-        # Skip nested discarded check
-        if archived
-          scope = scope.discarded if scope.respond_to?(:discarded)
-        elsif scope.respond_to?(:undiscarded)
-          scope = scope.undiscarded
-        end
-      elsif scope.respond_to?(:kept)
-        scope = if archived
-                  scope.unkept
-                else
-                  scope.kept
-                end
       end
-      # Soft deleted, including nested discarded check
 
-      scope
+      soft_delete_filter(scope, archived:)
     end
   end
 end
