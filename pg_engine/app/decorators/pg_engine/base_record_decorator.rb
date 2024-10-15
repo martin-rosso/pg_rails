@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# rubocop:disable Metrics/ClassLength
 module PgEngine
   class BaseRecordDecorator < Draper::Decorator
     include ActionView::Helpers
@@ -131,7 +132,7 @@ module PgEngine
       end
     end
 
-    def export_link(url, text: '', klass: 'btn-info')
+    def export_link(url, text: '')
       return unless Pundit.policy!(Current.user, object).export?
 
       helpers.content_tag :a, target: '_blank', class: 'icon-link dropdown-item lh-1', href: url_change_format(url, 'xlsx') do
@@ -207,3 +208,4 @@ module PgEngine
     end
   end
 end
+# rubocop:enable Metrics/ClassLength
