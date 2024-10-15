@@ -11,11 +11,6 @@ es:
       gt: 'desde'
       lteq: 'hasta'
       gteq: 'desde'
-  pg_engine:
-    base:
-      index:
-        empty: 'No hay %{model} que mostrar'
-        empty_but_filtered: 'No hay %{model} para los filtros aplicados'
   gender:
     reset_password_token: m
     confirmation_token: m

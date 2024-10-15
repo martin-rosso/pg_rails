@@ -14,6 +14,7 @@ module PgEngine
     before_create :setear_creado_y_actualizado_por
     before_update :setear_actualizado_por
 
+    scope :unkept, -> { discarded }
     # ransacker :search do |parent|
     #   parent.table[:nombre]
     # end

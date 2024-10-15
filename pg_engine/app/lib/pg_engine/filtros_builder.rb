@@ -140,9 +140,9 @@ module PgEngine
 
     def placeholder_campo(campo)
       suf = extraer_sufijo(campo)
-      key = [controller_name, action_name, 'filter', sin_sufijo(campo)].join('.')
-      dflt = :"activerecord.attributes.#{@clase_modelo.model_name.i18n_key}.#{sin_sufijo(campo)}"
-      human_name = @clase_modelo.human_attribute_name(key, default: dflt)
+      key = ['activerecord.attributes', @clase_modelo.model_name.i18n_key, "controller/#{controller_name}", action_name, 'filter', sin_sufijo(campo)].join('.').to_sym
+      key2 = ['activerecord.attributes', @clase_modelo.model_name.i18n_key, "controller/#{controller_name}", 'filter', sin_sufijo(campo)].join('.').to_sym
+      human_name = I18n.t(key, default: [key2, @clase_modelo.human_attribute_name(key)])
 
       ret =
         if suf.present?

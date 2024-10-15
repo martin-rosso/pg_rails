@@ -13,6 +13,8 @@ module PgEngine
 
         # Skip set_instancia_modelo
         attr_accessor :skip_default_hooks
+
+        attr_accessor :set_instancia_modelo_methods
       end
       clazz.delegate :nested_key, :nested_class, :clase_modelo, to: clazz
 
@@ -25,6 +27,7 @@ module PgEngine
       clazz.helper_method :show_filters?
       clazz.helper_method :available_page_sizes
       clazz.helper_method :column_options_for
+      clazz.helper_method :instancia_modelo
 
       clazz.before_action do
         # TODO: quitar esto, que se use el attr_accessor
@@ -34,10 +37,12 @@ module PgEngine
 
       # FIXME: quitar de todos lados
       clazz.before_action(only: %i[index archived], unless: -> { clazz.skip_default_hooks }) do
-        authorize Cosa
+        authorize clase_modelo
       end
 
-      clazz.before_action :set_instancia_modelo, only: %i[new create show edit update destroy archive restore],
+      clazz.before_action :set_instancia_modelo, if: lambda {
+                                                       action_name.in? %w[new create show edit update destroy archive restore].push(*clazz.set_instancia_modelo_methods)
+                                                     },
                                                  unless: -> { clazz.skip_default_hooks }
 
       clazz.before_action unless: -> { clazz.skip_default_breadcrumb } do
@@ -57,7 +62,13 @@ module PgEngine
 
           # Texto de index pero sin link, porque se supone que es un
           # embedded index o viene de tal
-          add_breadcrumb clase_modelo.nombre_plural
+
+          if action_name == 'archived'
+            add_breadcrumb clase_modelo.nombre_plural,
+                           url_for([pg_namespace, nested_record, clase_modelo])
+          else
+            add_breadcrumb clase_modelo.nombre_plural
+          end
 
         elsif !modal_targeted?
           # Link al index, siempre que no sea un modal, porque en tal
@@ -141,9 +152,11 @@ module PgEngine
     end
 
     def archived
-      add_breadcrumb 'Archivado'
+      # add_breadcrumb 'Listado',
+      @index_url = url_for([pg_namespace, nested_record, clase_modelo])
+      add_breadcrumb 'Archivados'
 
-      @collection = filtros_y_policy(atributos_para_buscar, default_sort, archived: true)
+      @collection = filtros_y_policy(atributos_para_buscar, 'discarded_at desc', archived: true)
 
       pg_respond_index(archived: true)
     end
@@ -215,17 +228,15 @@ module PgEngine
     def restore
       object = instancia_modelo
       @saved = instancia_modelo.update(discarded_at: nil)
+      redirect_url = params[:redirect_to]
 
-      if (@saved)
+      if @saved
         respond_to do |format|
+          format.turbo_stream do
+          end
           format.html do
-            if in_modal?
-              body = <<~HTML.html_safe
-                <pg-event data-event-name="pg:record-updated" data-turbo-temporary
-                  data-response='#{object.decorate.to_json}'></pg-event>
-              HTML
-              render html: ModalContentComponent.new.with_content(body)
-                                                .render_in(view_context)
+            if redirect_url.present?
+              redirect_to redirect_url
             else
               redirect_to object.decorate.target_object
             end
@@ -399,12 +410,18 @@ module PgEngine
     def pg_respond_destroy(model, redirect_url = nil, really_destroy: false)
       if destroy_model(model, really_destroy:)
         # FIXME: rename to main
-        if turbo_frame? && current_turbo_frame != 'top'
-          body = <<~HTML.html_safe
-            <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>
-            </pg-event>
-          HTML
-          render turbo_stream: turbo_stream.append(current_turbo_frame, body)
+        if redirect_url.present?
+          redirect_to redirect_url, notice: destroyed_message(model, really_destroy), status: :see_other
+        elsif turbo_frame? && current_turbo_frame != 'top'
+          if really_destroy
+            body = <<~HTML.html_safe
+              <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>
+              </pg-event>
+            HTML
+            render turbo_stream: turbo_stream.append(current_turbo_frame, body)
+          else
+            redirect_to model.decorate.target_object
+          end
         elsif redirect_url.present?
           redirect_to redirect_url, notice: destroyed_message(model, really_destroy), status: :see_other
         elsif accepts_turbo_stream?
@@ -442,8 +459,10 @@ module PgEngine
 
         false
       rescue ActiveRecord::InvalidForeignKey => e
-        model_name = t("activerecord.models.#{model.class.name.underscore}")
-        @error_message = "#{model_name} no se pudo borrar porque tiene elementos asociados."
+        # model_name = t("activerecord.models.#{model.class.name.underscore}")
+        art = model.gender == 'f' ? 'La' : 'El'
+        model_name = model.class.model_name.human.downcase
+        @error_message = "#{art} #{model_name} no se pudo borrar porque tiene elementos asociados."
         pg_warn(e)
       end
 
@@ -521,15 +540,15 @@ module PgEngine
         scope = scope.where(nested_key => nested_id)
         if archived
           scope = scope.discarded if scope.respond_to?(:discarded)
-        else
-          scope = scope.undiscarded if scope.respond_to?(:undiscarded)
+        elsif scope.respond_to?(:undiscarded)
+          scope = scope.undiscarded
         end
       elsif scope.respond_to?(:kept)
-        if archived
-          scope = scope.discarded
-        else
-          scope = scope.kept
-        end
+        scope = if archived
+                  scope.unkept
+                else
+                  scope.kept
+                end
       end
       # Soft deleted
 
@@ -547,13 +566,17 @@ module PgEngine
         scope = scope.where(nested_key => nested_id)
 
         # Skip nested discarded check
-        scope = scope.undiscarded if scope.respond_to?(:undiscarded)
-      elsif scope.respond_to?(:kept)
         if archived
-          scope = scope.discarded
-        else
-          scope = scope.kept
+          scope = scope.discarded if scope.respond_to?(:discarded)
+        elsif scope.respond_to?(:undiscarded)
+          scope = scope.undiscarded
         end
+      elsif scope.respond_to?(:kept)
+        scope = if archived
+                  scope.unkept
+                else
+                  scope.kept
+                end
       end
       # Soft deleted, including nested discarded check
 

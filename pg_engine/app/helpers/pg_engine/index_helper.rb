@@ -22,9 +22,16 @@ module PgEngine
       campo = campo.to_s.sub(/_text\z/, '')
 
       clase = options[:clase] || @clase_modelo
-      key = [controller_name, action_name, 'listado_header', campo].join('.')
-      dflt = :"activerecord.attributes.#{clase.model_name.i18n_key}.#{campo}"
-      human_name = clase.human_attribute_name(key, default: dflt)
+
+      key = ['activerecord.attributes', clase.model_name.i18n_key, "controller/#{controller_name}", action_name,
+             'listado_header', campo].join('.').to_sym
+      key2 = ['activerecord.attributes', clase.model_name.i18n_key, "controller/#{controller_name}", 'listado_header',
+              campo].join('.').to_sym
+      human_name = I18n.t(key, default: [key2, clase.human_attribute_name(key)])
+
+      # key = [controller_name, action_name, 'listado_header', campo].join('.')
+      # dflt = :"activerecord.attributes.#{clase.model_name.i18n_key}.#{campo}"
+      # human_name = clase.human_attribute_name(key, default: dflt)
 
       if options[:ordenable]
         if sort_field.is_a? Array

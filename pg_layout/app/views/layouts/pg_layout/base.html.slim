@@ -73,7 +73,14 @@ html
                       = render_breadcrumbs builder: PgEngine::Bootstrap5BreadcrumbsBuilder
 
                   .btn-toolbar.gap-1
-                    = yield(:actions)
+                    - if content_for?(:actions)
+                      = yield(:actions)
+                    - elsif respond_to?(:instancia_modelo) && instancia_modelo.present? && action_name == 'show'
+                      = instancia_modelo.edit_link
+                      = instancia_modelo.archive_link
+                      = instancia_modelo.restore_link
+                      = instancia_modelo.destroy_link_redirect
+                    = yield(:extra_actions)
                 - if using_modal?
                   .px-2.d-flex.align-items-center.border.border-start-0
                     = button_tag type: :button, class: 'btn btn-sm btn-link',

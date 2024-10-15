@@ -11,14 +11,11 @@ es:
     attributes:
       categoria_de_cosa:
         tipo: Tipo default
-      categoria_de_cosa/categoria_de_cosas/index/listado_header:
-        tipo: Tipo header
-      categoria_de_cosa/categoria_de_cosas/index/filter:
-        tipo: Tipo filtro
-      categoria_de_cosa/categoria_de_cosas/archived/listado_header:
-        tipo: Tipo header
-      categoria_de_cosa/categoria_de_cosas/archived/filter:
-        tipo: Tipo filtro
+        controller/categoria_de_cosas:
+          listado_header:
+            tipo: Tipo header
+          filter:
+            tipo: Tipo filtro
     #   user:
     #     confirmation_sent_at: Confirmación enviada a
     models:

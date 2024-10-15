@@ -32,7 +32,7 @@ module Users
     end
 
     def atributos_para_listar
-      %i[nombre tipo_text categoria_de_cosa rico]
+      %i[nombre tipo_text categoria_de_cosa]
     end
 
     def atributos_para_mostrar

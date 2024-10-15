@@ -1,5 +1,6 @@
 module PgEngine
   module Naming
+    deprecate :gender, deprecator: PgEngine.deprecator
     def gender
       self.class.model_name.human.downcase.ends_with?('a') ? 'f' : 'm'
     end
@@ -12,6 +13,10 @@ module PgEngine
       # This is a per class variable, all subclasses of BaseRecord inherit it
       # BUT **the values are independent between all of them**
       attr_accessor :default_modal, :inline_editable_fields
+
+      def gender
+        model_name.human.downcase.ends_with?('a') ? 'f' : 'm'
+      end
 
       def inline_editable?(attribute)
         inline_editable_fields.present? && inline_editable_fields.include?(attribute.to_sym)

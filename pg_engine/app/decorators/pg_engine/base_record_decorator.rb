@@ -76,7 +76,6 @@ module PgEngine
     def archive_link(klass: 'btn-light', redirect_to: nil)
       return unless Pundit.policy!(Current.user, object).archive?
 
-      mod_name_sing = object.class.model_name.singular.to_sym
       target_archive = [:archive, pg_namespace, nested_record, object]
 
       helpers.content_tag :span, rel: :tooltip, title: 'Archivar' do
@@ -91,14 +90,13 @@ module PgEngine
     def restore_link(klass: 'btn-light', redirect_to: nil)
       return unless Pundit.policy!(Current.user, object).restore?
 
-      mod_name_sing = object.class.model_name.singular.to_sym
       target_archive = [:restore, pg_namespace, nested_record, object]
 
-      helpers.content_tag :span, rel: :tooltip, title: 'Restaurar' do
+      helpers.content_tag :span, rel: :tooltip, title: 'Desarchivar' do
         helpers.link_to helpers.url_for(target_archive) + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
                         data: { 'turbo-method': :post },
                         class: "btn btn-sm #{klass}" do
-          helpers.content_tag :span, nil, class: clase_icono('arrow-counterclockwise')
+          helpers.content_tag(:span, nil, class: clase_icono('arrow-counterclockwise')) + ' Desarchivar'
         end
       end
     end
@@ -136,11 +134,8 @@ module PgEngine
     def export_link(url, text: '', klass: 'btn-info')
       return unless Pundit.policy!(Current.user, object).export?
 
-      helpers.content_tag :span, rel: :tooltip, title: 'Exportar en excel' do
-        helpers.content_tag :a, target: '_blank',
-                                class: "btn btn-sm #{klass}", href: url_change_format(url, 'xlsx') do
-          "#{helpers.content_tag(:span, nil, class: clase_icono('file-earmark-excel-fill'))} #{text}".html_safe
-        end
+      helpers.content_tag :a, target: '_blank', class: 'icon-link dropdown-item lh-1', href: url_change_format(url, 'xlsx') do
+        "#{helpers.content_tag(:span, nil, class: clase_icono('file-earmark-excel-fill'))} #{text}".html_safe
       end
     end
 

@@ -6,12 +6,30 @@
                          data: { controller: :tooltip, 'bs-title': 'Actualizar' } do
     i.bi.bi-arrow-clockwise
   .ms-1
-  - if @filtros.present?
-    = render SearchBarTogglerComponent.new
-  = link_to 'Archivado', [:archived, pg_namespace, nested_record, @clase_modelo].compact, class: 'btn btn-link btn-sm'
-  .ms-1
-  - if nested_record.present? && nested_record.kept?
+  - if action_name == 'index' && (nested_record.blank? || nested_record.kept?)
     = @clase_modelo.new.decorate.new_link
+    .ms-1
+  .dropdown data-controller="tooltip" data-bs-title="Más opciones"
+    button.btn.btn-outline-secondary.btn-sm.xdropdown-toggle type="button" data-bs-toggle="dropdown" aria-expanded="false"
+      i.bi.bi-list
+    ul.dropdown-menu
+      - unless action_name == 'archived'
+        li = link_to [:archived, pg_namespace, nested_record, @clase_modelo].compact, class: 'icon-link dropdown-item' do
+          i.bi.bi-archive-fill.lh-1
+          = t('pg_engine.base.index.see_archived', model: clase_modelo)
+      - if @filtros.present?
+        li = render SearchBarTogglerComponent.new
+      - unless @export_link == false
+        li = @clase_modelo.new.decorate.export_link(request.url, text: 'Exportar en excel')
+
+
+- if action_name == 'archived'
+  .text-center.p-3.text-warning-emphasis.border-bottom
+    div
+      i.bi.bi-archive-fill
+    div
+      => t('pg_engine.base.index.youre_in_archived_index', model: clase_modelo)
+    = link_to t('.back_to_index'), @index_url
 
 - if @filtros.present?
   = render SearchBarComponent.new(@q, @filtros)
@@ -23,27 +41,27 @@
         caption.ps-3 = page_entries_info @collection
         thead.table-light
           tr
+            th
             - atributos_para_listar.each do |att|
               th.text-nowrap style="font-size: 0.8em" = encabezado att, ordenable: true
-            th.text-end
-              - unless @export_link == false
-                .actions-wrapper
-                  = @clase_modelo.new.decorate.export_link(request.url)
+            - if action_name == 'archived'
+              th.text-nowrap style="font-size: 0.8em" = encabezado :discarded_at, ordenable: true
         tbody
           - @collection.each do |object|
             - object = object.decorate
             tr id="#{dom_id(object)}"
-              - atributos_para_listar.each do |att, _sort_field|
-                = column_for object, att
-              td.text-nowrap.text-end.ps-5
+              td.text-nowrap.xtext-end.xps-5
                 .actions-wrapper
                   = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
-                  = object.show_link
+                  = object.show_link(text: '')
                   = object.edit_link(text: '', klass: 'btn-light')
-                  = object.archive_link
-                  - if object.discarded?
-                    = object.restore_link
+                  = object.archive_link(redirect_to: url_for)
+                  = object.restore_link(redirect_to: url_for)
                   = object.destroy_link
+              - atributos_para_listar.each do |att, _sort_field|
+                = column_for object, att
+              - if action_name == 'archived'
+                = column_for object, :discarded_at
 
     .d-flex.justify-content-center
       = paginate(@collection)
@@ -55,12 +73,13 @@
             url_for(page_size:),
             class: "list-group-item py-0 px-1 #{'active' if current_page_size == page_size}"
   - elsif @records_filtered
-    - i18n_key = "#{controller_key}.#{action_name}.index.empty_but_filtered"
+    / - i18n_key = "#{controller_key}.#{action_name}.index.empty_but_filtered"
+    - i18n_key = :".#{action_name}.empty_but_filtered"
     p.m-3
-      = t(i18n_key, default: :'.empty_but_filtered', model: @clase_modelo.nombre_plural.downcase)
+      = t(i18n_key, default: :".#{action_name}.empty_but_filtered", model: @clase_modelo)
       | :
       span.ms-2
       = link_to 'Limpiar búsqueda', url_for + '?cancel_filter=true'
   - else
     - i18n_key = "#{controller_key}.#{action_name}.index.empty"
-    p.m-3 = t(i18n_key, default: :'.empty', model: @clase_modelo.nombre_plural.downcase)
+    p.m-3 = t(i18n_key, default: :".#{action_name}.empty", model: @clase_modelo)
