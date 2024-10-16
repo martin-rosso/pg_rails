@@ -58,16 +58,15 @@ module PgEngine
       if helpers.using_modal?
         destroy_link
       else
-        # FIXME: pass sth like 'goto_index=1' instead
-        destroy_link(redirect_to: helpers.url_for(target_index))
+        destroy_link(land_on: :index)
       end
     end
 
-    def destroy_link(confirm_text: '¿Confirmás que querés borrar el registro?', klass: 'btn-light', redirect_to: nil)
+    def destroy_link(confirm_text: '¿Confirmás que querés borrar el registro?', klass: 'btn-light', land_on: nil)
       return unless Pundit.policy!(Current.user, object).destroy?
 
       helpers.content_tag :span, rel: :tooltip, title: 'Eliminar definitivamente' do
-        helpers.link_to object_url + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
+        helpers.link_to object_url + (land_on.present? ? "?land_on=#{land_on}" : ''),
                         data: { 'turbo-confirm': confirm_text, 'turbo-method': :delete },
                         class: "btn btn-sm #{klass} text-danger" do
           helpers.content_tag :span, nil, class: clase_icono('trash-fill')
@@ -75,13 +74,13 @@ module PgEngine
       end
     end
 
-    def archive_link(klass: 'btn-light', redirect_to: nil)
+    def archive_link(klass: 'btn-light', land_on: nil)
       return unless Pundit.policy!(Current.user, object).archive?
 
       target_archive = [:archive, pg_namespace, nested_record, object]
 
       helpers.content_tag :span, rel: :tooltip, title: 'Archivar' do
-        helpers.link_to helpers.url_for(target_archive) + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
+        helpers.link_to helpers.url_for(target_archive) + (land_on.present? ? "?land_on=#{land_on}" : ''),
                         data: { 'turbo-method': :post },
                         class: "btn btn-sm #{klass}" do
           helpers.content_tag :span, nil, class: clase_icono('archive-fill')
@@ -89,13 +88,13 @@ module PgEngine
       end
     end
 
-    def restore_link(klass: 'btn-light', redirect_to: nil)
+    def restore_link(klass: 'btn-light', land_on: nil)
       return unless Pundit.policy!(Current.user, object).restore?
 
       target_archive = [:restore, pg_namespace, nested_record, object]
 
       helpers.content_tag :span, rel: :tooltip, title: 'Desarchivar' do
-        helpers.link_to helpers.url_for(target_archive) + (redirect_to.present? ? "?redirect_to=#{redirect_to}" : ''),
+        helpers.link_to helpers.url_for(target_archive) + (land_on.present? ? "?land_on=#{land_on}" : ''),
                         data: { 'turbo-method': :post },
                         class: "btn btn-sm #{klass}" do
           helpers.content_tag(:span, nil, class: clase_icono('arrow-counterclockwise')) + ' Desarchivar'

@@ -57,6 +57,10 @@ class CategoriaDeCosa < ApplicationRecord
 
   validates_associated :cosas
 
+  after_initialize do
+    self.tipo = :valores if tipo.blank?
+  end
+
   attr_accessor :validate_created_at, :validate_base
 
   # def validate_created_at

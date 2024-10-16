@@ -56,8 +56,8 @@
                   = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
                   = object.show_link(text: '')
                   = object.edit_link(text: '', klass: 'btn-light')
-                  = object.archive_link(redirect_to: url_for)
-                  = object.restore_link(redirect_to: url_for)
+                  = object.archive_link(land_on: :index)
+                  = object.restore_link(land_on: :index)
                   = object.destroy_link
               - atributos_para_listar.each do |att, _sort_field|
                 = column_for object, att

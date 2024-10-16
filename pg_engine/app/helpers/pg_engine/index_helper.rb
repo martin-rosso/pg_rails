@@ -38,7 +38,7 @@ module PgEngine
     end
 
     def scoped_human_attr_name(clase, campo, scope)
-      action_key     = build_scoped_key(clase, campo, scope, action_name)
+      action_key = build_scoped_key(clase, campo, scope, action_name)
       scope_key = build_scoped_key(clase, campo, scope)
 
       I18n.t(action_key, default: [scope_key, clase.human_attribute_name(campo)])

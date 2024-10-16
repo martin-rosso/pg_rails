@@ -152,7 +152,7 @@ module PgEngine
     def archived
       add_breadcrumb 'Archivados'
 
-      @index_url = url_for([pg_namespace, nested_record, clase_modelo])
+      @index_url = index_url
 
       @collection = filtros_y_policy(atributos_para_buscar, 'discarded_at desc', archived: true)
 
@@ -216,23 +216,23 @@ module PgEngine
     end
 
     def destroy
-      pg_respond_destroy(instancia_modelo, params[:redirect_to], really_destroy: true)
+      pg_respond_destroy(instancia_modelo, params[:land_on], really_destroy: true)
     end
 
     def archive
-      pg_respond_destroy(instancia_modelo, params[:redirect_to], really_destroy: false)
+      pg_respond_destroy(instancia_modelo, params[:land_on], really_destroy: false)
     end
 
     def restore
       object = instancia_modelo
       @saved = instancia_modelo.update(discarded_at: nil)
-      redirect_url = params[:redirect_to]
+      land_on = params[:land_on]
 
       if @saved
         respond_to do |format|
           format.html do
-            if redirect_url.present?
-              redirect_to redirect_url
+            if land_on.present?
+              redirect_to land_on_url(land_on)
             else
               redirect_to object.decorate.target_object
             end
@@ -249,6 +249,10 @@ module PgEngine
     # End public endpoints
 
     protected
+
+    def index_url
+      url_for([pg_namespace, nested_record, clase_modelo])
+    end
 
     def default_sort
       'id desc'
@@ -395,12 +399,23 @@ module PgEngine
       I18n.t('pg_engine.resource_destroyed', model: model.class)
     end
 
+    def land_on_url(land_on)
+      case land_on
+      when 'index'
+        index_url
+      else
+        pg_warn "Unrecognized land_on: #{land_on}"
+        instancia_modelo.decorate.target_object
+      end
+    end
+
     # rubocop:disable Metrics/PerceivedComplexity
-    def pg_respond_destroy(model, redirect_url = nil, really_destroy: false)
+    # FIXME: refactor
+    def pg_respond_destroy(model, land_on = nil, really_destroy: false)
       if destroy_model(model, really_destroy:)
         # FIXME: rename to main
-        if redirect_url.present?
-          redirect_to redirect_url, notice: destroyed_message(model, really_destroy), status: :see_other
+        if land_on.present?
+          redirect_to land_on_url(land_on), notice: destroyed_message(model, really_destroy), status: :see_other
         elsif turbo_frame? && current_turbo_frame != 'top'
           if really_destroy
             body = <<~HTML.html_safe

@@ -49,6 +49,10 @@ class Cosa < ApplicationRecord
   scope :kept, -> { undiscarded.joins(:categoria_de_cosa).merge(CategoriaDeCosa.kept) }
   scope :unkept, -> { discarded.joins(:categoria_de_cosa).or(CategoriaDeCosa.discarded) }
 
+  after_initialize do
+    self.tipo = :valores if tipo.blank?
+  end
+
   def kept?
     undiscarded? && (categoria_de_cosa.blank? || categoria_de_cosa.kept?)
   end
