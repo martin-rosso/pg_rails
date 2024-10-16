@@ -13,7 +13,6 @@ module Admin
     self.nested_class = CategoriaDeCosa
     self.nested_key = :categoria_de_cosa_id
 
-    before_action(only: :index) { authorize Cosa }
     # before_action(only: :index) { @sidebar = false }
 
     before_action(only: :show) do

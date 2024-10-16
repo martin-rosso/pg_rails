@@ -8,8 +8,6 @@ module Users
 
     self.clase_modelo = CategoriaDeCosa
 
-    before_action(only: :index) { authorize CategoriaDeCosa }
-
     private
 
     def atributos_permitidos

@@ -10,8 +10,6 @@ module Users
     add_breadcrumb 'Cuentas'
     self.skip_default_breadcrumb = true
 
-    before_action(only: :index) { authorize Account }
-
     # private
 
     # def atributos_permitidos

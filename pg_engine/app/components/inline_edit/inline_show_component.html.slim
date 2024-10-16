@@ -1,4 +1,4 @@
-- if helpers.pg_namespace == :users && \
+- if Current.namespace == :users && \
      @model.class.inline_editable?(@unsuffixed_attribute) && helpers.policy(@model).edit?
   = helpers.turbo_frame_tag(@frame_id, class: 'inline-edit')
     - if @record_updated

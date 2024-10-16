@@ -18,6 +18,8 @@ end
 {
   :es => {
     pg_engine: {
+      resource_destroyed: PgEngine::I18nRules.rule("Se eliminó %{genderize(la,el)} %{singular_model}"),
+      resource_not_destroyed_because_associated: PgEngine::I18nRules.rule("No se pudo eliminar %{genderize(la,el)} %{singular_model} porque está asociado a otros elementos"),
       base: {
         index: {
           archived: {

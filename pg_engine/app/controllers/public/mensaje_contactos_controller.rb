@@ -19,8 +19,6 @@ module Public
     self.clase_modelo = MensajeContacto
     self.skip_default_hooks = true
 
-    before_action(only: :index) { authorize MensajeContacto }
-
     before_action :set_instancia_modelo, only: %i[new create]
 
     layout 'pg_layout/container_logo'

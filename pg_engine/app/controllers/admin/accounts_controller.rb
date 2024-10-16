@@ -8,8 +8,6 @@ module Admin
 
     self.clase_modelo = Account
 
-    before_action(only: :index) { authorize Account }
-
     private
 
     def atributos_permitidos

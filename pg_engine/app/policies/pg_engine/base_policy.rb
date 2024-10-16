@@ -34,7 +34,7 @@ module PgEngine
     end
 
     def update?
-      puede_editar? && !objeto_borrado?
+      puede_editar? && !record_discarded?
     end
 
     def edit?
@@ -46,7 +46,7 @@ module PgEngine
     end
 
     def archive?
-      puede_borrar? && !objeto_borrado?
+      puede_borrar? && !record_discarded?
     end
 
     def restore?
@@ -104,7 +104,7 @@ module PgEngine
       user&.developer?
     end
 
-    def objeto_borrado?
+    def record_discarded?
       if record.respond_to?(:kept?)
         !record.kept?
       else

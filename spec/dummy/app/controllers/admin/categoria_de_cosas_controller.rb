@@ -7,8 +7,6 @@ module Admin
     include PgEngine::Resource
     self.clase_modelo = CategoriaDeCosa
 
-    before_action(only: :index) { authorize CategoriaDeCosa }
-
     def column_options_for(object, attribute)
       if attribute == :nombre_f
         { class: 'column-truncate-80', title: object.send(attribute) }

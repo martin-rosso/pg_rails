@@ -11,10 +11,8 @@ module PgEngine
         # en Agenda
         attr_accessor :skip_default_breadcrumb
 
-        # Skip set_instancia_modelo
+        # Skip set_instancia_modelo && authorize
         attr_accessor :skip_default_hooks
-
-        attr_accessor :set_instancia_modelo_methods
       end
       clazz.delegate :nested_key, :nested_class, :clase_modelo, to: clazz
 
@@ -35,17 +33,13 @@ module PgEngine
         @clase_modelo = clase_modelo
       end
 
-      # FIXME: quitar de todos lados
       clazz.before_action(only: %i[index archived], unless: -> { clazz.skip_default_hooks }) do
         authorize clase_modelo
       end
 
-      if_clause = lambda {
-        ary = %w[new create show edit update destroy archive restore]
-        action_name.in? ary.push(*clazz.set_instancia_modelo_methods)
-      }
-      clazz.before_action :set_instancia_modelo, if: if_clause,
-                                                 unless: -> { clazz.skip_default_hooks }
+      clazz.before_action :set_instancia_modelo,
+                          only: %i[new create show edit update destroy archive restore],
+                          unless: -> { clazz.skip_default_hooks }
 
       clazz.before_action unless: -> { clazz.skip_default_breadcrumb } do
         if nested_record.present?
@@ -62,13 +56,15 @@ module PgEngine
             end
           end
 
-          # Texto de index pero sin link, porque se supone que es un
-          # embedded index o viene de tal
-
           if action_name == 'archived'
+            # En el listado de archivados tiene que haber un link al listado
+            # principal
             add_breadcrumb clase_modelo.nombre_plural,
                            url_for([pg_namespace, nested_record, clase_modelo])
           else
+            # Texto de index pero sin link, porque se supone que es un
+            # embedded index o es un show dentro de un embedded y por ende
+            # el paso atrás no tiene que ser el listado sino el show del parent
             add_breadcrumb clase_modelo.nombre_plural
           end
 
@@ -154,9 +150,9 @@ module PgEngine
     end
 
     def archived
-      # add_breadcrumb 'Listado',
-      @index_url = url_for([pg_namespace, nested_record, clase_modelo])
       add_breadcrumb 'Archivados'
+
+      @index_url = url_for([pg_namespace, nested_record, clase_modelo])
 
       @collection = filtros_y_policy(atributos_para_buscar, 'discarded_at desc', archived: true)
 
@@ -246,12 +242,8 @@ module PgEngine
           end
         end
       else
-        add_breadcrumb instancia_modelo.decorate.to_s_short, instancia_modelo.decorate.target_object
-        add_breadcrumb 'Modificando'
-        # TODO: esto solucionaría el problema?
-        # self.instancia_modelo = instancia_modelo.decorate
-        #
-        render :edit, status: :unprocessable_entity
+        # FIXME: mandar flash y testear
+        head :unprocessable_entity
       end
     end
     # End public endpoints
@@ -400,7 +392,7 @@ module PgEngine
     def destroyed_message(model, really_destroy)
       return unless really_destroy
 
-      "#{model.model_name.human} #{model.gender == 'f' ? 'borrada' : 'borrado'}"
+      I18n.t('pg_engine.resource_destroyed', model: model.class)
     end
 
     # rubocop:disable Metrics/PerceivedComplexity
@@ -454,11 +446,8 @@ module PgEngine
 
         false
       rescue ActiveRecord::InvalidForeignKey => e
-        # model_name = t("activerecord.models.#{model.class.name.underscore}")
-        art = model.gender == 'f' ? 'La' : 'El'
-        model_name = model.class.model_name.human.downcase
-        @error_message = "#{art} #{model_name} no se pudo borrar porque tiene elementos asociados."
         pg_warn(e)
+        @error_message = I18n.t('pg_engine.resource_not_destroyed_because_associated', model: model.class)
       end
 
       false
@@ -529,13 +518,7 @@ module PgEngine
       @filtros = PgEngine::FiltrosBuilder.new(
         self, clase_modelo, campos
       )
-      scope = policy_scope(clase_modelo)
-
-      if nested_id.present?
-        scope = scope.where(nested_key => nested_id)
-      end
-
-      scope = soft_delete_filter(scope, archived:)
+      scope = default_scope_for_current_model(archived:)
 
       shared_context = Ransack::Adapters::ActiveRecord::Context.new(scope)
       @q = clase_modelo.ransack(params[:q], context: shared_context)
