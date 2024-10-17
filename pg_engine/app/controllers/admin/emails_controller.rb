@@ -8,10 +8,6 @@ module Admin
 
     self.clase_modelo = Email
 
-    before_action(only: :index) { authorize Email }
-
-    before_action :set_instancia_modelo, only: %i[new create show edit update destroy]
-
     after_action only: :create do
       if @saved
         PgEngine::AdminMailer.with(email_object: @email).admin_mail.deliver_later

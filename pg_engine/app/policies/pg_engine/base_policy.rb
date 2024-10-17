@@ -13,6 +13,10 @@ module PgEngine
       base_access_to_collection?
     end
 
+    def archived?
+      base_access_to_collection?
+    end
+
     def show?
       base_access_to_record?
     end
@@ -30,7 +34,7 @@ module PgEngine
     end
 
     def update?
-      puede_editar? && !objeto_borrado?
+      puede_editar? && !record_discarded?
     end
 
     def edit?
@@ -38,7 +42,15 @@ module PgEngine
     end
 
     def destroy?
-      puede_borrar? && !objeto_borrado?
+      puede_borrar?
+    end
+
+    def archive?
+      puede_borrar? && !record_discarded?
+    end
+
+    def restore?
+      puede_borrar? && record.respond_to?(:discarded?) && record.discarded?
     end
 
     def scope
@@ -92,7 +104,7 @@ module PgEngine
       user&.developer?
     end
 
-    def objeto_borrado?
+    def record_discarded?
       if record.respond_to?(:kept?)
         !record.kept?
       else

@@ -27,6 +27,10 @@ class CosaPolicy < ApplicationPolicy
   # def acceso_total?
   #   user.developer?
   # end
+  #
+  def restore?
+    super && record.categoria_de_cosa.kept?
+  end
 
   def base_access_to_record?
     true

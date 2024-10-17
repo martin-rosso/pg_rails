@@ -1,10 +1,3 @@
-- content_for :title do
-  = @user_account.to_s
-- content_for :actions do
-  = @user_account.destroy_link_redirect
-  .ms-1
-  = @user_account.edit_link
-
 table.table.table-borderless.table-sm.w-auto.mb-0.m-3
   - atributos_para_mostrar.each do |att|
     tr

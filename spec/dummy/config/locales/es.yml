@@ -11,10 +11,14 @@ es:
     attributes:
       categoria_de_cosa:
         tipo: Tipo default
-      categoria_de_cosa/categoria_de_cosas/index/listado_header:
-        tipo: Tipo header
-      categoria_de_cosa/categoria_de_cosas/index/filter:
-        tipo: Tipo filtro
+        tipo/scoped:
+          listado_header: Tipo header
+          filter: Tipo filter default
+          archived/filter: Tipo filter archived
+        nombre/scoped:
+          index/filter: Nombre index filter
+          archived/listado_header: Nombre archived header
+
     #   user:
     #     confirmation_sent_at: Confirmación enviada a
     models:
