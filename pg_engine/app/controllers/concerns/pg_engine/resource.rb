@@ -474,7 +474,7 @@ module PgEngine
         current_page = (total.to_f / current_page_size).ceil
       end
       @collection = @collection.page(current_page).per(current_page_size)
-      @records_filtered = default_scope_for_current_model(archived:).any? if @collection.empty?
+      @records_filtered = default_scope_for_current_model(archived:).any? if @filtros.present? && @collection.empty?
       render :index
     end
 
