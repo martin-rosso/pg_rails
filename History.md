@@ -1,4 +1,11 @@
 
+7.6.19 / 2024-10-18
+==================
+
+  * fix(minor): show layout
+  * fix(minor): index
+  * feat: allow turbo prefetch
+
 7.6.18 / 2024-10-17
 ==================
 
