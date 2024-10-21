@@ -31,12 +31,13 @@
 class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
-         :lockable, :timeoutable, :trackable, :confirmable
+         :lockable, :timeoutable, :trackable, :confirmable, :invitable
 
   audited
   include Discard::Model
 
   has_many :user_accounts, dependent: :destroy
+  accepts_nested_attributes_for :user_accounts
 
   # Hace falta?
   has_many :accounts, through: :user_accounts
@@ -45,7 +46,7 @@ class User < ApplicationRecord
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
-  validates :nombre, :apellido, presence: true
+  # validates :nombre, :apellido, presence: true
 
   validates_presence_of   :email
   validates_uniqueness_of :email, message: 'ya pertenece a un usuario'
@@ -93,7 +94,7 @@ class User < ApplicationRecord
   end
 
   def to_s
-    nombre_completo
+    nombre_completo.strip.presence || email
   end
 
   def nombre_completo

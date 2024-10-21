@@ -46,11 +46,11 @@ module PgEngine
     end
 
     def archive?
-      puede_borrar? && !record_discarded?
+      puede_borrar? && record.respond_to?(:discard) && !record_discarded?
     end
 
     def restore?
-      puede_borrar? && record.respond_to?(:discarded?) && record.discarded?
+      puede_borrar? && record.respond_to?(:discard) && record.discarded?
     end
 
     def scope

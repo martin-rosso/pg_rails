@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    invitations: 'users/invitations'
   }, failure_app: PgEngine::DeviseFailureApp
   namespace :users, path: 'u' do
     scope controller: 'inline_edit', path: 'inline', as: :inline do
@@ -34,7 +35,10 @@ Rails.application.routes.draw do
       post ':user_account_id', action: 'switch', as: 'account_switch'
     end
 
-    pg_resource(:accounts, path: 'cuentas', only: [:show])
+    pg_resource(:user_accounts, only: [:index, :edit, :update, :destroy])
+    pg_resource(:accounts, path: 'cuentas', only: [:show]) do
+    end
+
     # get 'account', to: 'accounts#show'
   end
 
