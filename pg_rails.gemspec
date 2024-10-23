@@ -49,6 +49,7 @@ Gem::Specification.new do |spec|
   # Al updatear, chequear los controllers overrideados
   spec.add_dependency 'devise', "~> 4.9.3"
   spec.add_dependency 'devise-i18n', "~> 1.12.0"
+  spec.add_dependency 'devise_invitable', '~> 2.0.9'
 
   # Rails internationalization
   spec.add_dependency 'rails-i18n', "~> 7.0.8"

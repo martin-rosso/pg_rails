@@ -18,7 +18,8 @@ Rails.application.routes.draw do
 
   devise_for :users, controllers: {
     confirmations: 'users/confirmations',
-    registrations: 'users/registrations'
+    registrations: 'users/registrations',
+    invitations: 'users/invitations'
   }, failure_app: PgEngine::DeviseFailureApp
   namespace :users, path: 'u' do
     scope controller: 'inline_edit', path: 'inline', as: :inline do

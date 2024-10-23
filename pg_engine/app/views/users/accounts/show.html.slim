@@ -13,3 +13,5 @@ div style="max-width: 30em"
         td = user_account.user
         td = user_account.user.email
         td = user_account.profiles.texts.join(', ')
+
+= link_to 'Invitar', new_user_invitation_path(account_id: ActsAsTenant.current_tenant.to_param), 'data-turbo-frame': :_top
