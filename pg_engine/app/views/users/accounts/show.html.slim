@@ -7,7 +7,7 @@ div style="max-width: 30em"
     tr
       th Nombre
       th Email
-      th Roles
+      th Permisos
     - @account.user_accounts.kept.each do |user_account|
       tr
         td = user_account.user
@@ -15,3 +15,4 @@ div style="max-width: 30em"
         td = user_account.profiles.texts.join(', ')
 
 = link_to 'Invitar', new_user_invitation_path(account_id: ActsAsTenant.current_tenant.to_param), 'data-turbo-frame': :_top
+/ = turbo_frame_tag 'invitation_new', src: new_user_invitation_path(account_id: ActsAsTenant.current_tenant.to_param)

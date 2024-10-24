@@ -37,6 +37,7 @@ class User < ApplicationRecord
   include Discard::Model
 
   has_many :user_accounts, dependent: :destroy
+  accepts_nested_attributes_for :user_accounts
 
   # Hace falta?
   has_many :accounts, through: :user_accounts

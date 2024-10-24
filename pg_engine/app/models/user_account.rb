@@ -32,9 +32,7 @@ class UserAccount < ApplicationRecord
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
-  # scope :kept, -> { undiscarded.joins(:account).merge(Account.kept) }
-  # FIXME: merge with User.kept
-  scope :kept, -> { joins(:account).merge(Account.kept) }
+  scope :kept, -> { joins(:user, :account).merge(Account.kept).merge(User.kept).distinct }
 
   enumerize :profiles, in: {
     administracion: 1,

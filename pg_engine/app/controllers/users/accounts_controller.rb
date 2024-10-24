@@ -11,6 +11,7 @@ module Users
     self.skip_default_breadcrumb = true
 
     layout 'pg_layout/containerized'
+
     # private
 
     # def atributos_permitidos
