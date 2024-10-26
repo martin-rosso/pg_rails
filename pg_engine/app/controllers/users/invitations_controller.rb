@@ -4,41 +4,55 @@ module Users
       @no_main_frame = nil
     end
 
-    before_action only: :new do
-      if params[:account_id].blank?
-        error_msg = 'Solicitud incorrecta'
-        render_my_component(BadUserInputComponent.new(error_msg:), :bad_request)
-      end
+    before_action only: %i[new create] do
+      add_breadcrumb 'Inicio', :users_root_path unless using_modal2? || frame_embedded?
+      add_breadcrumb 'Cuentas'
+      add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
+      add_breadcrumb 'Enviar invitación'
     end
 
     def new
       self.resource = resource_class.new
-      self.resource.user_accounts.build(account_id: params[:account_id])
+      self.resource.user_accounts.build
       render :new
     end
 
     def create
-      user = nil
-
       if params['user'].present? && params['user']['email'].present?
         email = params['user']['email']
-        user = ActsAsTenant.without_tenant do
+        self.resource = ActsAsTenant.without_tenant do
           User.find_by(email:)
         end
       end
 
-      if user.present?
+      if resource.present?
         new_user = User.new(invite_params)
-        user.user_accounts << new_user.user_accounts
-        respond_with user, location: after_invite_path_for(current_inviter, user)
+        resource.user_accounts << new_user.user_accounts
+        if resource.valid?
+          respond_with resource, location: after_invite_path_for(current_inviter, resource)
+        else
+          if user_account_exists?(resource)
+            new_user.errors.add(:email, 'pertenece a un usuario de la cuenta')
+          else
+            new_user.errors.add(:base, resource.errors.full_messages.join(', '))
+          end
+          self.resource = new_user
+          render :new
+        end
       else
-        byebug
         super
       end
     end
 
     def after_invite_path_for(inviter, invitee)
       users_account_path(ActsAsTenant.current_tenant)
+    end
+
+    protected
+
+    def user_account_exists?(resource)
+      first = resource.errors.first
+      first.present? && first.attribute == :"user_accounts.user_id" && first.type == :taken
     end
   end
 end

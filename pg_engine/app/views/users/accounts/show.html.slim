@@ -1,18 +1,29 @@
+- content_for :actions do
+  = link_to 'Invitar a un nuevo usuario', new_user_invitation_path, class: 'btn  btn-sm btn-warning'
+
 h1
   |> Usuarios de la cuenta:
   = @account
 
-div style="max-width: 30em"
-  table.table.table-sm
+div style="max-width: 70em"
+  table.table.table-sm.listado
     tr
+      th
       th Nombre
       th Email
       th Permisos
+      th Estado
     - @account.user_accounts.kept.each do |user_account|
       tr
+        td
+          .actions-wrapper
+            - object = user_account.decorate
+            = object.edit_link(text: '', klass: 'btn-light btn-sm')
+            = object.archive_link
+            = object.restore_link
+            = object.destroy_link
         td = user_account.user
         td = user_account.user.email
-        td = user_account.profiles.texts.join(', ')
+        td = render InlineShowComponent.new(user_account, :profiles_f)
+        td = user_account.decorate.estado_f
 
-= link_to 'Invitar', new_user_invitation_path(account_id: ActsAsTenant.current_tenant.to_param), 'data-turbo-frame': :_top
-/ = turbo_frame_tag 'invitation_new', src: new_user_invitation_path(account_id: ActsAsTenant.current_tenant.to_param)

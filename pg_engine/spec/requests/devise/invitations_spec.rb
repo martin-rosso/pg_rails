@@ -7,15 +7,8 @@ describe 'Devise invitable' do
     sign_in logged_user
   end
 
-  let(:account_id) { ActsAsTenant.current_tenant.hashid }
-
-  it 'when theres no account_id' do
-    get '/users/invitation/new'
-    expect(response).to have_http_status(:bad_request)
-  end
-
   it 'shows the form' do
-    get '/users/invitation/new', params: { account_id: }
+    get '/users/invitation/new'
     expect(response).to have_http_status(:ok)
     expect(response.body).to have_text('Enviar Invitación')
   end
@@ -25,13 +18,13 @@ describe 'Devise invitable' do
       post '/users/invitation', params: params
     end
 
+    let(:email) { Faker::Internet.email }
     let(:params) do
       {
         user: {
-          email: Faker::Internet.email,
+          email:,
           user_accounts_attributes: [{
-            account_hashid:,
-            profiles: [1]
+            profiles: ['administracion']
           }]
         }
       }
@@ -39,6 +32,15 @@ describe 'Devise invitable' do
 
     it 'creates the user' do
       expect { subject }.to change(User.unscoped, :count).by(1).and(change(UserAccount.unscoped, :count).by(1))
+      expect(UserAccount.last.profiles).to match_array ['administracion']
+    end
+
+    context 'when the user exists' do
+      let(:email) { logged_user.email }
+
+      it do
+        expect { subject }.not_to change(UserAccount.unscoped, :count)
+      end
     end
   end
 end

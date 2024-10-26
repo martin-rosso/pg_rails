@@ -15,11 +15,11 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def puede_editar?
-    false
+    true
   end
 
   def puede_borrar?
-    false
+    true
   end
 
   # def puede_crear?

@@ -35,7 +35,10 @@ Rails.application.routes.draw do
       post ':user_account_id', action: 'switch', as: 'account_switch'
     end
 
-    pg_resource(:accounts, path: 'cuentas', only: [:show])
+    pg_resource(:user_accounts, only: [:index, :edit, :update, :destroy])
+    pg_resource(:accounts, path: 'cuentas', only: [:show]) do
+    end
+
     # get 'account', to: 'accounts#show'
   end
 

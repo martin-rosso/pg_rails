@@ -1,10 +1,6 @@
 / # locals: (f:)
 
 .nested-fields.mb-1
-  / = f.hidden_field :_destroy
-  = f.hidden_field :account_id
   .d-flex
     div
       = f.input :profiles, as: :check_boxes, label: 'Perfiles', xwrapper: :vertical_no_margin_control
-    span.align-self-center.mx-1
-      = link_to_remove

@@ -39,7 +39,10 @@ module Admin
     end
 
     def atributos_para_mostrar
-      %i[email nombre apellido confirmed_at developer]
+      %i[email nombre apellido confirmed_at developer
+      current_sign_in_at current_sign_in_ip last_sign_in_at last_sign_in_ip
+      invitation_created_at invitation_sent_at invitation_accepted_at
+      invitation_limit invited_by]
     end
   end
 end
