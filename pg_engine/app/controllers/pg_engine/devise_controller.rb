@@ -26,7 +26,9 @@ module PgEngine
     def configure_permitted_parameters
       devise_parameter_sanitizer.permit(:sign_up, keys: %i[nombre apellido accept_terms])
       devise_parameter_sanitizer.permit(:account_update, keys: %i[nombre apellido])
-      devise_parameter_sanitizer.permit(:invite, keys: [{ user_accounts_attributes: [:id, :_destroy, :account_id, { profiles: [] }] }])
+      devise_parameter_sanitizer.permit(:invite,
+                                        keys: [{ user_accounts_attributes: [:id, :_destroy, :account_id,
+                                                                            { profiles: [] }] }])
     end
   end
 end

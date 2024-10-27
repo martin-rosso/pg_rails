@@ -13,7 +13,7 @@ module Users
 
     def new
       self.resource = resource_class.new
-      self.resource.user_accounts.build
+      resource.user_accounts.build
       render :new
     end
 
@@ -26,33 +26,37 @@ module Users
       end
 
       if resource.present?
-        new_user = User.new(invite_params)
-        resource.user_accounts << new_user.user_accounts
-        if resource.valid?
-          respond_with resource, location: after_invite_path_for(current_inviter, resource)
-        else
-          if user_account_exists?(resource)
-            new_user.errors.add(:email, 'pertenece a un usuario de la cuenta')
-          else
-            new_user.errors.add(:base, resource.errors.full_messages.join(', '))
-          end
-          self.resource = new_user
-          render :new
-        end
+        add_to_account(resource)
       else
         super
       end
     end
 
-    def after_invite_path_for(inviter, invitee)
+    def after_invite_path_for(_inviter, _invitee)
       users_account_path(ActsAsTenant.current_tenant)
     end
 
     protected
 
+    def add_to_account(resource)
+      new_user = User.new(invite_params)
+      resource.user_accounts << new_user.user_accounts
+      if resource.valid?
+        respond_with resource, location: after_invite_path_for(current_inviter, resource)
+      else
+        if user_account_exists?(resource)
+          new_user.errors.add(:email, 'pertenece a un usuario de la cuenta')
+        else
+          new_user.errors.add(:base, resource.errors.full_messages.join(', '))
+        end
+        self.resource = new_user
+        render :new
+      end
+    end
+
     def user_account_exists?(resource)
       first = resource.errors.first
-      first.present? && first.attribute == :"user_accounts.user_id" && first.type == :taken
+      first.present? && first.attribute == :'user_accounts.user_id' && first.type == :taken
     end
   end
 end

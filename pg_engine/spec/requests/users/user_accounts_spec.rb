@@ -9,10 +9,13 @@ describe 'Devise invitable' do
 
   describe 'destroy' do
     subject do
-      delete "/u/user_accounts/#{user_account.id}"
+      delete "/u/user_accounts/#{user_account.to_param}"
     end
 
-    let(:user_account) { create :user_account }
+    # Al crear un user en el contexto de un tenant, automáticamente
+    # se crea una UserAccount
+    let!(:other_user) { create :user }
+    let!(:user_account) { other_user.user_accounts.first }
 
     it do
       expect { subject }.to change(UserAccount.unscoped, :count).by(-1)

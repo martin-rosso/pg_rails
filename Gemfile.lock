@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/mrosso10/acts_as_tenant.git
-  revision: 68e08b49b2577123435a91d205305417a0e385cc
+  revision: 5ed18e5c8e6eb8ec39a280e808863441f6372769
   branch: devel
   specs:
     acts_as_tenant (1.0.1)
