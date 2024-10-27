@@ -42,6 +42,9 @@ class User < ApplicationRecord
   # Hace falta?
   has_many :accounts, through: :user_accounts
 
+  # Crea automáticamente una user_account on create
+  # a menos que ya exista en los nested attributes una user
+  # account para la current tenant
   acts_as_tenant :account, through: :user_accounts
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'

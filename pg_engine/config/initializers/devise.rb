@@ -316,4 +316,5 @@ Devise.setup do |config|
   # After this period, the invited resource won't be able to accept the invitation.
   # When invite_for is 0 (the default), the invitation won't expire.
   config.invite_for = 2.weeks
+  config.validate_on_invite = true
 end

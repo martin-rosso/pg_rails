@@ -29,7 +29,11 @@ require 'rails_helper'
 
 RSpec.describe Admin::UserAccountsController do
   render_views
-  let!(:user) { create :user }
+  let!(:user) do
+    ActsAsTenant.without_tenant do
+      create :user
+    end
+  end
 
   let!(:account) { ActsAsTenant.current_tenant }
 
@@ -64,7 +68,9 @@ RSpec.describe Admin::UserAccountsController do
       get :index, params: {}
     end
 
-    before { create :user_account }
+    before do
+      create :user
+    end
 
     it 'returns a success response' do
       subject
@@ -94,7 +100,8 @@ RSpec.describe Admin::UserAccountsController do
 
   describe 'GET #show' do
     it 'returns a success response' do
-      user_account = create(:user_account)
+      user = create(:user)
+      user_account = user.user_accounts.first
       get :show, params: { id: user_account.to_param }
       expect(response).to be_successful
     end
@@ -109,7 +116,8 @@ RSpec.describe Admin::UserAccountsController do
 
   describe 'GET #edit' do
     it 'returns a success response' do
-      user_account = create(:user_account)
+      user = create(:user)
+      user_account = user.user_accounts.first
       get :edit, params: { id: user_account.to_param }
       expect(response).to be_successful
     end
@@ -149,7 +157,8 @@ RSpec.describe Admin::UserAccountsController do
       end
 
       it 'redirects to the user_account' do
-        user_account = create(:user_account)
+        user = create(:user)
+        user_account = user.user_accounts.first
         put :update, params: { id: user_account.to_param, user_account: valid_attributes }
 
         expect(response).to redirect_to([:admin, UserAccount.last])
@@ -158,13 +167,15 @@ RSpec.describe Admin::UserAccountsController do
 
     context 'with invalid params' do
       it 'returns a unprocessable_entity response' do
-        user_account = create(:user_account)
+        user = create(:user)
+        user_account = user.user_accounts.first
         put :update, params: { id: user_account.to_param, user_account: invalid_attributes }
         expect(response).to have_http_status(:unprocessable_entity)
       end
 
       it 'renders the edit template' do
-        user_account = create(:user_account)
+        user = create(:user)
+        user_account = user.user_accounts.first
         put :update, params: { id: user_account.to_param, user_account: invalid_attributes }
         expect(response).to render_template(:edit)
       end
@@ -177,7 +188,9 @@ RSpec.describe Admin::UserAccountsController do
       delete :destroy, params: { id: user_account.to_param, land_on: }
     end
 
-    let!(:user_account) { create :user_account }
+    let!(:user_account) do
+      create(:user).user_accounts.first
+    end
     let(:land_on) { nil }
 
     it 'destroys the requested user_account' do

@@ -15,7 +15,7 @@ describe 'Devise invitable' do
 
   describe 'create' do
     subject do
-      post '/users/invitation', params: params
+      post '/users/invitation', params:
     end
 
     let(:email) { Faker::Internet.email }
@@ -32,8 +32,10 @@ describe 'Devise invitable' do
 
     it 'creates the user' do
       expect { subject }.to change(User.unscoped, :count).by(1).and(change(UserAccount.unscoped, :count).by(1))
-      expect(UserAccount.last.profiles).to match_array ['administracion']
+      expect(UserAccount.last.profiles).to contain_exactly('administracion')
     end
+
+    pending 'when the user exists but not the user account'
 
     context 'when the user exists' do
       let(:email) { logged_user.email }

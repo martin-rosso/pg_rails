@@ -9,6 +9,7 @@ RSpec.describe User do
 
   it 'se persiste' do
     expect(user).to be_persisted
+    expect(UserAccount.unscoped.count).to eq 1
   end
 
   it do
