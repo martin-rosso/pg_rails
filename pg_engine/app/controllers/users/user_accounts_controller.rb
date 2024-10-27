@@ -18,16 +18,16 @@ module Users
       ]
     end
 
-    def atributos_para_buscar
-      %i[user account profiles]
-    end
+    # def atributos_para_buscar
+    #   %i[user account profiles]
+    # end
 
-    def atributos_para_listar
-      %i[user account profiles]
-    end
+    # def atributos_para_listar
+    #   %i[user account profiles]
+    # end
 
-    def atributos_para_mostrar
-      %i[user account profiles]
-    end
+    # def atributos_para_mostrar
+    #   %i[user account profiles]
+    # end
   end
 end
