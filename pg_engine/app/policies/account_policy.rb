@@ -35,6 +35,7 @@ class AccountPolicy < ApplicationPolicy
 
   def base_access_to_record?
     ActsAsTenant.unscoped? ||
+      # FIXME: check membership, (make a reusable scope?)
       record.user_accounts.pluck(:user_id).include?(user.id)
   end
 end

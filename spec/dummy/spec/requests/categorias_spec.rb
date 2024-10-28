@@ -23,4 +23,9 @@ describe 'category tenants' do
       expect(categoria_de_cosa.account).to eq other_account
     end
   end
+
+  it do
+    get '/u/categoria_de_cosas'
+    expect(response).to have_http_status(:ok)
+  end
 end

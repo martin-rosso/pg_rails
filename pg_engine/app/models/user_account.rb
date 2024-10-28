@@ -45,11 +45,25 @@ class UserAccount < ApplicationRecord
     active: 2
   }
 
-  enumerize :profiles, in: {
-    administracion: 1,
-    operacion: 2,
-    lectura: 3
-  }, multiple: true
+  enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true
 
   delegate :to_s, to: :user
+
+  def self.profile_groups
+    groups = profiles.values.map { |v| v.to_s.split('__').first }.uniq
+    groups.map do |group|
+      options = profiles.values.select { |va| va.starts_with?(group) }.map do |va|
+        [va, va.to_s.split('__').last]
+      end
+      { name: group, options: }
+    end
+  end
 end
+
+# read
+# write
+# archived
+# destroy
+# 
+# create = write
+# archivar = restaurar = archived + write
