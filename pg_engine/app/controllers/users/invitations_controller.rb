@@ -1,7 +1,8 @@
 module Users
   class InvitationsController < Devise::InvitationsController
     before_action do
-      @no_main_frame = nil
+      # @no_main_frame = nil
+      # @turbo_page_requires_reload = true
     end
 
     before_action only: %i[new create] do
@@ -40,7 +41,9 @@ module Users
 
     def add_to_account(resource)
       new_user = User.new(invite_params)
-      resource.user_accounts << new_user.user_accounts
+      user_account = new_user.user_accounts.first
+      user_account.membership_status = :invited
+      resource.user_accounts << user_account
       if resource.valid?
         respond_with resource, location: after_invite_path_for(current_inviter, resource)
       else
@@ -50,7 +53,7 @@ module Users
           new_user.errors.add(:base, resource.errors.full_messages.join(', '))
         end
         self.resource = new_user
-        render :new
+        render :new, status: :unprocessable_entity
       end
     end
 

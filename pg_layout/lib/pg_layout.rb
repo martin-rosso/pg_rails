@@ -2,6 +2,7 @@
 require 'kaminari'
 require 'devise'
 require 'devise-i18n'
+require 'devise_invitable'
 
 require_relative 'pg_layout/engine'
 

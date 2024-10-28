@@ -28,6 +28,11 @@ es:
     creado_por: Creado por
     accept_terms: Acepto los <a href="/terminos_y_condiciones" target="_blank">Términos y condiciones</a> y la <a href="/privacidad" target="_blank">Política de privacidad</a>
   enumerize:
+    user_account:
+      membership_status:
+        active: Habilitado
+        invited: Invitación aún no aceptada
+        disabled: Deshabilitado
     email:
       status:
         pending: Enviando
@@ -77,6 +82,19 @@ es:
     sign_in: ¿Ya tenés una cuenta? Iniciar sesión
     sign_out: Cerrar sesión
     sign_up: Crear una cuenta
+    invitations:
+      send_instructions: "Se envió una invitación a %{email}"
+      invitation_token_invalid: "¡La invitación no es válida!"
+      updated: ""
+      updated_not_active: ""
+      no_invitations_remaining: "No quedan invitaciones"
+      invitation_removed: "Se ha retirado su invitación"
+      new:
+        header: "Agregar usuario"
+        submit_button: "Agregar"
+      edit:
+        header: "Aceptar invitación"
+        submit_button: "Aceptar"
     confirmations:
       confirmed: ¡Tu cuenta está confirmada! Ya podés iniciar sesión
     sessions:
@@ -87,6 +105,7 @@ es:
       already_authenticated: ''
       timeout: ''
       unauthenticated: ''
+      invited: "Tenés una invitación pendiente en tu correo electrónico"
     registrations:
       signed_up_but_unconfirmed: Te enviamos un correo electrónico con instrucciones para confirmar tu cuenta.
       new:
@@ -103,6 +122,13 @@ es:
         forgot_your_password: ¿Olvidaste tu contraseña?
         didn_t_receive_confirmation_instructions: ¿No recibiste las instrucciones para confirmar tu cuenta?
     mailer:
+      invitation_instructions:
+        subject: "Recibiste una invitación de %{inviter}"
+        hello: "Hola %{email}"
+        someone_invited_you: "Has sido invitado a %{url}, puedes aceptarlo siguiendo el siguiente enlace"
+        accept: "Aceptar la invitación"
+        accept_until: "Esta invitación expirará en %{due_date}."
+        ignore: "Si no le interesa esta invitación, simplemente ignore este correo. No se creará tu cuenta hasta que accedas al enlace anterior y crees una contraseña."
       confirmation_instructions:
         action: Confirmá tu cuenta
         greeting: "Hola %{recipient}"
@@ -125,6 +151,8 @@ es:
         instruction_3: Tu contraseña no será cambiada hasta que accedas al link y crees una nueva.
         subject: Recuperación de contraseña
   activerecord:
+    models:
+      user_account: Cuenta de usuario
     attributes:
       user:
         remember_me: Recordarme en este navegador

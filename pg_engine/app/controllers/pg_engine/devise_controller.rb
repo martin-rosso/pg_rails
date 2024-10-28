@@ -29,6 +29,9 @@ module PgEngine
       devise_parameter_sanitizer.permit(:invite,
                                         keys: [{ user_accounts_attributes: [:id, :_destroy, :account_id,
                                                                             { profiles: [] }] }])
+      devise_parameter_sanitizer.permit(:accept_invitation,
+                                        keys: %i[nombre apellido accept_terms password password_confirmation
+                                                 invitation_token])
     end
   end
 end

@@ -35,7 +35,11 @@ Rails.application.routes.draw do
       post ':user_account_id', action: 'switch', as: 'account_switch'
     end
 
-    pg_resource(:user_accounts, only: [:index, :edit, :update, :destroy])
+    pg_resource(:user_accounts, only: [:index, :show, :edit, :update, :destroy]) do
+      member do
+        put :accept_invitation
+      end
+    end
     pg_resource(:accounts, path: 'cuentas', only: [:show]) do
     end
 

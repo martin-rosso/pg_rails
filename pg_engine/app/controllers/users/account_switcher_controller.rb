@@ -5,6 +5,8 @@ module Users
 
     before_action do
       @no_main_frame = true
+      # @sidebar = false
+      @breadcrumbs_on_rails = []
     end
 
     layout 'pg_layout/centered'
@@ -16,7 +18,8 @@ module Users
     end
 
     def list
-      @user_accounts = Current.user.user_accounts.kept
+      @user_accounts = Current.user.user_accounts.kept.where(membership_status: :active)
+      @invitations = Current.user.user_accounts.kept.where(membership_status: :invited)
     end
 
     def switch

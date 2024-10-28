@@ -2,7 +2,7 @@ h1 ¿Qué cuenta te gustaría utilizar?
 
 / FIXME!: user_accounts add active column
 - if @user_accounts.empty?
-  p No tenés ninguna cuenta disponible
+  p Aún no tenés ninguna cuenta disponible
 - else
   - if @current_tenant_set_by_domain_or_subdomain
     p Estás en el dominio de #{ActsAsTenant.current_tenant} (#{request.host})
@@ -22,3 +22,28 @@ h1 ¿Qué cuenta te gustaría utilizar?
         - else
           = link_to user_account.account, users_account_switch_path(user_account),
                     'data-turbo-method': :post
+
+h3 Invitaciones
+- if @invitations.any?
+  .text-start.m-auto style="max-width: 50em"
+    table.table.table-sm
+      tr
+        th.px-3 Invitado por
+        th.px-3 Cuenta
+        th.px-3 Acciones
+      - @invitations.each do |user_account|
+        tr
+          td.px-3.align-middle = user_account.creado_por
+          td.px-3.align-middle = user_account.account
+          td.px-3
+            = link_to accept_invitation_users_user_account_path(user_account),
+                      class: 'btn btn-success btn-sm', 'data-turbo-method': :put do
+              i.bi.bi-check-lg
+              |< Aceptar
+            | &nbsp;
+            = link_to users_user_account_path(user_account),
+                      class: 'btn btn-danger btn-sm', 'data-turbo-method': :delete do
+              i.bi.bi-x-lg
+              |< Descartar
+- else
+  p No tenés ninguna invitación pendiente

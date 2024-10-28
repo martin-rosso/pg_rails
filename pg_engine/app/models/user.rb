@@ -63,6 +63,14 @@ class User < ApplicationRecord
     message: 'Para crear una cuenta es necesario que aceptes los términos y condiciones'
   }
 
+  before_invitation_created do
+    user_accounts.first.membership_status = :invited
+  end
+
+  # after_invitation_accepted do
+  #   self.user_accounts.first.update(membership_status: :active)
+  # end
+
   attr_accessor :orphan
 
   def active_for_authentication?
@@ -108,7 +116,7 @@ class User < ApplicationRecord
 
   def user_accounts_without_tenant
     ActsAsTenant.without_tenant do
-      user_accounts.to_a
+      user_accounts.kept.where(membership_status: %i[active invited]).to_a
     end
   end
 
