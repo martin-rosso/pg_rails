@@ -1,5 +1,7 @@
 - content_for :actions do
-  = link_to 'Invitar a un nuevo usuario', new_user_invitation_path, class: 'btn  btn-sm btn-warning'
+  = link_to new_user_invitation_path, class: 'btn  btn-sm btn-warning', 'data-turbo-frame': :_top do
+    i.bi.bi-plus-lg
+    |< Agregar usuario
 
 h1
   |> Usuarios de la cuenta:

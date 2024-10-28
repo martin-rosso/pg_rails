@@ -6,8 +6,8 @@
     <% if user_signed_in? %>
       <span class="d-inline-block px-3 text-end text-light"><%= Current.user %></span>
       <span class="d-block px-3 text-secondary">
+        <%= link_to ActsAsTenant.current_tenant, [:users, ActsAsTenant.current_tenant] if ActsAsTenant.current_tenant.present? %>
         <% if Current.user.user_accounts_without_tenant.count > 1 %>
-          <%= link_to ActsAsTenant.current_tenant, [:users, ActsAsTenant.current_tenant] if ActsAsTenant.current_tenant.present? %>
           <%= link_to users_account_switcher_path do %>
             <% if ActsAsTenant.current_tenant.present? %>
               (Cambiar)
@@ -15,8 +15,6 @@
               Elegir cuenta
             <% end %>
           <% end %>
-        <% else %>
-          <%= link_to ActsAsTenant.current_tenant, [:users, ActsAsTenant.current_tenant] if ActsAsTenant.current_tenant.present? %>
         <% end %>
       </span>
       <hr>

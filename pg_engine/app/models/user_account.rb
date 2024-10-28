@@ -21,7 +21,6 @@
 #  fk_rails_...  (user_id => users.id)
 #
 
-# FIXME: add column active?
 class UserAccount < ApplicationRecord
   audited
   include Hashid::Rails
@@ -39,9 +38,18 @@ class UserAccount < ApplicationRecord
 
   scope :kept, -> { joins(:user, :account).merge(Account.kept).merge(User.kept).distinct }
 
+  # Se usa en schema.rb, default: 2
+  enumerize :membership_status, in: {
+    disabled: 0,
+    invited: 1,
+    active: 2
+  }
+
   enumerize :profiles, in: {
     administracion: 1,
     operacion: 2,
     lectura: 3
   }, multiple: true
+
+  delegate :to_s, to: :user
 end

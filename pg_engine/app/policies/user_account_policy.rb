@@ -14,6 +14,11 @@ class UserAccountPolicy < ApplicationPolicy
     # end
   end
 
+  # FIXME: revissssar
+  def accept_invitation?
+    true
+  end
+
   def puede_editar?
     true
   end

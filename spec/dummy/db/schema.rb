@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_23_204059) do
+ActiveRecord::Schema[7.2].define(version: 2024_10_27_225720) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -110,7 +110,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_204059) do
     t.string "nombre", null: false
     t.integer "tipo", null: false
     t.date "fecha"
-    t.datetime "tiempo"
+    t.time "tiempo"
     t.bigint "creado_por_id"
     t.bigint "actualizado_por_id"
     t.datetime "discarded_at"
@@ -222,6 +222,7 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_23_204059) do
     t.bigint "actualizado_por_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "membership_status", default: 2, null: false
     t.index ["account_id"], name: "index_user_accounts_on_account_id"
     t.index ["actualizado_por_id"], name: "index_user_accounts_on_actualizado_por_id"
     t.index ["creado_por_id"], name: "index_user_accounts_on_creado_por_id"
