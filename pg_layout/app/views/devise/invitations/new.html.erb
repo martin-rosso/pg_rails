@@ -5,8 +5,7 @@
       <%= f.input :email, hint: 'Si la persona aún no tiene cuenta en ProcuraBien, se le enviará una invitación para que se registre' %>
     </div>
     <%= f.fields_for :user_accounts do |nf| %>
-      <h5>Permisos</h5>
-      <%= nf.input :profiles, as: :check_boxes, label: '' %>
+      <%= render partial: 'users/user_accounts/fields', locals: { f: nf } %>
     <% end %>
 
     <div class="form-actions">

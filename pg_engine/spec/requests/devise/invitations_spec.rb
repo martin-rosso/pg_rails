@@ -4,7 +4,7 @@ RSpec::Matchers.define_negated_matcher :not_change, :change
 
 describe 'Devise invitable' do
   describe 'send an invitation' do
-    let(:logged_user) { create :user }
+    let(:logged_user) { create :user, :owner }
 
     before do
       sign_in logged_user
@@ -27,7 +27,7 @@ describe 'Devise invitable' do
           user: {
             email:,
             user_accounts_attributes: [{
-              profiles: ['administracion']
+              profiles: ['cosas__read']
             }]
           }
         }
@@ -35,7 +35,7 @@ describe 'Devise invitable' do
 
       it 'creates the user' do
         expect { subject }.to change(User.unscoped, :count).by(1).and(change(UserAccount.unscoped, :count).by(1))
-        expect(UserAccount.last.profiles).to contain_exactly('administracion')
+        expect(UserAccount.last.profiles).to contain_exactly('cosas__read')
       end
 
       context 'when the user exists but not the user account' do

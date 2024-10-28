@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'Users::AccountsController' do
   let(:account) { ActsAsTenant.current_tenant }
-  let(:user) { create :user }
+  let(:user) { create :user, :owner }
 
   before do
     sign_in user

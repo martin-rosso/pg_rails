@@ -30,8 +30,10 @@
 class Cosa < ApplicationRecord
   audited
   include Discard::Model
+  include PgEngine::ChildRecord
 
   self.default_modal = true
+  self.parent_accessor = :categoria_de_cosa
   self.inline_editable_fields = %i[nombre tipo categoria_de_cosa rico creado_por]
 
   # Conviene tener account_id en todos los modelos aunque estén
@@ -46,15 +48,8 @@ class Cosa < ApplicationRecord
 
   has_rich_text :rico
 
-  scope :kept, -> { undiscarded.joins(:categoria_de_cosa).merge(CategoriaDeCosa.kept) }
-  scope :unkept, -> { discarded.joins(:categoria_de_cosa).or(CategoriaDeCosa.discarded) }
-
   after_initialize do
     self.tipo = :valores if tipo.blank?
-  end
-
-  def kept?
-    undiscarded? && (categoria_de_cosa.blank? || categoria_de_cosa.kept?)
   end
 
   enumerize :tipo, in: { completar: 0, los: 1, valores: 2 }

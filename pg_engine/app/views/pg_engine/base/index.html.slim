@@ -14,7 +14,7 @@
       type="button" data-bs-toggle="dropdown" aria-expanded="false"]
       i.bi.bi-list
     ul.dropdown-menu
-      - unless action_name == 'archived'
+      - if policy(clase_modelo).archived? && action_name != 'archived'
         li = link_to [:archived, pg_namespace, nested_record, @clase_modelo].compact,
                      class: 'icon-link dropdown-item' do
           i.bi.bi-archive-fill.lh-1

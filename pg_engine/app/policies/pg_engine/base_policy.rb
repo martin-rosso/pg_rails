@@ -14,7 +14,7 @@ module PgEngine
     end
 
     def archived?
-      base_access_to_collection?
+      puede_ver_archivados? && base_access_to_collection?
     end
 
     def show?
@@ -46,11 +46,12 @@ module PgEngine
     end
 
     def archive?
-      puede_borrar? && record.respond_to?(:kept?) && record.kept?
+      puede_ver_archivados? && puede_editar? && record.respond_to?(:discard) && record.kept?
     end
 
     def restore?
-      puede_borrar? && record.respond_to?(:discarded?) && record.discarded?
+      puede_ver_archivados? && puede_editar? && record.respond_to?(:undiscard) && record.discarded? &&
+        (!record.parent? || record.parent.kept?)
     end
 
     def scope
@@ -81,27 +82,31 @@ module PgEngine
     end
 
     def puede_editar?
-      base_access_to_record?
+      user_has_profile(:update)
     end
 
     def puede_crear?
-      base_access_to_collection?
+      user_has_profile(:create)
     end
 
     def puede_borrar?
-      base_access_to_record?
+      user_has_profile(:destroy)
     end
 
-    def export?
-      base_access_to_collection?
+    def puede_ver_archivados?
+      user_has_profile(:archive)
     end
 
     def base_access_to_record?
-      user&.developer?
+      user_has_profile(:read)
     end
 
     def base_access_to_collection?
-      user&.developer?
+      user_has_profile(:read)
+    end
+
+    def export?
+      user_has_profile(:export)
     end
 
     def record_discarded?
@@ -110,6 +115,17 @@ module PgEngine
       else
         false
       end
+    end
+
+    def profile_prefix
+      record.model_name.plural
+    end
+
+    def user_has_profile(key)
+      return false if user.blank?
+
+      full_key = "#{profile_prefix}__#{key}"
+      user.developer? || user.profiles.account__owner? || user.profiles.include?(full_key)
     end
   end
 end

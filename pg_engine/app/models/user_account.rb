@@ -38,6 +38,8 @@ class UserAccount < ApplicationRecord
 
   scope :kept, -> { joins(:user, :account).merge(Account.kept).merge(User.kept).distinct }
 
+  scope :owners, -> { where('user_accounts.profiles @> ARRAY[?]', UserAccount.profiles.account__owner.value) }
+
   # Se usa en schema.rb, default: 2
   enumerize :membership_status, in: {
     disabled: 0,
@@ -45,11 +47,7 @@ class UserAccount < ApplicationRecord
     active: 2
   }
 
-  enumerize :profiles, in: {
-    administracion: 1,
-    operacion: 2,
-    lectura: 3
-  }, multiple: true
+  enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true
 
   delegate :to_s, to: :user
 end

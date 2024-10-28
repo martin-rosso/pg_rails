@@ -12,7 +12,7 @@ describe 'Tenants' do
     visit '/u/cosas'
   end
 
-  let(:logged_user) { create :user }
+  let(:logged_user) { create :user, :owner }
 
   before do
     login_as logged_user
@@ -30,7 +30,7 @@ describe 'Tenants' do
 
       before do
         ActsAsTenant.with_tenant(other_account) do
-          logged_user.user_accounts.create!
+          logged_user.user_accounts.create!(profiles: [:account__owner])
         end
       end
 

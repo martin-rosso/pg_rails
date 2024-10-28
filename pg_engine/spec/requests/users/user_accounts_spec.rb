@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Devise invitable' do
-  let(:logged_user) { create :user }
+  let(:logged_user) { create :user, :owner }
 
   # Al crear un user en el contexto de un tenant, automáticamente
   # se crea una UserAccount
@@ -23,7 +23,7 @@ describe 'Devise invitable' do
     subject do
       params = {
         user_account: {
-          profiles: ['operacion']
+          profiles: ['cosas__read']
         }
       }
       patch "/u/user_accounts/#{user_account.to_param}", params:

@@ -1,0 +1,14 @@
+/ # locals: (f:)
+
+h5 Permisos
+table.table.table-bordered.w-auto
+  tr
+    - PgEngine.config.profile_groups_options.each do |profile_group|
+      - next if profile_group[:name] == 'account'
+      td
+        h5.text-center = profile_group[:name]
+        hr.mt-2
+        = f.collection_check_boxes :profiles, profile_group[:options], :first, :last do |blo|
+          .form-check
+            = blo.check_box class: 'form-check-input'
+            = blo.label class: 'form-check-label'

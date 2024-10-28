@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'category tenants' do
-  let(:logged_user) { create :user }
+  let(:logged_user) { create :user, :owner }
   let(:other_account) { create :account }
   let(:categoria_de_cosa) { create :categoria_de_cosa }
   let!(:cosa) { create :cosa }
@@ -22,5 +22,10 @@ describe 'category tenants' do
       expect(cosa.account).to eq ActsAsTenant.current_tenant
       expect(categoria_de_cosa.account).to eq other_account
     end
+  end
+
+  it do
+    get '/u/categoria_de_cosas'
+    expect(response).to have_http_status(:ok)
   end
 end

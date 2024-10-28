@@ -12,7 +12,7 @@ describe 'Sign in' do
     end
 
     let(:password) { 'pass1234' }
-    let!(:user) { create :user, password: }
+    let!(:user) { create :user, :owner, password: }
 
     it do
       subject

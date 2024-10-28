@@ -1,7 +1,8 @@
 / # locals: (object: nil)
 
-div style="max-width: 22em" data-controller="pg_form"
+div data-controller="pg_form"
   = pg_form_for(@user_account || object) do |f|
-    = f.input :profiles, as: :check_boxes, label: 'Permisos'
+    = render partial: 'users/user_accounts/fields', locals: { f: f }
+
     .mt-2
     = f.button :submit

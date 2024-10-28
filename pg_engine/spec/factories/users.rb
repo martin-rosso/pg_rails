@@ -68,5 +68,11 @@ FactoryBot.define do
     trait :developer do
       developer { true }
     end
+
+    trait :owner do
+      user_accounts do
+        [build(:user_account, account: ActsAsTenant.current_tenant, profiles: [:account__owner])]
+      end
+    end
   end
 end
