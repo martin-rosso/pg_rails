@@ -319,6 +319,5 @@ Devise.setup do |config|
 
   # Dont require nombre y apellido on invite
   # config.validate_on_invite = true
-  config.require_password_on_accepting = false
-
+  config.require_password_on_accepting = true
 end

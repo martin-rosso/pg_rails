@@ -199,7 +199,8 @@ module PgEngine
         component = ModalContentComponent.new(src: path)
         respond_with_modal(component)
       else
-        if modal_targeted? && referred_by?(instancia_modelo)
+        if (modal_targeted? && referred_by?(instancia_modelo)) ||
+           !policy(instancia_modelo.object).show?
           add_breadcrumb instancia_modelo.to_s_short
         else
           add_breadcrumb instancia_modelo.to_s_short,

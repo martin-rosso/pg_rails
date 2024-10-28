@@ -49,7 +49,7 @@ class User < ApplicationRecord
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
-  # validates :nombre, :apellido, presence: true
+  validates :nombre, :apellido, presence: true
 
   validates_presence_of   :email
   validates_uniqueness_of :email, message: 'ya pertenece a un usuario'
@@ -66,10 +66,6 @@ class User < ApplicationRecord
   before_invitation_created do
     user_accounts.first.membership_status = :invited
   end
-
-  # after_invitation_accepted do
-  #   self.user_accounts.first.update(membership_status: :active)
-  # end
 
   attr_accessor :orphan
 

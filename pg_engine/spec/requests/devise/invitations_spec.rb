@@ -87,5 +87,34 @@ describe 'Devise invitable' do
       put "/u/user_accounts/#{user_account.to_param}/accept_invitation"
       expect(user_account.reload.membership_status).to eq 'active'
     end
+
+    context 'when accepting an invite' do
+      subject do
+        put "/u/user_accounts/#{user_account.to_param}/accept_invitation"
+      end
+
+      let(:logged_user) { create :user }
+      let(:membership_status) { :invited }
+      let(:user_account) do
+        logged_user.user_accounts.first
+      end
+
+      before do
+        sign_in logged_user
+        user_account.update(membership_status:)
+      end
+
+      it do
+        expect { subject }.to change { user_account.reload.membership_status }.to('active')
+      end
+
+      context 'and is not invited' do
+        let(:membership_status) { :disabled }
+
+        it do
+          expect { subject }.not_to(change { user_account.reload.membership_status })
+        end
+      end
+    end
   end
 end

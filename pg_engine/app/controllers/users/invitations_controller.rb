@@ -1,15 +1,10 @@
 module Users
   class InvitationsController < Devise::InvitationsController
-    before_action do
-      # @no_main_frame = nil
-      # @turbo_page_requires_reload = true
-    end
-
     before_action only: %i[new create] do
       add_breadcrumb 'Inicio', :users_root_path unless using_modal2? || frame_embedded?
       add_breadcrumb 'Cuentas'
       add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
-      add_breadcrumb 'Enviar invitación'
+      add_breadcrumb 'Agregar usuario'
     end
 
     def new

@@ -6,19 +6,25 @@ module Users
   class UserAccountsController < PgEngine.config.users_controller
     include PgEngine::Resource
 
+    self.clase_modelo = UserAccount
+    self.nested_class = Account
+    self.nested_key = :account_id
+    self.skip_default_breadcrumb = true
+
     skip_before_action :require_tenant_set, only: %i[destroy accept_invitation]
 
     before_action only: :accept_invitation do
       set_instancia_modelo
+
+      unless @user_account.membership_status.invited?
+        pg_warn('User was not invited and tried to accept invitation')
+        redirect_back(fallback_location: root_path, status: 303)
+      end
     end
 
-    self.clase_modelo = UserAccount
-    self.nested_class = Account
-    self.nested_key = :account_id
-
     def accept_invitation
-      # FIXME: check invited
       @user_account.update(membership_status: :active)
+
       if accepts_turbo_stream?
         body = <<~HTML.html_safe
           <pg-event data-event-name="pg:record-updated" data-turbo-temporary>
@@ -34,7 +40,6 @@ module Users
 
     def atributos_permitidos
       [
-        :membership_status,
         { profiles: [] }
       ]
     end
@@ -44,17 +49,5 @@ module Users
         super
       end
     end
-
-    # def atributos_para_buscar
-    #   %i[user account profiles]
-    # end
-
-    # def atributos_para_listar
-    #   %i[user account profiles]
-    # end
-
-    # def atributos_para_mostrar
-    #   %i[user account profiles]
-    # end
   end
 end
