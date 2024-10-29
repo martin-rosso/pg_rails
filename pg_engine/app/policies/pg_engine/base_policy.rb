@@ -123,9 +123,10 @@ module PgEngine
 
     def user_has_profile(key)
       return false if user.blank?
+      return true if user.developer?
 
       full_key = "#{profile_prefix}__#{key}"
-      user.developer? || user.profiles.account__owner? || user.profiles.include?(full_key)
+      user.owns_current_account? || user.current_profiles.include?(full_key)
     end
   end
 end

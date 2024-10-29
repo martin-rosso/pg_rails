@@ -21,15 +21,15 @@ module Admin
     end
 
     def atributos_para_buscar
-      %i[user account profiles]
+      %i[user account profiles_arr_cont]
     end
 
     def atributos_para_listar
-      %i[user account profiles]
+      %i[user account profiles_f]
     end
 
     def atributos_para_mostrar
-      %i[user account profiles]
+      %i[user account]
     end
   end
 end

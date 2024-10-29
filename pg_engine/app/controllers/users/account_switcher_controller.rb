@@ -18,7 +18,7 @@ module Users
     end
 
     def list
-      @user_accounts = Current.user.user_accounts.kept.where(membership_status: :active)
+      @user_accounts = Current.user.user_accounts.active
       @invitations = Current.user.user_accounts.kept.where(membership_status: :invited)
     end
 

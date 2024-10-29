@@ -37,8 +37,9 @@ module PgEngine
       end
 
       if reflection.blank?
-        pg_err "#{key} not an association for #{object.class}"
-        return
+        # :nocov:
+        raise PgEngine::Error, "#{key} not an association for #{object.class}"
+        # :nocov:
       end
 
       return unless policy(reflection.klass).index?

@@ -19,11 +19,13 @@ module PgEngine
       incluye
       es_igual_a
       in
+      arr_cont
       cont_all
       cont_any
       not_cont
       cont
       eq
+      matches
     ].freeze
 
     def initialize(controller, clase_modelo, campos)

@@ -15,11 +15,6 @@ module Users
 
     before_action only: :accept_invitation do
       set_instancia_modelo
-
-      unless @user_account.membership_status.invited?
-        pg_warn('User was not invited and tried to accept invitation')
-        redirect_back(fallback_location: root_path, status: 303)
-      end
     end
 
     def accept_invitation

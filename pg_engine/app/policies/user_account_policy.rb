@@ -4,31 +4,32 @@
 
 class UserAccountPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    # FIXME: quizá scopear las user_accounts según user y/o según account
     def resolve
-      if user.profiles.account__owner?
+      if user.developer?
+        scope.all
+      elsif user.owns_current_account?
+        # Account owners only see Users that are not discarded
         scope.kept
       else
-        # FIXME: usar scope de active
-        scope.kept.where(membership_status: :active)
+        # Regulars users only see active users
+        scope.active
       end
     end
   end
-  # FIXME: revissssar
+
   def accept_invitation?
-    true
+    record.membership_status.invited? && user.id == record.user_id
   end
 
   def edit?
-    super && !record.profiles.account__owner?
+    super && (user.developer? || !record.owns_current_account?)
   end
 
   def destroy?
-    super && !record.profiles.account__owner?
+    super && (user.developer? || !record.owns_current_account?)
   end
 
-  # FIXME: testear que users regulares no puedan acceder al show
   def show?
-    AccountPolicy.new(user, record.account).owner?
+    user.developer? || user.owns_current_account?
   end
 end

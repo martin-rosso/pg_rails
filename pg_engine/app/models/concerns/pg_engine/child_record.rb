@@ -8,19 +8,20 @@ module PgEngine
     end
 
     class_methods do
-      # FIXME: testear
       attr_accessor :parent_accessor
 
       def parent_klass
         if parent_accessor.blank?
-          pg_err 'parent_accessor must be present'
-          return
+          # :nocov:
+          raise PgEngine::Error, 'parent_accessor must be present'
+          # :nocov:
         end
 
         reflection = reflect_on_all_associations.select { |r| r.name == parent_accessor.to_sym }.first
         if reflection.blank?
-          pg_err "#{parent_accessor} not an association on #{self}"
-          return
+          # :nocov:
+          raise PgEngine::Error, "#{parent_accessor} not an association on #{self}"
+          # :nocov:
         end
 
         reflection.klass
@@ -29,8 +30,9 @@ module PgEngine
 
     def parent?
       if self.class.parent_accessor.blank?
-        pg_err 'parent_accessor must be present'
-        return false
+        # :nocov:
+        raise PgEngine::Error, 'parent_accessor must be present'
+        # :nocov:
       end
 
       true
@@ -38,8 +40,9 @@ module PgEngine
 
     def parent
       if self.class.parent_accessor.blank?
-        pg_err 'parent_accessor must be present'
-        return
+        # :nocov:
+        raise PgEngine::Error, 'parent_accessor must be present'
+        # :nocov:
       end
 
       send(self.class.parent_accessor)

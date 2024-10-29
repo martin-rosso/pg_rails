@@ -4,6 +4,6 @@ div style="max-width: 22em"
   = pg_form_for(@user_account || object) do |f|
     = f.pg_associable :user, preload: 10
     = f.pg_associable :account, preload: 5
-    = f.input :profiles
+    = f.input :profiles, as: :check_boxes
     .mt-2
     = f.button :submit

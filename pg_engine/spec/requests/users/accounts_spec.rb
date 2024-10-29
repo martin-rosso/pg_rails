@@ -6,6 +6,7 @@ describe 'Users::AccountsController' do
 
   before do
     sign_in user
+    create_list :user, 2
   end
 
   it 'shows the owned account' do

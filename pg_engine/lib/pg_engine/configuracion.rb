@@ -35,6 +35,9 @@ module PgEngine
 
     def profile_groups_options
       groups = user_profiles.keys.map { |v| v.to_s.split('__').first }.uniq
+
+      groups = groups.excluding('account') unless Current.namespace == :admin
+
       groups.map do |group|
         options = user_profiles.keys.select { |va| va.starts_with?(group) }.map do |va|
           [va, va.to_s.split('__').last]
@@ -44,5 +47,3 @@ module PgEngine
     end
   end
 end
-
-400
