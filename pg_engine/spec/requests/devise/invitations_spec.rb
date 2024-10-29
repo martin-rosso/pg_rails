@@ -108,11 +108,25 @@ describe 'Devise invitable' do
         expect { subject }.to change { user_account.reload.membership_status }.to('active')
       end
 
+      context 'and its not the logged in user' do
+        let(:user_account) do
+          aux = create(:user).user_accounts.first
+          aux.update(membership_status: :invited)
+          aux
+        end
+
+        it do
+          subject
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+
       context 'and is not invited' do
         let(:membership_status) { :disabled }
 
         it do
-          expect { subject }.not_to(change { user_account.reload.membership_status })
+          subject
+          expect(response).to have_http_status(:unauthorized)
         end
       end
     end
