@@ -385,6 +385,7 @@ module PgEngine
         format.xlsx do
           render xlsx: 'download',
                  filename: "#{clase_modelo.nombre_plural.gsub(' ', '-').downcase}" \
+                           "#{action_name == 'archived' ? '-archivados' : ''}" \
                            "-#{Time.zone.now.strftime('%Y-%m-%d-%H.%M.%S')}.xlsx"
         end
       end

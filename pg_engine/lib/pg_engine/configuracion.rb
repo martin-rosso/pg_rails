@@ -4,12 +4,14 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles, :profile_groups
+    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles
+
+    # attr_accessor :profile_groups
 
     def initialize
       @global_domains = ['app.localhost.com', 'test.host', 'localhost']
       @navigators = [PgEngine::Navigator.new]
-      @profile_groups = [:account]
+      # @profile_groups = [:account]
       @user_profiles = {
         account__owner: 0
       }
@@ -20,14 +22,25 @@ module PgEngine
     end
 
     def add_profiles(key, base)
-      profile_groups.push(key)
+      # profile_groups.push(key)
       user_profiles.merge!(
         "#{key}__read": base + 1,
         "#{key}__update": base + 10,
-        "#{key}__add": base + 30,
+        "#{key}__create": base + 30,
         "#{key}__archive": base + 50,
+        "#{key}__export": base + 80,
         "#{key}__destroy": base + 100
       )
+    end
+
+    def profile_groups_options
+      groups = user_profiles.keys.map { |v| v.to_s.split('__').first }.uniq
+      groups.map do |group|
+        options = user_profiles.keys.select { |va| va.starts_with?(group) }.map do |va|
+          [va, va.to_s.split('__').last]
+        end
+        { name: group, options: }
+      end
     end
   end
 end

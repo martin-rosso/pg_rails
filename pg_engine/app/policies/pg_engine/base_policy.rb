@@ -86,7 +86,7 @@ module PgEngine
     end
 
     def puede_crear?
-      user_has_profile(:add)
+      user_has_profile(:create)
     end
 
     def puede_borrar?
@@ -106,7 +106,7 @@ module PgEngine
     end
 
     def export?
-      base_access_to_collection?
+      user_has_profile(:export)
     end
 
     def record_discarded?

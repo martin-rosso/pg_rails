@@ -14,6 +14,7 @@ class UserAccountPolicy < ApplicationPolicy
       end
     end
   end
+  # FIXME: testear que users regulares no puedan acceder al show
 
   # FIXME: revissssar
   def accept_invitation?

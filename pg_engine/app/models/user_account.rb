@@ -50,14 +50,4 @@ class UserAccount < ApplicationRecord
   enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true
 
   delegate :to_s, to: :user
-
-  def self.profile_groups
-    groups = profiles.values.map { |v| v.to_s.split('__').first }.uniq
-    groups.map do |group|
-      options = profiles.values.select { |va| va.starts_with?(group) }.map do |va|
-        [va, va.to_s.split('__').last]
-      end
-      { name: group, options: }
-    end
-  end
 end

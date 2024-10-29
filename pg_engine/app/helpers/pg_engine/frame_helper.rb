@@ -35,10 +35,13 @@ module PgEngine
       reflection = object.class.reflect_on_all_associations.find do |a|
         a.name == key.to_sym
       end
-      return if reflection.blank?
 
-      klass = reflection.class_name.constantize
-      return unless policy(klass).index?
+      if reflection.blank?
+        pg_err "#{key} not an association for #{object.class}"
+        return
+      end
+
+      return unless policy(reflection.klass).index?
 
       content_tag(:div, 'data-controller': 'embedded-frame') do
         turbo_frame_tag "embedded--#{key}",

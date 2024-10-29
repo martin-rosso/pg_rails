@@ -9,18 +9,10 @@ module PgEngine
       base.extend(ClassMethods)
     end
 
-    def parent?
-      self.class.parent_accessor.present?
-    end
-
-    def parent
-      send(self.class.parent_accessor)
-    end
-
     module ClassMethods
       # This is a per class variable, all subclasses of BaseRecord inherit it
       # BUT **the values are independent between all of them**
-      attr_accessor :default_modal, :inline_editable_fields, :parent_accessor
+      attr_accessor :default_modal, :inline_editable_fields
 
       def gender
         model_name.human.downcase.ends_with?('a') ? 'f' : 'm'

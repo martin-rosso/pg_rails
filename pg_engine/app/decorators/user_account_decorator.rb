@@ -14,19 +14,4 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
 
     content_tag :span, object.membership_status_text, class: "#{klass} fw-bold"
   end
-
-  def profiles_f
-    return if object.profiles.account__owner?
-
-    aux = object.profiles.map do |pro|
-      parts = pro.split('__')
-      [parts.first, parts.last]
-    end
-
-    aux = aux.group_by(&:first).map do |group, permisos|
-      "<b>#{group}</b>: #{permisos.map(&:last).join(', ')}"
-    end
-
-    aux.join('. ').html_safe
-  end
 end

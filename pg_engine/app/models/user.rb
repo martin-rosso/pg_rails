@@ -130,8 +130,12 @@ class User < ApplicationRecord
   end
 
   def current_user_account
-    user_accounts.kept.where(membership_status: :active).first
-    # .where(account: ActsAsTenant.current_tenant).first
+    if ActsAsTenant.current_tenant.nil?
+      raise ActsAsTenant::Errors::NoTenantSet
+    end
+
+    user_accounts.kept.where(membership_status: :active)
+                 .where(account: ActsAsTenant.current_tenant).first
   end
 
   delegate :profiles, to: :current_user_account

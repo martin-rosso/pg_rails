@@ -40,7 +40,7 @@ h1
             
           - if policy(@account).owner?
             td = user_account.user.email
-            td = render InlineShowComponent.new(user_account, :profiles_f)
+            td
             td
               - unless user_account.profiles.account__owner?
                  = user_account.decorate.estado_f

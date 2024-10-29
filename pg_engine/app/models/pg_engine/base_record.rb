@@ -28,6 +28,11 @@ module PgEngine
       end
     end
 
+    # overriden by PgEngine::ChildRecord
+    def parent?
+      false
+    end
+
     def to_s
       %i[nombre name].each do |campo|
         # Using `_in_database` for consistent breadcrumbs when editing the name
