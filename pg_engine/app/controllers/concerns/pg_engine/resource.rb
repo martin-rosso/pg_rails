@@ -492,7 +492,7 @@ module PgEngine
       raise PgEngine::PageNotFoundError
     end
 
-    def set_instancia_modelo(without_tenant: false)
+    def set_instancia_modelo
       if action_name.in? %w[new create]
         self.instancia_modelo = clase_modelo.new(modelo_params)
         authorize(instancia_modelo)
@@ -500,13 +500,7 @@ module PgEngine
           instancia_modelo.send("#{nested_key}=", nested_id)
         end
       else
-        if without_tenant
-          ActsAsTenant.without_tenant do
-            self.instancia_modelo = buscar_instancia
-          end
-        else
-          self.instancia_modelo = buscar_instancia
-        end
+        self.instancia_modelo = buscar_instancia
         authorize(instancia_modelo)
         instancia_modelo.assign_attributes(modelo_params) if action_name.in? %w[update]
       end

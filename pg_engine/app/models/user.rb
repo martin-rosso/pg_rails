@@ -113,13 +113,6 @@ class User < ApplicationRecord
 
   class Error < PgEngine::Error; end
 
-  def user_accounts_without_tenant
-    ActsAsTenant.without_tenant do
-      # FIXME: revisar
-      user_accounts.kept.where(membership_status: %i[active invited]).to_a
-    end
-  end
-
   def default_account
     raise Error, 'El usuario debe tener cuenta' if accounts.empty?
 

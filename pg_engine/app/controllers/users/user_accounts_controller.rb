@@ -13,8 +13,12 @@ module Users
 
     skip_before_action :require_tenant_set, only: %i[destroy accept_invitation]
 
-    before_action only: :accept_invitation do
-      set_instancia_modelo
+    around_action :set_without_tenant, only: :accept_invitation
+    def set_without_tenant
+      ActsAsTenant.without_tenant do
+        set_instancia_modelo
+        yield
+      end
     end
 
     def accept_invitation
@@ -37,10 +41,6 @@ module Users
       [
         { profiles: [] }
       ]
-    end
-
-    def set_instancia_modelo
-      super(without_tenant: true)
     end
   end
 end
