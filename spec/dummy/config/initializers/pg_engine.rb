@@ -3,10 +3,12 @@ class DummyNavigator
     navbar.add_item('sidebar.signed_in', {
       name: 'Categorias front',
       path: 'users_categoria_de_cosas_path',
+      policy: 'policy(CategoriaDeCosa).index?'
     })
     navbar.add_item('sidebar.signed_in', {
       name: 'Cosas front',
       path: 'users_cosas_path',
+      policy: 'policy(Cosa).index?'
     })
     if Current.user&.developer?
       navbar.add_item('sidebar.signed_in', {
@@ -23,14 +25,6 @@ end
 
 PgEngine.configurar do |config|
   config.navigators.prepend DummyNavigator.new
-  config.user_profiles.merge!(
-    cosas__read: 5001,
-    cosas__write: 5010,
-    cosas__archive: 5050,
-    cosas__destroy: 5100,
-    categoria_de_cosas__read: 6001,
-    categoria_de_cosas__write: 6010,
-    categoria_de_cosas__archive: 6050,
-    categoria_de_cosas__destroy: 6100,
-  )
+  config.add_profiles(:cosas, 5000)
+  config.add_profiles(:categoria_de_cosas, 6000)
 end

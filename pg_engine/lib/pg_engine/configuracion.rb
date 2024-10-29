@@ -4,18 +4,27 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles
+    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles, :profile_groups
 
     def initialize
       @global_domains = ['app.localhost.com', 'test.host', 'localhost']
       @navigators = [PgEngine::Navigator.new]
+      @profile_groups = [:account]
       @user_profiles = {
         account__owner: 0,
-        user_accounts__read: 1001,
-        user_accounts__write: 1010,
-        user_accounts__archive: 1050,
-        user_accounts__destroy: 1100,
       }
+      add_profiles(:user_accounts, 1000)
+    end
+
+    def add_profiles(key, base)
+      profile_groups.push(key)
+      user_profiles.merge!(
+        "#{key}__read": base + 1,
+        "#{key}__update": base + 10,
+        "#{key}__add": base + 30,
+        "#{key}__archive": base + 50,
+        "#{key}__destroy": base + 100,
+      )
     end
   end
 end

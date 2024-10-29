@@ -32,6 +32,14 @@ module PgEngine
     end
 
     def embed_index(object, key)
+      reflection = object.class.reflect_on_all_associations.find do |a|
+        a.name == key.to_sym
+      end
+      return unless reflection.present?
+
+      klass = reflection.class_name.constantize
+      return unless policy(klass).index?
+
       content_tag(:div, 'data-controller': 'embedded-frame') do
         turbo_frame_tag "embedded--#{key}",
                         refresh: :morph, src: url_for([pg_namespace, object, key]) do

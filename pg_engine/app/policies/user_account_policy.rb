@@ -20,16 +20,16 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def puede_editar?
-    true
+    user_has_profile(:user_accounts__update)
   end
 
   def puede_borrar?
-    true
+    user_has_profile(:user_accounts__destroy)
   end
 
-  # def puede_crear?
-  #   acceso_total? || user.asesor?
-  # end
+  def puede_crear?
+    user_has_profile(:user_accounts__add)
+  end
 
   # def puede_borrar?
   #   acceso_total? && !record.readonly?
@@ -38,4 +38,7 @@ class UserAccountPolicy < ApplicationPolicy
   # def acceso_total?
   #   user.developer?
   # end
+  def base_access_to_collection?
+    user_has_profile(:user_accounts__read)
+  end
 end

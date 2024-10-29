@@ -45,9 +45,7 @@ module Users
     end
 
     def set_instancia_modelo
-      ActsAsTenant.without_tenant do
-        super
-      end
+      super(without_tenant: true)
     end
   end
 end
