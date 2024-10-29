@@ -11,9 +11,12 @@ module PgEngine
       @navigators = [PgEngine::Navigator.new]
       @profile_groups = [:account]
       @user_profiles = {
-        account__owner: 0,
+        account__owner: 0
       }
-      add_profiles(:user_accounts, 1000)
+      user_profiles.merge!(
+        user_accounts__read: 1000 + 1
+      )
+      # add_profiles(:user_accounts, 1000)
     end
 
     def add_profiles(key, base)
@@ -23,7 +26,7 @@ module PgEngine
         "#{key}__update": base + 10,
         "#{key}__add": base + 30,
         "#{key}__archive": base + 50,
-        "#{key}__destroy": base + 100,
+        "#{key}__destroy": base + 100
       )
     end
   end

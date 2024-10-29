@@ -131,7 +131,7 @@ class User < ApplicationRecord
 
   def current_user_account
     user_accounts.kept.where(membership_status: :active).first
-                 # .where(account: ActsAsTenant.current_tenant).first
+    # .where(account: ActsAsTenant.current_tenant).first
   end
 
   delegate :profiles, to: :current_user_account

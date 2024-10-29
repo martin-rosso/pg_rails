@@ -35,7 +35,7 @@ module PgEngine
       reflection = object.class.reflect_on_all_associations.find do |a|
         a.name == key.to_sym
       end
-      return unless reflection.present?
+      return if reflection.blank?
 
       klass = reflection.class_name.constantize
       return unless policy(klass).index?

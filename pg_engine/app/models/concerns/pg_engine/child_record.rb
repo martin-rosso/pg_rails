@@ -9,7 +9,7 @@ module PgEngine
 
     class_methods do
       def parent_klass
-        self.reflect_on_all_associations.select { |r| r.name == self.parent_accessor.to_sym }.first.klass
+        reflect_on_all_associations.select { |r| r.name == parent_accessor.to_sym }.first.klass
       end
     end
 

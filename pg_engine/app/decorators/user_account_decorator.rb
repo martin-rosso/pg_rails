@@ -16,15 +16,17 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   end
 
   def profiles_f
-    if object.profiles.account__owner?
-      '<b>Propietario</b>'.html_safe
-    else
-      object.profiles.map do |pro|
-        parts = pro.split('__')
-        [parts.first, parts.last]
-      end.group_by { |ary| ary.first }.map do |group, permisos|
-        "<b>#{group}</b>: #{permisos.map(&:last).join(', ')}"
-      end.join('. ').html_safe
+    return if object.profiles.account__owner?
+
+    aux = object.profiles.map do |pro|
+      parts = pro.split('__')
+      [parts.first, parts.last]
     end
+
+    aux = aux.group_by(&:first).map do |group, permisos|
+      "<b>#{group}</b>: #{permisos.map(&:last).join(', ')}"
+    end
+
+    aux.join('. ').html_safe
   end
 end

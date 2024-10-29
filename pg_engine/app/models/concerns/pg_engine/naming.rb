@@ -9,7 +9,7 @@ module PgEngine
       base.extend(ClassMethods)
     end
 
-    def has_parent?
+    def parent?
       self.class.parent_accessor.present?
     end
 

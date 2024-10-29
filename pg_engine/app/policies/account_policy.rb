@@ -38,4 +38,8 @@ class AccountPolicy < ApplicationPolicy
       # FIXME: check membership, (make a reusable scope?)
       record.user_accounts.pluck(:user_id).include?(user.id)
   end
+
+  def owner?
+    user_has_profile(:owner)
+  end
 end

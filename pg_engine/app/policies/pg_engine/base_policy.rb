@@ -51,7 +51,7 @@ module PgEngine
 
     def restore?
       puede_ver_archivados? && puede_editar? && record.respond_to?(:undiscard) && record.discarded? &&
-        (!record.has_parent? || record.parent.kept?)
+        (!record.parent? || record.parent.kept?)
     end
 
     def scope
