@@ -65,17 +65,18 @@ html
             - if user_signed_in? && breadcrumbs.any?
               .d-flex.d-print-none
                 .d-flex.flex-grow-1.px-3.py-1[
-                  class="#{nav_bg} align-items-center justify-content-between"
+                  class="#{nav_bg} align-items-center xjustify-content-between gap-5"
                   style="min-height: 2.5em;"]
                   nav.d-flex aria-label="breadcrumb"
                     - unless frame_embedded?
-                      i.bi-segmented-nav.me-2
+                      i.bi-segmented-nav.me-2 style="transform: rotate(180deg);"
                     ol.breadcrumb
                       = render_breadcrumbs builder: PgEngine::Bootstrap5BreadcrumbsBuilder
-
+                  .vr
                   .btn-toolbar.gap-1
                     = yield(:actions)
                     = yield(:extra_actions)
+
                 - if using_modal?
                   .px-2.d-flex.align-items-center.border.border-start-0
                     = button_tag type: :button, class: 'btn btn-sm btn-link',
