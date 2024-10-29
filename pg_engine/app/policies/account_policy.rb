@@ -34,7 +34,6 @@ class AccountPolicy < ApplicationPolicy
   end
 
   def base_access_to_record?
-    ActsAsTenant.unscoped? ||
-      record.user_accounts.active.pluck(:user_id).include?(user.id)
+    ActsAsTenant.unscoped? || ActsAsTenant.current_tenant == record
   end
 end
