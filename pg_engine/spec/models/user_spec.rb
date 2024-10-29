@@ -5,11 +5,12 @@
 require 'rails_helper'
 
 RSpec.describe User do
-  let(:user) { create(:user) }
+  let(:user) { create(:user, :owner) }
 
   it 'se persiste' do
     expect(user).to be_persisted
     expect(UserAccount.unscoped.count).to eq 1
+    expect(UserAccount.first.profiles).to include(:account__owner)
   end
 
   it do

@@ -118,18 +118,14 @@ module PgEngine
     end
 
     def profile_prefix
-      if record.respond_to?(:model_name)
-        record.model_name.plural
-      else
-        record.class.model_name.plural
-      end
+      record.model_name.plural
     end
 
     def user_has_profile(key)
       return false if user.blank?
 
       full_key = "#{profile_prefix}__#{key}"
-      user.profiles.account__owner? || user.profiles.include?(full_key)
+      user.developer? || user.profiles.account__owner? || user.profiles.include?(full_key)
     end
   end
 end

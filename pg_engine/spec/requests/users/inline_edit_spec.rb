@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe 'inline edit' do
   before do
-    user = create :user
+    user = create :user, :owner
     sign_in user
   end
 

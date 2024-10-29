@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'Resources' do
-  let(:user) { create :user }
+  let(:user) { create :user, :owner }
   let(:cosa) { create :cosa }
 
   before do

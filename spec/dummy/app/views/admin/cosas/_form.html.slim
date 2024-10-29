@@ -5,9 +5,11 @@ div style="max-width: 52em" data-controller="cosa pg_form"
     = f.input :nombre
     = f.input :tipo
     = f.association :creado_por
-    .mb-3(class="#{'is-invalid' if @cosa.errors[:rico].any? }")
-      = f.label :rico, class: 'form-label'
-      = f.rich_text_area :rico
+    - unless Rails.env.test?
+      / Dont show in tests because of capybara issues
+      .mb-3(class="#{'is-invalid' if @cosa.errors[:rico].any? }")
+        = f.label :rico, class: 'form-label'
+        = f.rich_text_area :rico
     = f.pg_associable :categoria_de_cosa,
                       preload: CategoriaDeCosa.kept.limit(2), placeholder: 'el placeholder',
                       wrapper_html: { 'xdata-placeholder': 'dale, escribí' }

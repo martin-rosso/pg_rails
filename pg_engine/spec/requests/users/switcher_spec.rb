@@ -1,7 +1,7 @@
 require 'rails_helper'
 
 describe 'redirection' do
-  let(:logged_user) { create :user }
+  let(:logged_user) { create :user, :owner }
 
   before do
     sign_in logged_user
@@ -40,7 +40,7 @@ describe 'redirection' do
     let!(:other_account) { create :account }
     let!(:other_user_account) do
       ActsAsTenant.with_tenant(other_account) do
-        logged_user.user_accounts.create!
+        logged_user.user_accounts.create!(profiles: [:account__owner])
       end
     end
 
