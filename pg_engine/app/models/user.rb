@@ -131,7 +131,9 @@ class User < ApplicationRecord
 
   def current_user_account
     if ActsAsTenant.current_tenant.nil?
+      # :nocov:
       raise ActsAsTenant::Errors::NoTenantSet
+      # :nocov:
     end
 
     user_accounts.kept.where(membership_status: :active)

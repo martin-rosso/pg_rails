@@ -8,7 +8,6 @@ module PgEngine
     end
 
     class_methods do
-      # FIXME: testear
       attr_accessor :parent_accessor
 
       def parent_klass
