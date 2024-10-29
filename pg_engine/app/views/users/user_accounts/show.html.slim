@@ -4,7 +4,6 @@ h5 Permisos
 table.table.table-bordered.w-auto
   tr
     - PgEngine.config.profile_groups_options.each do |profile_group|
-      - next if profile_group[:name] == 'account'
       td
         h5.text-center = profile_group[:name]
         hr.mt-2

@@ -1,3 +1,19 @@
+h5 Permisos
+table.table.table-bordered.w-auto
+  tr
+    - PgEngine.config.profile_groups_options.each do |profile_group|
+      td
+        h5.text-center = profile_group[:name]
+        hr.mt-2
+        - profile_group[:options].each do |values|
+          .form-check
+            - if @user_account.profiles.include?(values.first)
+              = check_box_tag nil, nil, true, disabled: true, class: 'form-check-input'
+            - else
+              = check_box_tag nil, nil, false, disabled: true, class: 'form-check-input'
+            label.form-check-label = values.last
+
+
 table.table.table-borderless.table-sm.w-auto.mb-0.m-3
   - atributos_para_mostrar.each do |att|
     tr

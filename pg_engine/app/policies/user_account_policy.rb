@@ -6,7 +6,9 @@ class UserAccountPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
     # FIXME: quizá scopear las user_accounts según user y/o según account
     def resolve
-      if user.profiles.account__owner?
+      if user.developer?
+        scope.all
+      elsif user.profiles.account__owner?
         scope.kept
       else
         # FIXME: usar scope de active
@@ -14,17 +16,18 @@ class UserAccountPolicy < ApplicationPolicy
       end
     end
   end
+
   # FIXME: revissssar
   def accept_invitation?
     true
   end
 
   def edit?
-    super && !record.profiles.account__owner?
+    super && (user.developer? || !record.profiles.account__owner?)
   end
 
   def destroy?
-    super && !record.profiles.account__owner?
+    super && (user.developer? || !record.profiles.account__owner?)
   end
 
   # FIXME: testear que users regulares no puedan acceder al show

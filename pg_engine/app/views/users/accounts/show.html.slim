@@ -29,7 +29,6 @@ h1
         - if policy(@account).owner?
           th Email
           - PgEngine.config.profile_groups_options.each do |profile_group|
-            - next if profile_group[:name] == 'account'
             th = profile_group[:name]
 
           th Estado
@@ -50,7 +49,5 @@ h1
           - if policy(@account).owner?
             td = user_account.user.email
             - PgEngine.config.profile_groups_options.each do |profile_group|
-              - next if profile_group[:name] == 'account'
-              / td = user_account.profiles.select { |pr| pr.starts_with?(profile_group[:name]) }.join(', ')
               td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).join(', ')
             td = user_account.decorate.estado_f

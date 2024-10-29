@@ -53,4 +53,6 @@ Ransack.configure do |config|
     arel_predicate: 'does_not_match_unaccent',
     formatter: proc { |v| "%#{Ransack::Constants.escape_wildcards(v.downcase)}%" },
     case_insensitive: true
+
+  config.add_predicate 'arr_cont', arel_predicate: 'contains', formatter: proc { |v| [v] }
 end

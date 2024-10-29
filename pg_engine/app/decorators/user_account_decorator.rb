@@ -14,4 +14,8 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
 
     content_tag :span, object.membership_status_text, class: "#{klass} fw-bold"
   end
+
+  def profiles_f
+    profiles.join(', ')
+  end
 end

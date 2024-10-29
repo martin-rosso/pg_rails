@@ -3,6 +3,7 @@ es:
     predicates:
       cont: ''
       cont_all: ''
+      arr_cont: ''
       cont_any: ''
       not_cont: 'no contiene'
       in: ''
