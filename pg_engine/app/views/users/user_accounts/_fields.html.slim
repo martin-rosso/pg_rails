@@ -5,7 +5,7 @@ table.table.table-bordered.w-auto
   tr
     - PgEngine.config.profile_groups_options.each do |profile_group|
       td
-        h5.text-center = profile_group[:name]
+        h5.text-center = t(profile_group[:name], scope: 'profile_group')
         hr.mt-2
         = f.collection_check_boxes :profiles, profile_group[:options], :first, :last do |blo|
           .form-check

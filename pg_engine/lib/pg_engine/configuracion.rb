@@ -40,7 +40,7 @@ module PgEngine
 
       groups.map do |group|
         options = user_profiles.keys.select { |va| va.starts_with?(group) }.map do |va|
-          [va, va.to_s.split('__').last]
+          [va, I18n.t(va.to_s.split('__').last, scope: 'profile_member')]
         end
         { name: group, options: }
       end
