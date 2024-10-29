@@ -38,7 +38,9 @@ class UserAccount < ApplicationRecord
 
   scope :kept, -> { joins(:user, :account).merge(Account.kept).merge(User.kept).distinct }
 
-  scope :owners, -> { where('user_accounts.profiles @> ARRAY[?]', UserAccount.profiles.account__owner.value) }
+  scope :owners, lambda {
+    where(UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value]))
+  }
 
   # Se usa en schema.rb, default: 2
   enumerize :membership_status, in: {

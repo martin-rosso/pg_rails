@@ -16,6 +16,6 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   end
 
   def profiles_f
-    profiles.join(', ')
+    object.profiles.texts.join(', ')
   end
 end
