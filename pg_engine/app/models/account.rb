@@ -47,4 +47,9 @@ class Account < ApplicationRecord
   def to_s
     nombre
   end
+
+  # There can be only one
+  def owner
+    user_accounts.active.owners.first&.user
+  end
 end

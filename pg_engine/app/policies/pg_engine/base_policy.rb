@@ -126,8 +126,7 @@ module PgEngine
       return true if user.developer?
 
       full_key = "#{profile_prefix}__#{key}"
-      ActsAsTenant.current_tenant.present? &&
-        (user.profiles.account__owner? || user.profiles.include?(full_key))
+      user.owns_current_account? || user.current_profiles.include?(full_key)
     end
   end
 end

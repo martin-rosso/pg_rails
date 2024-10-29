@@ -112,6 +112,7 @@ class User < ApplicationRecord
 
   def user_accounts_without_tenant
     ActsAsTenant.without_tenant do
+      # FIXME: revisar
       user_accounts.kept.where(membership_status: %i[active invited]).to_a
     end
   end
@@ -136,9 +137,14 @@ class User < ApplicationRecord
       # :nocov:
     end
 
-    user_accounts.kept.where(membership_status: :active)
-                 .where(account: ActsAsTenant.current_tenant).first
+    user_accounts.active.where(account: ActsAsTenant.current_tenant).first
   end
 
-  delegate :profiles, to: :current_user_account
+  def owns_current_account?
+    current_profiles.account__owner?
+  end
+
+  def current_profiles
+    current_user_account.profiles
+  end
 end

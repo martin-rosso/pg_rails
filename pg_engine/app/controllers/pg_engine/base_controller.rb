@@ -21,7 +21,7 @@ module PgEngine
       # FIXME: if session['current_user_account'] present? check
       #        user belongs to it, and if not, cleanup
       if Current.user.present?
-        user_accounts = Current.user.user_accounts.kept.where(membership_status: :active)
+        user_accounts = Current.user.user_accounts.active
         if ActsAsTenant.current_tenant.present?
           unless user_accounts.exists?(account: ActsAsTenant.current_tenant)
             pg_warn <<~WARN

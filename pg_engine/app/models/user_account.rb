@@ -37,9 +37,18 @@ class UserAccount < ApplicationRecord
   validates :user_id, uniqueness: { scope: :account_id }
 
   scope :kept, -> { joins(:user, :account).merge(Account.kept).merge(User.kept).distinct }
+  scope :active, -> { kept.where(membership_status: :active) }
+
+  OWNERS_PREDICATE = lambda do
+    UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value])
+  end
 
   scope :owners, lambda {
-    where(UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value]))
+    where(OWNERS_PREDICATE.call)
+  }
+
+  scope :regulars, lambda {
+    where.not(OWNERS_PREDICATE.call)
   }
 
   # Se usa en schema.rb, default: 2

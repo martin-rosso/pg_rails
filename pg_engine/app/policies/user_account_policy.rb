@@ -7,11 +7,12 @@ class UserAccountPolicy < ApplicationPolicy
     def resolve
       if user.developer?
         scope.all
-      elsif user.profiles.account__owner?
+      elsif user.owns_current_account?
+        # Account owners only see Users that are not discarded
         scope.kept
       else
-        # FIXME: usar scope de active
-        scope.kept.where(membership_status: :active)
+        # Regulars users only see active users
+        scope.active
       end
     end
   end
@@ -21,14 +22,14 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def edit?
-    super && (user.developer? || !record.profiles.account__owner?)
+    super && (user.developer? || !record.owns_current_account?)
   end
 
   def destroy?
-    super && (user.developer? || !record.profiles.account__owner?)
+    super && (user.developer? || !record.owns_current_account?)
   end
 
   def show?
-    AccountPolicy.new(user, record.account).owner?
+    user.developer? || user.owns_current_account?
   end
 end

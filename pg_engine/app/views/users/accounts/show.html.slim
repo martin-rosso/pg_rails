@@ -8,8 +8,7 @@ h1
   |> Nombre de la cuenta:
   = @account
 
-/ FIXME: usar scope de active
-- owner = @account.user_accounts.kept.owners.first&.user
+- owner = @account.owner
 - if owner.present?
   h4
     |> Administrado por:
@@ -23,19 +22,18 @@ h1
   div style="xmax-width: 70em"
     table.table.table-sm.listado.w-auto
       tr
-        - if policy(@account).owner?
+        - if Current.user.owns_current_account?
           th
         th Nombre
-        - if policy(@account).owner?
+        - if Current.user.owns_current_account?
           th Email
           - PgEngine.config.profile_groups_options.each do |profile_group|
             th = profile_group[:name]
 
           th Estado
-      - policy_scope(UserAccount).where(account: @account).each do |user_account|
-        - next if user_account.profiles.account__owner?
+      - policy_scope(UserAccount).where(account: @account).regulars.each do |user_account|
         tr
-          - if policy(@account).owner?
+          - if Current.user.owns_current_account?
             td
               .actions-wrapper
                 - object = user_account.decorate
@@ -46,7 +44,7 @@ h1
           td
             = user_account.user
             
-          - if policy(@account).owner?
+          - if Current.user.owns_current_account?
             td = user_account.user.email
             - PgEngine.config.profile_groups_options.each do |profile_group|
               td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).join(', ')
