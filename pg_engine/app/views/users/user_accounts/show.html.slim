@@ -1,17 +1,18 @@
 h1 = @user_account
 
 h5 Permisos
-/ = @user_account.profiles_f
-.row style="max-width: 50em"
-  - UserAccount.profile_groups.each do |profile_group|
-    .col-auto
-      h5 = profile_group[:name]
-      - profile_group[:options].each do |values|
-        div
-          - if @user_account.profiles.include?(values.first)
-            = check_box_tag nil, nil, true, disabled: true
-          - else
-            = check_box_tag nil, nil, false, disabled: true
-          span.ms-2 = values.last
+table.table.table-bordered.w-auto
+  tr
+    - UserAccount.profile_groups.each do |profile_group|
+      td
+        h5.text-center = profile_group[:name]
+        hr.mt-2
+        - profile_group[:options].each do |values|
+          .form-check
+            - if @user_account.profiles.include?(values.first)
+              = check_box_tag nil, nil, true, disabled: true, class: 'form-check-input'
+            - else
+              = check_box_tag nil, nil, false, disabled: true, class: 'form-check-input'
+            label.form-check-label = values.last
 
 

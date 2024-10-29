@@ -1,11 +1,13 @@
 / # locals: (f:)
 
 h5 Permisos
-.row
-  - UserAccount.profile_groups.each do |profile_group|
-    .col-auto
-      h5 = profile_group[:name]
-      = f.collection_check_boxes :profiles, profile_group[:options], :first, :last do |blo|
-        div
-          span.me-2 = blo.check_box
-          = blo.label
+table.table.table-bordered.w-auto
+  tr
+    - UserAccount.profile_groups.each do |profile_group|
+      td
+        h5.text-center = profile_group[:name]
+        hr.mt-2
+        = f.collection_check_boxes :profiles, profile_group[:options], :first, :last do |blo|
+          .form-check
+            = blo.check_box class: 'form-check-input'
+            = blo.label class: 'form-check-label'

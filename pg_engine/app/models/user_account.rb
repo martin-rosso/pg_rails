@@ -59,11 +59,3 @@ class UserAccount < ApplicationRecord
     end
   end
 end
-
-# read
-# write
-# archived
-# destroy
-# 
-# create = write
-# archivar = restaurar = archived + write
