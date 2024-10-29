@@ -14,8 +14,6 @@ class UserAccountPolicy < ApplicationPolicy
       end
     end
   end
-  # FIXME: testear que users regulares no puedan acceder al show
-
   # FIXME: revissssar
   def accept_invitation?
     true
@@ -27,5 +25,10 @@ class UserAccountPolicy < ApplicationPolicy
 
   def destroy?
     super && !record.profiles.account__owner?
+  end
+
+  # FIXME: testear que users regulares no puedan acceder al show
+  def show?
+    AccountPolicy.new(user, record.account).owner?
   end
 end
