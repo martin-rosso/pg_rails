@@ -22,11 +22,11 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def edit?
-    super && (user.developer? || !record.owns_current_account?)
+    super && (user.developer? || !record.profiles.account__owner?)
   end
 
   def destroy?
-    super && (user.developer? || !record.owns_current_account?)
+    super && (user.developer? || !record.profiles.account__owner?)
   end
 
   def show?

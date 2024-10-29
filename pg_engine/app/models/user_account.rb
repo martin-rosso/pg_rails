@@ -36,7 +36,14 @@ class UserAccount < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :account_id }
 
-  scope :kept, -> { joins(:user, :account).merge(Account.kept).merge(User.kept).distinct }
+  # El problema está en el joins(:user), ya que la default scope de user está scopeada dentro
+  # del current_tenant entonces vuelve sobre la tabla user_accounts y bardea
+  #
+  # Tengo que escribir el user joins a mano porque de lo contrario sumaría la default_scope de
+  # User, que a su vez joinea con user_accounts
+  USER_JOINS = 'INNER JOIN users ON users.id = user_accounts.user_id'
+  scope :kept, -> { joins(USER_JOINS, :account).merge(Account.kept).merge(User.unscoped.kept) }
+
   scope :active, -> { kept.where(membership_status: :active) }
 
   OWNERS_PREDICATE = lambda do

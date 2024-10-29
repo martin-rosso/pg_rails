@@ -45,6 +45,9 @@ class User < ApplicationRecord
   # Crea automáticamente una user_account on create
   # a menos que ya exista en los nested attributes una user
   # account para la current tenant
+  #
+  # Es problemático porque interfiere en UserAccount.joins(:user)
+  # y hace un doble join
   acts_as_tenant :account, through: :user_accounts
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
@@ -141,6 +144,8 @@ class User < ApplicationRecord
   end
 
   def owns_current_account?
+    return false if ActsAsTenant.current_tenant.blank?
+
     current_profiles.account__owner?
   end
 
