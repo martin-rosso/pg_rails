@@ -1,4 +1,15 @@
 es:
+  profile_group:
+    cosas: Cosos
+    categoria_de_cosas: Categoría de cosas
+    user_accounts: Usuarios
+  profile_member:
+    read: Lectura
+    update: Modificación
+    create: Altas
+    archive: Archivo
+    destroy: Bajas
+    export: Exportación
   ransack:
     predicates:
       cont: ''

@@ -28,10 +28,10 @@ h1
         - if Current.user.owns_current_account?
           th Email
           - PgEngine.config.profile_groups_options.each do |profile_group|
-            th = profile_group[:name]
+            th = t(profile_group[:name], scope: 'profile_group')
 
           th Estado
-      - policy_scope(UserAccount).where(account: @account).regulars.each do |user_account|
+      - policy_scope(UserAccount).where(account: @account).regulars.order(:id).each do |user_account|
         tr
           - if Current.user.owns_current_account?
             td
@@ -47,5 +47,5 @@ h1
           - if Current.user.owns_current_account?
             td = user_account.user.email
             - PgEngine.config.profile_groups_options.each do |profile_group|
-              td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).join(', ')
+              td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe
             td = user_account.decorate.estado_f

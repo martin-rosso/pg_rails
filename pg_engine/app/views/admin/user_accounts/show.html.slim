@@ -3,7 +3,7 @@ table.table.table-bordered.w-auto
   tr
     - PgEngine.config.profile_groups_options.each do |profile_group|
       td
-        h5.text-center = profile_group[:name]
+        h5.text-center = t(profile_group[:name], scope: 'profile_group')
         hr.mt-2
         - profile_group[:options].each do |values|
           .form-check
@@ -11,7 +11,7 @@ table.table.table-bordered.w-auto
               = check_box_tag nil, nil, true, disabled: true, class: 'form-check-input'
             - else
               = check_box_tag nil, nil, false, disabled: true, class: 'form-check-input'
-            label.form-check-label = values.last
+            label.form-check-label = t(values.last, scope: 'profile_member')
 
 
 table.table.table-borderless.table-sm.w-auto.mb-0.m-3
