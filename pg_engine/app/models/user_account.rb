@@ -36,6 +36,15 @@ class UserAccount < ApplicationRecord
 
   validates :user_id, uniqueness: { scope: :account_id }
 
+  after_destroy :cleanup_invitation
+  def cleanup_invitation
+    usr = User.unscoped.find(user_id)
+    if usr.invited_to_sign_up? && !usr.confirmed?
+      unless usr.destroy
+        pg_err 'User couldnt be deleted on invitation cleanup'
+      end
+    end
+  end
   # El problema está en el joins(:user), ya que la default scope de user está scopeada dentro
   # del current_tenant entonces vuelve sobre la tabla user_accounts y bardea
   #

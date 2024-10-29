@@ -17,6 +17,9 @@ class UserPolicy < ApplicationPolicy
   # def puede_borrar?
   #   acceso_total? && !record.readonly?
   # end
+  def puede_editar?
+    base_access_to_record?
+  end
 
   def new_from_associable?
     false

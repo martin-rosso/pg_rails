@@ -131,4 +131,25 @@ describe 'Devise invitable' do
       end
     end
   end
+
+  fdescribe 'remove an invitation' do
+    subject do
+      delete "/u/user_accounts/#{user_account.to_param}"
+    end
+
+    let(:logged_user) { create :user, :owner }
+    let(:user_account) do
+      user.user_accounts.first
+    end
+    let!(:user) do
+      User.invite!({ email: Faker::Internet.email, user_accounts_attributes: [{ profiles: [] }] })
+    end
+    before do
+      sign_in logged_user
+    end
+
+    it do
+      expect { subject }.to change { UserAccount.unscoped.count }.by(-1).and(change(User.unscoped, :count).by(-1))
+    end
+  end
 end
