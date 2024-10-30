@@ -19,7 +19,7 @@ module Users
 
     def list
       @user_accounts = Current.user.user_accounts.active
-      @invitations = Current.user.user_accounts.kept.where(membership_status: :invited)
+      @invitations = Current.user.user_accounts.invitations
     end
 
     def switch

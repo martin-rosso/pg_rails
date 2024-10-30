@@ -53,7 +53,8 @@ class UserAccount < ApplicationRecord
   USER_JOINS = 'INNER JOIN users ON users.id = user_accounts.user_id'
   scope :kept, -> { joins(USER_JOINS, :account).merge(Account.kept).merge(User.unscoped.kept) }
 
-  scope :active, -> { kept.where(membership_status: :active) }
+  scope :active, -> { kept.where(membership_status: :active).where(invitation_status: :accepted) }
+  scope :invitations, -> { kept.where(membership_status: :active).where(invitation_status: :invited) }
 
   OWNERS_PREDICATE = lambda do
     UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value])
@@ -67,11 +68,16 @@ class UserAccount < ApplicationRecord
     where.not(OWNERS_PREDICATE.call)
   }
 
-  # Se usa en schema.rb, default: 2
+  # Se usa en schema.rb, default: 1
   enumerize :membership_status, in: {
-    disabled: 0,
+    active: 1,
+    disabled: 2
+  }
+
+  # Se usa en schema.rb, default: 1
+  enumerize :invitation_status, in: {
     invited: 1,
-    active: 2
+    accepted: 2
   }
 
   enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true

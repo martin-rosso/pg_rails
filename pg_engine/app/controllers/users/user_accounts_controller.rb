@@ -22,7 +22,7 @@ module Users
     end
 
     def accept_invitation
-      @user_account.update(membership_status: :active)
+      @user_account.update(invitation_status: :accepted)
 
       if accepts_turbo_stream?
         body = <<~HTML.html_safe
@@ -39,7 +39,7 @@ module Users
 
     def atributos_permitidos
       [
-        { profiles: [] }
+        { :membership_status, profiles: [] }
       ]
     end
   end

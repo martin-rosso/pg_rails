@@ -43,8 +43,10 @@ es:
     user_account:
       membership_status:
         active: Habilitado
-        invited: Invitación aún no aceptada
         disabled: Deshabilitado
+      invitation_status:
+        invited: Invitación aún no aceptada
+        accepted: Invitación aceptada
     email:
       status:
         pending: Enviando

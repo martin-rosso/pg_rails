@@ -222,7 +222,8 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_27_225720) do
     t.bigint "actualizado_por_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "membership_status", default: 2, null: false
+    t.integer "membership_status", default: 1, null: false
+    t.integer "invitation_status", default: 1, null: false
     t.index ["account_id"], name: "index_user_accounts_on_account_id"
     t.index ["actualizado_por_id"], name: "index_user_accounts_on_actualizado_por_id"
     t.index ["creado_por_id"], name: "index_user_accounts_on_creado_por_id"
