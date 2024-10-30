@@ -39,11 +39,12 @@ class UserAccount < ApplicationRecord
   after_destroy :cleanup_invitation
   def cleanup_invitation
     usr = User.unscoped.find(user_id)
-    if usr.invited_to_sign_up? && !usr.confirmed?
-      unless usr.destroy
-        pg_err 'User couldnt be deleted on invitation cleanup'
-      end
-    end
+    return unless usr.invited_to_sign_up? && !usr.confirmed?
+    return if usr.destroy
+    # :nocov:
+
+    pg_err 'User couldnt be deleted on invitation cleanup'
+    # :nocov:
   end
   # El problema está en el joins(:user), ya que la default scope de user está scopeada dentro
   # del current_tenant entonces vuelve sobre la tabla user_accounts y bardea
@@ -53,7 +54,13 @@ class UserAccount < ApplicationRecord
   USER_JOINS = 'INNER JOIN users ON users.id = user_accounts.user_id'
   scope :kept, -> { joins(USER_JOINS, :account).merge(Account.kept).merge(User.unscoped.kept) }
 
-  scope :active, -> { kept.where(membership_status: :active) }
+  scope :active, lambda {
+    # ua = UserAccount.arel_table
+    # ua[:membership_status].eq(:active).and(ua[:invitation_status].eq(:accepted))
+    # kept.and(UserAccount.owners.or(UserAccount.where(membership_status: :active, invitation_status: :accepted)))
+    kept.where(membership_status: :active, invitation_status: :accepted)
+  }
+  scope :invitations, -> { kept.where(membership_status: :active, invitation_status: :invited) }
 
   OWNERS_PREDICATE = lambda do
     UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value])
@@ -67,11 +74,16 @@ class UserAccount < ApplicationRecord
     where.not(OWNERS_PREDICATE.call)
   }
 
-  # Se usa en schema.rb, default: 2
+  # Se usa en schema.rb, default: 1
   enumerize :membership_status, in: {
-    disabled: 0,
-    invited: 1,
-    active: 2
+    active: 1,
+    disabled: 2
+  }
+
+  # Se usa en schema.rb, default: 1
+  enumerize :invitation_status, in: {
+    accepted: 1,
+    invited: 2
   }
 
   enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true

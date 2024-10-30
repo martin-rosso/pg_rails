@@ -1,9 +1,11 @@
 es:
   profile_group:
+    account: Cuenta
     cosas: Cosos
     categoria_de_cosas: Categoría de cosas
     user_accounts: Usuarios
   profile_member:
+    owner: Administrador
     read: Lectura
     update: Modificación
     create: Altas
@@ -43,8 +45,10 @@ es:
     user_account:
       membership_status:
         active: Habilitado
-        invited: Invitación aún no aceptada
         disabled: Deshabilitado
+      invitation_status:
+        invited: Invitación aún no aceptada
+        accepted: Invitación aceptada
     email:
       status:
         pending: Enviando

@@ -18,7 +18,9 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def accept_invitation?
-    record.membership_status.invited? && user.id == record.user_id
+    record.membership_status.active? &&
+      record.invitation_status.invited? &&
+      user.id == record.user_id
   end
 
   def edit?

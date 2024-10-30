@@ -6,13 +6,17 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   delegate_all
 
   def estado_f
-    klass = {
-      'active' => 'text-success',
-      'disabled' => 'text-danger',
-      'invited' => 'text-warning-emphasis'
-    }[object.membership_status]
+    if membership_status.active? && invitation_status.invited?
+      content_tag :span, object.invitation_status_text, class: 'text-warning-emphasis fw-bold'
+    else
+      # if membership_status.disabled? || invitation_status.accepted?
+      klass = {
+        'active' => 'text-success',
+        'disabled' => 'text-danger'
+      }[object.membership_status]
 
-    content_tag :span, object.membership_status_text, class: "#{klass} fw-bold"
+      content_tag :span, object.membership_status_text, class: "#{klass} fw-bold"
+    end
   end
 
   def profiles_f

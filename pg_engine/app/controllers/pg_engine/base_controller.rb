@@ -23,6 +23,8 @@ module PgEngine
       if Current.user.present?
         user_accounts = Current.user.user_accounts.active
         if ActsAsTenant.current_tenant.present?
+          # TODO: los controller tests pasan por acá porque no se ejecuta
+          # el tenant middleware. cambiarlos a requests specs
           unless user_accounts.exists?(account: ActsAsTenant.current_tenant)
             pg_warn <<~WARN
               #{Current.user.to_gid} not belongs to \
