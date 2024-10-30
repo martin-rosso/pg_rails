@@ -24,8 +24,4 @@ class EmailLogPolicy < ApplicationPolicy
   # def puede_borrar?
   #   acceso_total? && !record.readonly?
   # end
-
-  # def acceso_total?
-  #   user.developer?
-  # end
 end

@@ -5,18 +5,67 @@
 class UserAccountDecorator < PgEngine::BaseRecordDecorator
   delegate_all
 
-  def estado_f
-    if membership_status.active? && invitation_status.invited?
-      content_tag :span, object.invitation_status_text, class: 'text-warning-emphasis fw-bold'
-    else
-      # if membership_status.disabled? || invitation_status.accepted?
-      klass = {
-        'active' => 'text-success',
-        'disabled' => 'text-danger'
-      }[object.membership_status]
+  def ingresar_link
+    return unless Pundit.policy!(Current.user, object).ingresar?
 
-      content_tag :span, object.membership_status_text, class: "#{klass} fw-bold"
+    h.link_to h.users_root_path(tenant_id: object.to_param),
+              class: 'btn btn-sm btn-success' do
+      'Ingresar'
     end
+  end
+
+  def accept_invitation_link
+    return unless Pundit.policy!(Current.user, object).accept_invitation_link?
+
+    h.link_to h.update_invitation_users_user_account_path(object),
+              'data-turbo-method': :put,
+              class: 'btn btn-sm btn-success' do
+      'Aceptar invitación'
+    end
+  end
+
+  def reject_invitation_link
+    return unless Pundit.policy!(Current.user, object).accept_invitation_link?
+
+    h.link_to h.update_invitation_users_user_account_path(object, reject: 1),
+              'data-turbo-method': :put,
+              class: 'btn btn-sm btn-danger' do
+      'Rechazar'
+    end
+  end
+
+  def sign_off_link
+    return unless Pundit.policy!(Current.user, object).sign_off?
+
+    h.link_to h.update_invitation_users_user_account_path(object, sign_off: 1),
+              'data-turbo-method': :put,
+              class: 'btn btn-sm btn-outline-danger' do
+      'Dejar la cuenta'
+    end
+  end
+
+  def estado_f
+    membership_status_f + ' - ' + invitation_status_f
+  end
+
+  def membership_status_f
+    klass = {
+      'ms_active' => 'text-success',
+      'ms_disabled' => 'text-danger'
+    }[object.membership_status]
+
+    content_tag :span, object.membership_status_text, class: "#{klass} fw-bold"
+  end
+
+  def invitation_status_f
+    klass = {
+      'ist_accepted' => 'text-success',
+      'ist_invited' => 'text-warning-emphasis',
+      'ist_rejected' => 'text-danger',
+      'ist_signed_off' => 'text-danger'
+    }[object.invitation_status]
+
+    content_tag :span, object.invitation_status_text, class: "#{klass} fw-bold"
   end
 
   def profiles_f

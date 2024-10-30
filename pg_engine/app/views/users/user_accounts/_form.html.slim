@@ -3,7 +3,7 @@
 div data-controller="pg_form"
   = pg_form_for(@user_account || object) do |f|
     = render partial: 'users/user_accounts/fields', locals: { f: f }
-    = f.input :membership_status
+    = f.input :membership_status, as: :radio_buttons
 
     .mt-2
     = f.button :submit

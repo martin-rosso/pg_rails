@@ -40,6 +40,14 @@ class Account < ApplicationRecord
     parent.table[:nombre]
   end
 
+  after_create do
+    if creado_por.present?
+      ActsAsTenant.without_tenant do
+        user_accounts.create!(account: self, user: creado_por, profiles: [:account__owner])
+      end
+    end
+  end
+
   before_validation do
     self.plan = 0 if plan.blank?
   end
@@ -50,6 +58,8 @@ class Account < ApplicationRecord
 
   # There can be only one
   def owner
-    user_accounts.active.owners.first&.user
+    ActsAsTenant.without_tenant do
+      user_accounts.active.owners.first&.user
+    end
   end
 end

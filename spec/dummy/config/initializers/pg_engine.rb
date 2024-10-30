@@ -1,16 +1,18 @@
 class DummyNavigator
   def configure(navbar)
-    navbar.add_item('sidebar.signed_in', {
-      name: 'Categorias front',
-      path: 'users_categoria_de_cosas_path',
-      policy: 'policy(CategoriaDeCosa).index?'
-    })
-    navbar.add_item('sidebar.signed_in', {
-      name: 'Cosas front',
-      path: 'users_cosas_path',
-      policy: 'policy(Cosa).index?'
-    })
-    if Current.user&.developer?
+    if Current.namespace == :users
+      navbar.add_item('sidebar.signed_in', {
+        name: 'Categorias front',
+        path: 'users_categoria_de_cosas_path',
+        policy: 'policy(CategoriaDeCosa).index?'
+      })
+      navbar.add_item('sidebar.signed_in', {
+        name: 'Cosas front',
+        path: 'users_cosas_path',
+        policy: 'policy(Cosa).index?'
+      })
+    end
+    if Current.namespace == :admin
       navbar.add_item('sidebar.signed_in', {
         name: 'Categorias',
         path: 'admin_categoria_de_cosas_path',

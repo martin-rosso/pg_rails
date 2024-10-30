@@ -23,7 +23,7 @@ describe PgAssociable::Helpers do
     let!(:categoria_de_cosa) { create :categoria_de_cosa }
 
     before do
-      Current.user = create :user, :developer
+      Current.user = create :user, :owner
       allow(ctrl).to receive_messages(params: { id: 123, query: categoria_de_cosa.nombre })
       allow(ctrl).to receive(:render)
     end
@@ -42,7 +42,7 @@ describe PgAssociable::Helpers do
     let!(:cosa) { create :cosa }
 
     before do
-      Current.user = create :user, :developer
+      Current.user = create :user, :owner
       allow(ctrl).to receive_messages(params: { id: 123, query: cosa.id })
       allow(ctrl).to receive(:render)
     end
@@ -62,6 +62,7 @@ describe PgAssociable::Helpers do
 
     before do
       Current.user = create :user, :developer
+      Current.namespace = :admin
       allow(ctrl).to receive_messages(params: { id: 123, query: account.nombre })
       allow(ctrl).to receive(:render)
     end

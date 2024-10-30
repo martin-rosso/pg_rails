@@ -55,12 +55,9 @@ class UserAccount < ApplicationRecord
   scope :kept, -> { joins(USER_JOINS, :account).merge(Account.kept).merge(User.unscoped.kept) }
 
   scope :active, lambda {
-    # ua = UserAccount.arel_table
-    # ua[:membership_status].eq(:active).and(ua[:invitation_status].eq(:accepted))
-    # kept.and(UserAccount.owners.or(UserAccount.where(membership_status: :active, invitation_status: :accepted)))
-    kept.where(membership_status: :active, invitation_status: :accepted)
+    kept.where(membership_status: :ms_active, invitation_status: :ist_accepted)
   }
-  scope :invitations, -> { kept.where(membership_status: :active, invitation_status: :invited) }
+  scope :invitations, -> { kept.where(membership_status: :ms_active, invitation_status: :ist_invited) }
 
   OWNERS_PREDICATE = lambda do
     UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value])
@@ -76,15 +73,31 @@ class UserAccount < ApplicationRecord
 
   # Se usa en schema.rb, default: 1
   enumerize :membership_status, in: {
-    active: 1,
-    disabled: 2
+    ms_active: 1,
+    ms_disabled: 2
   }
 
   # Se usa en schema.rb, default: 1
   enumerize :invitation_status, in: {
-    accepted: 1,
-    invited: 2
+    ist_accepted: 1,
+    ist_invited: 2,
+    ist_rejected: 3,
+    ist_signed_off: 4
   }
+
+  scope :not_discarded_by_user, -> { where.not(invitation_status: %i[ist_rejected ist_signed_off]) }
+
+  def discarded_by_user?
+    invitation_status.ist_rejected? || invitation_status.ist_signed_off?
+  end
+
+  def ua_active?
+    invitation_status.ist_accepted? && membership_status.ms_active?
+  end
+
+  def ua_invite_pending?
+    invitation_status.ist_invited? && membership_status.ms_active?
+  end
 
   enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true
 

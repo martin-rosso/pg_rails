@@ -26,7 +26,7 @@ class UserPolicy < ApplicationPolicy
   end
 
   def base_access_to_record?
-    user.developer? || user == record
+    Current.namespace == :admin || user == record
   end
 
   def base_access_to_collection?

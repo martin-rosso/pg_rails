@@ -35,7 +35,7 @@ module PgEngine
 
       # *****************************************************
 
-      return unless Current.user&.developer?
+      return unless Current.namespace == :admin
 
       navbar.add_item('sidebar.signed_in', {
                         name: 'Eventos',

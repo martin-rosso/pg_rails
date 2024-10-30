@@ -18,7 +18,7 @@ describe 'Tenants' do
     login_as logged_user
   end
 
-  describe 'switcher' do
+  describe 'account management' do
     it do
       visitar
 
@@ -34,16 +34,15 @@ describe 'Tenants' do
         end
       end
 
-      it 'shows the switcher' do
+      it 'shows the accounts index' do
         visitar
 
-        expect(page).to have_text '¿Qué cuenta te gustaría utilizar?'
+        expect(page).to have_text 'Mostrando un total de 2 cuentas'
       end
 
       it 'switches to account' do
         visitar
-
-        click_on other_account.to_s
+        find_all('a', text: 'Ingresar').first.click
         visit '/u/categoria_de_cosas'
         expect(page).to have_text 'No hay ninguna categoría de cosa que mostrar'
       end

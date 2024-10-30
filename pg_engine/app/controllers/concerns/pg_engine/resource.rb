@@ -531,9 +531,12 @@ module PgEngine
     end
 
     def filtros_y_policy(campos, dflt_sort = nil, archived: false)
-      @filtros = PgEngine::FiltrosBuilder.new(
-        self, clase_modelo, campos
-      )
+      if campos.any?
+        @filtros = PgEngine::FiltrosBuilder.new(
+          self, clase_modelo, campos
+        )
+      end
+
       scope = default_scope_for_current_model(archived:)
 
       shared_context = Ransack::Adapters::ActiveRecord::Context.new(scope)

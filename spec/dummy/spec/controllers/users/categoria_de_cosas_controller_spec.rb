@@ -42,7 +42,7 @@ RSpec.describe Users::CategoriaDeCosasController do
     }
   end
 
-  let(:user) { create :user, :developer }
+  let(:user) { create :user, :owner }
 
   before do
     sign_in user if user.present?

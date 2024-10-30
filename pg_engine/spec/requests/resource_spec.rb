@@ -12,8 +12,7 @@ describe 'Resources' do
     it 'shows the archive link' do
       get '/u/cosas/' + cosa.to_param
       expect(response).to have_http_status(:ok)
-      regex = %r{<a data-turbo-method="post" .* href="/u/cosas/[\d]+/archive">}
-      expect(response.body).to match regex
+      expect(response.body).to have_css('span[title="Archivar"] a')
     end
 
     it 'shows the unarchive link' do
@@ -26,13 +25,13 @@ describe 'Resources' do
   describe 'set breadcrumbs for all actions' do
     it 'when flat archived index' do
       get '/u/cosas/archived'
-      expect(response.body).to have_css('.breadcrumb a[href="/u/cosas"]')
+      expect(response.body).to have_css('.breadcrumb a[href*="/u/cosas"]')
     end
 
     it 'when nested archived index' do
       get "/u/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas/archived"
       expect(response.body).to \
-        have_css ".breadcrumb a[href=\"/u/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas\"]"
+        have_css ".breadcrumb a[href*=\"/u/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas\"]"
     end
   end
 

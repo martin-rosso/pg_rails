@@ -1,9 +1,7 @@
 es:
   profile_group:
     account: Cuenta
-    cosas: Cosos
-    categoria_de_cosas: Categoría de cosas
-    user_accounts: Usuarios
+    user_accounts: Acceso a usuarios
   profile_member:
     owner: Administrador
     read: Lectura
@@ -44,11 +42,13 @@ es:
   enumerize:
     user_account:
       membership_status:
-        active: Habilitado
-        disabled: Deshabilitado
+        ms_active: Habilitado
+        ms_disabled: Deshabilitado
       invitation_status:
-        invited: Invitación aún no aceptada
-        accepted: Invitación aceptada
+        ist_invited: Invitación aún no aceptada
+        ist_accepted: Invitación aceptada
+        ist_rejected: Invitación rechazada
+        ist_signed_off: Salió de la cuenta
     email:
       status:
         pending: Enviando
@@ -168,8 +168,17 @@ es:
         subject: Recuperación de contraseña
   activerecord:
     models:
-      user_account: Cuenta de usuario
+      user_account:
+        one: Cuenta de usuario
+        other: Cuentas de usuario
+      account:
+        one: Cuenta
+        other: Cuentas
     attributes:
+      account:
+        owner: Administrado por
+      user_account:
+        membership_status: Estado
       user:
         remember_me: Recordarme en este navegador
       email:

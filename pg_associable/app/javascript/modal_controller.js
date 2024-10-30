@@ -92,10 +92,14 @@ export default class extends Controller {
   reloadTop () {
     // FIXME: rename to main?
     const topFrame = document.querySelector('#top')
-    if (topFrame.attributes.src) {
-      topFrame.reload()
+    if (topFrame) {
+      if (topFrame.attributes.src) {
+        topFrame.reload()
+      } else {
+        topFrame.setAttribute('src', window.location)
+      }
     } else {
-      topFrame.setAttribute('src', window.location)
+      window.location.reload()
     }
   }
 

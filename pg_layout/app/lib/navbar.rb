@@ -1,5 +1,12 @@
 class Navbar
   include Rails.application.routes.url_helpers
+  def default_url_options
+    if Current.user.present? && ActsAsTenant.current_tenant.present?
+      { tenant_id: Current.user.current_user_account.to_param }
+    else
+      { tenant_id: nil }
+    end
+  end
 
   attr_reader :extensiones
   attr_accessor :logo, :logo_xl, :logo_xl_url
@@ -20,8 +27,14 @@ class Navbar
   end
 
   def sidebar
+    # FIXME: hacer mejor
+    initialize
+    PgEngine.configuracion.navigators.each do |navigator|
+      navigator.configure(self)
+    end
+
     ret = bar(@user.present? ? 'sidebar.signed_in' : 'sidebar.not_signed_in')
-    ret.push(*bar('sidebar.developer')) if @user.present? && @user.developer?
+    ret.push(*bar('sidebar.developer')) if Current.namespace == :admin
     ret
   end
 

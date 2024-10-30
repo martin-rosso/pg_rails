@@ -53,12 +53,12 @@
             tr id="#{dom_id(object)}"
               td.text-nowrap.xtext-end.xps-5
                 .actions-wrapper
+                  = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
                   = object.show_link(text: '')
                   = object.edit_link(text: '', klass: 'btn-light')
                   = object.archive_link
                   = object.restore_link
                   = object.destroy_link
-                  = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
               - atributos_para_listar.each do |att, _sort_field|
                 = column_for object, att
               - if action_name == 'archived'

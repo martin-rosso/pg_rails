@@ -1,4 +1,6 @@
 - content_for :actions do
+  = @user_account.ingresar_link
+  = @user_account.sign_off_link
   - if policy(UserAccount).new?
     = link_to new_user_invitation_path, class: 'btn  btn-sm btn-warning', 'data-turbo-frame': :_top do
       i.bi.bi-plus-lg
@@ -16,6 +18,9 @@ h1
     |< (
     = owner.email
     | )
+
+- if @user_account.membership_status.ms_disabled?
+  p.text-danger Deshabilitado
 
 - if policy(UserAccount).index?
   h5 Lista de usuarios
@@ -47,5 +52,5 @@ h1
           - if Current.user.owns_current_account?
             td = user_account.user.email
             - PgEngine.config.profile_groups_options.each do |profile_group|
-              td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe
+              td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe.presence || 'No'
             td = user_account.decorate.estado_f

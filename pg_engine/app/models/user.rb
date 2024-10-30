@@ -68,7 +68,7 @@ class User < ApplicationRecord
 
   # When the user is invited via Devise Invitable
   before_invitation_created do
-    user_accounts.first.invitation_status = :invited
+    user_accounts.first.invitation_status = :ist_invited
   end
 
   attr_accessor :orphan
@@ -127,14 +127,27 @@ class User < ApplicationRecord
     ActsAsTenant.current_tenant
   end
 
-  def current_user_account
-    if ActsAsTenant.current_tenant.nil?
+  def active_user_account_for(account)
+    user_account_for(account, active: true)
+  end
+
+  def user_account_for(account, active: false)
+    if account.nil?
       # :nocov:
-      raise ActsAsTenant::Errors::NoTenantSet
+      raise PgEngine::Error, 'account must be present'
       # :nocov:
     end
 
-    user_accounts.active.where(account: ActsAsTenant.current_tenant).first
+    scope_name = active ? :active : :kept
+
+    ActsAsTenant.without_tenant do
+      user_accounts.send(scope_name).where(account:).first
+    end
+  end
+
+  def current_user_account
+    # FIXME: active?
+    user_account_for(ActsAsTenant.current_tenant)
   end
 
   def owns_current_account?

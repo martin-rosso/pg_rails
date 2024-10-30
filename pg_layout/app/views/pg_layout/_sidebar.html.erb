@@ -6,13 +6,19 @@
     <% if user_signed_in? %>
       <span class="d-inline-block px-3 text-end text-light"><%= Current.user %></span>
       <span class="d-block px-3 text-secondary">
-        <%= link_to ActsAsTenant.current_tenant, [:users, ActsAsTenant.current_tenant] if ActsAsTenant.current_tenant.present? %>
-        <%= link_to users_account_switcher_path do %>
-          <% if ActsAsTenant.current_tenant.present? %>
-            (Cambiar)
-          <% else %>
-            Elegir cuenta
-          <% end %>
+        <% if Current.user.developer? %>
+          <div>
+          <%= link_to 'Admin', admin_users_path %>
+          </div>
+        <% end %>
+        <%= link_to users_accounts_path(tenant_id: nil) do %>
+          Cuentas
+        <% end %>
+        <% if ActsAsTenant.current_tenant.present? %>
+          <div class="mt-3">
+            Cuenta actual:
+            <%= link_to ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant, tenant_id: nil) %>
+          </div>
         <% end %>
       </span>
       <hr>

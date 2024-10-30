@@ -41,6 +41,7 @@ require "fileutils"
 require 'pg_rails/capybara_support'
 require 'pg_rails/redis_support'
 require 'pg_rails/vcr_support'
+require 'pg_rails/pundit_matchers'
 require 'pg_rails/rspec_logger_matchers'
 require 'pg_rails/tom_select_helpers'
 

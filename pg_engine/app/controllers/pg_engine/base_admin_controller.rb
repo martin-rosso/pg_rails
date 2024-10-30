@@ -12,8 +12,14 @@ module PgEngine
 
     around_action :set_without_tenant
 
-    def set_without_tenant(&)
-      ActsAsTenant.without_tenant(&)
+    def set_without_tenant
+      ActsAsTenant.without_tenant do
+        # Monkeypatch to force url_options to be regenerated
+        # FIXME: maybe set default_url_options?
+        @_url_options = nil
+
+        yield
+      end
     end
   end
 end

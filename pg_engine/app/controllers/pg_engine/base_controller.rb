@@ -10,6 +10,15 @@ module PgEngine
     set_current_tenant_by_subdomain_or_domain(:account, :subdomain, :domain)
     set_current_tenant_through_filter
 
+    def default_url_options
+      if Current.user.present? && ActsAsTenant.current_tenant.present?
+        { tenant_id: Current.user.current_user_account.to_param }
+      else
+        { tenant_id: nil }
+      end
+    end
+
+    # rubocop:disable Metrics/BlockLength
     before_action do
       Current.user = current_user
       Current.controller = self
@@ -21,11 +30,11 @@ module PgEngine
       # FIXME: if session['current_user_account'] present? check
       #        user belongs to it, and if not, cleanup
       if Current.user.present?
-        user_accounts = Current.user.user_accounts.active
+        active_user_accounts = Current.user.user_accounts.active
         if ActsAsTenant.current_tenant.present?
           # TODO: los controller tests pasan por acá porque no se ejecuta
           # el tenant middleware. cambiarlos a requests specs
-          unless user_accounts.exists?(account: ActsAsTenant.current_tenant)
+          unless active_user_accounts.exists?(account: ActsAsTenant.current_tenant)
             pg_warn <<~WARN
               #{Current.user.to_gid} not belongs to \
               #{ActsAsTenant.current_tenant.to_gid}. Signed out
@@ -37,16 +46,29 @@ module PgEngine
 
           @current_tenant_set_by_domain_or_subdomain = true
         else
-          account = if user_accounts.count == 1
-                      user_accounts.first.account
+          account = if params[:tenant_id].present?
+                      begin
+                        ua = UserAccount.find(params[:tenant_id])
+                        session['current_user_account'] = ua.id
+                        ua.account
+                      rescue ActiveRecord::RecordNotFound => e
+                        pg_warn(e)
+                      end
                     elsif session['current_user_account'].present?
-                      user_accounts.where(id: session['current_user_account']).first&.account
+                      active_user_accounts.where(id: session['current_user_account']).first&.account
+                    elsif active_user_accounts.count == 1
+                      active_user_accounts.first.account
                     end
 
-          set_current_tenant(account)
+          if account.present? && active_user_accounts.exists?(account:)
+            set_current_tenant(account)
+          else
+            session['current_user_account'] = nil
+          end
         end
       end
     end
+    # rubocop:enable Metrics/BlockLength
     # rubocop:enable Rails/ApplicationController
 
     # :nocov:
@@ -92,7 +114,7 @@ module PgEngine
     def no_tenant_set(error)
       return internal_error(error) if Current.user.blank?
 
-      redirect_to users_account_switcher_path
+      redirect_to users_accounts_path
     end
 
     def bad_user_input(error)
@@ -152,9 +174,6 @@ module PgEngine
       @navbar_opened_class = navbar_expanded ? 'opened' : ''
       @navbar_chevron_class = navbar_expanded ? 'bi-chevron-left' : 'bi-chevron-right'
       @navbar = Navbar.new
-      PgEngine.configuracion.navigators.each do |navigator|
-        navigator.configure(@navbar)
-      end
 
       if defined?(Rollbar) && Rollbar.configuration.enabled && Rails.application.credentials.rollbar.present?
         @rollbar_token = Rails.application.credentials.rollbar.access_token_client

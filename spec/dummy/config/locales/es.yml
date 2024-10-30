@@ -1,5 +1,8 @@
 es:
   app_name: PgRails!
+  profile_group:
+    cosas: Acceso a cosos
+    categoria_de_cosas: Acceso a categoría de cosas
   helpers:
     # submit_default_value
     submit:

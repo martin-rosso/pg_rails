@@ -21,29 +21,31 @@ Rails.application.routes.draw do
     registrations: 'users/registrations',
     invitations: 'users/invitations'
   }, failure_app: PgEngine::DeviseFailureApp
-  namespace :users, path: 'u' do
-    scope controller: 'inline_edit', path: 'inline', as: :inline do
-      get 'edit'
-      get 'show'
-    end
-    get 'dashboard', to: 'dashboard#dashboard'
-    post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
-    post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
-    get 'date_jumper/jump'
-    scope controller: 'account_switcher', path: 'switcher' do
-      get '', action: 'list', as: 'account_switcher'
-      post ':user_account_id', action: 'switch', as: 'account_switch'
-    end
 
-    pg_resource(:user_accounts, only: [:show, :edit, :update, :destroy]) do
-      member do
-        put :accept_invitation
+  scope '(t/:tenant_id)' do
+    namespace :users, path: 'u' do
+      scope controller: 'inline_edit', path: 'inline', as: :inline do
+        get 'edit'
+        get 'show'
+      end
+      get 'dashboard', to: 'dashboard#dashboard'
+      post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
+      post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
+      get 'date_jumper/jump'
+
+      pg_resource(:user_accounts, only: [:show, :edit, :update, :destroy]) do
+        member do
+          put :update_invitation
+        end
       end
     end
-    pg_resource(:accounts, path: 'cuentas', only: [:show])
+
+    get '/u', to: 'users/dashboard#dashboard', as: :users_root
   end
 
-  get '/u', to: 'users/dashboard#dashboard', as: :users_root
+  namespace :users, path: 'u' do
+    pg_resource(:accounts, path: 'cuentas', only: [:index, :show, :new, :create])
+  end
 
   namespace :admin, path: 'a' do
     pg_resource(:emails)

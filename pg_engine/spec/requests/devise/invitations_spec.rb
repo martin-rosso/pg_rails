@@ -82,26 +82,26 @@ describe 'Devise invitable' do
     it do
       expect(user.user_accounts.length).to eq 1
       user_account = user.user_accounts.first
-      expect(user_account.invitation_status).to eq 'invited'
+      expect(user_account.invitation_status).to eq 'ist_invited'
       expect { subject }.to change { user.reload.invitation_accepted_at }.to(be_present)
-      put "/u/user_accounts/#{user_account.to_param}/accept_invitation"
-      expect(user_account.reload.invitation_status).to eq 'accepted'
+      put "/u/user_accounts/#{user_account.to_param}/update_invitation"
+      expect(user_account.reload.invitation_status).to eq 'ist_accepted'
     end
 
     context 'when accepting an invite' do
       subject do
-        put "/u/user_accounts/#{user_account.to_param}/accept_invitation"
+        put "/u/user_accounts/#{user_account.to_param}/update_invitation"
       end
 
       let(:logged_user) { create :user }
-      let(:membership_status) { :active }
+      let(:membership_status) { :ms_active }
       let(:user_account) do
         logged_user.user_accounts.first
       end
 
       before do
         sign_in logged_user
-        user_account.update(membership_status:, invitation_status: :invited)
+        user_account.update(membership_status:, invitation_status: :ist_invited)
       end
 
       it do
@@ -111,18 +111,9 @@ describe 'Devise invitable' do
       context 'and its not the logged in user' do
         let(:user_account) do
           aux = create(:user).user_accounts.first
-          aux.update(invitation_status: :invited)
+          aux.update(invitation_status: :ist_invited)
           aux
         end
-
-        it do
-          subject
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
-
-      context 'and is disabled' do
-        let(:membership_status) { :disabled }
 
         it do
           subject

@@ -7,6 +7,9 @@ describe 'Devise invitable' do
   # se crea una UserAccount
   let!(:other_user) { create :user }
   let!(:user_account) { other_user.user_accounts.first }
+  let(:tenant_id) do
+    logged_user.current_user_account.to_param
+  end
 
   before do
     sign_in logged_user
@@ -31,7 +34,7 @@ describe 'Devise invitable' do
 
     it do
       expect { subject }.to(change { user_account.reload.profiles })
-      expect(response).to redirect_to users_user_account_path(user_account)
+      expect(response).to redirect_to users_user_account_path(user_account, tenant_id:)
     end
   end
 

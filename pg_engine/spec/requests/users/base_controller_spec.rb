@@ -12,4 +12,35 @@ describe 'redirection' do
       expect(response).to have_http_status(:internal_server_error)
     end
   end
+
+  context 'when logged in' do
+    let(:logged_user) { create :user, :owner }
+
+    before do
+      sign_in logged_user
+    end
+
+    context 'when account is discarded' do
+      it do
+        get '/u/cosas'
+        expect(response.body).to include 'No hay ningún coso que mostrar'
+        logged_user.user_accounts.first.account.discard!
+        get '/u/cosas'
+        expect(response).to redirect_to users_accounts_path
+      end
+    end
+
+    context 'when belongs to other account' do
+      before do
+        create :account, subdomain: 'other'
+        host! 'other.example.com'
+      end
+
+      it do
+        get '/u/cosas'
+
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+  end
 end

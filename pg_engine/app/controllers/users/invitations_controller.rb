@@ -1,10 +1,11 @@
 module Users
   class InvitationsController < Devise::InvitationsController
     before_action only: %i[new create] do
-      add_breadcrumb 'Inicio', :users_root_path unless using_modal2? || frame_embedded?
-      add_breadcrumb 'Cuentas'
+      add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tenant_id: nil) }
       add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
       add_breadcrumb 'Agregar usuario'
+      @sidebar = false
+      @no_main_frame = true
     end
 
     def new
@@ -37,7 +38,7 @@ module Users
     def add_to_account(resource)
       new_user = User.new(invite_params)
       user_account = new_user.user_accounts.first
-      user_account.invitation_status = :invited
+      user_account.invitation_status = :ist_invited
       resource.user_accounts << user_account
       if resource.valid?
         respond_with resource, location: after_invite_path_for(current_inviter, resource)

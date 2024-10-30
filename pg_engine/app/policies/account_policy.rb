@@ -4,36 +4,48 @@
 
 class AccountPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
-    # def resolve
-    #   if policy.acceso_total?
-    #     scope.all
-    #   else
-    #     scope.none
-    #   end
-    # end
+    def resolve
+      if Current.namespace == :admin
+        scope.all
+      else
+        ary = ActsAsTenant.without_tenant do
+          Current.user.user_accounts.kept.not_discarded_by_user.pluck(:account_id)
+        end
+        scope.where(id: ary)
+      end
+    end
   end
 
   def puede_editar?
-    user.developer?
+    Current.namespace == :admin
   end
 
   def puede_crear?
-    user.developer?
+    user.present?
   end
 
   def puede_borrar?
-    user.developer?
+    Current.namespace == :admin
   end
-
-  # def acceso_total?
-  #   user.developer?
-  # end
 
   def new_from_associable?
     false
   end
 
+  def show?
+    base_access_to_record?
+  end
+
+  def index?
+    base_access_to_collection?
+  end
+
+  def base_access_to_collection?
+    user.present?
+  end
+
   def base_access_to_record?
-    ActsAsTenant.unscoped? || ActsAsTenant.current_tenant == record
+    ua = user.user_account_for(record)
+    Current.namespace == :admin || (ua.present? && !ua.ua_invite_pending?)
   end
 end

@@ -123,7 +123,7 @@ module PgEngine
 
     def user_has_profile(key)
       return false if user.blank?
-      return true if user.developer?
+      return true if Current.namespace == :admin
       return false if ActsAsTenant.current_tenant.blank?
 
       full_key = "#{profile_prefix}__#{key}"
