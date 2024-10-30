@@ -39,7 +39,7 @@ module Users
 
     def atributos_permitidos
       [
-        { :membership_status, profiles: [] }
+        :membership_status, { profiles: [] }
       ]
     end
   end

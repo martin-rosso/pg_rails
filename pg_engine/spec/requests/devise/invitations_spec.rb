@@ -82,10 +82,10 @@ describe 'Devise invitable' do
     it do
       expect(user.user_accounts.length).to eq 1
       user_account = user.user_accounts.first
-      expect(user_account.membership_status).to eq 'invited'
+      expect(user_account.invitation_status).to eq 'invited'
       expect { subject }.to change { user.reload.invitation_accepted_at }.to(be_present)
       put "/u/user_accounts/#{user_account.to_param}/accept_invitation"
-      expect(user_account.reload.membership_status).to eq 'active'
+      expect(user_account.reload.invitation_status).to eq 'accepted'
     end
 
     context 'when accepting an invite' do
@@ -94,24 +94,24 @@ describe 'Devise invitable' do
       end
 
       let(:logged_user) { create :user }
-      let(:membership_status) { :invited }
+      let(:membership_status) { :active }
       let(:user_account) do
         logged_user.user_accounts.first
       end
 
       before do
         sign_in logged_user
-        user_account.update(membership_status:)
+        user_account.update(membership_status:, invitation_status: :invited)
       end
 
       it do
-        expect { subject }.to change { user_account.reload.membership_status }.to('active')
+        expect { subject }.to change { user_account.reload.invitation_status }.to('accepted')
       end
 
       context 'and its not the logged in user' do
         let(:user_account) do
           aux = create(:user).user_accounts.first
-          aux.update(membership_status: :invited)
+          aux.update(invitation_status: :invited)
           aux
         end
 
@@ -121,7 +121,7 @@ describe 'Devise invitable' do
         end
       end
 
-      context 'and is not invited' do
+      context 'and is disabled' do
         let(:membership_status) { :disabled }
 
         it do
@@ -132,7 +132,7 @@ describe 'Devise invitable' do
     end
   end
 
-  fdescribe 'remove an invitation' do
+  describe 'remove an invitation' do
     subject do
       delete "/u/user_accounts/#{user_account.to_param}"
     end
@@ -144,6 +144,7 @@ describe 'Devise invitable' do
     let!(:user) do
       User.invite!({ email: Faker::Internet.email, user_accounts_attributes: [{ profiles: [] }] })
     end
+
     before do
       sign_in logged_user
     end

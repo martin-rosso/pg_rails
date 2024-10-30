@@ -37,7 +37,7 @@ module Users
     def add_to_account(resource)
       new_user = User.new(invite_params)
       user_account = new_user.user_accounts.first
-      user_account.membership_status = :invited
+      user_account.invitation_status = :invited
       resource.user_accounts << user_account
       if resource.valid?
         respond_with resource, location: after_invite_path_for(current_inviter, resource)

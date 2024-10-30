@@ -66,8 +66,9 @@ class User < ApplicationRecord
     message: 'Para crear una cuenta es necesario que aceptes los términos y condiciones'
   }
 
+  # When the user is invited via Devise Invitable
   before_invitation_created do
-    user_accounts.first.membership_status = :invited
+    user_accounts.first.invitation_status = :invited
   end
 
   attr_accessor :orphan

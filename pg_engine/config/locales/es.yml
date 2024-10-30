@@ -1,9 +1,11 @@
 es:
   profile_group:
+    account: Cuenta
     cosas: Cosos
     categoria_de_cosas: Categoría de cosas
     user_accounts: Usuarios
   profile_member:
+    owner: Administrador
     read: Lectura
     update: Modificación
     create: Altas
