@@ -57,7 +57,6 @@ class UserAccount < ApplicationRecord
   scope :ua_active, lambda {
     kept.where(membership_status: :ms_active, invitation_status: :ist_accepted)
   }
-  # scope :invitations, -> { kept.where(membership_status: :ms_active, invitation_status: :ist_invited) }
 
   OWNERS_PREDICATE = lambda do
     UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value])

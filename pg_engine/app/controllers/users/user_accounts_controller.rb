@@ -41,9 +41,14 @@ module Users
                             :ist_rejected
                           elsif params[:sign_off] == '1'
                             :ist_signed_off
-                          else
+                          elsif params[:accept] == '1'
                             :ist_accepted
+                          else
+                            # :nocov:
+                            raise PgEngine::BadUserInput, 'Solicitud incorrecta'
+                            # :nocov:
                           end
+
       @user_account.update(invitation_status:)
 
       redirect_to users_accounts_path

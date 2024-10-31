@@ -2,20 +2,22 @@ require 'rails_helper'
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
-describe 'Devise invitable' do
+describe 'invite users to the platform and to an account' do
   let(:account) { ActsAsTenant.current_tenant }
 
-  describe 'send an invitation', :tpath_req do
+  describe 'send an invitation to the platform', :tpath_req do
     let(:logged_user) { create :user, :owner }
 
     before do
       sign_in logged_user
     end
 
-    it 'shows the form' do
-      get '/users/invitation/new'
-      expect(response).to have_http_status(:ok)
-      expect(response.body).to have_text('Agregar usuario')
+    describe 'new' do
+      it 'shows the form' do
+        get '/users/invitation/new'
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to have_text('Agregar usuario')
+      end
     end
 
     describe 'create' do
@@ -35,7 +37,7 @@ describe 'Devise invitable' do
         }
       end
 
-      it 'creates the user' do
+      it 'creates the User and the UserAccount' do
         expect { subject }.to change(User.unscoped, :count).by(1).and(change(UserAccount.unscoped, :count).by(1))
         expect(UserAccount.last.profiles).to contain_exactly('cosas__read')
       end
@@ -48,22 +50,23 @@ describe 'Devise invitable' do
         end
         let(:email) { other_user.email }
 
-        it do
+        it 'creates the UserAccount but not the User' do
           expect { subject }.to not_change(User.unscoped, :count).and(change(UserAccount.unscoped, :count).by(1))
         end
       end
 
-      context 'when the user exists' do
+      context 'when the user belongs to the account' do
         let(:email) { logged_user.email }
 
-        it do
-          expect { subject }.not_to change(UserAccount.unscoped, :count)
+        it 'doesnt create any' do
+          expect { subject }.to not_change(User.unscoped, :count).and(not_change(UserAccount.unscoped, :count))
+          expect(response).to have_http_status(:unprocessable_entity)
         end
       end
     end
   end
 
-  describe 'accept an invitation to the platform' do
+  describe 'accept an invitation to the platform and to the account' do
     subject do
       put '/users/invitation', params: {
         user: {
@@ -86,7 +89,8 @@ describe 'Devise invitable' do
       user_account = user.user_accounts.first
       expect(user_account.invitation_status).to eq 'ist_invited'
       expect { subject }.to change { user.reload.invitation_accepted_at }.to(be_present)
-      put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation"
+      put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
+          params: { accept: 1 }
       expect(user_account.reload.invitation_status).to eq 'ist_accepted'
     end
   end
@@ -104,7 +108,8 @@ describe 'Devise invitable' do
 
     context 'when accepting an invite' do
       subject do
-        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation"
+        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
+            params: { accept: 1 }
       end
 
       let(:membership_status) { :ms_active }
@@ -178,13 +183,13 @@ describe 'Devise invitable' do
         user.accept_invitation!
       end
 
-      it 'removes the UserAccount but not the Account' do
+      it 'removes the UserAccount but not the User' do
         expect { subject }.to change { UserAccount.unscoped.count }.by(-1).and(not_change(User.unscoped, :count))
       end
     end
 
     context 'when the user is not confirmed' do
-      it 'removes both the UserAccount and the Account' do
+      it 'removes both the UserAccount and the User' do
         expect { subject }.to change { UserAccount.unscoped.count }.by(-1).and(change(User.unscoped, :count).by(-1))
       end
     end

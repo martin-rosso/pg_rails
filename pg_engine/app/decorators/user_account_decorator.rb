@@ -23,7 +23,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def accept_invitation_link
     return unless Pundit.policy!(Current.user, object).accept_invitation_link?
 
-    h.link_to [:update_invitation, target_object].flatten,
+    h.link_to [:update_invitation, target_object, { accept: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-success' do
       'Aceptar invitación'
