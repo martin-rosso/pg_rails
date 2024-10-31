@@ -4,7 +4,7 @@ module PgEngine
     include PgEngine::RequireTenantSet
 
     before_action do
-      # FIXME: requisito que esto esté seteado
+      # TODO!: requisito que esto esté seteado
       Current.namespace = :users
 
       add_breadcrumb 'Inicio', :users_root_path unless using_modal2? || frame_embedded?

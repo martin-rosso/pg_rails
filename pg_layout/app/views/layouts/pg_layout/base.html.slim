@@ -97,7 +97,7 @@ html
 
               / hr.my-0
             - content = content_for?(:content) ? yield(:content) : yield
-            / FIXME: rename to main?
+            / TODO!!: rename to main?
             - if (!turbo_frame? || current_turbo_frame == 'top') && \
                    content.exclude?('flash-container')
               = render FlashContainerComponent.new
@@ -108,7 +108,7 @@ html
           - if @no_main_frame
             = captured_content
           - else
-            / FIXME: rename to main, use a constant
+            / TODO!!: rename to main, use a constant
             = turbo_frame_tag current_turbo_frame || 'top',
                 **{ 'data-turbo-action': (turbo_frame? ? nil : :advance) }.compact do
               = captured_content

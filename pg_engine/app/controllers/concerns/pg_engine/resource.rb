@@ -171,7 +171,7 @@ module PgEngine
       pg_respond_show
     end
 
-    # FIXME: refactor
+    # TODO!: refactor
     def respond_with_modal(component)
       content = component.render_in(view_context)
 
@@ -283,7 +283,7 @@ module PgEngine
                            .gsub('%action_name%', action_name)
                            .gsub('%request_format%', request.format.symbol.to_s)
                            .gsub('%turbo_frame%', request.headers['Turbo-Frame'] || 'top')
-      # FIXME: rename to main?
+      # TODO!!: rename to main?
     end
 
     def show_filters?
@@ -416,7 +416,7 @@ module PgEngine
     # rubocop:disable Metrics/PerceivedComplexity
     def pg_respond_destroy(model, land_on = nil)
       if destroy_model(model)
-        # FIXME: rename to main
+        # TODO!!: rename to main
         if turbo_frame? && current_turbo_frame != 'top'
           body = <<~HTML.html_safe
             <pg-event data-event-name="pg:record-destroyed" data-turbo-temporary>

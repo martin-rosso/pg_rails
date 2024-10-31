@@ -6,7 +6,7 @@ module PgEngine
 
     # :nocov:
     def login_as
-      # FIXME: make a POST route
+      # TODO!: make a POST route
       return head :bad_request unless dev_user_or_env?
 
       Current.namespace = nil

@@ -10,7 +10,7 @@ import Rollbar from 'rollbar'
 // TODO: testear con capybara
 document.addEventListener('turbo:before-cache', () => {
   document.querySelectorAll('#flash .alert').forEach((el) => {
-    // FIXME: en los destroy desde main frame, turbo llama a before-cache
+    // TODO!: en los destroy desde main frame, turbo llama a before-cache
     // después de renderear el redirect, por eso no puedo hacer el remove
     //
     // el.remove()

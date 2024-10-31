@@ -26,8 +26,7 @@ module PgEngine
       # if ActsAsTenant.current_tenant.blank? && !global_domain?
       #   raise ActsAsTenant::Errors::NoTenantSet
       # end
-      # FIXME: if current_tenant.present? check it's not discarded
-      # FIXME: if session['ss_current_user_account_id'] present? check
+      # TODO: if session['ss_current_user_account_id'] present? check
       #        user belongs to it, and if not, cleanup
       if Current.user.present?
         active_user_accounts = Current.user.user_accounts.active.to_a
@@ -35,6 +34,7 @@ module PgEngine
           # TODO: los controller tests pasan por acá porque no se ejecuta
           # el tenant middleware. cambiarlos a requests specs
           # TODO: testear
+          # TODO: if current_tenant.present? check it's not discarded
           unless active_user_accounts.any? { |uac| uac.account == ActsAsTenant.current_tenant }
             pg_warn <<~WARN
               #{Current.user.to_gid} not belongs to \
