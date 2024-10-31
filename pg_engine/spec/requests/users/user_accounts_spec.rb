@@ -8,8 +8,7 @@ describe 'Devise invitable' do
   let!(:other_user) { create :user }
   let!(:user_account) { other_user.user_accounts.first }
   let(:tenant_id) do
-    # FIXME: qué ondaa
-    logged_user.current_user_account.to_param
+    logged_user.active_user_account_for(ActsAsTenant.current_tenant)
   end
 
   before do

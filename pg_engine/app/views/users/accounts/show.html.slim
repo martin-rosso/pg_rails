@@ -27,10 +27,10 @@ h1
   div style="xmax-width: 70em"
     table.table.table-sm.listado.w-auto
       tr
-        - if Current.user.owns_current_account?
+        - if Current.user_account_owner?
           th
         th Nombre
-        - if Current.user.owns_current_account?
+        - if Current.user_account_owner?
           th Email
           - PgEngine.config.profile_groups_options.each do |profile_group|
             th = t(profile_group[:name], scope: 'profile_group')
@@ -38,7 +38,7 @@ h1
           th Estado
       - policy_scope(UserAccount).where(account: @account).regulars.order(:id).each do |user_account|
         tr
-          - if Current.user.owns_current_account?
+          - if Current.user_account_owner?
             td
               .actions-wrapper
                 - object = user_account.decorate
@@ -49,7 +49,7 @@ h1
           td
             = user_account.user
             
-          - if Current.user.owns_current_account?
+          - if Current.user_account_owner?
             td = user_account.user.email
             - PgEngine.config.profile_groups_options.each do |profile_group|
               td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe.presence || 'No'

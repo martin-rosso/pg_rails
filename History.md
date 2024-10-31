@@ -296,7 +296,6 @@ v7.1.13 / 2024-08-12
 
   * debug: minor fix, quito warning en filtros builder
   * feat: restore background warning subtle color
-  * doc: fixme comment
   * feat: theme dark/light switcher
   * fix: trix-content class + fadeIn/Out fix
 

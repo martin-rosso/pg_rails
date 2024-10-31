@@ -144,20 +144,4 @@ class User < ApplicationRecord
       user_accounts.send(scope_name).where(account:).first
     end
   end
-
-  def current_user_account
-    # FIXME: active?
-    user_account_for(ActsAsTenant.current_tenant)
-  end
-
-  def owns_current_account?
-    return false if ActsAsTenant.current_tenant.blank?
-
-    current_profiles.account__owner?
-  end
-
-  # FIXME: remove?
-  def current_profiles
-    current_user_account.profiles
-  end
 end

@@ -14,6 +14,18 @@ class Current < ActiveSupport::CurrentAttributes
     super
   end
 
+  def active_user_profiles
+    if active_user_account.present?
+      active_user_account.profiles
+    else
+      []
+    end
+  end
+
+  def user_account_owner?
+    active_user_profiles.include?('account__owner')
+  end
+
   def account
     ActsAsTenant.current_tenant
   end

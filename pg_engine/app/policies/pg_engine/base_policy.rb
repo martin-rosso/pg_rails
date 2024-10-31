@@ -127,7 +127,7 @@ module PgEngine
       return false if ActsAsTenant.current_tenant.blank?
 
       full_key = "#{profile_prefix}__#{key}"
-      user.owns_current_account? || user.current_profiles.include?(full_key)
+      Current.user_account_owner? || Current.active_user_profiles.include?(full_key)
     end
   end
 end

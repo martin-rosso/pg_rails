@@ -7,7 +7,7 @@ class UserAccountPolicy < ApplicationPolicy
     def resolve
       if Current.namespace == :admin
         scope.all
-      elsif user.owns_current_account?
+      elsif Current.user_account_owner?
         # Account owners only see Users that are not discarded
         scope.kept
       else
@@ -50,6 +50,6 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def show?
-    Current.namespace == :admin || user.owns_current_account?
+    Current.namespace == :admin || Current.user_account_owner?
   end
 end
