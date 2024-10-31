@@ -3,27 +3,7 @@
     <div class="m-3">
       <%= @navbar.logo if @navbar.logo.present? %>
     </div>
-    <% if user_signed_in? %>
-      <span class="d-inline-block px-3 text-end text-light"><%= Current.user %></span>
-      <span class="d-block px-3 text-secondary">
-        <% if Current.user.developer? %>
-          <div>
-          <%= link_to 'Admin', admin_users_path %>
-          </div>
-        <% end %>
-        <%= link_to users_accounts_path(tenant_id: nil) do %>
-          Cuentas
-        <% end %>
-        <% if ActsAsTenant.current_tenant.present? %>
-          <div class="mt-3">
-            Cuenta actual:
-            <%= link_to ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant, tenant_id: nil) %>
-          </div>
-        <% end %>
-      </span>
-      <hr>
-    <% end %>
-    <ul class="list-unstyled ps-0">
+    <ul class="list-unstyled ps-0 mt-5">
       <% @navbar.sidebar.each do |entry| %>
         <% next if @navbar.hide_entry?(entry) %>
 

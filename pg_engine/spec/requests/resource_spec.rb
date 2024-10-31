@@ -10,33 +10,33 @@ describe 'Resources', :tpath_req do
 
   describe 'action links' do
     it 'shows the archive link' do
-      get '/u/cosas/' + cosa.to_param
+      get '/u/t/cosas/' + cosa.to_param
       expect(response).to have_http_status(:ok)
       expect(response.body).to have_css('span[title="Archivar"] a')
     end
 
     it 'shows the unarchive link' do
       cosa.update(discarded_at: Time.current)
-      get '/u/cosas/' + cosa.to_param
-      expect(response.body).to have_link(href: %r{/u/cosas/[\d]+/restore})
+      get '/u/t/cosas/' + cosa.to_param
+      expect(response.body).to have_link(href: %r{/u/t/.*/cosas/[\d]+/restore})
     end
   end
 
   describe 'set breadcrumbs for all actions' do
     it 'when flat archived index' do
-      get '/u/cosas/archived'
-      expect(response.body).to have_css('.breadcrumb a[href*="/u/cosas"]')
+      get '/u/t/cosas/archived'
+      expect(response.body).to have_css('.breadcrumb a[href*="/cosas"]')
     end
 
     it 'when nested archived index' do
-      get "/u/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas/archived"
+      get "/u/t/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas/archived"
       expect(response.body).to \
-        have_css ".breadcrumb a[href*=\"/u/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas\"]"
+        have_css ".breadcrumb a[href*=\"/categoria_de_cosas/#{cosa.categoria_de_cosa.to_param}/cosas\"]"
     end
   end
 
   describe '#archive' do
-    let(:url) { "/u/cosas/#{cosa.to_param}/archive" }
+    let(:url) { "/u/t/cosas/#{cosa.to_param}/archive" }
 
     it 'when accepts turbo stream' do
       headers = { 'ACCEPT' => 'text/vnd.turbo-stream.html' }
@@ -46,7 +46,7 @@ describe 'Resources', :tpath_req do
 
     it 'when accepts only html' do
       expect { post url }.to change { cosa.reload.discarded_at }.to(be_present)
-      expect(response).to redirect_to([:users, cosa])
+      expect(response).to redirect_to([:tenant, cosa])
     end
 
     context 'when fails' do
@@ -63,7 +63,7 @@ describe 'Resources', :tpath_req do
 
       it 'when accepts only html' do
         post url
-        expect(response).to redirect_to([:users, cosa])
+        expect(response).to redirect_to([:tenant, cosa])
         expect(flash[:alert]).to eq 'Hubo un error al intentar actualizar el coso'
       end
     end
@@ -71,7 +71,7 @@ describe 'Resources', :tpath_req do
 
   describe '#restore' do
     subject do
-      post "/u/cosas/#{cosa.to_param}/restore"
+      post "/u/t/cosas/#{cosa.to_param}/restore"
     end
 
     let(:cosa) { create :cosa, discarded_at: Time.zone.now }

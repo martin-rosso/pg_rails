@@ -1,61 +1,21 @@
 - content_for :actions do
   = @user_account.ingresar_link
   = @user_account.sign_off_link
-  - if policy(UserAccount).new?
-    = link_to new_user_invitation_path,
-              class: 'btn  btn-sm btn-warning', 'data-turbo-frame': :_top do
-      i.bi.bi-plus-lg
-      |< Agregar usuario
 
 h1
   |> Nombre de la cuenta:
   = @account
 
-- owner = @account.owner
-- if owner.present?
-  h4
-    |> Administrado por:
-    = owner.nombre_completo
-    |< (
-    = owner.email
-    | )
+h4
+  |> Administrado por:
+  = @account.owner.nombre_completo
+  |< (
+  = @account.owner.email
+  | )
 
 - if @user_account.membership_status.ms_disabled?
   p.text-danger Deshabilitado
 
-- if policy(UserAccount).index?
-  h5 Lista de usuarios
-  - if @user_accounts.any?
-    div style="xmax-width: 70em"
-      table.table.table-sm.listado.w-auto
-        tr
-          - if Current.user_account_owner?
-            th
-          th Nombre
-          - if Current.user_account_owner?
-            th Email
-            - PgEngine.config.profile_groups_options.each do |profile_group|
-              th = t(profile_group[:name], scope: 'profile_group')
-
-            th Estado
-        - @user_accounts.each do |user_account|
-          tr
-            - if Current.user_account_owner?
-              td
-                .actions-wrapper
-                  - object = user_account.decorate
-                  = object.show_link
-                  = object.edit_link(text: '', klass: 'btn-light btn-sm')
-                  = object.archive_link
-                  = object.restore_link
-                  = object.destroy_link
-            td
-              = user_account.user
-
-            - if Current.user_account_owner?
-              td = user_account.user.email
-              - PgEngine.config.profile_groups_options.each do |profile_group|
-                td = show_profiles_for(user_account, profile_group)
-              td = user_account.decorate.estado_f
-  - else
-    p No hay usuarios aún
+- if @account.owner == Current.user
+  = turbo_frame_tag 'embedded__user_accounts',
+      src: tenant_user_accounts_path(tid: Current.user.user_account_for(@account).to_param)

@@ -13,6 +13,7 @@ module PgEngine
     before_action :configure_permitted_parameters
     before_action do
       @no_main_frame = true
+      @sidebar = false
     end
 
     layout :layout_by_user

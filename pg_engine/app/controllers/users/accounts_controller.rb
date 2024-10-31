@@ -15,32 +15,34 @@ module Users
     self.clase_modelo = Account
     self.skip_default_breadcrumb = true
 
-    skip_before_action :require_tenant_set
-
-    before_action do
-      # @no_main_frame = true
-      @breadcrumbs_on_rails = []
-      @sidebar = false
-    end
-
-    add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tenant_id: nil) }
-
-    around_action :set_tenant, only: :show
-    def set_tenant(&)
-      ActsAsTenant.with_tenant(@account, &)
-    end
-
-    around_action :set_without_tenant, except: :show
-    def set_without_tenant(&)
-      ActsAsTenant.without_tenant(&)
-    end
+    add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tid: nil) }
 
     # La user_account puede estar disabled
     def show
-      add_breadcrumb @account, users_account_path(@account, tenant_id: nil)
+      add_breadcrumb @account, users_account_path(@account, tid: nil)
 
       @user_account = Current.user.user_account_for(@account).decorate
-      @user_accounts = policy_scope(UserAccount).where(account: @account).regulars.order(:id).to_a
+    end
+
+    def update_invitation
+      set_instancia_modelo
+      @user_account = Current.user.user_account_for(@account)
+
+      invitation_status = if params[:reject] == '1'
+                            :ist_rejected
+                          elsif params[:sign_off] == '1'
+                            :ist_signed_off
+                          elsif params[:accept] == '1'
+                            :ist_accepted
+                          else
+                            # :nocov:
+                            raise PgEngine::BadUserInput, 'Solicitud incorrecta'
+                            # :nocov:
+                          end
+
+      @user_account.update(invitation_status:)
+
+      redirect_to users_accounts_path
     end
 
     private

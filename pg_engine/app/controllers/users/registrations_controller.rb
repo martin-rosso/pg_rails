@@ -1,6 +1,7 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
     before_action do
+      @sidebar = false
       authorize resource, nil, policy_class: UserRegistrationPolicy
     end
 
@@ -11,6 +12,7 @@ module Users
         resource.save
         yield resource if block_given?
         if resource.persisted?
+          # FIXME: no va más
           create_account_for(resource) if ActsAsTenant.current_tenant.blank?
 
           expire_data_after_sign_in!

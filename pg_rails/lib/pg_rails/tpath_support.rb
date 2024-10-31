@@ -57,14 +57,15 @@ module PgEngine
 
     def tpath(arg, query_string: true)
       ua = _tpath_ua
-      return arg.push(tenant_id: ua.to_param) if arg.is_a? Array
+      return arg.push(tid: ua.to_param) if arg.is_a? Array
 
       path = arg
 
       if query_string
-        "#{path}?tenant_id=#{ua.to_param}"
+        "#{path}?tid=#{ua.to_param}"
       else
-        "/t/#{ua.to_param}#{path}"
+        # "/u/t/#{ua.to_param}#{path}"
+        path.sub('/u/t/', "/u/t/#{ua.to_param}/")
       end
     end
   end

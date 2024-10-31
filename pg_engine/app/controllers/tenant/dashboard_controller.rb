@@ -1,5 +1,5 @@
-module Users
-  class DashboardController < PgEngine.config.users_controller
+module Tenant
+  class DashboardController < PgEngine::TenantController
     layout 'pg_layout/containerized'
 
     def dashboard

@@ -2,8 +2,8 @@
 
 # generado con pg_rails
 
-module Users
-  class CategoriaDeCosasController < UsersController
+module Tenant
+  class CategoriaDeCosasController < PgEngine::TenantController
     include PgEngine::Resource
 
     self.clase_modelo = CategoriaDeCosa

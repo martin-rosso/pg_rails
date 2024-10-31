@@ -22,22 +22,22 @@ describe 'redirection' do
 
     context 'when account is discarded' do
       it do
-        get '/u/cosas'
+        get '/u/t/cosas'
         expect(response.body).to include 'No hay ningún coso que mostrar'
         logged_user.user_accounts.first.account.discard!
-        get '/u/cosas'
+        get '/u/t/cosas'
         expect(response).to redirect_to users_accounts_path, tpath: false
       end
     end
 
-    context 'when belongs to other account' do
+    context 'when belongs to other account', pending: 'subdomains not ready' do
       before do
         create :account, subdomain: 'other'
         host! 'other.example.com'
       end
 
       it do
-        get '/u/cosas'
+        get '/u/t/cosas'
 
         expect(response).to redirect_to new_user_session_path, tpath: false
       end

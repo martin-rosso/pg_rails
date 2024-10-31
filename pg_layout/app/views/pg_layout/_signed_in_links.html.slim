@@ -1,0 +1,21 @@
+- if user_signed_in?
+  .collapse.navbar-collapse.justify-content-end
+    ul.navbar-nav
+      - if ActsAsTenant.current_tenant.present?
+        li.ps-2.navbar-text
+          | Cuenta actual:
+        li.nav-item
+          = link_to ActsAsTenant.current_tenant,
+                    users_account_path(ActsAsTenant.current_tenant, tid: nil), class: 'nav-link'
+      li.nav-item.dropdown
+        = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
+                       role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
+          i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
+          = Current.user
+        ul.dropdown-menu
+          li = link_to 'Mi perfil', edit_user_registration_path(tid: nil), class: 'dropdown-item'
+          li = link_to 'Cuentas', users_accounts_path(tid: nil), class: 'dropdown-item'
+          - if Current.user.developer?
+            li = link_to 'Admin', admin_users_path, class: 'dropdown-item'
+          li = link_to 'Cerrar sesión', destroy_user_session_path(tid: nil),
+                       'data-turbo-method': :delete, class: 'dropdown-item'

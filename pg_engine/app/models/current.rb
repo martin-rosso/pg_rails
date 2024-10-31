@@ -4,17 +4,8 @@ class Current < ActiveSupport::CurrentAttributes
 
   # resets { Time.zone = nil }
 
-  def active_user_account
-    # Para los casos de without_tenant, ej: users/accounts#index
-    return nil if account.nil?
-
-    # En la mayoría de los casos si hay user y hay account es porque hay una
-    # active_user_account salvo en el show de account que se renderea 'with_tenant'
-    if attributes[:active_user_account].blank? && user.present? && account.present?
-      attributes[:active_user_account] = user.active_user_account_for(account)
-    end
-
-    super
+  def tid
+    active_user_account.to_param
   end
 
   def active_user_profiles

@@ -15,7 +15,7 @@ describe 'category tenants', :tpath_req do
       categoria_de_cosa
     end
 
-    get "/u/categoria_de_cosas/#{categoria_de_cosa.to_param}/cosas/#{cosa.to_param}"
+    get "/u/t/categoria_de_cosas/#{categoria_de_cosa.to_param}/cosas/#{cosa.to_param}"
 
     aggregate_failures do
       expect(response).to have_http_status(:not_found)
@@ -25,7 +25,7 @@ describe 'category tenants', :tpath_req do
   end
 
   it do
-    get '/u/categoria_de_cosas'
+    get '/u/t/categoria_de_cosas'
     expect(response).to have_http_status(:ok)
   end
 end

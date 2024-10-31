@@ -13,7 +13,7 @@
         = button_tag class: 'btn btn-sm btn-primary',
                      data: { controller: 'tooltip', 'bs-title': 'Guardar' } do
           i.bi.bi-check-lg
-        = link_to users_inline_show_path(model: @model.to_gid, attribute: @attribute),
+        = link_to tenant_inline_show_path(model: @model.to_gid, attribute: @attribute),
                   class: 'btn btn-sm btn-secondary',
                   data: { controller: 'tooltip', 'bs-title': 'Cancelar' } do
           i.bi.bi-x-lg

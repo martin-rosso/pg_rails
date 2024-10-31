@@ -9,7 +9,7 @@ require 'rails_helper'
 # DRIVER=selenium rspec
 describe 'Tenants' do
   subject(:visitar) do
-    visit '/u/cosas'
+    visit '/u/t/cosas'
   end
 
   let(:logged_user) { create :user, :owner }
@@ -44,7 +44,7 @@ describe 'Tenants' do
       it 'switches to account' do
         visitar
         find_all('a', text: 'Ingresar').first.click
-        # visit '/u/categoria_de_cosas'
+        # visit '/u/t/categoria_de_cosas'
         click_on 'Categorias front'
         expect(page).to have_text 'No hay ninguna categoría de cosa que mostrar'
       end

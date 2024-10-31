@@ -45,6 +45,7 @@ RSpec.describe Admin::AccountsController do
   let(:user) { create :user, :developer }
 
   before do
+    create :user, :owner
     sign_in user if user.present?
   end
 
@@ -60,7 +61,7 @@ RSpec.describe Admin::AccountsController do
       get :index, params: {}
     end
 
-    let!(:account) { create :account }
+    let!(:account) { create :account, :with_owner }
 
     it 'returns a success response' do
       subject
@@ -99,7 +100,7 @@ RSpec.describe Admin::AccountsController do
 
   describe 'GET #show' do
     it 'returns a success response' do
-      account = create(:account)
+      account = create(:account, :with_owner)
       get :show, params: { id: account.to_param }
       expect(response).to be_successful
     end

@@ -29,7 +29,12 @@ class UserAccount < ApplicationRecord
   self.default_modal = true
 
   belongs_to :user, inverse_of: :user_accounts
+
   acts_as_tenant :account
+
+  def self.gender
+    'f'
+  end
 
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'

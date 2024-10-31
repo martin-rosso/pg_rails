@@ -1,7 +1,6 @@
 module Users
   class NotificationsController < PgEngine.config.users_controller
-    skip_before_action :require_tenant_set
-
+    # TODO: authorize
     def mark_as_unseen
       notification = Noticed::Notification.find(params[:id])
       notification.mark_as_unseen!

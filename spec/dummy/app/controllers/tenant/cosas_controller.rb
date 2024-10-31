@@ -2,8 +2,8 @@
 
 # generado con pg_rails
 
-module Users
-  class CosasController < UsersController
+module Tenant
+  class CosasController < PgEngine::TenantController
     include PgEngine::Resource
 
     self.clase_modelo = Cosa

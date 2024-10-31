@@ -25,7 +25,7 @@ module Admin
     end
 
     def atributos_para_listar
-      %i[user account profiles_f]
+      %i[user user_email_f account profiles_f]
     end
 
     def atributos_para_mostrar

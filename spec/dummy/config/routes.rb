@@ -1,15 +1,13 @@
 include PgEngine::RouteHelpers
 
 Rails.application.routes.draw do
-  scope '(t/:tenant_id)' do
-    namespace :users, path: 'u' do
+  namespace :tenant, path: 'u/t(/:tid)' do
+    pg_resource(:cosas)
+    pg_resource(:categoria_de_cosas) do
       pg_resource(:cosas)
-      pg_resource(:categoria_de_cosas) do
-        pg_resource(:cosas)
-      end
     end
-    root to: 'users/dashboard#dashboard'
   end
+
   namespace :admin, path: 'a' do
     pg_resource(:cosas)
     pg_resource(:categoria_de_cosas) do

@@ -1,9 +1,12 @@
 module Users
   class InvitationsController < Devise::InvitationsController
+    include PgEngine::TenantHelper
     before_action only: %i[new create] do
-      require_tenant_set
-      add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tenant_id: nil) }
+      set_tenant_from_params_or_fail!
+
+      add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tid: nil) }
       add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
+      add_breadcrumb 'Usuarios'
       add_breadcrumb 'Agregar usuario'
       @sidebar = false
       @no_main_frame = true
@@ -35,6 +38,7 @@ module Users
     end
 
     def after_invite_path_for(_inviter, _invitee)
+      # tenant_user_accounts_path
       users_account_path(ActsAsTenant.current_tenant)
     end
 

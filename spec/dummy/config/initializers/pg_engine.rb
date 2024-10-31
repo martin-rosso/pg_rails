@@ -1,14 +1,14 @@
 class DummyNavigator
   def configure(navbar)
-    if Current.namespace == :users
+    if Current.namespace == :tenant
       navbar.add_item('sidebar.signed_in', {
         name: 'Categorias front',
-        path: 'users_categoria_de_cosas_path',
+        path: 'tenant_categoria_de_cosas_path',
         policy: 'policy(CategoriaDeCosa).index?'
       })
       navbar.add_item('sidebar.signed_in', {
         name: 'Cosas front',
-        path: 'users_cosas_path',
+        path: 'tenant_cosas_path',
         policy: 'policy(Cosa).index?'
       })
     end

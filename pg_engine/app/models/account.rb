@@ -52,14 +52,22 @@ class Account < ApplicationRecord
     self.plan = 0 if plan.blank?
   end
 
+  def self.gender
+    'f'
+  end
+
   def to_s
     nombre
   end
 
   # There can be only one
   def owner
-    ActsAsTenant.without_tenant do
+    @owner ||= ActsAsTenant.without_tenant do
       user_accounts.ua_active.owners.first&.user
     end
+
+    raise PgEngine::Error, 'orphan account' if @owner.nil?
+
+    @owner
   end
 end

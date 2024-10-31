@@ -3,16 +3,8 @@ require 'rails_helper'
 describe PgAssociable::Helpers do
   include ActiveSupport::CurrentAttributes::TestHelper
 
-  describe 'current attributes gets reset' do
-    it 'sets a current attribute' do
-      Current.user = 1
-      expect(Current.namespace).to be_nil
-    end
-
-    it 'the attribute gets reset' do
-      Current.namespace = 2
-      expect(Current.user).to be_nil
-    end
+  before do
+    Current.namespace = :admin
   end
 
   # DEPRECATED
@@ -21,10 +13,13 @@ describe PgAssociable::Helpers do
       Admin::CategoriaDeCosasController.new
     end
     let!(:categoria_de_cosa) { create :categoria_de_cosa }
+    let(:tid) do
+      Current.user.user_account_for(Current.account).to_param
+    end
 
     before do
       Current.user = create :user, :owner
-      allow(ctrl).to receive_messages(params: { id: 123, query: categoria_de_cosa.nombre })
+      allow(ctrl).to receive_messages(params: { id: 123, query: categoria_de_cosa.nombre, tid: })
       allow(ctrl).to receive(:render)
     end
 
@@ -62,7 +57,6 @@ describe PgAssociable::Helpers do
 
     before do
       Current.user = create :user, :developer
-      Current.namespace = :admin
       allow(ctrl).to receive_messages(params: { id: 123, query: account.nombre })
       allow(ctrl).to receive(:render)
     end

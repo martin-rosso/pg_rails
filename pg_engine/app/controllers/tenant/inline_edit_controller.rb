@@ -1,5 +1,5 @@
-module Users
-  class InlineEditController < PgEngine.config.users_controller
+module Tenant
+  class InlineEditController < PgEngine::TenantController
     before_action do
       if current_turbo_frame.blank?
         render_my_component(BadRequestComponent.new, :bad_request)

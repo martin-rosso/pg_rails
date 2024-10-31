@@ -48,7 +48,8 @@ class User < ApplicationRecord
   #
   # Es problemático porque interfiere en UserAccount.joins(:user)
   # y hace un doble join
-  acts_as_tenant :account, through: :user_accounts
+  # FIXME: revisarRRRRRRRRRRRRR
+  # acts_as_tenant :account, through: :user_accounts
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 

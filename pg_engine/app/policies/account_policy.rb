@@ -16,6 +16,10 @@ class AccountPolicy < ApplicationPolicy
     end
   end
 
+  def update_invitation?
+    user_belongs_to_account?
+  end
+
   def puede_editar?
     Current.namespace == :admin
   end
@@ -47,5 +51,9 @@ class AccountPolicy < ApplicationPolicy
   def base_access_to_record?
     ua = user.user_account_for(record)
     Current.namespace == :admin || (ua.present? && !ua.ua_invite_pending?)
+  end
+
+  def user_belongs_to_account?
+    user.user_account_for(record).present?
   end
 end

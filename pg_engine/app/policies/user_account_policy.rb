@@ -27,12 +27,12 @@ class UserAccountPolicy < ApplicationPolicy
       !record.profiles.account__owner?
   end
 
-  def accept_invitation_link?
-    user_is_user_account_user? && record.ua_invite_pending?
+  def puede_crear?
+    Current.namespace == :admin
   end
 
-  def update_invitation?
-    user_is_user_account_user?
+  def accept_invitation_link?
+    user_is_user_account_user? && record.ua_invite_pending?
   end
 
   def ingresar?
@@ -40,11 +40,12 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def puede_editar?
-    Current.namespace == :admin || (user_is_account_owner? && !record.discarded_by_user?)
+    Current.namespace == :admin ||
+      (user_is_account_owner? && !record.discarded_by_user? && !record.profiles.account__owner?)
   end
 
   def destroy?
-    Current.namespace == :admin || user_is_account_owner?
+    Current.namespace == :admin || (user_is_account_owner? && !record.profiles.account__owner?)
   end
 
   def show?
@@ -57,5 +58,9 @@ class UserAccountPolicy < ApplicationPolicy
 
   def user_is_user_account_user?
     user.id == record.user_id
+  end
+
+  def export?
+    false
   end
 end

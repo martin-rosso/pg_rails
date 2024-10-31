@@ -6,7 +6,7 @@ describe AccountPolicy do
   end
 
   let(:account) { ActsAsTenant.current_tenant }
-  let(:user) { create :user }
+  let(:user) { create :user, account: }
 
   it do
     expect(subject).to permit(:show)

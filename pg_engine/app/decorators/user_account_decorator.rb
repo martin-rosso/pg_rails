@@ -4,16 +4,11 @@
 
 class UserAccountDecorator < PgEngine::BaseRecordDecorator
   delegate_all
-  def nested_record
-    return unless Current.namespace == :users
-
-    object.account
-  end
 
   def ingresar_link
     return unless Pundit.policy!(Current.user, object).ingresar?
 
-    h.link_to h.users_root_path(tenant_id: object.to_param),
+    h.link_to h.tenant_root_path(tid: object.to_param),
               'data-turbo-frame': :_top,
               class: 'btn btn-sm btn-success' do
       'Ingresar'
@@ -23,7 +18,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def accept_invitation_link
     return unless Pundit.policy!(Current.user, object).accept_invitation_link?
 
-    h.link_to [:update_invitation, target_object, { accept: 1 }].flatten,
+    h.link_to [:update_invitation, :users, account, { accept: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-success' do
       'Aceptar invitación'
@@ -33,7 +28,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def reject_invitation_link
     return unless Pundit.policy!(Current.user, object).accept_invitation_link?
 
-    h.link_to [:update_invitation, target_object, { reject: 1 }].flatten,
+    h.link_to [:update_invitation, :users, account, { reject: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-danger' do
       'Rechazar'
@@ -43,7 +38,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def sign_off_link
     return unless Pundit.policy!(Current.user, object).sign_off?
 
-    h.link_to [:update_invitation, target_object, { sign_off: 1 }].flatten,
+    h.link_to [:update_invitation, :users, account, { sign_off: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-outline-danger' do
       'Dejar la cuenta'
@@ -76,5 +71,9 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
 
   def profiles_f
     object.profiles.texts.join(', ')
+  end
+
+  def user_email_f
+    user.email
   end
 end

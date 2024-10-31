@@ -182,12 +182,11 @@ es:
         owner: Administrado por
       user_account:
         membership_status: Estado
-        user: El usuario
+        user: Nombre
+        user_email: Email
+        profiles: Permisos
       user:
         remember_me: Recordarme en este navegador
-        user_account:
-          membership_status: Estado
-          user: El usuario
       email:
         from_name: Remitente
         to: Destinatario

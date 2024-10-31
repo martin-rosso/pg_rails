@@ -11,7 +11,7 @@ describe 'inline edit', :tpath_req do
 
   describe '#show' do
     subject do
-      get '/u/inline/show', params:, headers: { 'Turbo-Frame': turbo_frame_id }
+      get '/u/t/inline/show', params:, headers: { 'Turbo-Frame': turbo_frame_id }
     end
 
     let(:params) do
@@ -38,7 +38,7 @@ describe 'inline edit', :tpath_req do
 
   describe '#edit' do
     subject do
-      get '/u/inline/edit', params:, headers: { 'Turbo-Frame': turbo_frame_id }
+      get '/u/t/inline/edit', params:, headers: { 'Turbo-Frame': turbo_frame_id }
     end
 
     let(:params) do
@@ -65,7 +65,7 @@ describe 'inline edit', :tpath_req do
 
   describe '#update' do
     subject do
-      patch "/u/cosas/#{cosa.to_param}", params:
+      patch "/u/t/cosas/#{cosa.to_param}", params:
     end
 
     let(:params) do

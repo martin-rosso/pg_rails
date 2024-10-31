@@ -30,12 +30,10 @@ require 'rails_helper'
 RSpec.describe Admin::UserAccountsController do
   render_views
   let!(:user) do
-    ActsAsTenant.without_tenant do
-      create :user
-    end
+    create :user
   end
   let(:user_account) do
-    create(:user).user_accounts.first
+    create :user_account, user:, account:
   end
 
   let!(:account) { ActsAsTenant.current_tenant }

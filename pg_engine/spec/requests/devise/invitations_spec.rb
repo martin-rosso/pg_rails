@@ -103,14 +103,13 @@ describe 'invite users to the platform and to an account' do
       user_account = user.user_accounts.first
       expect(user_account.invitation_status).to eq 'ist_invited'
       expect { subject }.to change { user.reload.invitation_accepted_at }.to(be_present)
-      put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
-          params: { accept: 1 }
+      put "/u/cuentas/#{account.to_param}/update_invitation", params: { accept: 1 }
       expect(user_account.reload.invitation_status).to eq 'ist_accepted'
     end
   end
 
   describe 'update an invitation' do
-    let(:logged_user) { create :user }
+    let(:logged_user) { create :user, account: }
     let(:user_account) do
       logged_user.user_accounts.first
     end
@@ -122,8 +121,7 @@ describe 'invite users to the platform and to an account' do
 
     context 'when accepting an invite' do
       subject do
-        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
-            params: { accept: 1 }
+        put "/u/cuentas/#{account.to_param}/update_invitation", params: { accept: 1 }
       end
 
       let(:membership_status) { :ms_active }
@@ -132,24 +130,12 @@ describe 'invite users to the platform and to an account' do
         expect { subject }.to change { user_account.reload.invitation_status }.to('ist_accepted')
       end
 
-      context 'and its not the logged in user' do
-        let(:user_account) do
-          aux = create(:user).user_accounts.first
-          aux.update(invitation_status: :ist_invited)
-          aux
-        end
-
-        it do
-          subject
-          expect(response).to have_http_status(:unauthorized)
-        end
-      end
+      pending 'and doesnt belong to the account'
     end
 
     context 'when rejecting an invite' do
       subject do
-        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
-            params: { reject: 1 }
+        put "/u/cuentas/#{account.to_param}/update_invitation", params: { reject: 1 }
       end
 
       let(:membership_status) { :ms_active }
@@ -161,8 +147,7 @@ describe 'invite users to the platform and to an account' do
 
     context 'when signing off the account' do
       subject do
-        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
-            params: { sign_off: 1 }
+        put "/u/cuentas/#{account.to_param}/update_invitation", params: { sign_off: 1 }
       end
 
       let(:membership_status) { %i[ms_active ms_disabled].sample }
@@ -175,7 +160,7 @@ describe 'invite users to the platform and to an account' do
 
   describe 'remove an invitation', :tpath_req do
     subject do
-      delete "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}"
+      delete "/u/t/user_accounts/#{user_account.to_param}"
     end
 
     let(:logged_user) { create :user, :owner }

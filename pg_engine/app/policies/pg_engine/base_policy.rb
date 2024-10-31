@@ -94,7 +94,11 @@ module PgEngine
     end
 
     def puede_ver_archivados?
-      user_has_profile(:archive)
+      admits_discard = begin
+        model = record.is_a?(ActiveRecord::Base) ? record.class : record
+        model.respond_to?(:discarded)
+      end
+      user_has_profile(:archive) && admits_discard
     end
 
     def base_access_to_record?
