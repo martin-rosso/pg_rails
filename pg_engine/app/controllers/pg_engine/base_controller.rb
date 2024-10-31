@@ -10,13 +10,7 @@ module PgEngine
     set_current_tenant_by_subdomain_or_domain(:account, :subdomain, :domain)
     set_current_tenant_through_filter
 
-    def default_url_options
-      if Current.active_user_account
-        { tenant_id: Current.active_user_account.to_param }
-      else
-        { tenant_id: nil }
-      end
-    end
+    include DefaultUrlOptions
 
     # rubocop:disable Metrics/BlockLength
     before_action do

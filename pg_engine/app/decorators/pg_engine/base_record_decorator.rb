@@ -65,12 +65,13 @@ module PgEngine
       return unless Pundit.policy!(Current.user, object).destroy?
 
       helpers.content_tag :span, rel: :tooltip, title: 'Eliminar definitivamente' do
-        # FIXME: volver a poner el confirm
+        # :nocov:
         confirm_key = if Rails.env.development?
                         'noconfirm'
                       else
                         'turbo-confirm'
                       end
+        # :nocov:
 
         helpers.link_to object_url + (land_on.present? ? "?land_on=#{land_on}" : ''),
                         data: { "#{confirm_key}": confirm_text, 'turbo-method': :delete },
