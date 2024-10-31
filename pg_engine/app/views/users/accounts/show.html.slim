@@ -2,7 +2,8 @@
   = @user_account.ingresar_link
   = @user_account.sign_off_link
   - if policy(UserAccount).new?
-    = link_to new_user_invitation_path, class: 'btn  btn-sm btn-warning', 'data-turbo-frame': :_top do
+    = link_to new_user_invitation_path,
+              class: 'btn  btn-sm btn-warning', 'data-turbo-frame': :_top do
       i.bi.bi-plus-lg
       |< Agregar usuario
 
@@ -54,7 +55,7 @@ h1
             - if Current.user_account_owner?
               td = user_account.user.email
               - PgEngine.config.profile_groups_options.each do |profile_group|
-                td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe.presence || 'No'
+                td = show_profiles_for(user_account, profile_group)
               td = user_account.decorate.estado_f
   - else
     p No hay usuarios aún

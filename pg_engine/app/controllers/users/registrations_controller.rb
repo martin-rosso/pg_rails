@@ -35,8 +35,7 @@ module Users
     private
 
     def create_account_for(user)
-      account = Account.create!(nombre: user.email)
-      user.user_accounts.create!(account:)
+      Account.create!(nombre: user.email, creado_por: user)
     end
   end
 end

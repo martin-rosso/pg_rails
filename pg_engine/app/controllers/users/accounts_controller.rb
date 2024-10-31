@@ -56,9 +56,5 @@ module Users
     def atributos_para_listar
       %i[nombre plan owner]
     end
-
-    def atributos_para_mostrar
-      atributos_permitidos
-    end
   end
 end

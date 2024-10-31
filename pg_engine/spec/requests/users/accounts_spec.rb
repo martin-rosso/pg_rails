@@ -9,21 +9,104 @@ describe 'Users::AccountsController' do
     create_list :user, 2
   end
 
-  it 'shows the owned account' do
-    get "/u/cuentas/#{account.to_param}"
-    expect(response).to have_http_status(:ok)
-  end
+  describe 'show' do
+    it 'shows the owned account' do
+      get "/u/cuentas/#{account.to_param}"
+      expect(response).to have_http_status(:ok)
+    end
 
-  it 'denies foreign account' do
-    other_account = create :account
-    get "/u/cuentas/#{other_account.to_param}"
-    expect(response).to have_http_status(:unauthorized)
+    it 'denies foreign account' do
+      other_account = create :account
+      get "/u/cuentas/#{other_account.to_param}"
+      expect(response).to have_http_status(:unauthorized)
+    end
+
+    context 'when not the owner' do
+      subject do
+        get "/u/cuentas/#{other_account.to_param}"
+      end
+
+      let(:other_account) { create :account }
+      let(:membership_status) { :ms_active }
+      let(:invitation_status) { :ist_accepted }
+      let(:profiles) { [] }
+
+      before do
+        ActsAsTenant.without_tenant do
+          create :user_account, account: other_account, user:,
+                                invitation_status:, membership_status:, profiles:
+        end
+      end
+
+      context 'when its active' do
+        let(:profiles) { [:user_accounts__read] }
+
+        it do
+          subject
+          expect(response.body).to have_text('Lista de usuarios')
+          expect(response.body).to have_text('Dejar la cuenta')
+        end
+      end
+
+      context 'when its active and dont have user_accounts__read access' do
+        it do
+          subject
+          expect(response.body).to have_no_text('Lista de usuarios')
+          expect(response.body).to have_text('Dejar la cuenta')
+        end
+      end
+
+      context 'when its disabled' do
+        let(:membership_status) { :ms_disabled }
+
+        it do
+          subject
+          expect(response.body).to have_text('Deshabilitado')
+          expect(response.body).to have_text('Dejar la cuenta')
+        end
+      end
+
+      context 'when its invited' do
+        let(:invitation_status) { :ist_invited }
+
+        it do
+          subject
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
+    end
   end
 
   describe 'index' do
-    it do
+    subject do
       get '/u/cuentas'
-      expect(response.body).to have_text('Mostrando 1 cuenta')
+    end
+
+    before do
+      other_account = create :account
+      ActsAsTenant.without_tenant do
+        create :user_account, account: other_account, user:, invitation_status:, membership_status:
+      end
+    end
+
+    context 'cuando está invitado' do
+      let(:invitation_status) { :ist_invited }
+      let(:membership_status) { :ms_active }
+
+      it do
+        subject
+        expect(response.body).to have_text('Aceptar invitación')
+        expect(response.body).to have_text('Rechazar')
+      end
+
+      context 'y deshabilitado' do
+        let(:membership_status) { :ms_disabled }
+
+        it do
+          subject
+          expect(response.body).to have_no_text('Aceptar invitación')
+        end
+      end
     end
   end
 

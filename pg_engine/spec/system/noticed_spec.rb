@@ -33,6 +33,4 @@ describe 'Notifications' do
       expect(page).to have_css('.unseen')
     end
   end
-
-  pending 'with read notifications'
 end
