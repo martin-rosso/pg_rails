@@ -55,6 +55,20 @@ describe 'invite users to the platform and to an account' do
         end
       end
 
+      context 'when the user exists but is discarded' do
+        let!(:other_user) do
+          ActsAsTenant.without_tenant do
+            create :user, discarded_at: Time.current
+          end
+        end
+        let(:email) { other_user.email }
+
+        it 'doesnt create any' do
+          expect { subject }.to not_change(User.unscoped, :count).and(not_change(UserAccount.unscoped, :count))
+          expect(response).to have_http_status(:unprocessable_entity)
+        end
+      end
+
       context 'when the user belongs to the account' do
         let(:email) { logged_user.email }
 

@@ -21,11 +21,14 @@ module Users
         self.resource = ActsAsTenant.without_tenant do
           User.find_by(email:)
         end
-        # FIXME: if user is discarded fail
       end
 
       if resource.present?
-        add_to_account(resource)
+        if resource.kept?
+          add_to_account(resource)
+        else
+          render_error(resource)
+        end
       else
         super
       end
@@ -37,8 +40,16 @@ module Users
 
     protected
 
+    def render_error(_resource)
+      new_user = User.new(invite_params)
+      self.resource = new_user
+      resource.errors.add(:email, 'pertenece a un usuario que no está disponible')
+      render :new, status: :unprocessable_entity
+    end
+
     def add_to_account(resource)
       new_user = User.new(invite_params)
+
       user_account = new_user.user_accounts.first
       user_account.invitation_status = :ist_invited
       resource.user_accounts << user_account

@@ -174,13 +174,20 @@ es:
       account:
         one: Cuenta
         other: Cuentas
+      user:
+        one: Usuario
+        other: Usuarios
     attributes:
       account:
         owner: Administrado por
       user_account:
         membership_status: Estado
+        user: El usuario
       user:
         remember_me: Recordarme en este navegador
+        user_account:
+          membership_status: Estado
+          user: El usuario
       email:
         from_name: Remitente
         to: Destinatario
