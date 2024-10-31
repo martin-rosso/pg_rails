@@ -8,9 +8,6 @@ describe 'user accounts' do
   let!(:other_user) { create :user }
   let!(:user_account) { other_user.user_accounts.first }
   let(:account) { ActsAsTenant.current_tenant }
-  let(:tenant_id) do
-    logged_user.active_user_account_for(ActsAsTenant.current_tenant)
-  end
 
   before do
     sign_in logged_user
