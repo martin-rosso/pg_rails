@@ -7,6 +7,7 @@ describe 'user accounts' do
   # se crea una UserAccount
   let!(:other_user) { create :user }
   let!(:user_account) { other_user.user_accounts.first }
+  let(:account) { ActsAsTenant.current_tenant }
   let(:tenant_id) do
     logged_user.active_user_account_for(ActsAsTenant.current_tenant)
   end
@@ -17,14 +18,14 @@ describe 'user accounts' do
 
   describe 'show' do
     it do
-      get "/u/user_accounts/#{user_account.to_param}"
+      get "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}"
       expect(response).to have_http_status(:ok)
     end
   end
 
   describe 'edit' do
     it do
-      get "/u/user_accounts/#{user_account.to_param}/edit"
+      get "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/edit"
       expect(response).to have_http_status(:ok)
     end
   end
@@ -36,18 +37,18 @@ describe 'user accounts' do
           profiles: ['cosas__read']
         }
       }
-      patch "/u/user_accounts/#{user_account.to_param}", params:
+      patch "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}", params:
     end
 
     it do
       expect { subject }.to(change { user_account.reload.profiles }.to(include('cosas__read')))
-      expect(response).to redirect_to users_user_account_path(user_account)
+      expect(response).to redirect_to([:users, account, user_account])
     end
   end
 
   describe 'destroy' do
     subject do
-      delete "/u/user_accounts/#{user_account.to_param}"
+      delete "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}"
     end
 
     it do

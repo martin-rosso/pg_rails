@@ -12,7 +12,7 @@ class UserAccountPolicy < ApplicationPolicy
         scope.kept
       else
         # Regulars users only see active users
-        scope.active
+        scope.ua_active
       end
     end
   end

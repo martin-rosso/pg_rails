@@ -138,7 +138,7 @@ class User < ApplicationRecord
       # :nocov:
     end
 
-    scope_name = active ? :active : :kept
+    scope_name = active ? :ua_active : :kept
 
     ActsAsTenant.without_tenant do
       user_accounts.send(scope_name).where(account:).first

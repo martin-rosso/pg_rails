@@ -4,7 +4,6 @@
 
 module Users
   class UserAccountsController < PgEngine.config.users_controller
-    # TODO: maybe nest into accounts
     around_action :set_without_tenant
     def set_without_tenant(&)
       ActsAsTenant.without_tenant(&)

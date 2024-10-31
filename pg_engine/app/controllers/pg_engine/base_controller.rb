@@ -23,7 +23,7 @@ module PgEngine
       # TODO: if session['ss_current_user_account_id'] present? check
       #        user belongs to it, and if not, cleanup
       if Current.user.present?
-        active_user_accounts = Current.user.user_accounts.active.to_a
+        active_user_accounts = Current.user.user_accounts.ua_active.to_a
         if ActsAsTenant.current_tenant.present?
           # TODO: los controller tests pasan por acá porque no se ejecuta
           # el tenant middleware. afortunadamente eso hace que no haga falta
@@ -130,7 +130,7 @@ module PgEngine
     def no_tenant_set(error)
       return internal_error(error) if Current.user.blank?
 
-      active_user_accounts = Current.user.user_accounts.active.to_a
+      active_user_accounts = Current.user.user_accounts.ua_active.to_a
       if active_user_accounts.length == 1
         redirect_to url_for(tenant_id: active_user_accounts.first.to_param)
       else

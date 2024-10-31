@@ -33,18 +33,19 @@ Rails.application.routes.draw do
       post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
       get 'date_jumper/jump'
 
-      pg_resource(:user_accounts, only: [:show, :edit, :update, :destroy]) do
-        member do
-          put :update_invitation
-        end
-      end
     end
 
     get '/u', to: 'users/dashboard#dashboard', as: :users_root
   end
 
   namespace :users, path: 'u' do
-    pg_resource(:accounts, path: 'cuentas', only: [:index, :show, :new, :create])
+    pg_resource(:accounts, path: 'cuentas', only: [:index, :show, :new, :create]) do
+      pg_resource(:user_accounts, only: [:show, :edit, :update, :destroy]) do
+        member do
+          put :update_invitation
+        end
+      end
+    end
   end
 
   namespace :admin, path: 'a' do

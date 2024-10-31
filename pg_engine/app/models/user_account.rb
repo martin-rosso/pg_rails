@@ -54,10 +54,10 @@ class UserAccount < ApplicationRecord
   USER_JOINS = 'INNER JOIN users ON users.id = user_accounts.user_id'
   scope :kept, -> { joins(USER_JOINS, :account).merge(Account.kept).merge(User.unscoped.kept) }
 
-  scope :active, lambda {
+  scope :ua_active, lambda {
     kept.where(membership_status: :ms_active, invitation_status: :ist_accepted)
   }
-  scope :invitations, -> { kept.where(membership_status: :ms_active, invitation_status: :ist_invited) }
+  # scope :invitations, -> { kept.where(membership_status: :ms_active, invitation_status: :ist_invited) }
 
   OWNERS_PREDICATE = lambda do
     UserAccount.arel_table[:profiles].contains([UserAccount.profiles.account__owner.value])

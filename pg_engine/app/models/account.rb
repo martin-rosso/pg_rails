@@ -59,7 +59,7 @@ class Account < ApplicationRecord
   # There can be only one
   def owner
     ActsAsTenant.without_tenant do
-      user_accounts.active.owners.first&.user
+      user_accounts.ua_active.owners.first&.user
     end
   end
 end

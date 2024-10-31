@@ -4,6 +4,11 @@
 
 class UserAccountDecorator < PgEngine::BaseRecordDecorator
   delegate_all
+  def nested_record
+    return unless Current.namespace == :users
+
+    object.account
+  end
 
   def ingresar_link
     return unless Pundit.policy!(Current.user, object).ingresar?
@@ -18,7 +23,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def accept_invitation_link
     return unless Pundit.policy!(Current.user, object).accept_invitation_link?
 
-    h.link_to h.update_invitation_users_user_account_path(object),
+    h.link_to [:update_invitation, target_object].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-success' do
       'Aceptar invitación'
@@ -28,7 +33,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def reject_invitation_link
     return unless Pundit.policy!(Current.user, object).accept_invitation_link?
 
-    h.link_to h.update_invitation_users_user_account_path(object, reject: 1),
+    h.link_to [:update_invitation, target_object, { reject: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-danger' do
       'Rechazar'
@@ -38,7 +43,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def sign_off_link
     return unless Pundit.policy!(Current.user, object).sign_off?
 
-    h.link_to h.update_invitation_users_user_account_path(object, sign_off: 1),
+    h.link_to [:update_invitation, target_object, { sign_off: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-outline-danger' do
       'Dejar la cuenta'

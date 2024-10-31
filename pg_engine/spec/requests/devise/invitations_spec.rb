@@ -3,6 +3,8 @@ require 'rails_helper'
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
 describe 'Devise invitable' do
+  let(:account) { ActsAsTenant.current_tenant }
+
   describe 'send an invitation', :tpath_req do
     let(:logged_user) { create :user, :owner }
 
@@ -84,7 +86,7 @@ describe 'Devise invitable' do
       user_account = user.user_accounts.first
       expect(user_account.invitation_status).to eq 'ist_invited'
       expect { subject }.to change { user.reload.invitation_accepted_at }.to(be_present)
-      put "/u/user_accounts/#{user_account.to_param}/update_invitation"
+      put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation"
       expect(user_account.reload.invitation_status).to eq 'ist_accepted'
     end
   end
@@ -102,7 +104,7 @@ describe 'Devise invitable' do
 
     context 'when accepting an invite' do
       subject do
-        put "/u/user_accounts/#{user_account.to_param}/update_invitation"
+        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation"
       end
 
       let(:membership_status) { :ms_active }
@@ -127,7 +129,8 @@ describe 'Devise invitable' do
 
     context 'when rejecting an invite' do
       subject do
-        put "/u/user_accounts/#{user_account.to_param}/update_invitation", params: { reject: 1 }
+        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
+            params: { reject: 1 }
       end
 
       let(:membership_status) { :ms_active }
@@ -139,7 +142,8 @@ describe 'Devise invitable' do
 
     context 'when signing off the account' do
       subject do
-        put "/u/user_accounts/#{user_account.to_param}/update_invitation", params: { sign_off: 1 }
+        put "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}/update_invitation",
+            params: { sign_off: 1 }
       end
 
       let(:membership_status) { %i[ms_active ms_disabled].sample }
@@ -152,7 +156,7 @@ describe 'Devise invitable' do
 
   describe 'remove an invitation', :tpath_req do
     subject do
-      delete "/u/user_accounts/#{user_account.to_param}"
+      delete "/u/cuentas/#{account.to_param}/user_accounts/#{user_account.to_param}"
     end
 
     let(:logged_user) { create :user, :owner }
