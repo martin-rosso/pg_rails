@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'category tenants' do
+describe 'category tenants', :tpath_req do
   let(:logged_user) { create :user, :owner }
   let(:other_account) { create :account }
   let(:categoria_de_cosa) { create :categoria_de_cosa }

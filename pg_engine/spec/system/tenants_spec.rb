@@ -32,6 +32,7 @@ describe 'Tenants' do
         ActsAsTenant.with_tenant(other_account) do
           logged_user.user_accounts.create!(profiles: [:account__owner])
         end
+        driven_by :selenium_chrome_headless_notebook
       end
 
       it 'shows the accounts index' do
@@ -43,7 +44,8 @@ describe 'Tenants' do
       it 'switches to account' do
         visitar
         find_all('a', text: 'Ingresar').first.click
-        visit '/u/categoria_de_cosas'
+        # visit '/u/categoria_de_cosas'
+        click_on 'Categorias front'
         expect(page).to have_text 'No hay ninguna categoría de cosa que mostrar'
       end
 

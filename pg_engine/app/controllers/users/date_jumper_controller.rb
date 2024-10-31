@@ -1,5 +1,7 @@
 module Users
   class DateJumperController < PgEngine.config.users_controller
+    skip_before_action :require_tenant_set
+
     before_action only: :jump do
       if params[:quantity].blank?
         raise PgEngine::BadUserInput, 'Cantidad incorrecta'

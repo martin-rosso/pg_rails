@@ -1,3 +1,4 @@
+# :nocov:
 RSpec::Matchers.define :permit do |action|
   match do |policy|
     policy.public_send("#{action}?")
@@ -17,3 +18,4 @@ RSpec::Matchers.define :permit do |action|
     STRING
   end
 end
+# :nocov:

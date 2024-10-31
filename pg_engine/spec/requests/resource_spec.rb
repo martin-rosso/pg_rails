@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Resources' do
+describe 'Resources', :tpath_req do
   let(:user) { create :user, :owner }
   let(:cosa) { create :cosa }
 

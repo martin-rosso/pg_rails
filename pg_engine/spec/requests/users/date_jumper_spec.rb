@@ -2,9 +2,10 @@ require 'rails_helper'
 
 RSpec.describe 'Users::DateJumpers' do
   before do
-    user = create :user
     sign_in user
   end
+
+  let(:user) { create :user }
 
   describe 'GET /jump' do
     before do

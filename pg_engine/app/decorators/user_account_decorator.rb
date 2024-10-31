@@ -9,6 +9,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
     return unless Pundit.policy!(Current.user, object).ingresar?
 
     h.link_to h.users_root_path(tenant_id: object.to_param),
+              'data-turbo-frame': :_top,
               class: 'btn btn-sm btn-success' do
       'Ingresar'
     end

@@ -4,12 +4,12 @@ es:
     user_accounts: Acceso a usuarios
   profile_member:
     owner: Administrador
-    read: Lectura
-    update: Modificación
-    create: Altas
-    archive: Archivo
-    destroy: Bajas
-    export: Exportación
+    read: Ver
+    update: Modificar
+    create: Crear
+    archive: Archivar
+    destroy: Eliminar
+    export: Exportar
   ransack:
     predicates:
       cont: ''

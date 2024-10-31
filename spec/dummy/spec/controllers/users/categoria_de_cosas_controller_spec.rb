@@ -27,7 +27,7 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe Users::CategoriaDeCosasController do
+RSpec.describe Users::CategoriaDeCosasController, :tpath_cont do
   render_views
   # This should return the minimal set of attributes required to create a valid
   # CategoriaDeCosa. As you add validations to CategoriaDeCosa, be sure to
@@ -65,7 +65,7 @@ RSpec.describe Users::CategoriaDeCosasController do
 
       it 'redirects to login path' do
         subject
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(new_user_session_path, tpath: false)
       end
     end
 
@@ -198,7 +198,7 @@ RSpec.describe Users::CategoriaDeCosasController do
 
       it 'redirects to the categoria_de_cosas list' do
         subject
-        expect(response).to redirect_to(users_categoria_de_cosas_url)
+        expect(response).to redirect_to(users_categoria_de_cosas_path)
       end
     end
   end

@@ -18,7 +18,7 @@ module Users
     skip_before_action :require_tenant_set
 
     before_action do
-      @no_main_frame = true
+      # @no_main_frame = true
       @breadcrumbs_on_rails = []
       @sidebar = false
     end
@@ -40,6 +40,7 @@ module Users
       add_breadcrumb @account, users_account_path(@account, tenant_id: nil)
 
       @user_account = Current.user.user_account_for(@account).decorate
+      @user_accounts = policy_scope(UserAccount).where(account: @account).regulars.order(:id).to_a
     end
 
     private

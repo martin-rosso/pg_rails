@@ -44,6 +44,7 @@ require 'pg_rails/vcr_support'
 require 'pg_rails/pundit_matchers'
 require 'pg_rails/rspec_logger_matchers'
 require 'pg_rails/tom_select_helpers'
+require 'pg_rails/tpath_support'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
@@ -136,6 +137,7 @@ RSpec.configure do |config|
   config.filter_rails_from_backtrace!
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
+  #
 
   config.include FactoryBot::Syntax::Methods
   config.include Devise::Test::ControllerHelpers, type: :controller
@@ -147,6 +149,9 @@ RSpec.configure do |config|
   config.include Rails::Generators::Testing::Assertions, type: :generator
   config.include FileUtils, type: :generator
   config.include PgEngine::Matchers
+  config.include PgEngine::TpathSupport
+  config.include PgEngine::TpathSupport::RequestsPatch, tpath_req: true
+  config.include PgEngine::TpathSupport::ControllersPatch, tpath_cont: true
 
   config.include ViewComponent::TestHelpers, type: :component
   config.include ViewComponent::SystemTestHelpers, type: :component

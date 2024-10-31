@@ -1,10 +1,11 @@
 require 'rails_helper'
 
-describe 'inline edit' do
+describe 'inline edit', :tpath_req do
   before do
-    user = create :user, :owner
     sign_in user
   end
+
+  let(:user) { create :user, :owner }
 
   let(:cosa) { create :cosa }
 

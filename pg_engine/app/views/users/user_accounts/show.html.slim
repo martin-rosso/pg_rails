@@ -1,6 +1,8 @@
 h1 = @user_account
 
-h5 Permisos
+= @user_account.estado_f
+
+h5.mt-4 Permisos
 table.table.table-bordered.w-auto
   tr
     - PgEngine.config.profile_groups_options.each do |profile_group|
@@ -14,5 +16,3 @@ table.table.table-bordered.w-auto
             - else
               = check_box_tag nil, nil, false, disabled: true, class: 'form-check-input'
             label.form-check-label = values.last
-
-

@@ -19,4 +19,27 @@ describe 'Users::AccountsController' do
     get "/u/cuentas/#{other_account.to_param}"
     expect(response).to have_http_status(:unauthorized)
   end
+
+  describe 'index' do
+    it do
+      get '/u/cuentas'
+      expect(response.body).to have_text('Mostrando 1 cuenta')
+    end
+  end
+
+  describe 'create an account' do
+    subject do
+      post '/u/cuentas', params: {
+        account: {
+          plan: :completar,
+          nombre: Faker::Lorem.sentence
+        }
+      }
+    end
+
+    it do
+      expect { subject }.to change(Account, :count).by(1)
+      expect(Account.last.owner).to eq user
+    end
+  end
 end

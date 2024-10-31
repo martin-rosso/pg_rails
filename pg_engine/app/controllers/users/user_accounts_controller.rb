@@ -11,7 +11,21 @@ module Users
     self.nested_key = :account_id
     self.skip_default_breadcrumb = true
 
+    before_action do
+      # @no_main_frame = true
+      @breadcrumbs_on_rails = []
+      @sidebar = false
+      unless modal_targeted?
+        add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tenant_id: nil) }
+      end
+    end
+    # TODO: maybe nest into accounts
     skip_before_action :require_tenant_set, only: %i[destroy update_invitation]
+    before_action except: %i[destroy update_invitation] do
+      unless modal_targeted?
+        add_breadcrumb Current.account, users_account_path(Current.account, tenant_id: nil)
+      end
+    end
 
     around_action :set_without_tenant, only: :update_invitation
     def set_without_tenant

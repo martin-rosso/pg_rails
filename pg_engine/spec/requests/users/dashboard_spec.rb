@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'DASHBOARD' do
+describe 'DASHBOARD', :tpath_req do
   let(:logged_user) { create :user }
 
   before do

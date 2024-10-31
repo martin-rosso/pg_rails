@@ -27,7 +27,7 @@ require 'rails_helper'
 # removed from Rails core in Rails 5, but can be added back in via the
 # `rails-controller-testing` gem.
 
-RSpec.describe Users::CosasController do
+RSpec.describe Users::CosasController, :tpath_cont do
   render_views
   let(:categoria_de_cosa) { create :categoria_de_cosa }
 
@@ -67,7 +67,7 @@ RSpec.describe Users::CosasController do
 
       it 'redirects to login path' do
         subject
-        expect(response).to redirect_to(new_user_session_path)
+        expect(response).to redirect_to(new_user_session_path, tpath: false)
       end
     end
 
@@ -200,7 +200,7 @@ RSpec.describe Users::CosasController do
 
       it 'redirects to the cosas list' do
         subject
-        expect(response).to redirect_to(users_cosas_url)
+        expect(response).to redirect_to(users_cosas_path)
       end
     end
   end

@@ -24,33 +24,37 @@ h1
 
 - if policy(UserAccount).index?
   h5 Lista de usuarios
-  div style="xmax-width: 70em"
-    table.table.table-sm.listado.w-auto
-      tr
-        - if Current.user_account_owner?
-          th
-        th Nombre
-        - if Current.user_account_owner?
-          th Email
-          - PgEngine.config.profile_groups_options.each do |profile_group|
-            th = t(profile_group[:name], scope: 'profile_group')
-
-          th Estado
-      - policy_scope(UserAccount).where(account: @account).regulars.order(:id).each do |user_account|
+  - if @user_accounts.any?
+    div style="xmax-width: 70em"
+      table.table.table-sm.listado.w-auto
         tr
           - if Current.user_account_owner?
-            td
-              .actions-wrapper
-                - object = user_account.decorate
-                = object.edit_link(text: '', klass: 'btn-light btn-sm')
-                = object.archive_link
-                = object.restore_link
-                = object.destroy_link
-          td
-            = user_account.user
-            
+            th
+          th Nombre
           - if Current.user_account_owner?
-            td = user_account.user.email
+            th Email
             - PgEngine.config.profile_groups_options.each do |profile_group|
-              td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe.presence || 'No'
-            td = user_account.decorate.estado_f
+              th = t(profile_group[:name], scope: 'profile_group')
+
+            th Estado
+        - @user_accounts.each do |user_account|
+          tr
+            - if Current.user_account_owner?
+              td
+                .actions-wrapper
+                  - object = user_account.decorate
+                  = object.show_link
+                  = object.edit_link(text: '', klass: 'btn-light btn-sm')
+                  = object.archive_link
+                  = object.restore_link
+                  = object.destroy_link
+            td
+              = user_account.user
+
+            - if Current.user_account_owner?
+              td = user_account.user.email
+              - PgEngine.config.profile_groups_options.each do |profile_group|
+                td = profile_group[:options].select { |opt| user_account.profiles.include?(opt.first) }.map(&:last).map { |pr| t(pr, scope: 'profile_member') }.join(', ').html_safe.presence || 'No'
+              td = user_account.decorate.estado_f
+  - else
+    p No hay usuarios aún

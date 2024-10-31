@@ -122,7 +122,6 @@ module PgEngine
     end
 
     def user_has_profile(key)
-      return false if user.blank?
       return true if Current.namespace == :admin
       return false if ActsAsTenant.current_tenant.blank?
 

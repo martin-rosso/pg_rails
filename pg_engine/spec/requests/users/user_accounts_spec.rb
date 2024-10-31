@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Devise invitable' do
+describe 'Devise invitable', :tpath_req do
   let(:logged_user) { create :user, :owner }
 
   # Al crear un user en el contexto de un tenant, automáticamente
@@ -33,8 +33,8 @@ describe 'Devise invitable' do
     end
 
     it do
-      expect { subject }.to(change { user_account.reload.profiles })
-      expect(response).to redirect_to users_user_account_path(user_account, tenant_id:)
+      expect { subject }.to(change { user_account.reload.profiles }.to(include('cosas__read')))
+      expect(response).to redirect_to users_user_account_path(user_account)
     end
   end
 

@@ -26,7 +26,9 @@ module PgEngine
         active_user_accounts = Current.user.user_accounts.active.to_a
         if ActsAsTenant.current_tenant.present?
           # TODO: los controller tests pasan por acá porque no se ejecuta
-          # el tenant middleware. cambiarlos a requests specs
+          # el tenant middleware. afortunadamente eso hace que no haga falta
+          # el tenant_id. igualmente cambiarlos a requests specs
+          #
           # TODO: testear
           # TODO: if current_tenant.present? check it's not discarded
           unless active_user_accounts.any? { |uac| uac.account == ActsAsTenant.current_tenant }

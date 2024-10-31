@@ -13,7 +13,7 @@ describe 'redirection' do
     end
   end
 
-  context 'when logged in' do
+  context 'when logged in', :tpath_req do
     let(:logged_user) { create :user, :owner }
 
     before do
@@ -26,7 +26,7 @@ describe 'redirection' do
         expect(response.body).to include 'No hay ningún coso que mostrar'
         logged_user.user_accounts.first.account.discard!
         get '/u/cosas'
-        expect(response).to redirect_to users_accounts_path
+        expect(response).to redirect_to users_accounts_path, tpath: false
       end
     end
 
@@ -39,7 +39,7 @@ describe 'redirection' do
       it do
         get '/u/cosas'
 
-        expect(response).to redirect_to new_user_session_path
+        expect(response).to redirect_to new_user_session_path, tpath: false
       end
     end
   end
