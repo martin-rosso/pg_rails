@@ -156,6 +156,7 @@ class User < ApplicationRecord
     current_profiles.account__owner?
   end
 
+  # FIXME: remove?
   def current_profiles
     current_user_account.profiles
   end

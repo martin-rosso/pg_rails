@@ -22,7 +22,6 @@ class AccountDecorator < PgEngine::BaseRecordDecorator
      ua.reject_invitation_link].compact.join.html_safe
   end
 
-
   def show_link(text: '', klass: 'btn-light')
     return unless Pundit.policy!(Current.user, object).show?
 

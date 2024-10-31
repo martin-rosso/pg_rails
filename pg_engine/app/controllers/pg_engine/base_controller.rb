@@ -11,8 +11,8 @@ module PgEngine
     set_current_tenant_through_filter
 
     def default_url_options
-      if Current.user.present? && ActsAsTenant.current_tenant.present?
-        { tenant_id: Current.user.current_user_account.to_param }
+      if Current.active_user_account
+        { tenant_id: Current.active_user_account.to_param }
       else
         { tenant_id: nil }
       end
@@ -27,14 +27,15 @@ module PgEngine
       #   raise ActsAsTenant::Errors::NoTenantSet
       # end
       # FIXME: if current_tenant.present? check it's not discarded
-      # FIXME: if session['current_user_account'] present? check
+      # FIXME: if session['ss_current_user_account_id'] present? check
       #        user belongs to it, and if not, cleanup
       if Current.user.present?
-        active_user_accounts = Current.user.user_accounts.active
+        active_user_accounts = Current.user.user_accounts.active.to_a
         if ActsAsTenant.current_tenant.present?
           # TODO: los controller tests pasan por acá porque no se ejecuta
           # el tenant middleware. cambiarlos a requests specs
-          unless active_user_accounts.exists?(account: ActsAsTenant.current_tenant)
+          # TODO: testear
+          unless active_user_accounts.any? { |uac| uac.account == ActsAsTenant.current_tenant }
             pg_warn <<~WARN
               #{Current.user.to_gid} not belongs to \
               #{ActsAsTenant.current_tenant.to_gid}. Signed out
@@ -46,24 +47,37 @@ module PgEngine
 
           @current_tenant_set_by_domain_or_subdomain = true
         else
-          account = if params[:tenant_id].present?
-                      begin
-                        ua = UserAccount.find(params[:tenant_id])
-                        session['current_user_account'] = ua.id
-                        ua.account
-                      rescue ActiveRecord::RecordNotFound => e
-                        pg_warn(e)
-                      end
-                    elsif session['current_user_account'].present?
-                      active_user_accounts.where(id: session['current_user_account']).first&.account
-                    elsif active_user_accounts.count == 1
-                      active_user_accounts.first.account
-                    end
+          ua = nil
+          uaid = if params[:tenant_id].present?
+                   UserAccount.decode_id(params[:tenant_id])
+                   # elsif session['ss_current_user_account_id'].present?
+                   #   session['ss_current_user_account_id']
+                 end
 
-          if account.present? && active_user_accounts.exists?(account:)
-            set_current_tenant(account)
-          else
-            session['current_user_account'] = nil
+          if uaid.present?
+            ua = active_user_accounts.find { |uac| uac.id == uaid }
+          end
+
+          # account = if params[:tenant_id].present?
+          #             begin
+          #               ua = UserAccount.find(params[:tenant_id])
+          #               session['ss_current_user_account_id'] = ua.id
+          #               ua.account
+          #             rescue ActiveRecord::RecordNotFound => e
+          #               pg_warn(e)
+          #             end
+          #           elsif session['ss_current_user_account_id'].present?
+          #             active_user_accounts.where(id: session['ss_current_user_account_id']).first&.account
+          #           elsif active_user_accounts.count == 1
+          #             active_user_accounts.first.account
+          #           end
+
+          if ua.present?
+            # session['ss_current_user_account_id'] = ua.id
+            set_current_tenant(ua.account)
+            Current.active_user_account = ua
+            # else
+            #   session['ss_current_user_account_id'] = nil
           end
         end
       end
@@ -111,10 +125,21 @@ module PgEngine
       redirect_to e.url
     end
 
+    def require_tenant_set
+      return if ActsAsTenant.current_tenant.present?
+
+      raise ActsAsTenant::Errors::NoTenantSet
+    end
+
     def no_tenant_set(error)
       return internal_error(error) if Current.user.blank?
 
-      redirect_to users_accounts_path
+      active_user_accounts = Current.user.user_accounts.active.to_a
+      if active_user_accounts.length == 1
+        redirect_to url_for(tenant_id: active_user_accounts.first.to_param)
+      else
+        redirect_to users_accounts_path
+      end
     end
 
     def bad_user_input(error)

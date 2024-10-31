@@ -1,14 +1,26 @@
 class Current < ActiveSupport::CurrentAttributes
-  attribute :account, :user, :namespace, :controller
+  attribute :user, :namespace, :controller, :active_user_account
   # attribute :request_id, :user_agent, :ip_address
 
   # resets { Time.zone = nil }
+
+  def active_user_account
+    # En la mayoría de los casos si hay user y hay account es porque hay una
+    # active_user_account salvo en el show de account que se renderea 'with_tenant'
+    if attributes[:active_user_account].blank? && user.present? && account.present?
+      attributes[:active_user_account] = user.active_user_account_for(account)
+    end
+
+    super
+  end
+
+  def account
+    ActsAsTenant.current_tenant
+  end
 
   # def user=(user)
   #   super
   #
   #   Time.zone    = user.time_zone
   # end
-
-  deprecate :account, deprecator: PgEngine.deprecator
 end

@@ -24,7 +24,7 @@ class Account < ApplicationRecord
   include Discard::Model
   include Hashid::Rails
 
-  has_many :user_accounts
+  has_many :user_accounts, dependent: :destroy
   has_many :users, through: :user_accounts
 
   belongs_to :creado_por, optional: true, class_name: 'User'

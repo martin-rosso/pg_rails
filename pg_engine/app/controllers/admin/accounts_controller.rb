@@ -19,11 +19,11 @@ module Admin
     end
 
     def atributos_para_listar
-      atributos_permitidos
+      %i[plan nombre domain subdomain owner]
     end
 
     def atributos_para_mostrar
-      atributos_permitidos
+      %i[plan nombre domain subdomain owner]
     end
   end
 end

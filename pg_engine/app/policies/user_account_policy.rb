@@ -18,7 +18,7 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def index?
-    super && (Current.namespace == :admin || user.current_user_account.membership_status.ms_active?)
+    super && (Current.namespace == :admin || Current.active_user_account.present?)
   end
 
   def sign_off?

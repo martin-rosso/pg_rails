@@ -1,8 +1,8 @@
 class Navbar
   include Rails.application.routes.url_helpers
   def default_url_options
-    if Current.user.present? && ActsAsTenant.current_tenant.present?
-      { tenant_id: Current.user.current_user_account.to_param }
+    if Current.active_user_account.present?
+      { tenant_id: Current.active_user_account.to_param }
     else
       { tenant_id: nil }
     end
