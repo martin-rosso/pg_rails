@@ -4,7 +4,14 @@
 
 module Users
   class UserAccountsController < PgEngine.config.users_controller
+    # TODO: maybe nest into accounts
+    around_action :set_without_tenant
+    def set_without_tenant(&)
+      ActsAsTenant.without_tenant(&)
+    end
+
     include PgEngine::Resource
+    skip_before_action :require_tenant_set
 
     self.clase_modelo = UserAccount
     self.nested_class = Account
@@ -19,19 +26,14 @@ module Users
         add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tenant_id: nil) }
       end
     end
-    # TODO: maybe nest into accounts
-    skip_before_action :require_tenant_set, only: %i[destroy update_invitation]
-    before_action except: %i[destroy update_invitation] do
-      unless modal_targeted?
-        add_breadcrumb Current.account, users_account_path(Current.account, tenant_id: nil)
-      end
+
+    before_action only: :update_invitation do
+      set_instancia_modelo
     end
 
-    around_action :set_without_tenant, only: :update_invitation
-    def set_without_tenant
-      ActsAsTenant.without_tenant do
-        set_instancia_modelo
-        yield
+    before_action only: %i[show edit update] do
+      unless modal_targeted?
+        add_breadcrumb @user_account.account, users_account_path(@user_account.account, tenant_id: nil)
       end
     end
 

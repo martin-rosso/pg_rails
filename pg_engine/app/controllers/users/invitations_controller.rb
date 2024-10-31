@@ -21,6 +21,7 @@ module Users
         self.resource = ActsAsTenant.without_tenant do
           User.find_by(email:)
         end
+        # FIXME: if user is discarded fail
       end
 
       if resource.present?

@@ -22,34 +22,40 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def sign_off?
-    user.id == record.user_id &&
+    user_is_user_account_user? &&
       !record.ua_invite_pending? &&
       !record.profiles.account__owner?
   end
 
   def accept_invitation_link?
-    user.id == record.user_id && record.ua_invite_pending?
+    user_is_user_account_user? && record.ua_invite_pending?
   end
 
   def update_invitation?
-    user.id == record.user_id
+    user_is_user_account_user?
   end
 
   def ingresar?
-    record.user == user && record.ua_active?
+    user_is_user_account_user? && record.ua_active?
   end
 
-  def edit?
-    super &&
-      (Current.namespace == :admin ||
-       (!record.profiles.account__owner? && !record.discarded_by_user?))
+  def puede_editar?
+    Current.namespace == :admin || (user_is_account_owner? && !record.discarded_by_user?)
   end
 
   def destroy?
-    super && (Current.namespace == :admin || !record.profiles.account__owner?)
+    Current.namespace == :admin || user_is_account_owner?
   end
 
   def show?
-    Current.namespace == :admin || Current.user_account_owner?
+    Current.namespace == :admin || user_is_account_owner?
+  end
+
+  def user_is_account_owner?
+    record.account.owner == user
+  end
+
+  def user_is_user_account_user?
+    user.id == record.user_id
   end
 end

@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-describe 'Devise invitable', :tpath_req do
+describe 'user accounts' do
   let(:logged_user) { create :user, :owner }
 
   # Al crear un user en el contexto de un tenant, automáticamente
@@ -13,6 +13,13 @@ describe 'Devise invitable', :tpath_req do
 
   before do
     sign_in logged_user
+  end
+
+  describe 'show' do
+    it do
+      get "/u/user_accounts/#{user_account.to_param}"
+      expect(response).to have_http_status(:ok)
+    end
   end
 
   describe 'edit' do
