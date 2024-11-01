@@ -1,4 +1,6 @@
-/ # locals: (image_url:, href:)
+/ # locals: (image_url:, href: nil)
 
+/ FIXME: quitar param href
+- href = Current.tid.present? ? tenant_root_path(tid: Current.tid) : root_path
 a.navbar-brand href="#{ href }"
   = image_tag(image_url, style: 'max-height: 24px', alt: t('app_name'))

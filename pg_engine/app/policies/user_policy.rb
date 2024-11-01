@@ -4,6 +4,16 @@
 
 class UserPolicy < ApplicationPolicy
   class Scope < ApplicationPolicy::Scope
+    def resolve
+      if Current.namespace == :admin
+        scope.all
+      elsif Current.account.present?
+        ids = Current.account.user_accounts.ua_active.pluck(:user_id)
+        scope.where(id: ids)
+      else
+        scope.none
+      end
+    end
   end
 
   # def puede_editar?

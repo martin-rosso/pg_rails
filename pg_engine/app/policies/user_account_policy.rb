@@ -49,7 +49,7 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def show?
-    Current.namespace == :admin || user_is_account_owner?
+    Current.namespace == :admin || (user_is_account_owner? && !record.profiles.account__owner?)
   end
 
   def user_is_account_owner?

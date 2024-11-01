@@ -21,7 +21,7 @@ class AccountPolicy < ApplicationPolicy
   end
 
   def puede_editar?
-    Current.namespace == :admin
+    Current.namespace == :admin || record.owner == Current.user
   end
 
   def puede_crear?

@@ -6,14 +6,15 @@
         <i class="bi <%= @navbar_chevron_class %>"></i>
       </button>
     <% end %>
+    <% if @navbar.logo.present? %>
+      <span class="ms-3">
+      <%= render @navbar.logo %>
+      </span>
+    <% end %>
     <%= render partial: 'pg_layout/signed_in_links' %>
     <% @navbar.extensiones.each do |extension| %>
       <%= extension %>
     <% end %>
-    <% if Current.user.present? && @notifications_bell.present? %>
-      <%= render @notifications_bell %>
-    <% end %>
-    <%#= @navbar.logo if @navbar.logo.present? %>
     <% unless @sidebar == false %>
       <button class="btn btn-outline-light d-inline-block
                      d-<%= @breakpoint_navbar_expand %>-none"

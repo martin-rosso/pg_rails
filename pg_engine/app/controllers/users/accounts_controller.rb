@@ -15,7 +15,7 @@ module Users
     self.clase_modelo = Account
     self.skip_default_breadcrumb = true
 
-    add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tid: nil) }
+    add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
 
     # La user_account puede estar disabled
     def show
@@ -48,7 +48,7 @@ module Users
     private
 
     def atributos_permitidos
-      %i[nombre plan]
+      %i[nombre logo plan]
     end
 
     def atributos_para_buscar

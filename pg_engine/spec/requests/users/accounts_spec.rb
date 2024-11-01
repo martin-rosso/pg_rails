@@ -11,19 +11,19 @@ describe 'Users::AccountsController' do
 
   describe 'show' do
     it 'shows the owned account' do
-      get "/u/cuentas/#{account.to_param}"
+      get "/u/espacios/#{account.to_param}"
       expect(response).to have_http_status(:ok)
     end
 
     it 'denies foreign account' do
       other_account = create :account
-      get "/u/cuentas/#{other_account.to_param}"
+      get "/u/espacios/#{other_account.to_param}"
       expect(response).to have_http_status(:unauthorized)
     end
 
     context 'when not the owner' do
       subject do
-        get "/u/cuentas/#{other_account.to_param}"
+        get "/u/espacios/#{other_account.to_param}"
       end
 
       let(:other_account) { create :account }
@@ -81,7 +81,7 @@ describe 'Users::AccountsController' do
 
   describe 'index' do
     subject do
-      get '/u/cuentas'
+      get '/u/espacios'
     end
 
     before do
@@ -114,7 +114,7 @@ describe 'Users::AccountsController' do
 
   describe 'create an account' do
     subject do
-      post '/u/cuentas', params: {
+      post '/u/espacios', params: {
         account: {
           plan: :completar,
           nombre: Faker::Lorem.sentence

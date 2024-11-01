@@ -36,6 +36,10 @@ class Account < ApplicationRecord
 
   has_many :audits, dependent: :nullify, class_name: 'Audited::Audit'
 
+  has_one_attached :logo do |attachable|
+    attachable.variant :thumb, resize_and_pad: [80, 80]
+  end
+
   ransacker :search do |parent|
     parent.table[:nombre]
   end
@@ -53,7 +57,7 @@ class Account < ApplicationRecord
   end
 
   def self.gender
-    'f'
+    'm'
   end
 
   def to_s

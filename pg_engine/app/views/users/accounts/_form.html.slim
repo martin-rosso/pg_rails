@@ -1,6 +1,7 @@
 div style="max-width: 22em"
   = pg_form_for(@account || object) do |f|
-    = f.input :plan
     = f.input :nombre
+    = f.input :plan
+    = f.input :logo
     .mt-2
     = f.button :submit

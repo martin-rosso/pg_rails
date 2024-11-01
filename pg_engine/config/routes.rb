@@ -26,7 +26,7 @@ Rails.application.routes.draw do
     post 'notifications/mark_as_seen', to: 'notifications#mark_as_seen'
     post 'notifications/mark_as_unseen', to: 'notifications#mark_as_unseen'
     get 'date_jumper/jump'
-    pg_resource(:accounts, path: 'cuentas', only: [:index, :show, :new, :create]) do
+    pg_resource(:accounts, path: 'espacios', only: [:index, :show, :new, :create, :edit, :update]) do
       member do
         put :update_invitation
       end

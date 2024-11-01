@@ -4,7 +4,7 @@ module Users
     before_action only: %i[new create] do
       set_tenant_from_params_or_fail!
 
-      add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tid: nil) }
+      add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
       add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
       add_breadcrumb 'Usuarios'
       add_breadcrumb 'Agregar usuario'

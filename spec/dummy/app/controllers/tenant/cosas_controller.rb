@@ -28,7 +28,7 @@ module Tenant
     end
 
     def atributos_para_buscar
-      %i[nombre tipo categoria_de_cosa]
+      %i[nombre tipo categoria_de_cosa creado_por]
     end
 
     def atributos_para_listar

@@ -12,7 +12,7 @@ module Tenant
     before_action do
       @sidebar = false
       unless modal_targeted? || frame_embedded?
-        add_breadcrumb 'Cuentas', ->(h) { h.users_accounts_path(tid: nil) }
+        add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
         add_breadcrumb ActsAsTenant.current_tenant, users_account_path(Current.account, tid: nil)
       end
       unless modal_targeted?

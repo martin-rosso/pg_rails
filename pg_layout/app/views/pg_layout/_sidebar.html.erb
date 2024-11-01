@@ -1,7 +1,7 @@
 <div id="sidebar" class="<%= @navbar_opened_class %> flex-shrink-0 d-none d-<%= @breakpoint_navbar_expand %>-block">
   <div class="mt-1">
     <div class="m-3">
-      <%= @navbar.logo if @navbar.logo.present? %>
+      <%= render @navbar.logo if @navbar.logo.present? %>
     </div>
     <ul class="list-unstyled ps-0 mt-5">
       <% @navbar.sidebar.each do |entry| %>

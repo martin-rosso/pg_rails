@@ -38,7 +38,7 @@ describe 'Tenants' do
       it 'shows the accounts index' do
         visitar
 
-        expect(page).to have_text 'Mostrando un total de 2 cuentas'
+        expect(page).to have_text 'Mostrando un total de 2 espacios'
       end
 
       it 'switches to account' do

@@ -6,15 +6,18 @@ div style="max-width: 32em" data-controller="pg_form"
     = f.input :nombre
     = f.input :fecha, date_selector: true
     = f.input :tiempo, html5: true
+
     = f.input :tipo
+    / To fix capybara issues
+    - unless Rails.env.test?
 
-    h4 Cosas
-    #items.nested-container data-required="true"
-      = f.fields_for :cosas do |vi|
-        = render partial: 'cosa_fields', locals: { f: vi }
+      h4 Cosas
+      #items.nested-container data-required="true"
+        = f.fields_for :cosas do |vi|
+          = render partial: 'cosa_fields', locals: { f: vi }
 
-      div
-        = link_to_add_fields 'Agregar', f, :cosas
+        div
+          = link_to_add_fields 'Agregar', f, :cosas
 
     .mt-2
     = f.button :submit

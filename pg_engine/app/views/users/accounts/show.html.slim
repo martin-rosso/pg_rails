@@ -2,16 +2,18 @@
   = @user_account.ingresar_link
   = @user_account.sign_off_link
 
-h1
-  |> Nombre de la cuenta:
-  = @account
+.text-center
+  - if @account.logo.present?
+    = image_tag @account.logo
+  h1
+    = @account
 
-h4
-  |> Administrado por:
-  = @account.owner.nombre_completo
-  |< (
-  = @account.owner.email
-  | )
+  / h6
+    |> Administrado por:
+    = @account.owner.nombre_completo
+    |< (
+    = @account.owner.email
+    | )
 
 - if @user_account.membership_status.ms_disabled?
   p.text-danger Deshabilitado

@@ -1,7 +1,7 @@
 es:
   profile_group:
     account: Cuenta
-    user_accounts: Acceso a usuarios
+    user_accounts: Usuarios
   profile_member:
     owner: Administrador
     read: Ver
@@ -172,8 +172,8 @@ es:
         one: Cuenta de usuario
         other: Cuentas de usuario
       account:
-        one: Cuenta
-        other: Cuentas
+        one: Espacio
+        other: Espacios
       user:
         one: Usuario
         other: Usuarios
@@ -187,6 +187,7 @@ es:
         profiles: Permisos
       user:
         remember_me: Recordarme en este navegador
+        avatar: Foto de perfil
       email:
         from_name: Remitente
         to: Destinatario

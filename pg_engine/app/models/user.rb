@@ -29,6 +29,20 @@
 #
 
 class User < ApplicationRecord
+  default_scope lambda {
+    if Current.namespace == :tenant
+      if ActsAsTenant.unscoped?
+        all
+      else
+        ids = Current.account.user_accounts.ua_active.pluck(:user_id)
+        # ids = ids.push(Current.user.id) ?
+        where(id: ids)
+      end
+    else
+      all
+    end
+  }
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable,
          :lockable, :timeoutable, :trackable, :confirmable, :invitable
@@ -48,12 +62,15 @@ class User < ApplicationRecord
   #
   # Es problemático porque interfiere en UserAccount.joins(:user)
   # y hace un doble join
-  # FIXME: revisarRRRRRRRRRRRRR
   # acts_as_tenant :account, through: :user_accounts
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
   validates :nombre, :apellido, presence: true
+
+  has_one_attached :avatar do |attachable|
+    attachable.variant :thumb, resize_to_fill: [80, 80]
+  end
 
   validates_presence_of   :email
   validates_uniqueness_of :email, message: 'ya pertenece a un usuario'

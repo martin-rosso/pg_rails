@@ -10,6 +10,8 @@ describe 'user accounts', :tpath_req do
     sign_in logged_user
   end
 
+  pending 'index'
+
   describe 'show' do
     it do
       get "/u/t/user_accounts/#{user_account.to_param}"

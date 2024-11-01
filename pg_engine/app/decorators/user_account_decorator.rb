@@ -10,8 +10,8 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
 
     h.link_to h.tenant_root_path(tid: object.to_param),
               'data-turbo-frame': :_top,
-              class: 'btn btn-sm btn-success' do
-      'Ingresar'
+              class: 'btn btn-sm btn-primary' do
+      '<i class="bi bi-box-arrow-in-right"></i> Ingresar'.html_safe
     end
   end
 
@@ -70,7 +70,12 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   end
 
   def profiles_f
-    object.profiles.texts.join(', ')
+    return if object.profiles.account__owner?
+
+    # object.profiles.texts.join(', ')
+    PgEngine.config.profile_groups_options.map do |profile_group|
+      "<b>#{I18n.t(profile_group[:name], scope: 'profile_group')}: </b>" + h.show_profiles_for(object, profile_group)
+    end.join('. ').html_safe
   end
 
   def user_email_f

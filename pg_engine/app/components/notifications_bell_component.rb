@@ -6,7 +6,7 @@ class NotificationsBellComponent < BaseComponent
   end
 
   erb_template <<~ERB
-    <div>
+    <div class="d-flex">
       <% if @tooltip.present? %>
         <div class="d-inline-block text-white pg--notifications-bell--tooltip">
           <%= @tooltip %>

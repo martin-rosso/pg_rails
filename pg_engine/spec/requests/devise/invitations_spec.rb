@@ -103,7 +103,7 @@ describe 'invite users to the platform and to an account' do
       user_account = user.user_accounts.first
       expect(user_account.invitation_status).to eq 'ist_invited'
       expect { subject }.to change { user.reload.invitation_accepted_at }.to(be_present)
-      put "/u/cuentas/#{account.to_param}/update_invitation", params: { accept: 1 }
+      put "/u/espacios/#{account.to_param}/update_invitation", params: { accept: 1 }
       expect(user_account.reload.invitation_status).to eq 'ist_accepted'
     end
   end
@@ -121,7 +121,7 @@ describe 'invite users to the platform and to an account' do
 
     context 'when accepting an invite' do
       subject do
-        put "/u/cuentas/#{account.to_param}/update_invitation", params: { accept: 1 }
+        put "/u/espacios/#{account.to_param}/update_invitation", params: { accept: 1 }
       end
 
       let(:membership_status) { :ms_active }
@@ -135,7 +135,7 @@ describe 'invite users to the platform and to an account' do
 
     context 'when rejecting an invite' do
       subject do
-        put "/u/cuentas/#{account.to_param}/update_invitation", params: { reject: 1 }
+        put "/u/espacios/#{account.to_param}/update_invitation", params: { reject: 1 }
       end
 
       let(:membership_status) { :ms_active }
@@ -147,7 +147,7 @@ describe 'invite users to the platform and to an account' do
 
     context 'when signing off the account' do
       subject do
-        put "/u/cuentas/#{account.to_param}/update_invitation", params: { sign_off: 1 }
+        put "/u/espacios/#{account.to_param}/update_invitation", params: { sign_off: 1 }
       end
 
       let(:membership_status) { %i[ms_active ms_disabled].sample }
