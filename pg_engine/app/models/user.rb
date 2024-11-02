@@ -132,12 +132,12 @@ class User < ApplicationRecord
 
   class Error < PgEngine::Error; end
 
-  def default_account
-    raise Error, 'El usuario debe tener cuenta' if accounts.empty?
+  # def default_account
+  #   raise Error, 'El usuario debe tener cuenta' if accounts.empty?
 
-    user_accounts.first.account
-    # throw :warden, scope: :user, message: :user_not_belongs_to_account
-  end
+  #   user_accounts.first.account
+  #   # throw :warden, scope: :user, message: :user_not_belongs_to_account
+  # end
 
   deprecate :current_account, deprecator: PgEngine.deprecator
 

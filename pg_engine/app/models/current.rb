@@ -3,6 +3,14 @@ class Current < ActiveSupport::CurrentAttributes
   # attribute :request_id, :user_agent, :ip_address
 
   # resets { Time.zone = nil }
+  def active_user_account
+    # Para los jobs
+    if attributes[:active_user_account].nil? && user.present? && account.present?
+      attributes[:active_user_account] = user.active_user_account_for(account)
+    end
+
+    super
+  end
 
   def tid
     active_user_account.to_param

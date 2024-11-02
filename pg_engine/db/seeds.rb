@@ -13,4 +13,4 @@ rené = FactoryBot.create(:user, email: 'rene@bien.com', nombre: 'René', apelli
                                 confirmed_at: Time.now)
 
 racionalismo.user_accounts.create!(user: baruch, profiles: [:account__owner])
-racionalismo.user_accounts.create!(user: rené, profiles: [:cosas__read])
+racionalismo.user_accounts.create!(user: rené, profiles: [])

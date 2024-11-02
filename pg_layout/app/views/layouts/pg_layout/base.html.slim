@@ -51,6 +51,7 @@ html
       }
 
   body
+    span#tid.d-none data-tid="#{Current.tid}"
     - sidebar_present = @navbar.present? && @sidebar != false
     - if sidebar_present
       = render partial: 'pg_layout/sidebar_mobile'
