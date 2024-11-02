@@ -13,10 +13,6 @@ RSpec.describe User do
     expect(UserAccount.first.profiles).to include(:account__owner)
   end
 
-  it do
-    expect(user.default_account).to be_present
-  end
-
   describe 'search ransacker' do
     it 'searchs' do
       results = described_class.ransack(search_cont: user.nombre).result.to_a

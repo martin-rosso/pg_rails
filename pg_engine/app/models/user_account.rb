@@ -39,7 +39,7 @@ class UserAccount < ApplicationRecord
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
-  validates :user_id, uniqueness: { scope: :account_id }
+  validates_uniqueness_to_tenant :user_id
 
   after_destroy :cleanup_invitation
   def cleanup_invitation

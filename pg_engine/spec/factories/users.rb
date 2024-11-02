@@ -70,8 +70,11 @@ FactoryBot.define do
     end
 
     trait :owner do
-      user_accounts do
-        [build(:user_account, account: ActsAsTenant.current_tenant, profiles: [:account__owner])]
+      after(:create) do |model|
+        model.user_accounts.create!(profiles: [:account__owner])
+        # ActsAsTenant.with_tenant(create(:account)) do
+        #   model.user_accounts.create!(profiles: [:account__owner])
+        # end
       end
     end
   end

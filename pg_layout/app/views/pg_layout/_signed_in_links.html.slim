@@ -44,7 +44,7 @@
             i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
           = Current.user
         ul.dropdown-menu
-          li = link_to 'Perfil', edit_user_registration_path(tid: nil), class: 'dropdown-item'
+          li = link_to 'Mi cuenta', edit_user_registration_path(tid: nil), class: 'dropdown-item'
           li = link_to Account.model_name.human(count: 2), users_accounts_path(tid: nil), class: 'dropdown-item'
           - if Current.user.developer?
             li = link_to 'Admin', admin_users_path, class: 'dropdown-item'
