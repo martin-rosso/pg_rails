@@ -2,6 +2,7 @@
 module PgAssociable
   module FormBuilderMethods
     def self.included(mod)
+      mod.include PgEngine::DefaultUrlOptions
       mod.include Rails.application.routes.url_helpers
       mod.include PgEngine::RouteHelper
     end

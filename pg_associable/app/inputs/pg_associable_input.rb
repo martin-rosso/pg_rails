@@ -2,6 +2,7 @@
 
 class PgAssociableInput < SimpleForm::Inputs::StringInput
   include ActionView::Helpers::FormTagHelper
+  include PgEngine::DefaultUrlOptions
   include Rails.application.routes.url_helpers
   include PgEngine::RouteHelper
 
