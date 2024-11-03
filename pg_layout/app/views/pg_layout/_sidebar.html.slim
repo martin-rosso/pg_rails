@@ -1,0 +1,10 @@
+div id="sidebar" class="#{@navbar_opened_class} flex-shrink-0 d-none d-#{@breakpoint_navbar_expand}-block"
+  .mt-1
+    .m-3
+      = render @navbar.logo if @navbar.logo.present?
+    ul.list-unstyled.ps-0.mt-5
+      - @navbar.sidebar.each do |entry|
+        - next if @navbar.hide_entry?(entry)
+        li.mb-1
+          a href=entry[:path] class="d-inline-flex text-decoration-none pg--nav-button #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
+            = entry[:title]

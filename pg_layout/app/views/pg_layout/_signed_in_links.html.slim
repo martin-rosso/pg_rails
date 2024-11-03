@@ -1,52 +1,50 @@
-- if user_signed_in?
-  .xcollapse.xnavbar-collapse.justify-content-end
-    ul.navbar-nav.flex-row
-      - if Current.account.present?
-        li.nav-item.dropdown
-          = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
-                         role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
-            - if Current.account.logo.present?
-              = image_tag Current.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
-            - else
-              i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
-            = Current.account
-          ul.dropdown-menu
-            - if @other_active_accounts&.any?
-              h6.dropdown-header Cambiar a:
-              - @other_active_accounts.each do |ua|
-                li = link_to ua.account, tenant_root_path(tid: ua.to_param), class: 'dropdown-item'
-              li
-                hr.dropdown-divider
-            li = link_to "Administrar #{Account.model_name.human(count: 2)}", users_accounts_path(tid: nil), class: 'dropdown-item'
-      - elsif @other_active_accounts&.any?
-        li.nav-item.dropdown.d-flex
-          = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
-                         role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
-            i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
-            = Account.model_name.human(count: 2)
-          ul.dropdown-menu
-            - @other_active_accounts.each do |ua|
-              li = link_to ua.account, tenant_root_path(tid: ua.to_param), class: 'dropdown-item'
-            li
-              hr.dropdown-divider
-            li = link_to "Administrar #{Account.model_name.human(count: 2).downcase}", users_accounts_path(tid: nil), class: 'dropdown-item'
+ul.navbar-nav
+  - if Current.account.present?
+    li.nav-item.dropdown
+      = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
+                     role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
+        - if Current.account.logo.present?
+          = image_tag Current.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+        - else
+          i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
+        = Current.account
+      ul.dropdown-menu
+        - if @other_active_accounts&.any?
+          h6.dropdown-header Cambiar a:
+          - @other_active_accounts.each do |ua|
+            li = link_to ua.account, tenant_root_path(tid: ua.to_param), class: 'dropdown-item'
+          li
+            hr.dropdown-divider
+        li = link_to "Administrar #{Account.model_name.human(count: 2)}", users_accounts_path(tid: nil), class: 'dropdown-item'
+  - elsif @other_active_accounts&.any?
+    li.nav-item.dropdown.d-flex
+      = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
+                     role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
+        i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
+        = Account.model_name.human(count: 2)
+      ul.dropdown-menu
+        - @other_active_accounts.each do |ua|
+          li = link_to ua.account, tenant_root_path(tid: ua.to_param), class: 'dropdown-item'
+        li
+          hr.dropdown-divider
+        li = link_to "Administrar #{Account.model_name.human(count: 2).downcase}", users_accounts_path(tid: nil), class: 'dropdown-item'
 
-      .vr.bg-white.mx-3
-      - if Current.user.present? && @notifications_bell.present?
-        = render @notifications_bell
-      .vr.bg-white.mx-3
-      li.nav-item.dropdown.me-3
-        = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
-                       role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
-          - if Current.user.avatar.present?
-            = image_tag Current.user.avatar.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
-          - else
-            i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
-          = Current.user
-        ul.dropdown-menu
-          li = link_to 'Mi cuenta', edit_user_registration_path(tid: nil), class: 'dropdown-item'
-          li = link_to Account.model_name.human(count: 2), users_accounts_path(tid: nil), class: 'dropdown-item'
-          - if Current.user.developer?
-            li = link_to 'Admin', admin_users_path, class: 'dropdown-item'
-          li = link_to 'Cerrar sesión', destroy_user_session_path(tid: nil),
-                       'data-turbo-method': :delete, class: 'dropdown-item'
+  .vr.bg-white.mx-3
+  - if Current.user.present? && @notifications_bell.present?
+    = render @notifications_bell
+  .vr.bg-white.mx-3
+  li.nav-item.dropdown.me-3
+    = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
+                   role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do
+      - if Current.user.avatar.present?
+        = image_tag Current.user.avatar.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+      - else
+        i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
+      = Current.user
+    ul.dropdown-menu
+      li = link_to 'Mi cuenta', edit_user_registration_path(tid: nil), class: 'dropdown-item'
+      li = link_to Account.model_name.human(count: 2), users_accounts_path(tid: nil), class: 'dropdown-item'
+      - if Current.user.developer?
+        li = link_to 'Admin', admin_users_path, class: 'dropdown-item'
+      li = link_to 'Cerrar sesión', destroy_user_session_path(tid: nil),
+                   'data-turbo-method': :delete, class: 'dropdown-item'

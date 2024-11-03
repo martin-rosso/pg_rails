@@ -1,0 +1,16 @@
+#offcanvasExample.offcanvas.offcanvas-end[tabindex="-1" aria-labelledby="offcanvasExampleLabel" data-bs-theme="dark"]
+  .offcanvas-header[data-bs-theme="dark"]
+    h5#offcanvasExampleLabel.offcanvas-title
+    button.btn-close[type="button" data-bs-dismiss="offcanvas" aria-label="Close"]
+  .offcanvas-body.text-end
+    - if user_signed_in?
+      = render partial: 'pg_layout/signed_in_links'
+    ul.list-unstyled.mt-4
+      - @navbar.sidebar.each do |entry|
+        - next if @navbar.hide_entry?(entry)
+        li
+          a href=entry[:path] class="pg--nav-button pe-4 text-light #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
+            = entry[:title]
+css:
+  .offcanvas a { text-decoration: none; }
+  .offcanvas li { xmargin-top: 0.75em; } 

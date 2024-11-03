@@ -82,15 +82,15 @@ module PgEngine
     end
 
     def puede_editar?
-      user_has_profile(:update)
+      user_has_profile?(:update)
     end
 
     def puede_crear?
-      user_has_profile(:create)
+      user_has_profile?(:create)
     end
 
     def puede_borrar?
-      user_has_profile(:destroy)
+      user_has_profile?(:destroy)
     end
 
     def puede_ver_archivados?
@@ -98,19 +98,19 @@ module PgEngine
         model = record.is_a?(ActiveRecord::Base) ? record.class : record
         model.respond_to?(:discarded)
       end
-      user_has_profile(:archive) && admits_discard
+      user_has_profile?(:archive) && admits_discard
     end
 
     def base_access_to_record?
-      user_has_profile(:read)
+      user_has_profile?(:read)
     end
 
     def base_access_to_collection?
-      user_has_profile(:read)
+      user_has_profile?(:read)
     end
 
     def export?
-      user_has_profile(:export)
+      user_has_profile?(:export)
     end
 
     def record_discarded?
@@ -125,7 +125,7 @@ module PgEngine
       record.model_name.plural
     end
 
-    def user_has_profile(key)
+    def user_has_profile?(key)
       return true if Current.namespace == :admin
       return false if ActsAsTenant.current_tenant.blank?
 
