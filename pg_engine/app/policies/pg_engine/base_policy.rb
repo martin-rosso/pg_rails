@@ -130,7 +130,10 @@ module PgEngine
       return false if ActsAsTenant.current_tenant.blank?
 
       full_key = "#{profile_prefix}__#{key}"
-      Current.user_account_owner? || Current.active_user_profiles.include?(full_key)
+
+      scoped_by_tenant = record.class.respond_to?(:scoped_by_tenant?) && record.class.scoped_by_tenant?
+      (!scoped_by_tenant || Current.account.id == record.account_id) &&
+        (Current.user_account_owner? || Current.active_user_profiles.include?(full_key))
     end
   end
 end
