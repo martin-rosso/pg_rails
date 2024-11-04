@@ -5,12 +5,13 @@
   .offcanvas-body.text-end
     - if user_signed_in?
       = render partial: 'pg_layout/signed_in_links'
-    ul.list-unstyled.mt-4
-      - @navbar.sidebar.each do |entry|
-        - next if @navbar.hide_entry?(entry)
-        li
-          a href=entry[:path] class="pg--nav-button pe-4 text-light #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
-            = entry[:title]
+    - if @navbar.present?
+      ul.list-unstyled.mt-4
+        - @navbar.sidebar.each do |entry|
+          - next if @navbar.hide_entry?(entry)
+          li
+            a href=entry[:path] class="pg--nav-button pe-4 text-light #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
+              = entry[:title]
 css:
   .offcanvas a { text-decoration: none; }
   .offcanvas li { xmargin-top: 0.75em; } 

@@ -219,7 +219,7 @@ module PgEngine
         Request: #{request.inspect}
       STRING
 
-      render_my_component(BadUserInputComponent.new(error_msg: 'Acceso no autorizado'), :unauthorized)
+      render_my_component(BadUserInputComponent.new(error_msg: 'Operación no permitida'), :unauthorized)
     end
 
     def go_back(message = nil, type: :alert)

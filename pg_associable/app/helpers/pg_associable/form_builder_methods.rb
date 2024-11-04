@@ -49,6 +49,13 @@ module PgAssociable
       puede_crear = Pundit::PolicyFinder.new(klass).policy.new(user, klass).new_from_associable?
       collection = Pundit::PolicyFinder.new(klass).scope.new(user, klass).resolve
       collection = collection.kept if collection.respond_to?(:kept)
+
+      reflect = associacion_for(atributo)
+      fkid = object.send(reflect.foreign_key)
+      if fkid
+        collection = collection.or(klass.where(id: fkid))
+      end
+
       [collection, puede_crear]
     end
 
@@ -78,10 +85,16 @@ module PgAssociable
       association atributo, options
     end
 
-    def clase_asociacion(atributo)
+    def associacion_for(atributo)
       asociacion = object.class.reflect_on_all_associations.find { |a| a.name == atributo.to_sym }
 
       raise PgEngine::Error, "no existe la asociación para el atributo: #{atributo}" if asociacion.blank?
+
+      asociacion
+    end
+
+    def clase_asociacion(atributo)
+      asociacion = associacion_for(atributo)
 
       nombre_clase = asociacion.options[:class_name]
       nombre_clase = asociacion.name.to_s.camelize if nombre_clase.nil?

@@ -1,3 +1,5 @@
+/ TODO!: estaría bueno que la policy pueda discriminar permisos para cada atributo
+/ y por ejemplo no permitir el edit de un belongs_to a un modelo sobre el cual no tiene permisos
 - if Current.namespace == :tenant && \
      @model.class.inline_editable?(@unsuffixed_attribute) && helpers.policy(@model).edit?
   = helpers.turbo_frame_tag(@frame_id, class: 'inline-edit')

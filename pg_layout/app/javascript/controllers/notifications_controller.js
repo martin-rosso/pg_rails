@@ -49,7 +49,9 @@ export default class extends Controller {
           notif.classList.remove('unseen')
         }
       )
-      document.querySelector('.notifications-unseen-mark').remove()
+      document.querySelectorAll('.notifications-unseen-mark').forEach((e) => {
+        e.remove()
+      })
     } else {
       const text = await response.text
       Rollbar.error('Error marking as seen: ', text)
