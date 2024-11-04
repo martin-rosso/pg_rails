@@ -8,10 +8,13 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
   def ingresar_link
     return unless Pundit.policy!(Current.user, object).ingresar?
 
-    h.link_to h.tenant_root_path(tid: object.to_param),
-              'data-turbo-frame': :_top,
-              class: 'btn btn-sm btn-primary' do
-      '<i class="bi bi-box-arrow-in-right"></i> Ingresar'.html_safe
+    # El span es necesario para que el tamaño de los botones sea homogéneo
+    helpers.content_tag :span do
+      h.link_to h.tenant_root_path(tid: object.to_param),
+                'data-turbo-frame': :_top,
+                class: 'btn btn-sm btn-primary' do
+        '<i class="bi bi-box-arrow-in-right"></i> Ingresar'.html_safe
+      end
     end
   end
 

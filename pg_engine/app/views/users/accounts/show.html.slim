@@ -3,10 +3,11 @@
   = @user_account.sign_off_link
 
 .text-center
-  - if @account.logo.present?
-    = image_tag @account.logo
-  h1
-    = @account
+  .d-flex.justify-content-center.gap-2.align-items-center.m-3
+    - if @account.logo.present?
+      = image_tag @account.logo, style: 'max-height:3em'
+    .fs-1
+      = @account
 
   / h6
     |> Administrado por:

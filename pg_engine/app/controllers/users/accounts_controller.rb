@@ -17,6 +17,22 @@ module Users
 
     add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
 
+    layout :set_layout
+    def set_layout
+      if action_name == 'index'
+        'pg_layout/containerized'
+      else
+        super
+      end
+    end
+
+    before_action do
+      if action_name == 'index'
+        @container_class = 'container'
+        @container_style = 'max-width: 50em'
+      end
+    end
+
     # La user_account puede estar disabled
     def show
       add_breadcrumb @account, users_account_path(@account, tid: nil)
@@ -56,7 +72,7 @@ module Users
     end
 
     def atributos_para_listar
-      %i[nombre plan owner]
+      %i[nombre owner]
     end
   end
 end

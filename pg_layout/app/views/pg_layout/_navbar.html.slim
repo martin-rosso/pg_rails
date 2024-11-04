@@ -7,8 +7,9 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
       - if @navbar.logo.present?
         span.ms-3
           = render @navbar.logo
-    div class="d-#{@breakpoint_navbar_expand}-none"
-      = render @notifications_bell
+    - if user_signed_in? && @notifications_bell.present?
+      div class="d-#{@breakpoint_navbar_expand}-none"
+        = render @notifications_bell
     div
       - if user_signed_in?
         .collapse.navbar-collapse.justify-content-end
@@ -16,18 +17,20 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
       - @navbar.extensiones.each do |extension|
         = extension
       div class="d-#{@breakpoint_navbar_expand}-none"
-        a.d-flex.align-items-center.gap-2 href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
-          - if Current.account.present?
-            - if Current.account.logo.present?
-              = image_tag Current.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+        - if user_signed_in?
+          a.d-flex.align-items-center.gap-2 href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+            - if Current.account.present?
+              - if Current.account.logo.present?
+                = image_tag Current.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+              - else
+                i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
+            - if Current.user.avatar.present?
+              = image_tag Current.user.avatar.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
             - else
-              i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
-          - if Current.user.avatar.present?
-            = image_tag Current.user.avatar.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
-          - else
-            i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
-      / button class="btn btn-outline-light d-inline-block d-#{@breakpoint_navbar_expand}-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
-        i.bi.bi-list
+              i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
+        / - else
+          button class="btn btn-outline-light d-inline-block d-#{@breakpoint_navbar_expand}-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+            i.bi.bi-list
 #notifications-collapse.collapse[data-controller="notifications"]
   #notifications
     #notifications-inner
