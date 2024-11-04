@@ -1,4 +1,4 @@
-ul.navbar-nav
+ul.navbar-nav.gap-3.align-items-center class="gap-#{@breakpoint_navbar_expand}-0"
   - if Current.account.present?
     li.nav-item.dropdown
       = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
@@ -29,10 +29,11 @@ ul.navbar-nav
           hr.dropdown-divider
         li = link_to "Administrar #{Account.model_name.human(count: 2).downcase}", users_accounts_path(tid: nil), class: 'dropdown-item'
 
-  .vr.bg-white.mx-3
+  .vr.bg-white.mx-3.d-none class="d-#{@breakpoint_navbar_expand}-inline-block"
   - if Current.user.present? && @notifications_bell.present?
-    = render @notifications_bell
-  .vr.bg-white.mx-3
+    .d-none class="d-#{@breakpoint_navbar_expand}-inline-block"
+      = render @notifications_bell
+  .vr.bg-white.mx-3.d-none class="d-#{@breakpoint_navbar_expand}-inline-block"
   li.nav-item.dropdown.me-3
     = link_to '#', class: 'nav-link dropdown-toggle py-0 d-flex align-items-center',
                    role: :button, 'data-bs-toggle': :dropdown, 'aria-expanded': 'false' do

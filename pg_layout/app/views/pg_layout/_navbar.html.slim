@@ -15,7 +15,18 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
           = render partial: 'pg_layout/signed_in_links'
       - @navbar.extensiones.each do |extension|
         = extension
-      button class="btn btn-outline-light d-inline-block d-#{@breakpoint_navbar_expand}-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+      div class="d-#{@breakpoint_navbar_expand}-none"
+        a.d-flex.align-items-center.gap-2 href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
+          - if Current.account.present?
+            - if Current.account.logo.present?
+              = image_tag Current.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+            - else
+              i.bi.bi-bag-fill.me-2 style="font-size: 1.7em"
+          - if Current.user.avatar.present?
+            = image_tag Current.user.avatar.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+          - else
+            i.bi.bi-person-circle.me-2 style="font-size: 1.7em"
+      / button class="btn btn-outline-light d-inline-block d-#{@breakpoint_navbar_expand}-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
         i.bi.bi-list
 #notifications-collapse.collapse[data-controller="notifications"]
   #notifications
