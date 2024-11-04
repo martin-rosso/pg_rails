@@ -141,10 +141,11 @@ es:
       invitation_instructions:
         subject: "Recibiste una invitación de %{inviter}"
         hello: "Hola %{email}"
-        someone_invited_you: "Has sido invitado a %{url}, puedes aceptarlo siguiendo el siguiente enlace"
+        someone_invited_you: "Hola! %{inviter} te invitó a su espacio en %{app_name}"
+        follow_link: "Podés aceptar la invitación en el siguiente link:"
         accept: "Aceptar la invitación"
         accept_until: "Esta invitación expirará en %{due_date}."
-        ignore: "Si no le interesa esta invitación, simplemente ignore este correo. No se creará tu cuenta hasta que accedas al enlace anterior y crees una contraseña."
+        ignore: "Si no te interesa esta invitación, simplemente ignora este correo. No se creará tu cuenta hasta que accedas al enlace anterior."
       confirmation_instructions:
         action: Confirmá tu cuenta
         greeting: "Hola %{recipient}"

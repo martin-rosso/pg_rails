@@ -89,6 +89,14 @@ class User < ApplicationRecord
     user_accounts.first.invitation_status = :ist_invited
   end
 
+  def invited_to_app
+    user_accounts.first.account.plan || 'procura'
+  rescue StandardError => e
+    pg_err(e)
+
+    'procura'
+  end
+
   attr_accessor :orphan
 
   def active_for_authentication?

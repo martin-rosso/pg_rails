@@ -10,4 +10,10 @@ class DevisePreview < ActionMailer::Preview
     # ClienteMailer.comprobante_recibido(VComprobante.find(params[:]))
     Devise::Mailer.reset_password_instructions(User.first, 'TOKENN')
   end
+
+  def invitation
+    # ClienteMailer.comprobante_recibido(VComprobante.find(params[:]))
+    invitee = User.invitation_not_accepted.first
+    Devise::Mailer.invitation_instructions(invitee, 'TOKENN')
+  end
 end

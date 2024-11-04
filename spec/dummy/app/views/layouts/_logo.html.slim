@@ -3,4 +3,4 @@
 / FIXME: quitar param href
 - href = Current.tid.present? ? tenant_root_path(tid: Current.tid) : root_path
 a.navbar-brand href="#{ href }"
-  = image_tag(image_url, style: 'max-height: 31px', alt: t('app_name'))
+  = image_tag(image_url, style: 'max-height: 31px', alt: t(Current.app_name, scope: 'app_name'))

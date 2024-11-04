@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module PgRails
-  VERSION = '7.6.21-3'
+  VERSION = '7.6.21-4'
 end

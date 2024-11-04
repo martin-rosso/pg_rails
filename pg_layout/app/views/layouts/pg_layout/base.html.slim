@@ -9,7 +9,7 @@ html
       meta name="turbo-visit-control" content="reload"
 
     - cache :title_icon
-      title = t('app_name')
+      title = t(Current.app_name, scope: 'app_name')
       - begin
         = render partial: 'layouts/favicon'
       - rescue ActionView::MissingTemplate => e

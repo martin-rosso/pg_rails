@@ -9,7 +9,8 @@ module PgEngine
     end
 
     def render_turbo_stream_title
-      title = [breadcrumbs.last&.name, ActsAsTenant.current_tenant, I18n.t('app_name')].compact.join(' - ')
+      title = [breadcrumbs.last&.name, ActsAsTenant.current_tenant,
+               I18n.t(Current.app_name, scope: 'app_name')].compact.join(' - ')
       turbo_stream.update_all 'title', title
     end
   end

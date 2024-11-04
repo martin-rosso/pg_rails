@@ -9,6 +9,8 @@ module PgEngine
       mail(to: @recipient.email, subject: params[:subject])
     end
 
+    private
+
     def replace_user(input)
       # reemplaza todas las ocurrencias de: %{user}
       format(input, user: @recipient.nombre)

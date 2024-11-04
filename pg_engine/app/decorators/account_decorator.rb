@@ -22,10 +22,9 @@ class AccountDecorator < PgEngine::BaseRecordDecorator
      ua.reject_invitation_link].compact.join.html_safe
   end
 
-  def show_link(text: '', klass: 'btn-secondary')
+  def show_link(text: 'Usuarios', klass: 'btn-secondary')
     return unless Pundit.policy!(Current.user, object).show?
 
-    text = 'Usuarios'
     helpers.content_tag :span do
       helpers.link_to object_url, class: "btn btn-sm #{klass}" do
         helpers.content_tag(:span, nil, class: clase_icono('person')) + text

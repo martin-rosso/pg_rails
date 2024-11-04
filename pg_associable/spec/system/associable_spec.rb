@@ -10,13 +10,12 @@ describe 'Associable' do
     visit path
   end
 
-  fit do
+  it do
     fill_in 'cosa_nombre', with: 'La cosa'
     select 'Los', from: 'cosa_tipo'
     find('.cosa_categoria_de_cosa input[type=text]').click
     expect(page).to have_text :all, 'Nueva categoría de cosa'
     find('.cosa_categoria_de_cosa .list-group-item').click
-    # select Account.first.to_s
     fill_in 'categoria_de_cosa_nombre', with: 'la categoría'
     select 'Completar', from: 'categoria_de_cosa_tipo'
     click_on 'Agregar Categoría de cosa'

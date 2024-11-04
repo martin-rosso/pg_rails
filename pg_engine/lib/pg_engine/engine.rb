@@ -20,6 +20,15 @@ module PgEngine
         load override
       end
 
+      # TODO!: mover a otro lugar?
+      Devise.mailer.class_eval do
+        def invitation_instructions(record, token, opts = {})
+          @token = token
+          opts.merge!(subject: I18n.t('devise.mailer.invitation_instructions.subject', inviter: record.invited_by))
+          devise_mail(record, :invitation_instructions, opts)
+        end
+      end
+
       ActiveStorage::BaseController.class_eval do
         around_action :set_without_tenant
 

@@ -27,9 +27,12 @@ module Users
     end
 
     before_action do
-      if action_name == 'index'
-        @container_class = 'container'
-        @container_style = 'max-width: 50em'
+      if action_name.in? %w[index]
+        @container_class = 'container border p-0 my-3'
+        @container_style = 'max-width: 50em; xborder-left: 1px solid grey'
+      elsif action_name.in? %w[edit update]
+        @container_class = 'container border pb-3 my-3'
+        @container_style = 'max-width: 50em; xborder-left: 1px solid grey'
       end
     end
 
