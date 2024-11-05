@@ -87,7 +87,9 @@ Rollbar.configure do |config|
         []
       end
     end
-    acceptable_levels.include?(item[:level].to_sym) ? 'gogoogogooo' : 'ignored'
+    to_test = item[:level].to_sym
+    to_test = :warn if to_test == :warning
+    acceptable_levels.include?(to_test) ? 'gogoogogooo' : 'ignored'
   end
 end
 end

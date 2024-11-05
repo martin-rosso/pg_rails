@@ -5,6 +5,7 @@ import './elements'
 import { flashMessage } from './utils/utils'
 
 import { Turbo } from '@hotwired/turbo-rails'
+import { Rollbar } from 'rollbar'
 
 import Trix from 'trix'
 
@@ -72,6 +73,17 @@ document.addEventListener('turbo:before-fetch-request', (ev) => {
   if (ev.detail.fetchOptions.method.toLowerCase() === 'post' &&
       ev.target.dataset.turboStream === undefined) {
     ev.detail.fetchOptions.headers.Accept = 'text/html, application/xhtml+xml'
+  }
+
+  const linksToCurrentTid = ev.detail.url.pathname.match('/u/t/current')
+
+  if (linksToCurrentTid) {
+    if (document.querySelector('#tid') && document.querySelector('#tid').dataset.tid) {
+      const tid = document.querySelector('#tid').dataset.tid
+      ev.detail.url.pathname = ev.detail.url.pathname.replace('/u/t/current', '/u/t/' + tid)
+    } else {
+      Rollbar.error('No hay TID')
+    }
   }
 
   if (document.querySelector('.modal.show')) {

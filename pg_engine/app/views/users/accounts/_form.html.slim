@@ -2,6 +2,6 @@ div style="max-width: 22em"
   = pg_form_for(@account || object) do |f|
     = f.input :nombre
     / = f.input :plan
-    = f.input :logo
+    = f.input :logo, hint: 'Es recomendable que la imagen sea cuadrada'
     .mt-2
     = f.button :submit

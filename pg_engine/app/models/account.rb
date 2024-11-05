@@ -37,7 +37,7 @@ class Account < ApplicationRecord
   has_many :audits, dependent: :nullify, class_name: 'Audited::Audit'
 
   has_one_attached :logo do |attachable|
-    attachable.variant :thumb, resize_and_pad: [80, 80]
+    attachable.variant :thumb, resize_to_fill: [80, 80]
   end
 
   ransacker :search do |parent|

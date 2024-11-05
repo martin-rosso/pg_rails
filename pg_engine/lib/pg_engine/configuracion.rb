@@ -31,6 +31,12 @@ module PgEngine
         "#{key}__export": base + 80,
         "#{key}__destroy": base + 100
       )
+
+      return unless defined? UserAccount
+
+      UserAccount.class_eval do
+        enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true
+      end
     end
 
     def profile_groups_options

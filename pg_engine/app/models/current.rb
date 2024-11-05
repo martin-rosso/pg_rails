@@ -17,6 +17,10 @@ class Current < ActiveSupport::CurrentAttributes
     active_user_account.to_param
   end
 
+  def tid!
+    tid || 'current'
+  end
+
   def active_user_profiles
     if active_user_account.present?
       active_user_account.profiles
