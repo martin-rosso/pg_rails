@@ -138,6 +138,10 @@ class User < ApplicationRecord
     "#{nombre} #{apellido}"
   end
 
+  def first_first_name
+    nombre.strip.split.first.presence || to_s
+  end
+
   class Error < PgEngine::Error; end
 
   # def default_account

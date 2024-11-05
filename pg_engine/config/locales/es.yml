@@ -100,7 +100,7 @@ es:
     sign_up: Crear una cuenta
     invitations:
       send_instructions: "Se envió una invitación a %{email}"
-      invitation_token_invalid: "¡La invitación no es válida!"
+      invitation_token_invalid: "La invitación expiró :("
       updated: ""
       updated_not_active: ""
       no_invitations_remaining: "No quedan invitaciones"

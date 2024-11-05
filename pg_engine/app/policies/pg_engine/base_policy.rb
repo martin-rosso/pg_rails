@@ -82,7 +82,7 @@ module PgEngine
     end
 
     def puede_editar?
-      user_has_profile?(:update)
+      user_has_profile?(:update) || (record.respond_to?(:creado_por) && record.creado_por == user)
     end
 
     def puede_crear?
