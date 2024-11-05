@@ -80,15 +80,17 @@ module PgEngine
     end
 
     def no_tenant_set(error)
-      pg_debug(error)
       return internal_error(error) if Current.user.blank?
 
       active_user_accounts = ActsAsTenant.without_tenant do
         Current.user.user_accounts.ua_active.to_a
       end
       if active_user_accounts.length == 1 && params[:tid].blank?
-        redirect_to url_for(tid: active_user_accounts.first.to_param)
+        url = url_for(tid: active_user_accounts.first.to_param)
+        pg_warn(error, "redirected to #{url}")
+        redirect_to url
       else
+        pg_warn(error, 'redirected to users_accounts_path')
         redirect_to users_accounts_path
       end
     end
