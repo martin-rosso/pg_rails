@@ -45,6 +45,7 @@ require 'pg_rails/pundit_matchers'
 require 'pg_rails/rspec_logger_matchers'
 require 'pg_rails/tom_select_helpers'
 require 'pg_rails/tpath_support'
+require 'pg_rails/draper_support'
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
 # spec/support/ and its subdirectories. Files matching `spec/**/*_spec.rb` are
