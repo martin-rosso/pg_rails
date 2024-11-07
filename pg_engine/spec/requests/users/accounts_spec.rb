@@ -46,7 +46,7 @@ describe 'Users::AccountsController' do
         it do
           subject
           # expect(response.body).to have_text('Lista de usuarios')
-          expect(response.body).to have_text('Dejar la cuenta')
+          expect(response.body).to have_text('Dejar el espacio')
         end
       end
 
@@ -54,7 +54,7 @@ describe 'Users::AccountsController' do
         it do
           subject
           expect(response.body).to have_no_text('Lista de usuarios')
-          expect(response.body).to have_text('Dejar la cuenta')
+          expect(response.body).to have_text('Dejar el espacio')
         end
       end
 
@@ -64,7 +64,7 @@ describe 'Users::AccountsController' do
         it do
           subject
           expect(response.body).to have_text('Deshabilitado')
-          expect(response.body).to have_text('Dejar la cuenta')
+          expect(response.body).to have_text('Dejar el espacio')
         end
       end
 

@@ -3,7 +3,7 @@ module PgEngine
     class MailNotDelivered < StandardError; end
 
     def default_url_options
-      PgEngine.site_brand.default_url_options
+      super.merge(PgEngine.site_brand.default_url_options)
     end
 
     before_action { @email_object = params[:email_object] }

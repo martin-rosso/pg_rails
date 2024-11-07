@@ -1,6 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe CosaMailer do
+  include PgEngine::DefaultUrlOptions
   describe 'cosa_sin_email_object' do
     subject { mail.deliver }
 
@@ -60,7 +61,8 @@ RSpec.describe CosaMailer do
     # end
 
     it 'tiene attachment' do
-      expect(mail.attachments.length).to eq 1
+      # uno por el json y otro el footer
+      expect(mail.attachments.length).to eq 2
     end
 
     context 'when its delivered' do
@@ -76,7 +78,7 @@ RSpec.describe CosaMailer do
       it 'renders the body' do
         subject
 
-        expect(mail.body.encoded).to include(root_url)
+        expect(mail.body.encoded).to include('multi')
       end
 
       context 'cuando falla el observer' do

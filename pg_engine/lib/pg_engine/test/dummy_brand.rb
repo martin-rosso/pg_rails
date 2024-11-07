@@ -44,15 +44,16 @@ module PgEngine
           }
         }
 
-        if Rails.env.local?
+        if Rails.env.development?
+        # if Rails.env.local?
           aux.merge!({
                        default_url_options: {
                          procura: {
-                           host: 'procura.localhost',
+                           host: 'www.example.com',
                            port: '3000'
                          },
                          factura: {
-                           host: 'factura.localhost',
+                           host: 'www.example.com',
                            port: '3000'
                          }
                        }

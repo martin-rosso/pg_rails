@@ -1,5 +1,5 @@
 nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dark"
-  .container-fluid.xgap-2
+  .container-fluid.gap-2
     div
       - unless @sidebar == false
         button data-controller="navbar" data-action="navbar#expandNavbar" class="btn btn-outline-light me-2 d-none d-#{@breakpoint_navbar_expand}-inline-block"
@@ -9,12 +9,12 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
     - if user_signed_in? && @notifications_bell.present?
       div class="d-#{@breakpoint_navbar_expand}-none"
         = render @notifications_bell
-    div
+    .d-flex
+      - @navbar.extensiones.each do |extension|
+        = extension
       - if user_signed_in?
         .collapse.navbar-collapse.justify-content-end
           = render partial: 'pg_layout/signed_in_links'
-      - @navbar.extensiones.each do |extension|
-        = extension
       div class="d-#{@breakpoint_navbar_expand}-none"
         - if user_signed_in?
           a.d-flex.align-items-center.gap-2 href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
