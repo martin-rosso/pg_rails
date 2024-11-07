@@ -1,6 +1,0 @@
-/ # locals: (image_url:, href: nil)
-
-/ FIXME: volver a activar el href y que se pueda configurar como un dominio externo
-- href = Current.tid.present? ? tenant_root_path(tid: Current.tid) : root_path
-a.navbar-brand href="#{ href }"
-  = image_tag(image_url, style: 'max-height: 31px', alt: t(Current.app_name, scope: 'app_name'))

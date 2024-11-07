@@ -30,7 +30,7 @@ class Account < ApplicationRecord
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 
-  enumerize :plan, in: { factura: 0, procura: 1 }
+  enumerize :plan, in: PgEngine.site_brand.account_plan_options
 
   validates :plan, :nombre, presence: true
 
@@ -56,10 +56,6 @@ class Account < ApplicationRecord
     self.plan = 0 if plan.blank?
   end
 
-  def self.gender
-    'm'
-  end
-
   def to_s
     # TODO: nombre_in_database?
     nombre
@@ -71,7 +67,7 @@ class Account < ApplicationRecord
       user_accounts.ua_active.owners.first&.user
     end
 
-    raise PgEngine::Error, 'orphan account' if @owner.nil?
+    raise PgEngine::Error, 'orphan account' if @owner.nil? && Current.namespace != :admin
 
     @owner
   end

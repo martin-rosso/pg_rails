@@ -4,7 +4,9 @@ require_relative 'pg_engine/engine'
 require_relative 'pg_engine/core_ext'
 require_relative 'pg_engine/error'
 require_relative 'pg_engine/configuracion'
+require_relative 'pg_engine/site_brand'
 require_relative 'pg_engine/navigator'
+require_relative 'pg_engine/active_job_extensions'
 require_relative 'pg_engine/email_observer'
 require_relative 'pg_engine/mailgun/log_sync'
 require_relative 'pg_engine/route_helpers'
@@ -84,10 +86,14 @@ end
 
 module PgEngine
   class << self
-    attr_writer :configuracion
+    attr_writer :configuracion, :site_brand
 
     def configuracion
       @configuracion ||= Configuracion.new
+    end
+
+    def site_brand
+      @site_brand || (raise PgEngine::Error, 'no site brand manager')
     end
 
     def config
@@ -114,4 +120,8 @@ module PgEngine
   def self.deprecator
     @deprecator ||= ActiveSupport::Deprecation.new('7.5', 'PgEngine')
   end
+end
+
+ActiveSupport.on_load(:active_job) do |base|
+  base.prepend PgEngine::ActiveJobExtensions
 end

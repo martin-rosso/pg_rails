@@ -77,7 +77,7 @@ class Email < ApplicationRecord
             format: { with: /\A[^\n<>&]*\z/, message: 'contiene caracteres inválidos' }
 
   after_initialize do
-    self.from_address = ENV.fetch('DEFAULT_MAIL_FROM') if from_address.blank?
+    self.from_address = PgEngine.site_brand.default_mail_from if from_address.blank?
   end
 
   # validates_format_of :subject, with: /\A[[[:alpha:]]\(\)\w\s.,;!¡?¿-]+\z/

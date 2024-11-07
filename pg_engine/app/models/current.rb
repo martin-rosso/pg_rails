@@ -1,6 +1,6 @@
 class Current < ActiveSupport::CurrentAttributes
   attribute :user, :namespace, :controller, :active_user_account
-  attribute :app_name, default: :procura
+  attribute :app_name
   # attribute :request_id, :user_agent, :ip_address
 
   # resets { Time.zone = nil }

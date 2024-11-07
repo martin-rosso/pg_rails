@@ -16,6 +16,8 @@ module PgEngine
       Current.user = current_user
       Current.controller = self
 
+      Current.app_name = PgEngine.site_brand.detect(request)
+
       if Current.user.present?
         active_user_accounts = Current.user.user_accounts.ua_active.to_a
         if ActsAsTenant.current_tenant.present? && !Rails.env.test?

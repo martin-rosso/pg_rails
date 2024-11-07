@@ -1,4 +1,4 @@
-<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", inviter: @resource.invited_by, app_name: I18n.t(@resource.invited_to_app, scope: 'app_name')) %></p>
+<p><%= t("devise.mailer.invitation_instructions.someone_invited_you", inviter: @resource.invited_by, app_name: PgEngine.site_brand.name) %></p>
 
 <p><%= t("devise.mailer.invitation_instructions.follow_link") %></p>
 

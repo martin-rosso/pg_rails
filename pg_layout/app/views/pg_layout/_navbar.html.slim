@@ -4,9 +4,8 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
       - unless @sidebar == false
         button data-controller="navbar" data-action="navbar#expandNavbar" class="btn btn-outline-light me-2 d-none d-#{@breakpoint_navbar_expand}-inline-block"
           i class="bi #{@navbar_chevron_class}"
-      - if @navbar.logo.present?
-        span.ms-3
-          = render @navbar.logo
+      span.ms-3
+        = render partial: 'layouts/logo'
     - if user_signed_in? && @notifications_bell.present?
       div class="d-#{@breakpoint_navbar_expand}-none"
         = render @notifications_bell

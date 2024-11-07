@@ -32,13 +32,5 @@ module Dummy
     # config.eager_load_paths << Rails.root.join("extras")
     config.time_zone = 'America/Argentina/Buenos_Aires'
 
-    config.to_prepare do
-      PgEngine::BaseDeviseMailer.class_eval do
-        before_action do
-          @footer_image_src = 'mail-footer-lg.png'
-        end
-      end
-    end
-
   end
 end

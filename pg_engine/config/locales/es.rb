@@ -18,6 +18,8 @@ end
 {
   :es => {
     pg_engine: {
+      leave_account: PgEngine::I18nRules.rule('Dejar %{genderize(la,el)} %{singular_model}'),
+
       resource_destroyed: PgEngine::I18nRules.rule("Se eliminó %{genderize(la,el)} %{singular_model}"),
       resource_not_destroyed: PgEngine::I18nRules.rule("Hubo un error al intentar eliminar %{genderize(la,el)} %{singular_model}"),
       resource_not_updated: PgEngine::I18nRules.rule("Hubo un error al intentar actualizar %{genderize(la,el)} %{singular_model}"),

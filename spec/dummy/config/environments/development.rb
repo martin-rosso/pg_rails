@@ -60,8 +60,8 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
-  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  config.asset_host = "http://localhost:3000"
+  # Para que en letter_opener se vean las imágenes
+  # config.asset_host = "http://procura.localhost:3000"
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log

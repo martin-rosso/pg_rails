@@ -1,7 +1,5 @@
 <%= yield %>
 
-<% if @footer_href.present? %>
 ----------------------
-<%= @footer_image_alt %>
-<%= @footer_href %>
-<% end %>
+<%= PgEngine.site_brand.name %>
+<%= PgEngine.site_brand.landing_site_url %>

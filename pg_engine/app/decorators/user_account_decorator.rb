@@ -44,7 +44,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
     h.link_to [:update_invitation, :users, account, { sign_off: 1 }].flatten,
               'data-turbo-method': :put,
               class: 'btn btn-sm btn-outline-danger' do
-      'Dejar la cuenta'
+      I18n.t('pg_engine.leave_account', model: Account)
     end
   end
 

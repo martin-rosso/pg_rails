@@ -30,3 +30,7 @@ PgEngine.configurar do |config|
   config.add_profiles(:cosas, 5000)
   config.add_profiles(:categoria_de_cosas, 6000)
 end
+
+require 'pg_engine/test/dummy_brand'
+
+PgEngine.site_brand = PgEngine::Test::DummyBrand.new
