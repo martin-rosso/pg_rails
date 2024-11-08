@@ -1,4 +1,14 @@
 
+7.6.21 / 2024-11-08
+===================
+
+  * feat: espacios
+  * feat: site brands
+  * feat: show user list to guests
+  * feat: logos
+  * fix: base policy, allow edit if created by self
+  * test: fix draper view_context leakage on jobs specs
+
 7.6.20 / 2024-10-21
 ===================
 
