@@ -9,7 +9,22 @@ module PgEngine
     before_action { @email_object = params[:email_object] }
 
     before_action do
-      path = Rails.application.assets.find_asset(logo_footer_name).filename
+      if Rails.application.assets.present?
+        # Can compile assets
+        path = Rails.application.assets.find_asset(logo_footer_name).filename
+      else
+        # Can't compile assets, so must be precompiled
+        name = Rails.application.assets_manifest.files.select do |_k, v|
+          v['logical_path'].include?(logo_footer_name)
+        end
+        name = name.keys.first
+        if name.nil?
+          raise "Asset was not precompiled: #{logo_footer_name}"
+        end
+
+        path = Rails.public_path.join('assets', name)
+      end
+
       png_data = File.read(path)
       attachments.inline[logo_footer_name] = png_data
       @footer_image_src = attachments[logo_footer_name].url
