@@ -1,8 +1,12 @@
 module PgEngine
   module Test
     class DummyBrand < PgEngine::SiteBrand
-      def self.configurations # rubocop:disable Metrics/MethodLength
-        aux = {
+      def initialize(include_all: false) # rubocop:disable Metrics/MethodLength
+        super()
+
+        @default_site_brand = :factura
+
+        @options = {
           landing_site_url: {
             procura: 'https://bien.com.ar/procura',
             factura: 'https://bien.com.ar/factura'
@@ -44,23 +48,20 @@ module PgEngine
           }
         }
 
-        if Rails.env.development?
-        # if Rails.env.local?
-          aux.merge!({
-                       default_url_options: {
-                         procura: {
-                           host: 'www.example.com',
-                           port: '3000'
-                         },
-                         factura: {
-                           host: 'www.example.com',
-                           port: '3000'
-                         }
-                       }
-                     })
-        end
+        return unless Rails.env.development? || include_all
 
-        aux
+        @options.merge!({
+                          default_url_options: {
+                            procura: {
+                              host: 'procura.localhost',
+                              port: '3000'
+                            },
+                            factura: {
+                              host: 'factura.localhost',
+                              port: '3000'
+                            }
+                          }
+                        })
       end
 
       def account_plan_options
@@ -75,12 +76,6 @@ module PgEngine
 
         :factura
       end
-
-      def self.default_site_brand
-        :factura
-      end
-
-      define_methods_for_symbols
     end
   end
 end

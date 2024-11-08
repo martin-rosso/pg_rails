@@ -1,4 +1,8 @@
-/ - href = Current.tid.present? ? tenant_root_path(tid: Current.tid) : PgEngine.site_brand.landing_site_url
 - href = Current.tid.present? ? tenant_root_path(tid: Current.tid) : root_path
 a.navbar-brand href="#{ href }"
-  = image_tag(PgEngine.site_brand.logo_navbar_url, style: 'max-height: 31px', alt: PgEngine.site_brand.name)
+  = image_tag(PgEngine.site_brand.logo_navbar_url, alt: PgEngine.site_brand.name)
+
+css:
+  a.navbar-brand img {
+    max-height: 31px;
+  }

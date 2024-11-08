@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec::Matchers.define_negated_matcher :not_change, :change
 
-describe 'invite users to the platform and to an account' do
+describe 'invite users to the platform and to an account #' do
   let(:account) { ActsAsTenant.current_tenant }
 
   describe 'send an invitation to the platform', :tpath_req do
@@ -108,7 +108,7 @@ describe 'invite users to the platform and to an account' do
     end
   end
 
-  describe 'update an invitation' do
+  describe 'when updating an invitation' do
     let(:logged_user) { create :user, account: }
     let(:user_account) do
       logged_user.user_accounts.first
@@ -119,7 +119,7 @@ describe 'invite users to the platform and to an account' do
       user_account.update(membership_status:, invitation_status: :ist_invited)
     end
 
-    context 'when accepting an invite' do
+    context 'accepting an invite' do
       subject do
         put "/u/espacios/#{account.to_param}/update_invitation", params: { accept: 1 }
       end

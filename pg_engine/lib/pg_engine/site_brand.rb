@@ -2,34 +2,36 @@
 
 module PgEngine
   class SiteBrand
-    def self.configurations
-      raise 'not implemented'
+    attr_accessor :default_site_brand
+
+    def initialize
+      @options = {}
     end
 
-    def self.default_site_brand
-      raise 'not implemented'
-    end
+    def value_for(key)
+      options = @options[key.to_sym]
 
-    def default_site_brand
-      self.class.default_site_brand
-    end
+      raise PgEngine::Error, 'Key not found' if options.nil?
 
-    def self.define_methods_for_symbols
-      configurations.each do |name, options|
-        define_method(name) do
-          if options.keys.include?(Current.app_name)
-            options[Current.app_name]
-          elsif options.keys.include?(:default)
-            options[:default]
-          elsif default_site_brand.present? && options.keys.include?(default_site_brand)
-            pg_warn('Default site brand chosen')
+      if Current.app_name.present? && options.keys.include?(Current.app_name)
+        options[Current.app_name]
+      elsif options.keys.include?(:default)
+        options[:default]
+      elsif default_site_brand.present? && options.keys.include?(default_site_brand)
+        pg_warn('Default site brand chosen')
 
-            options[default_site_brand]
-          else
-            raise PgEngine::Error, 'No site brand found'
-          end
-        end
+        options[default_site_brand]
+      else
+        raise PgEngine::Error, 'No site brand found'
       end
+    end
+
+    def method_missing(method)
+      value_for(method)
+    end
+
+    def respond_to_missing?(method, include_private)
+      @options.key?(method.to_sym) or super
     end
   end
 end

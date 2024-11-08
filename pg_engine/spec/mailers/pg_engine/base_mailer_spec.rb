@@ -17,12 +17,23 @@ class DummyMailer < ApplicationMailer
 end
 
 describe PgEngine::BaseMailer do
-  describe 'default_url_options', pending: 'site hosts on testing' do
+  describe 'default_url_options' do
     subject do
       mail.deliver
     end
 
     let(:mail) { DummyMailer.test_mail }
+
+    # rubocop:disable Style/GlobalVars
+    before do
+      $site_brand_before = PgEngine.site_brand
+      PgEngine.site_brand = PgEngine::Test::DummyBrand.new(include_all: true)
+    end
+
+    after do
+      PgEngine.site_brand = $site_brand_before
+    end
+    # rubocop:enable Style/GlobalVars
 
     it 'cuando elige el default' do
       expect { subject }.to have_warned('Default site brand chosen')

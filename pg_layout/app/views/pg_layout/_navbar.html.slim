@@ -37,7 +37,7 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
         = render NotificationComponent.with_collection(@notifications) if @notifications&.any?
       - else
         span.text-light.text-center
-          |  No hay notificaciones 
+          |  No hay notificaciones
       .text-center
         button.btn.btn-link.text-light.btn-sm[type="button" data-bs-toggle="collapse" data-bs-target="#notifications-collapse"]
           i.bi-chevron-up.fs-3

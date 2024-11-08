@@ -4,6 +4,12 @@ exclude:
 linters:
   LineLength:
     max: 100
+    exclude:
+      - 'pg_layout/app/views/pg_layout/_navbar.html.slim'
+      - 'pg_layout/app/views/pg_layout/_sidebar.html.slim'
+      - 'pg_layout/app/views/pg_layout/_sidebar_mobile.html.slim'
+      - 'pg_layout/app/views/pg_layout/_signed_in_links.html.slim'
+
   RuboCop:
     ignored_cops:
       - Style/HashEachMethods
