@@ -6,30 +6,31 @@ module PgEngine
 
         @default_site_brand = :factura
 
+        # FIXME: mover los pngs a pg_engine/ dentro de una carpeta test/
         @options = {
           landing_site_url: {
             procura: 'https://bien.com.ar/procura',
             factura: 'https://bien.com.ar/factura'
           },
           logo_navbar_url: {
-            procura: 'procura-logo-navbar-1.png',
-            factura: 'logo-navbar-1.png'
+            procura: 'test/procura-logo-navbar-1.png',
+            factura: 'test/factura-logo-navbar-1.png'
           },
           logo_xl_url: {
-            procura: 'procura-logo-xl-light.png',
-            factura: 'logo-xl-light.png'
+            procura: 'test/procura-logo-xl-light.png',
+            factura: 'test/factura-logo-xl-light.png'
           },
           favicon_prefix: {
-            procura: 'procura-favicon',
-            factura: 'favicon'
+            procura: 'test/icon/procura-favicon',
+            factura: 'test/icon/factura-favicon'
           },
           mailer_devise_footer_image_src: {
-            factura: 'mail-footer-lg.png',
-            procura: 'procura-mail-footer-lg.png'
+            factura: 'test/factura-mail-footer-lg.png',
+            procura: 'test/procura-mail-footer-lg.png'
           },
           mailer_base_footer_image_src: {
-            factura: 'footer-mail-dark-light.png',
-            procura: 'procura-mail-footer-sm.png'
+            factura: 'test/factura-mail-footer-sm.png',
+            procura: 'test/procura-mail-footer-sm.png'
           },
           default_mail_from: {
             procura: 'noreply@procura',

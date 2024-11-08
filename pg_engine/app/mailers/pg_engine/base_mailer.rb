@@ -9,7 +9,8 @@ module PgEngine
     before_action { @email_object = params[:email_object] }
 
     before_action do
-      png_data = File.read(File.expand_path("app/assets/images/#{logo_footer_name}", Rails.root))
+      path = Rails.application.assets.find_asset(logo_footer_name).filename
+      png_data = File.read(path)
       attachments.inline[logo_footer_name] = png_data
       @footer_image_src = attachments[logo_footer_name].url
     end
