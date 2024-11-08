@@ -19,6 +19,7 @@
 - if @user_account.membership_status.ms_disabled?
   p.text-danger Deshabilitado
 
-- if @account.owner == Current.user
-  = turbo_frame_tag 'embedded__user_accounts',
-      src: tenant_user_accounts_path(tid: Current.user.user_account_for(@account).to_param)
+- ActsAsTenant.with_tenant(@account) do
+  - if policy(UserAccount).index?
+    = turbo_frame_tag 'embedded__user_accounts',
+        src: tenant_user_accounts_path(tid: Current.user.user_account_for(@account).to_param)

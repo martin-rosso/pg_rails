@@ -1,4 +1,9 @@
 es:
+  helpers:
+    # submit_default_value
+    submit:
+      user_account:
+        create: Agregar %{model}
   profile_group:
     account: Cuenta
     user_accounts: Usuarios
@@ -170,8 +175,8 @@ es:
   activerecord:
     models:
       user_account:
-        one: Cuenta de usuario
-        other: Cuentas de usuario
+        one: Usuario
+        other: Usuarios
       account:
         one: Espacio
         other: Espacios

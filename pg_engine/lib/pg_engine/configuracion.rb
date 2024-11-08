@@ -34,9 +34,11 @@ module PgEngine
 
       return unless defined? UserAccount
 
+      # :nocov:
       UserAccount.class_eval do
         enumerize :profiles, in: PgEngine.configuracion.user_profiles, multiple: true
       end
+      # :nocov:
     end
 
     def profile_groups_options

@@ -130,7 +130,16 @@ describe 'invite users to the platform and to an account #' do
         expect { subject }.to change { user_account.reload.invitation_status }.to('ist_accepted')
       end
 
-      pending 'and doesnt belong to the account'
+      context 'and doesnt belong to the account' do
+        before do
+          user_account.destroy
+        end
+
+        it 'returns unauthorized' do
+          subject
+          expect(response).to have_http_status(:unauthorized)
+        end
+      end
     end
 
     context 'when rejecting an invite' do

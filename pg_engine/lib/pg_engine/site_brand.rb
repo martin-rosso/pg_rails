@@ -22,7 +22,9 @@ module PgEngine
 
         options[default_site_brand]
       else
+        # :nocov:
         raise PgEngine::Error, 'No site brand found'
+        # :nocov:
       end
     end
 

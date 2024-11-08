@@ -37,7 +37,7 @@ class AccountPolicy < ApplicationPolicy
   end
 
   def show?
-    base_access_to_record?
+    Current.namespace == :admin || (base_access_to_record? && !user_account.ua_invite_pending?)
   end
 
   def index?
@@ -49,11 +49,16 @@ class AccountPolicy < ApplicationPolicy
   end
 
   def base_access_to_record?
-    ua = user.user_account_for(record)
-    Current.namespace == :admin || (ua.present? && !ua.ua_invite_pending?)
+    Current.namespace == :admin || user_belongs_to_account?
   end
 
   def user_belongs_to_account?
-    user.user_account_for(record).present?
+    user_account.present?
+  end
+
+  private
+
+  def user_account
+    @user_account ||= user.user_account_for(record)
   end
 end

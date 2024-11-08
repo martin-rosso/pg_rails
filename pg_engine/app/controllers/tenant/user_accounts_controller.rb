@@ -12,24 +12,11 @@ module Tenant
     before_action do
       @sidebar = false
       unless modal_targeted? || frame_embedded?
-        add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
+        add_breadcrumb Account.nombre_plural, ->(h) { h.users_accounts_path(tid: nil) }
         add_breadcrumb ActsAsTenant.current_tenant, users_account_path(Current.account, tid: nil)
       end
       unless modal_targeted?
-        add_breadcrumb 'Usuarios', tenant_user_accounts_path
-      end
-      @actions = [
-        [
-          'Agregar usuario',
-          new_user_invitation_path(tid: Current.tid),
-          { class: 'me-1 btn btn-warning btn-sm', 'data-turbo-frame': :_top }
-        ]
-      ]
-    end
-
-    before_action do
-      unless modal_targeted?
-        # add_breadcrumb @user_account.account, users_account_path(@user_account.account, tid: nil)
+        add_breadcrumb UserAccount.nombre_plural, tenant_user_accounts_path
       end
     end
 
@@ -50,7 +37,11 @@ module Tenant
     end
 
     def atributos_para_listar
-      %i[user user_email_f profiles_f estado_f]
+      if Current.user_account_owner?
+        %i[user user_email_f profiles_f estado_f]
+      else
+        %i[user user_email_f]
+      end
     end
   end
 end

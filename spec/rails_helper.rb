@@ -14,8 +14,14 @@ SimpleCov.start 'rails' do
   add_filter do |src|
     src.filename =~ /pg_engine\/app\/admin/
   end
+  add_filter do |src|
+    src.filename =~ /initializers\/rollbar.rb/
+  end
   add_filter %r{^/app/admin/}
-  enable_coverage(:branch) # Report branch coverage to trigger branch-level undercover warnings
+
+  if ENV['BRANCH_COV'] == '1'
+    enable_coverage(:branch) # Report branch coverage to trigger branch-level undercover warnings
+  end
 end
 
 require 'spec_helper'
@@ -37,6 +43,16 @@ require "rails/generators/testing/behavior"
 require "rails/generators/testing/setup_and_teardown"
 require "rails/generators/testing/assertions"
 require "fileutils"
+
+require "parallel_tests"
+
+Capybara.server_port = 9887 + ENV['TEST_ENV_NUMBER'].to_i
+
+if ParallelTests.first_process?
+  DatabaseCleaner.clean_with(:truncation)
+else
+  sleep 2
+end
 
 require 'pg_rails/capybara_support'
 require 'pg_rails/redis_support'
@@ -82,14 +98,9 @@ RSpec.configure do |config|
   # instead of true.
   config.use_transactional_fixtures = true
 
-  # config.before(:each) do
-  #   DatabaseCleaner.clean_with(:truncation)
-  # end
-
   # ActsAsTenant
   config.before(:suite) do |example|
     # Make the default tenant globally available to the tests
-    DatabaseCleaner.clean_with(:truncation)
     $default_account = FactoryBot.create(:account)
   end
 

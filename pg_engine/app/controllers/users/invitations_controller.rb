@@ -1,14 +1,20 @@
 module Users
   class InvitationsController < Devise::InvitationsController
     include PgEngine::TenantHelper
+
     before_action only: %i[new create] do
       set_tenant_from_params_or_fail!
 
-      add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
+      authorize UserAccount
+
+      add_breadcrumb Account.nombre_plural, users_accounts_path(tid: nil)
       add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
-      add_breadcrumb 'Usuarios'
-      add_breadcrumb 'Agregar usuario'
-      @sidebar = false
+      add_breadcrumb UserAccount.nombre_plural
+      add_breadcrumb UserAccount.new.decorate.submit_default_value
+
+      # Porque el link for new no tiene turbo-frame="_top"
+      @turbo_page_requires_reload = true
+
       @no_main_frame = true
       @container_class = 'container border pb-3 my-3'
       @container_style = 'max-width: 50em; xborder-left: 1px solid grey'

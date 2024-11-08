@@ -1,4 +1,5 @@
-<h2><%= t "devise.invitations.new.header" %></h2>
+<h2><%= UserAccount.new.decorate.submit_default_value %></h2>
+
 <div style="max-width: 40em" data-controller="pg_form">
   <%= pg_form_for(resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post }) do |f| %>
     <div class="form-inputs">

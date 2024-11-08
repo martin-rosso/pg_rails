@@ -17,10 +17,6 @@ class UserAccountPolicy < ApplicationPolicy
     end
   end
 
-  def index?
-    super && (Current.namespace == :admin || Current.active_user_account.present?)
-  end
-
   def sign_off?
     user_is_user_account_user? &&
       !record.ua_invite_pending? &&
@@ -28,7 +24,7 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def puede_crear?
-    Current.namespace == :admin
+    Current.namespace == :admin || Current.user_account_owner?
   end
 
   def accept_invitation_link?

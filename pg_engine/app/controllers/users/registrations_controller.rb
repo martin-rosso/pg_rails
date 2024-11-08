@@ -1,7 +1,6 @@
 module Users
   class RegistrationsController < Devise::RegistrationsController
     before_action do
-      @sidebar = false
       authorize resource, nil, policy_class: UserRegistrationPolicy
     end
 

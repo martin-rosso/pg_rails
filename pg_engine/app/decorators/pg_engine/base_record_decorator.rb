@@ -27,10 +27,11 @@ module PgEngine
       truncate(object.to_s)
     end
 
+    # Texto para la opción de crear en los pg_associables
     def text_for_new
       klass = object.class
       verb = klass.gender == 'f' ? 'Nueva' : 'Nuevo'
-      "#{verb} #{klass.model_name.human.downcase}"
+      "#{verb} #{klass.nombre_singular.downcase}"
     end
 
     # rubocop:disable Style/MissingRespondToMissing
@@ -200,7 +201,7 @@ module PgEngine
     # actionview-7.1.3.2/lib/action_view/helpers/form_helper.rb
     def submit_default_value
       key = :create
-      model = object.model_name.human.downcase
+      model = object.class.nombre_singular.downcase
       defaults = []
       defaults << :"helpers.submit.#{object.model_name.i18n_key}.#{key}"
       defaults << :"helpers.submit.#{key}"

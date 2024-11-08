@@ -30,17 +30,18 @@ describe 'redirection' do
       end
     end
 
-    context 'when belongs to other account', pending: 'subdomains not ready' do
-      before do
-        create :account, subdomain: 'other'
-        host! 'other.example.com'
-      end
+    # TODO: activar subdomains
+    # context 'when belongs to other account', pending: 'subdomains not ready' do
+    #   before do
+    #     create :account, subdomain: 'other'
+    #     host! 'other.example.com'
+    #   end
 
-      it do
-        get '/u/t/cosas'
+    #   it do
+    #     get '/u/t/cosas'
 
-        expect(response).to redirect_to new_user_session_path, tpath: false
-      end
-    end
+    #     expect(response).to redirect_to new_user_session_path, tpath: false
+    #   end
+    # end
   end
 end

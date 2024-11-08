@@ -32,10 +32,6 @@ class UserAccount < ApplicationRecord
 
   acts_as_tenant :account
 
-  def self.gender
-    'f'
-  end
-
   belongs_to :creado_por, optional: true, class_name: 'User'
   belongs_to :actualizado_por, optional: true, class_name: 'User'
 

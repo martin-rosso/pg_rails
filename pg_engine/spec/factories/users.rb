@@ -72,9 +72,12 @@ FactoryBot.define do
     trait :owner do
       after(:create) do |model|
         model.user_accounts.create!(profiles: [:account__owner])
-        # ActsAsTenant.with_tenant(create(:account)) do
-        #   model.user_accounts.create!(profiles: [:account__owner])
-        # end
+      end
+    end
+
+    trait :guest do
+      after(:create) do |model|
+        model.user_accounts.create!(profiles: [])
       end
     end
   end

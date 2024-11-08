@@ -9,7 +9,7 @@ describe 'Users::AccountsController' do
     create_list :user, 2
   end
 
-  describe 'show' do
+  describe '#show' do
     it 'shows the owned account' do
       get "/u/espacios/#{account.to_param}"
       expect(response).to have_http_status(:ok)
@@ -21,7 +21,7 @@ describe 'Users::AccountsController' do
       expect(response).to have_http_status(:unauthorized)
     end
 
-    context 'when not the owner' do
+    context 'when is guest user' do
       subject do
         get "/u/espacios/#{other_account.to_param}"
       end
@@ -38,14 +38,12 @@ describe 'Users::AccountsController' do
         end
       end
 
-      context 'when its active' do
+      context 'and has access to user list' do
         let(:profiles) { [:user_accounts__read] }
-
-        pending 'See the users'
 
         it do
           subject
-          # expect(response.body).to have_text('Lista de usuarios')
+          expect(response.body).to include('embedded__user_accounts')
           expect(response.body).to have_text('Dejar el espacio')
         end
       end
@@ -53,7 +51,7 @@ describe 'Users::AccountsController' do
       context 'when its active and dont have user_accounts__read access' do
         it do
           subject
-          expect(response.body).to have_no_text('Lista de usuarios')
+          expect(response.body).not_to include('embedded__user_accounts')
           expect(response.body).to have_text('Dejar el espacio')
         end
       end
@@ -76,6 +74,17 @@ describe 'Users::AccountsController' do
           expect(response).to have_http_status(:unauthorized)
         end
       end
+    end
+  end
+
+  describe '#edit' do
+    let(:nombre) { Faker::Lorem.sentence }
+
+    it do
+      get "/u/espacios/#{account.to_param}/edit"
+      expect(response).to have_http_status(:ok)
+      patch "/u/espacios/#{account.to_param}", params: { account: { nombre: } }
+      expect(account.reload.nombre).to eq nombre
     end
   end
 

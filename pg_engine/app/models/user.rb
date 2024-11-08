@@ -132,6 +132,12 @@ class User < ApplicationRecord
 
   def first_first_name
     nombre.strip.split.first.presence || to_s
+  rescue StandardError => e
+    # :nocov:
+    pg_warn(e)
+
+    to_s
+    # :nocov:
   end
 
   class Error < PgEngine::Error; end

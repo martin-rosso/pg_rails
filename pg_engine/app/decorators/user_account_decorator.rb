@@ -4,6 +4,9 @@
 
 class UserAccountDecorator < PgEngine::BaseRecordDecorator
   delegate_all
+  def new_object_url
+    helpers.new_user_invitation_path
+  end
 
   def ingresar_link
     return unless Pundit.policy!(Current.user, object).ingresar?

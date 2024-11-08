@@ -13,8 +13,6 @@ module Admin
     self.nested_class = CategoriaDeCosa
     self.nested_key = :categoria_de_cosa_id
 
-    # before_action(only: :index) { @sidebar = false }
-
     before_action(only: :show) do
       CosaMailer.with(cosa: @cosa).cosa.deliver_later if params[:send_mail] == 'true'
     end

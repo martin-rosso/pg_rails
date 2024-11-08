@@ -15,7 +15,7 @@ module Users
     self.clase_modelo = Account
     self.skip_default_breadcrumb = true
 
-    add_breadcrumb Account.model_name.human(count: 2), ->(h) { h.users_accounts_path(tid: nil) }
+    add_breadcrumb Account.nombre_plural, ->(h) { h.users_accounts_path(tid: nil) }
 
     layout :set_layout
     def set_layout
