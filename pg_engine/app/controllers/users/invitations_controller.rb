@@ -2,6 +2,11 @@ module Users
   class InvitationsController < Devise::InvitationsController
     include PgEngine::TenantHelper
 
+    before_action only: :new do
+      # Porque el link for new no tiene turbo-frame="_top"
+      @turbo_page_requires_reload = true
+    end
+
     before_action only: %i[new create] do
       set_tenant_from_params_or_fail!
 
@@ -11,9 +16,6 @@ module Users
       add_breadcrumb ActsAsTenant.current_tenant, users_account_path(ActsAsTenant.current_tenant)
       add_breadcrumb UserAccount.nombre_plural
       add_breadcrumb UserAccount.new.decorate.submit_default_value
-
-      # Porque el link for new no tiene turbo-frame="_top"
-      @turbo_page_requires_reload = true
 
       @no_main_frame = true
       @container_class = 'container border pb-3 my-3'
