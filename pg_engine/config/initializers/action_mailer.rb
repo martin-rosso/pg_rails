@@ -21,3 +21,12 @@ ActionMailer::MailDeliveryJob.rescue_from EOFError,
 end
 
 ActionMailer::Base.register_observer(PgEngine::EmailObserver)
+
+if Rails.env.development?
+  ActionMailer::Preview.class_eval do
+    def initialize(params = {})
+      @params = params
+      Current.app_name = params[:app_name]&.to_sym
+    end
+  end
+end
