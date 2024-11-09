@@ -8,7 +8,7 @@ html
     - if @turbo_page_requires_reload
       meta name="turbo-visit-control" content="reload"
 
-    - cache :title_icon
+    - cache [:title_icon, Current.app_name]
       title = PgEngine.site_brand.name
       - begin
         = render partial: 'layouts/favicon'

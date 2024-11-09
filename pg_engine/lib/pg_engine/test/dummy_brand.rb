@@ -6,7 +6,6 @@ module PgEngine
 
         @default_site_brand = :factura
 
-        # FIXME: mover los pngs a pg_engine/ dentro de una carpeta test/
         @options = {
           landing_site_url: {
             procura: 'https://bien.com.ar/procura',
