@@ -1,4 +1,13 @@
 
+7.6.22 / 2024-11-09
+===================
+
+  * fix: cache favicon with brand name
+  * fix: default url options, merge default action controller config
+  * fix: load precompiled asset in base mailer
+  * fix: invitations validation errors
+  * test: set app_name in mailer previews
+
 7.6.21 / 2024-11-08
 ===================
 
