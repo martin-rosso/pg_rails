@@ -4,6 +4,8 @@
 module PgEngine
   class BaseRecordDecorator < Draper::Decorator
     include ActionView::Helpers
+    include PgEngine::DefaultUrlOptions
+    include Rails.application.routes.url_helpers
     include PrintHelper
     include FormHelper
     include RouteHelper
@@ -173,7 +175,11 @@ module PgEngine
     end
 
     def object_url
-      helpers.url_for(target_object)
+      # FIXME: arreglar las urls generadas con "helpers"
+      # ver cómo se construye el view helper en los jobs
+      # y si se puede injectar el default url options ahí
+      # helpers.url_for(target_object)
+      url_for(target_object)
     end
 
     def nested_record

@@ -72,7 +72,7 @@ module PgEngine
         return :procura if request.host.match(/procura/)
         return :factura if request.host.match(/factura/)
 
-        pg_warn 'default site_brand assigned'
+        pg_warn 'default site_brand assigned' unless Rails.env.local?
 
         :factura
       end
