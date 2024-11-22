@@ -9,6 +9,14 @@ module PgEngine
       end
     end
 
+    def dev_user_or_env?
+      Rails.env.development? || dev_user?
+    end
+
+    def dev_user?
+      Current.user&.developer?
+    end
+
     private
 
     def do_placeholder(src = nil, width: '100%', height: '100%', **img_opts)

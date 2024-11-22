@@ -2,7 +2,6 @@
 
 module PgEngine
   # rubocop:disable Rails/ApplicationController
-  # rubocop:disable Metrics/ClassLength
   class BaseController < ActionController::Base
     # Importante que esta línea esté al principio
     protect_from_forgery with: :exception
@@ -56,6 +55,7 @@ module PgEngine
     include RouteHelper
     include PgAssociable::Helpers
     include FrameHelper
+    include PgRailsHelper
 
     class Redirect < PgEngine::Error
       attr_accessor :url
@@ -124,16 +124,6 @@ module PgEngine
     # Para cachear el html y guardarlo en public/500.html
     def internal_error_but_with_status200
       render_my_component(InternalErrorComponent.new, :ok)
-    end
-
-    helper_method :dev_user_or_env?
-    def dev_user_or_env?
-      Rails.env.development? || dev_user?
-    end
-
-    helper_method :dev_user?
-    def dev_user?
-      Current.user&.developer?
     end
 
     helper_method :mobile_device?
@@ -231,5 +221,4 @@ module PgEngine
       redirect_back fallback_location: root_path
     end
   end
-  # rubocop:enable Metrics/ClassLength
 end
