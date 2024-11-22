@@ -11,7 +11,7 @@ module PgEngine
     def value_for(key)
       options = @options[key.to_sym]
 
-      raise PgEngine::Error, 'Key not found' if options.nil?
+      raise PgEngine::Error, "Key not found: #{key}" if options.nil?
 
       if Current.app_name.present? && options.keys.include?(Current.app_name)
         options[Current.app_name]

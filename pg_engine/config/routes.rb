@@ -48,6 +48,7 @@ Rails.application.routes.draw do
   end
 
   # root to: 'users/accounts#index'
+  # FIXME: qué onda
   root to: redirect('/u')
 
   namespace :admin, path: 'a' do
