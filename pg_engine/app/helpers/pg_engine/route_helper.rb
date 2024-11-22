@@ -67,5 +67,13 @@ module PgEngine
     def path_for(array)
       url_for(array.push({ only_path: true }))
     end
+
+    def context_root_path
+      if Current.tid.present?
+        tenant_root_path(tid: Current.tid)
+      else
+        (Current.user.present? ? users_root_path : root_path)
+      end
+    end
   end
 end
