@@ -1,4 +1,14 @@
 
+7.6.23 / 2024-11-22
+===================
+
+  * feat: context_root_path helper
+  * feat: show theme links only to dev user
+  * feat: allow to skip the csrf meta tags in base layout
+  * fix: move dev_user? to helper module
+  * fix: urls en decorator
+  * doc: fixme comment
+
 7.6.22 / 2024-11-09
 ===================
 
