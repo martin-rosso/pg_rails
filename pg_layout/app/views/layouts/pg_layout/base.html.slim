@@ -27,7 +27,10 @@ html
     meta name="turbo-prefetch" content="#{ENV.fetch('TURBO_PREFETCH_ENABLE', 'false')}"
     meta name="view-transition" content="same-origin"
     meta name="cable-history-timestamp" content="#{Time.now.to_i}"
-    = csrf_meta_tags
+
+    - unless @skip_csrf_meta_tags
+      = csrf_meta_tags
+
     = csp_meta_tag
     - if defined?(AnyCable::Rails)
       = action_cable_with_jwt_meta_tag
