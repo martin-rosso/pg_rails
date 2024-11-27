@@ -7,9 +7,9 @@ module PgEngine
         @default_site_brand = :factura
 
         @options = {
-          landing_site_url: {
-            procura: 'https://bien.com.ar/procura',
-            factura: 'https://bien.com.ar/factura'
+          landing_site_url: { # Se usa en el footer de los mails
+            procura: 'https://procura.bien.com.ar',
+            factura: 'https://factura.bien.com.ar'
           },
           logo_navbar_url: {
             procura: 'test/procura-logo-navbar-1.png',
