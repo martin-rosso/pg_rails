@@ -37,7 +37,7 @@ window.addEventListener('trix-file-accept', function (event) {
   const maxFileSize = 1024 * 1024 * 10 // 10MB
   if (event.file.size > maxFileSize) {
     event.preventDefault()
-    flashMessage('Lo siento mucho pero el tamaño máximo por archivo es de 10MB', 'warning')
+    flashMessage('El tamaño máximo por archivo es de 10MB', 'warning')
   }
 })
 
