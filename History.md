@@ -1,4 +1,11 @@
 
+? / 2024-12-14
+=====================
+
+  * wip landing js
+  * refactor: reestructuro scss para la landing
+  * fix: logo width overflow
+
 7.6.23 / 2024-11-22
 ===================
 
