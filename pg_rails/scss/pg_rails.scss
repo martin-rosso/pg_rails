@@ -1,41 +1,10 @@
-// Default bootstrap colours
-$blue:    #0d6efd !default;
-$indigo:  #6610f2 !default;
-$purple:  #6f42c1 !default;
-$pink:    #d63384 !default;
-$red:     #dc3545 !default;
-$orange:  #fd7e14 !default;
-$yellow:  #ffc107 !default;
-$green:   #198754 !default;
-$teal:    #20c997 !default;
-$cyan:    #0dcaf0 !default;
-
-// Overriding some of the default colours
-$yellow:       #ffb401;
-$orange:       #e35b17;
-$red:          #a70101;
-
-$warning:      $yellow;
-$info:         #87accc;
-
-$warning-text-emphasis:  $orange;
-$danger-text-emphasis:   #910303;
-
-$tooltip-opacity: 1;
-$tooltip-bg:                     var(--bs-primary) !default;
-$tooltip-color:                        var(--bs-light) !default;
 
 $font-size-base: 0.9rem;
-$enable-validation-icons:       false;
-$focus-ring-width:              .05rem;
-$alert-padding-y:               0.5rem;
-$alert-margin-bottom:           0.5rem;
-
-$breadcrumb-margin-bottom: 0;
 
 @import 'bootstrap_pre';
 @import 'bootstrap_overrides';
 @import 'bootstrap_post';
+@import 'border_radius';
 
 @import './../../pg_engine/app/assets/stylesheets/pg_rails_b5';
 @import './../../pg_associable/app/assets/stylesheets/pg_associable';
@@ -47,6 +16,7 @@ $breadcrumb-margin-bottom: 0;
 @import 'trix/dist/trix';
 @import 'tom-select/dist/scss/tom-select.bootstrap5';
 
+// Tom Select
 .ts-control {
   padding-top: 2px!important;
   padding-bottom: 2px!important;
@@ -63,6 +33,7 @@ $breadcrumb-margin-bottom: 0;
 	padding-right: 0.75rem !important;
 }
 
+// Column truncate
 $values: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
 
 @for $i from 1 through length($values) {
@@ -86,6 +57,7 @@ $values: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
   }
 }
 
+// Buttons border in nav toolbar
 $warning-border-emphasis:   shade-color($yellow, 60%);
 .btn-toolbar .btn-warning {
   border: 1px solid $warning-border-emphasis;
