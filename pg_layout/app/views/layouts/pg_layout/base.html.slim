@@ -36,7 +36,7 @@ html
       = action_cable_with_jwt_meta_tag
 
     = stylesheet_link_tag 'application', 'data-turbo-track': 'reload'
-    = javascript_include_tag 'application', 'data-turbo-track': 'reload'
+    = javascript_include_tag 'application', 'data-turbo-track': 'reload', type: 'module'
     meta(name="actioncable-protocol"
          content="#{Rails.env.test? ? 'actioncable-v1-json' : 'actioncable-v1-ext-json'}")
     - if @rollbar_token.present?
