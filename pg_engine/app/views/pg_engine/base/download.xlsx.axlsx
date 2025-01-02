@@ -1,16 +1,26 @@
 # frozen_string_literal: true
 
 wb = xlsx_package.workbook
+
+title = wb.styles.add_style(
+  b: true, sz: 13, bg_color: '1a172f', fg_color: 'ebebeb'
+  # alignment: { horizontal: :center, vertical: :center }
+)
+
 wb.add_worksheet(name: @clase_modelo.nombre_plural) do |sheet|
   headers = atributos_para_listar.map { |a, _sort_by| @clase_modelo.human_attribute_name(a) }
-  headers.prepend 'ID interno'
-  sheet.add_row(headers)
+  headers.append 'ID interno'
+  sheet.add_row(headers, style: headers.map { title })
 
   @collection.decorate.each do |object|
     array = atributos_para_listar.map do |att, _sort_by|
-      object.send(att)
+      field = unsuffixed(att)
+      if object.respond_to?(:"#{field}_text")
+        field = :"#{field}_text"
+      end
+      object.send(field)
     end
-    array.prepend object.to_key
+    array.append object.to_key
     sheet.add_row array
   end
 end
