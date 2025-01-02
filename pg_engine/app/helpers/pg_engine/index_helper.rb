@@ -9,18 +9,14 @@ module PgEngine
     end
 
     SUFIJOS = %i[f text].freeze
-    def unsuffixed(attribute, sufijos = SUFIJOS)
+    def unsuffixed(attribute)
       ret = attribute.to_s.dup
 
-      sufijos.each do |sufijo|
+      SUFIJOS.each do |sufijo|
         ret.gsub!(/_#{sufijo}$/, '')
       end
 
       ret
-    end
-
-    def unsuffixed_for_export(attribute)
-      unsuffixed(attribute, %i[f])
     end
 
     def encabezado(input, options = {})

@@ -14,7 +14,11 @@ wb.add_worksheet(name: @clase_modelo.nombre_plural) do |sheet|
 
   @collection.decorate.each do |object|
     array = atributos_para_listar.map do |att, _sort_by|
-      object.send(unsuffixed_for_export(att))
+      field = unsuffixed(att)
+      if object.respond_to?(:"#{field}_text")
+        field = :"#{field}_text"
+      end
+      object.send(field)
     end
     array.append object.to_key
     sheet.add_row array
