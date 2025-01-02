@@ -80,4 +80,16 @@ describe 'Resources', :tpath_req do
       expect { subject }.to change { cosa.reload.discarded_at }.to(be_nil)
     end
   end
+
+  describe '#download' do
+    subject do
+      get '/u/t/cosas.xlsx'
+    end
+
+    it do
+      subject
+      expect(response.content_type).to eq 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+      expect(response).to be_successful
+    end
+  end
 end

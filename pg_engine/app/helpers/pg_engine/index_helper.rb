@@ -8,19 +8,28 @@ module PgEngine
       end
     end
 
-    def encabezado(input, options = {})
-      if input.is_a? Array
-        campo = input.first
-        sort_field = input.last
-      else
-        campo = sort_field = input
-        sort_field = sort_field.to_s.sub(/_f\z/, '')
-        sort_field = sort_field.to_s.sub(/_text\z/, '')
+    SUFIJOS = %i[f text].freeze
+    def unsuffixed(attribute, sufijos = SUFIJOS)
+      ret = attribute.to_s.dup
+
+      sufijos.each do |sufijo|
+        ret.gsub!(/_#{sufijo}$/, '')
       end
 
-      # Unsuffixed
-      campo = campo.to_s.sub(/_f\z/, '')
-      campo = campo.to_s.sub(/_text\z/, '')
+      ret
+    end
+
+    def unsuffixed_for_export(attribute)
+      unsuffixed(attribute, %i[f])
+    end
+
+    def encabezado(input, options = {})
+      if input.is_a? Array
+        campo = unsuffixed(input.first)
+        sort_field = input.last
+      else
+        campo = sort_field = unsuffixed(input)
+      end
 
       clase = options[:clase] || @clase_modelo
 
