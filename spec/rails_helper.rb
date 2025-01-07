@@ -24,6 +24,8 @@ SimpleCov.start 'rails' do
   end
 end
 
+load File.expand_path('../pg_rails/lib/version.rb', __dir__)
+
 require 'spec_helper'
 ENV['RAILS_ENV'] ||= 'test'
 # require_relative '../config/environment'
