@@ -1,10 +1,9 @@
 
-? / 2024-12-14
+7.6.24 / 2025-01-07
 =====================
 
   * fix: export en excel sin html
-  * wip landing js
-  * refactor: reestructuro scss para la landing
+  * refactor: reestructuración scss y js (para la landing)
   * fix: logo width overflow
 
 7.6.23 / 2024-11-22
