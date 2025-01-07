@@ -1,0 +1,16 @@
+// Tom Select
+.ts-control {
+  padding-top: 2px!important;
+  padding-bottom: 2px!important;
+  display: flex;
+  gap: 4px;
+}
+.input-group-sm > .ts-wrapper.multi.has-items .ts-control, .ts-wrapper.form-select-sm.multi.has-items .ts-control, .ts-wrapper.form-control-sm.multi.has-items .ts-control {
+	padding-top: 2px!important;
+}
+.ts-wrapper.multi .ts-control > div {
+	margin: 0!important;
+}
+.ts-control:not(.rtl) {
+	padding-right: 0.75rem !important;
+}

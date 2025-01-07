@@ -1,0 +1,29 @@
+// Column truncate
+$values: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
+
+@for $i from 1 through length($values) {
+  $value: nth($values, $i);
+  $perc: #{percenage($value)};
+
+  .column-truncate-#{$value} {
+    max-width: 0;
+    width: percentage($value * 0.01);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    min-width: 30em * $value * 0.01;
+
+    // TODO: con css grid esto se debería poder hacer mejor
+    // además, el pg_asociable directamente se rompe
+    &:has(form) {
+      min-width: 28em;
+      overflow: initial;
+    }
+  }
+}
+
+// Table row clickable
+// .listado tr:has(td:hover):has(.bi-eye-fill) td {
+// 	background-color: #f2f2f2;
+// 	cursor: pointer;
+// }

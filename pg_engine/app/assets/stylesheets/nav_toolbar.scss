@@ -1,0 +1,10 @@
+// Buttons border in nav toolbar
+$warning-border-emphasis:   shade-color($yellow, 60%);
+.btn-toolbar .btn-warning {
+  border: 1px solid $warning-border-emphasis;
+}
+
+$light-border-emphasis:   shade-color($light, 60%);
+.btn-toolbar .btn-light {
+  border: 1px solid $light-border-emphasis;
+}
