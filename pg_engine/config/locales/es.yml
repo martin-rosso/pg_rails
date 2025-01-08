@@ -43,7 +43,7 @@ es:
     confirmed_at: Fecha de confirmación
     actualizado_por: Actualizado por
     creado_por: Creado por
-    accept_terms: Acepto los <a href="/terminos_y_condiciones" target="_blank">Términos y condiciones</a> y la <a href="/privacidad" target="_blank">Política de privacidad</a>
+    accept_terms: Acepto los <a href="/terminos_y_condiciones" target="_blank">términos y condiciones</a>
   enumerize:
     user_account:
       membership_status:
@@ -117,7 +117,7 @@ es:
         header: "Aceptar invitación"
         submit_button: "Aceptar"
     confirmations:
-      confirmed: Ahora tu cuenta está confirmada 👌
+      confirmed: ¡Bien! Ahora tu cuenta está confirmada
     sessions:
       signed_in: ''
       signed_out: ''
@@ -128,7 +128,7 @@ es:
       unauthenticated: ''
       invited: "Tenés una invitación pendiente en tu correo electrónico"
     registrations:
-      signed_up_but_unconfirmed: Te enviamos un correo electrónico con instrucciones para confirmar tu cuenta.
+      signed_up_but_unconfirmed: Por favor, revisá en tu bandeja de entrada las instrucciones para confirmar tu cuenta.
       new:
         sign_up: Crear una cuenta
     passwords:

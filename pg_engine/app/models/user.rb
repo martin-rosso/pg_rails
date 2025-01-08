@@ -66,7 +66,7 @@ class User < ApplicationRecord
 
   has_many :notifications, as: :recipient, class_name: 'Noticed::Notification'
 
-  validates :nombre, :apellido, presence: true
+  # validates :nombre, :apellido, presence: true
 
   has_one_attached :avatar do |attachable|
     attachable.variant :thumb, resize_to_fill: [80, 80]

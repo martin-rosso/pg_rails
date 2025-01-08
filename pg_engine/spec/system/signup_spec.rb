@@ -18,10 +18,7 @@ describe 'Al Registrarse' do
       perform_enqueued_jobs do
         visit '/users/sign_up'
         fill_in 'user_email', with: Faker::Internet.email
-        fill_in 'user_nombre', with: Faker::Name.name
-        fill_in 'user_apellido', with: Faker::Name.name
         fill_in 'user_password', with: 'admin123'
-        fill_in 'user_password_confirmation', with: 'admin123'
 
         accept_terms
 
@@ -31,7 +28,7 @@ describe 'Al Registrarse' do
 
     context 'cuando acepta los términos' do
       let(:accept_terms) do
-        check 'user_accept_terms'
+        nil
       end
 
       it 'guarda el user' do
@@ -39,13 +36,13 @@ describe 'Al Registrarse' do
         ActsAsTenant.without_tenant do
           expect(Account.last.owner).to eq User.last
         end
-        expect(page).to have_text('Te enviamos un correo electrónico con instrucciones')
+        expect(page).to have_text('las instrucciones para confirmar')
       end
     end
 
     context 'si no acepta los terms' do
       let(:accept_terms) do
-        nil
+        uncheck 'user_accept_terms'
       end
 
       it do
@@ -77,12 +74,6 @@ describe 'Al Registrarse' do
     end
   end
 
-  # drivers = %i[
-  #   selenium_headless
-  #   selenium_chrome_headless
-  #   selenium_chrome_headless_notebook
-  #   selenium_chrome_headless_iphone
-  # ]
   drivers = %i[selenium_chrome_headless_iphone]
   drivers = [ENV['DRIVER'].to_sym] if ENV['DRIVER'].present?
 

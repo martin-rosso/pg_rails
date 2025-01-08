@@ -4,6 +4,13 @@ module Users
       authorize resource, nil, policy_class: UserRegistrationPolicy
     end
 
+    # GET /resource/sign_up
+    def new
+      build_resource(accept_terms: true)
+      yield resource if block_given?
+      respond_with resource
+    end
+
     def create
       build_resource(sign_up_params)
 
