@@ -117,7 +117,7 @@ es:
         header: "Aceptar invitación"
         submit_button: "Aceptar"
     confirmations:
-      confirmed: ¡Tu cuenta está confirmada! Ya podés iniciar sesión
+      confirmed: Ahora tu cuenta está confirmada 👌
     sessions:
       signed_in: ''
       signed_out: ''

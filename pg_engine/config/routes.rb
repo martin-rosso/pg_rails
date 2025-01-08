@@ -35,6 +35,9 @@ Rails.application.routes.draw do
     root to: 'accounts#index'
   end
 
+  # User root for devise's signed_in_root_path
+  get '/u', to: 'accounts#index', as: :user_root
+
   namespace :tenant, path: 'u/t(/:tid)' do
     pg_resource(:user_accounts, only: [:index, :show, :edit, :update, :destroy])
     scope controller: 'inline_edit', path: 'inline', as: :inline do
