@@ -9,6 +9,7 @@ executors:
           PGPASS: postgres
           RAILS_ENV: test
           BUNDLER_VERSION: 2.5.17
+          UNDERCOVER_VERSION: 0.5.0
           CC_TEST_REPORTER_ID: 06b784c7df61a8978ec796c2acbbf9c686eb701e336fba3900b997427b06076b
       - image: cimg/postgres:12.12
         environment:
@@ -131,7 +132,7 @@ jobs:
             export LCOV=true
             # bundle exec parallel_rspec --runtime-log spec/parallel_runtime_rspec.log
             bundle exec rspec spec pg_scaffold/spec pg_associable/spec pg_engine/spec pg_layout
-            gem install undercover
+            gem install undercover -v $UNDERCOVER_VERSION
             undercover --compare origin/main
             cp coverage/lcov/project.lcov coverage/lcov.info
             ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
