@@ -31,12 +31,10 @@ Rails.application.routes.draw do
         put :update_invitation
       end
     end
-
-    root to: 'accounts#index'
   end
 
   # User root for devise's signed_in_root_path
-  get '/u', to: 'accounts#index', as: :user_root
+  get '/u', to: 'users/accounts#user_root', as: :user_root
 
   namespace :tenant, path: 'u/t(/:tid)' do
     pg_resource(:user_accounts, only: [:index, :show, :edit, :update, :destroy])
@@ -50,8 +48,7 @@ Rails.application.routes.draw do
     root to: 'dashboard#dashboard'
   end
 
-  # root to: 'users/accounts#index'
-  # FIXME: qué onda
+  # Si en la main app no se define una root path, se redirige al user_root
   root to: redirect('/u')
 
   namespace :admin, path: 'a' do

@@ -36,6 +36,16 @@ module Users
       end
     end
 
+    def user_root
+      scope = policy_scope(Account)
+      if scope.count == 1
+        ua = Current.user.user_account_for(scope.first)
+        redirect_to tenant_root_path(ua.to_param)
+      else
+        redirect_to users_accounts_path
+      end
+    end
+
     # La user_account puede estar disabled
     def show
       add_breadcrumb @account, users_account_path(@account, tid: nil)

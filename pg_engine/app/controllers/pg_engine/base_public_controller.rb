@@ -15,7 +15,7 @@ module PgEngine
       if usuario.confirmed_at.present?
         sign_in(:user, usuario)
         # redirect_to after_sign_in_path_for(usuario)
-        redirect_to users_root_path
+        redirect_to user_root_path
       else
         go_back('No está confirmado')
       end

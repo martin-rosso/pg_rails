@@ -72,8 +72,15 @@ module PgEngine
       if Current.tid.present?
         tenant_root_path(tid: Current.tid)
       else
-        (Current.user.present? ? users_root_path : root_path)
+        (Current.user.present? ? user_root_path : root_path)
       end
     end
+
+    # :nocov:
+    deprecate :users_root_path, deprecator: PgEngine.deprecator
+    def users_root_path
+      user_root_path
+    end
+    # :nocov:
   end
 end

@@ -88,6 +88,44 @@ describe 'Users::AccountsController' do
     end
   end
 
+  describe 'user_root' do
+    subject do
+      get '/u'
+    end
+
+    context 'when no accounts' do
+      let(:user) { create :user }
+
+      it do
+        subject
+        expect(response).to redirect_to(users_accounts_path)
+      end
+    end
+
+    context 'when one account' do
+      it do
+        subject
+        ua = user.user_account_for(account)
+        expect(response).to redirect_to(tenant_root_path(ua.to_param))
+        # File.write(Rails.root.join('out.html'), response.body)
+      end
+    end
+
+    context 'when multiple accounts' do
+      before do
+        other_account = create(:account)
+        ActsAsTenant.without_tenant do
+          create(:user_account, account: other_account, user:)
+        end
+      end
+
+      it do
+        subject
+        expect(response).to redirect_to(users_accounts_path)
+      end
+    end
+  end
+
   describe 'index' do
     subject do
       get '/u/espacios'
