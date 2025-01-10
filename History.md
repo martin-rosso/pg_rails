@@ -1,4 +1,12 @@
 
+7.6.25 / 2025-01-10
+===================
+
+  * feat: sign up mejorado
+  * feat: Auto sign in al confirmar email
+  * fix: set z-index on flash-container
+  * fix: simple form wrapper for bootstrap floating labels
+
 7.6.24 / 2025-01-07
 =====================
 
