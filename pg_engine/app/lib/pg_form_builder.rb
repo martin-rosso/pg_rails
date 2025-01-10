@@ -23,6 +23,12 @@ class PgFormBuilder < SimpleForm::FormBuilder
   def input(attribute_name, options = {}, &)
     options[:error_prefix] ||= default_prefix(attribute_name)
 
+    # Bootstraps's floating labels require an empty placeholder attribute
+    merged_wrapper = self.options[:wrapper].to_s + options[:wrapper].to_s
+    if merged_wrapper.include?('floating')
+      options[:placeholder] = ''
+    end
+
     super
   end
 
