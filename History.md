@@ -1,4 +1,10 @@
 
+7.6.26 / 2025-01-10
+===================
+
+  * feat: user_root_path redirects to tenant_root_path
+  * test: explicito la version de undercover
+
 7.6.25 / 2025-01-10
 ===================
 
