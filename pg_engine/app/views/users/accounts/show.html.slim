@@ -9,13 +9,6 @@
     .fs-1
       = @account
 
-  / h6
-    |> Administrado por:
-    = @account.owner.nombre_completo
-    |< (
-    = @account.owner.email
-    | )
-
 - if @user_account.membership_status.ms_disabled?
   p.text-danger Deshabilitado
 

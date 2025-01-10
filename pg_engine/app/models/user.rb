@@ -123,6 +123,10 @@ class User < ApplicationRecord
   end
 
   def to_s
+    nombre_completo_o_email
+  end
+
+  def nombre_completo_o_email
     nombre_completo.strip.presence || email
   end
 
