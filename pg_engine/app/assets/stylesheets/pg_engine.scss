@@ -23,6 +23,11 @@ nav[aria-label=breadcrumb] a {
 }
 
 // FORMS
+// Form floating
+.form-floating > .form-control ~ label::after {
+  // Para que cuando es un invalid field no choque el background de la label
+	background-color: transparent!important;
+}
 
 // Radio buttons
 .radio_buttons legend {
