@@ -16,7 +16,13 @@
                 required: false,
                 input_html: { autocomplete: "current-password" } %>
     <%#= f.input :remember_me, as: :hidden if devise_mapping.rememberable? %>
-    <%= f.input :remember_me, as: :boolean if devise_mapping.rememberable? %>
+    <div class="mb-3">
+      <%= f.input_field :remember_me, as: :boolean, class: 'form-check-input' if devise_mapping.rememberable? %>
+      <label class="mx-1" for="user_remember_me">Recordarme</label>
+      <span data-controller="tooltip" data-bs-title="No volver a solicitar credenciales por un mes en este navegador">
+        <i class="bi bi-info-circle"></i>
+      </span>
+    </div>
   </div>
 
   <div class="form-actions">
