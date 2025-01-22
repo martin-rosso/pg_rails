@@ -29,6 +29,9 @@ PgEngine.configurar do |config|
   config.navigators.prepend DummyNavigator.new
   config.add_profiles(:cosas, 5000)
   config.add_profiles(:categoria_de_cosas, 6000)
+  config.health_ssl_urls.push(
+    'https://bien.com.ar',
+  )
 end
 
 require 'pg_engine/test/dummy_brand'

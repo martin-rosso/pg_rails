@@ -4,13 +4,14 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles
+    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles, :health_ssl_urls
 
     # attr_accessor :profile_groups
 
     def initialize
       @global_domains = ['app.localhost.com', 'test.host', 'localhost']
       @navigators = [PgEngine::Navigator.new]
+      @health_ssl_urls = []
       # @profile_groups = [:account]
       @user_profiles = {
         account__owner: 0
