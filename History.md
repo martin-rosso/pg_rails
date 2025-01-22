@@ -1,4 +1,11 @@
 
+7.6.28 / 2025-01-22
+===================
+
+  * feat: tooltip en checkbox de recordar sesión
+  * fix: floating labels on sign in. devise links fix
+  * test: check SSL certificates in health controller
+
 7.6.27 / 2025-01-10
 ===================
 
