@@ -11,6 +11,7 @@ require_relative 'pg_engine/email_observer'
 require_relative 'pg_engine/mailgun/log_sync'
 require_relative 'pg_engine/route_helpers'
 require_relative 'pg_engine/utils/pg_logger'
+require_relative 'pg_engine/utils/ssl_verifier'
 require_relative 'pg_engine/utils/pdf_preview_generator'
 
 require_relative '../app/helpers/pg_engine/print_helper'

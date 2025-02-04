@@ -10,9 +10,7 @@ module PgEngine
       check_redis
       check_postgres
       check_websocket
-      PgEngine.config.health_ssl_urls.each do |url|
-        check_ssl(url)
-      end
+      check_ssl
       render_up
     end
 
@@ -59,41 +57,25 @@ module PgEngine
     end
     # rubocop:enable Metrics/MethodLength
 
-    def check_ssl(url)
-      uri = URI.parse(url)
-      http_session = Net::HTTP.new(uri.host, uri.port)
+    def check_ssl
+      raise PgEngine::Error, 'no ssl log file' unless File.exist?(PgEngine::SslVerifier::OUTPUT_PATH)
 
-      # Use SSL/TLS
-      http_session.use_ssl = true
-
-      # Create a request
-      request = Net::HTTP::Get.new(uri.request_uri)
-
-      begin
-        # Start the HTTP session
-        http_session.start do |http|
-          http.request(request)
-
-          # Check the response code
-
-          # Get the SSL certificate
-          cert = http.peer_cert
-
-          raise PgEngine::Error, "#{url}: No SSL certificate found." unless cert
-          # puts "Certificate Subject: #{cert.subject}"
-          # puts "Certificate Issuer: #{cert.issuer}"
-          # puts "Certificate Valid From: #{cert.not_before}"
-          # puts "Certificate Valid Until: #{cert.not_after}"
-
-          if cert.not_after < 7.days.from_now
-            raise PgEngine::Error, "#{url}: The SSL certificate is expired (or about to expire)."
-          end
-        end
-      rescue OpenSSL::SSL::SSLError => e
-        raise PgEngine::Error, "#{url}: SSL Error: #{e.message}"
-      rescue StandardError => e
-        raise PgEngine::Error, "#{url}: An error occurred: #{e.message}"
+      sites = JSON.parse(File.read(PgEngine::SslVerifier::OUTPUT_PATH))
+      PgEngine.config.health_ssl_urls.each do |url|
+        check_site_ssl(sites, url)
       end
+    end
+
+    def check_site_ssl(sites, url)
+      raise PgEngine::Error, "SSL record not present: #{url}" if sites[url].blank?
+
+      if Time.zone.parse(sites[url]['verified_at']) < 2.days.ago
+        raise PgEngine::Error, "The SSL info is outdated: #{url}"
+      end
+
+      return unless Time.zone.parse(sites[url]['expires_at']) < 7.days.from_now
+
+      raise PgEngine::Error, "The SSL certificate is expired (or about to expire): #{url}"
     end
 
     def render_up
