@@ -8,6 +8,10 @@ module Tenant
 
     self.clase_modelo = CategoriaDeCosa
 
+    before_action do
+      @meta_robots = 'index, nofollow'
+    end
+
     private
 
     def atributos_permitidos
