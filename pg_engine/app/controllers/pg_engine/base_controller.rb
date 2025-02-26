@@ -118,6 +118,26 @@ module PgEngine
     end
 
     def page_not_found
+      # Skip CSRF verification, given that the resource is missing
+      @_marked_for_same_origin_verification = false
+
+      # Mor about ActionController::InvalidCrossOriginRequest CORS CSRF
+      #
+      # actionpack/lib/action_controller/metal/request_forgery_protection.rb
+      #
+      # def verify_same_origin_request # :doc:
+      #   if marked_for_same_origin_verification? && non_xhr_javascript_response?
+      #     if logger && log_warning_on_csrf_failure
+      #       logger.warn CROSS_ORIGIN_JAVASCRIPT_WARNING
+      #     end
+      #     raise ActionController::InvalidCrossOriginRequest, CROSS_ORIGIN_JAVASCRIPT_WARNING
+      #   end
+      # end
+      #
+      # no entiendo el sentido de ese código, porque no chequea realmente el
+      # origin del request. simplemente tira la exception si está enviando un
+      # javascript que no sea XHR (XMLHTTPRequest)
+
       render_my_component(PageNotFoundComponent.new, :not_found)
     end
 
@@ -200,6 +220,7 @@ module PgEngine
           render json: { html: }, status:
         end
 
+        # Mainly JS
         format.any do
           head status
         end
