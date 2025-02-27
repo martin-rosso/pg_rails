@@ -1,4 +1,9 @@
 
+7.6.31 / 2025-02-27
+===================
+
+  * fix: suppress falsa alarm on CSRF verification (ActionController::InvalidCrossOriginRequest)
+
 7.6.30 / 2025-02-05
 ===================
 
