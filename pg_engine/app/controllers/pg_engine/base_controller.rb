@@ -2,6 +2,7 @@
 
 module PgEngine
   # rubocop:disable Rails/ApplicationController
+  # rubocop:disable Metrics/ClassLength
   class BaseController < ActionController::Base
     # Importante que esta línea esté al principio
     protect_from_forgery with: :exception
@@ -242,4 +243,5 @@ module PgEngine
       redirect_back fallback_location: root_path
     end
   end
+  # rubocop:enable Metrics/ClassLength
 end
