@@ -31,6 +31,12 @@ RSpec/MultipleMemoizedHelpers:
 RSpec/ExampleLength:
   Max: 15
 
+RSpec/IndexedLet:
+  Enabled: false
+
+Naming/VariableNumber:
+  Enabled: false
+
 RSpec/MultipleExpectations:
   Enabled: false
 
