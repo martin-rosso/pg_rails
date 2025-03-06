@@ -3,7 +3,7 @@ module PgEngine
     def serialize
       super.merge(
         'app_name' => ::Current.app_name,
-        'user_id' => ::Current.user&.id,
+        'user_id' => ::Current.user&.id
       )
     end
 

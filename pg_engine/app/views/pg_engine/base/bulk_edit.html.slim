@@ -1,13 +1,13 @@
 h3 = t('pg_engine.base.index.bulk_edit.title', model: @clase_modelo)
 
-
 - if @filtros.present?
   = render SearchBarComponent.new(@q, @filtros)
   .py-2
-= pg_form_for @model, url: url_for(@form_target), html: {method: :put} do |f|
+= pg_form_for @model, url: url_for(@form_target), html: { method: :put } do |f|
   .row
     .col-auto
-      p.text-center.fw-bold = t('pg_engine.base.index.bulk_edit.count', model: @clase_modelo, count: @collection.count)
+      p.text-center.fw-bold
+        = t('pg_engine.base.index.bulk_edit.count', model: @clase_modelo, count: @collection.count)
       table.table style="min-width: 20em"
         - @collection.each do |model|
           tr
@@ -15,7 +15,7 @@ h3 = t('pg_engine.base.index.bulk_edit.title', model: @clase_modelo)
               .form-check.xform-check-lg
                 = check_box_tag 'ids[]', model.to_key, true, class: 'form-check-input'
             td
-              = link_to model, model.decorate.object_url, target: :_blank
+              = link_to model, model.decorate.object_url, target: :_blank, rel: :noopener
               / = hidden_field_tag 'ids[]', model.to_key
     .col.border-start
       = render BulkEditComponent.new(@clase_modelo, params:, form: f)

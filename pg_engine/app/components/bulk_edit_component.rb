@@ -13,9 +13,11 @@ class BulkEditComponent < BaseComponent
              end
     @active_fields = params[:active_fields]
     @f = form
+
+    super
   end
 
   def before_render
-    @f ||= PgFormBuilder.new(@key, @model, view_context, {})
+    @f ||= PgFormBuilder.new(@key, @model, view_context, {}) # rubocop:disable Naming/MemoizedInstanceVariableName
   end
 end

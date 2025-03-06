@@ -233,20 +233,20 @@ module PgEngine
     end
 
     def set_session_key_identifier
-      return unless action_name.in?(['index', 'bulk_edit', 'bulk_update'])
+      return unless action_name.in?(%w[index bulk_edit bulk_update])
 
       ::RansackMemory::Core.config[:session_key_format]
-          .gsub('%controller_name%', controller_path.parameterize.underscore)
-          .gsub('%action_name%', 'index')
-          .gsub('%request_format%', request.format.symbol.to_s)
-          .gsub('%turbo_frame%', request.headers['Turbo-Frame'] || 'top')
+                           .gsub('%controller_name%', controller_path.parameterize.underscore)
+                           .gsub('%action_name%', 'index')
+                           .gsub('%request_format%', request.format.symbol.to_s)
+                           .gsub('%turbo_frame%', request.headers['Turbo-Frame'] || 'top')
     end
 
     def bulk_edit
       # @no_main_frame = true
 
       @collection = filtros_y_policy(atributos_para_buscar, default_sort)
-      @ids = @collection.map(&:to_key).join(",")
+      @ids = @collection.map(&:to_key).join(',')
       @form_target = [:bulk_update, pg_namespace, nested_record, @clase_modelo].compact
       key = @clase_modelo.model_name.param_key
       @model = if params[key].present?
@@ -268,8 +268,6 @@ module PgEngine
       end
       # params = params.delete_if { |k,v| v.empty? or Hash === v && delete_blank(v).empty? }
 
-      # FIXME: agregar el nested record
-      target = [:bulk_edit, pg_namespace, nested_record, @clase_modelo].compact
       if params[:ids].blank?
         flash[:alert] = I18n.t('pg_engine.base.index.bulk_edit.blank_ids', model: @clase_modelo)
         flash[:toast] = true
@@ -285,7 +283,6 @@ module PgEngine
         return
       end
 
-      # ids = Bulky.parse_ids(params[:ids])
       ids = params[:ids]
 
       target = [pg_namespace, nested_record, @clase_modelo].compact
