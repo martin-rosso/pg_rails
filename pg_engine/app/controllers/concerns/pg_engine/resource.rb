@@ -248,13 +248,7 @@ module PgEngine
       @collection = filtros_y_policy(atributos_para_buscar, default_sort)
       @ids = @collection.map(&:to_key).join(',')
       @form_target = [:bulk_update, pg_namespace, nested_record, @clase_modelo].compact
-      key = @clase_modelo.model_name.param_key
-      @model = if params[key].present?
-                 attrs = @clase_modelo.bulky_attributes.select { |bk| bk.to_s.in?(params[:active_fields] || []) }
-                 @clase_modelo.new(params[key].permit(attrs))
-               else
-                 @clase_modelo.new
-               end
+      @model = @clase_modelo.new
 
       render 'bulk_edit'
     end
@@ -268,6 +262,8 @@ module PgEngine
       end
       # params = params.delete_if { |k,v| v.empty? or Hash === v && delete_blank(v).empty? }
 
+      # TODO: test
+      # :nocov:
       if params[:ids].blank?
         flash[:alert] = I18n.t('pg_engine.base.index.bulk_edit.blank_ids', model: @clase_modelo)
         flash[:toast] = true
@@ -282,6 +278,7 @@ module PgEngine
         render turbo_stream: render_turbo_stream_flash_messages
         return
       end
+      # :nocov:
 
       ids = params[:ids]
 

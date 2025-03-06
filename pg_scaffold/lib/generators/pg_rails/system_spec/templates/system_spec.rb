@@ -4,9 +4,9 @@
 require 'rails_helper'
 
 # By default uses selenium_chrome_headless_iphone driver
-# run with DRIVER environment variable to override, eg:
+# run with DRIVER & BROWSER environment variables to override, eg:
 #
-# DRIVER=selenium rspec
+# DRIVER=selenium BROWSER=firefox rspec
 describe '<%= name %>' do
   subject(:visitar) do
     visit 'some url'
