@@ -1,4 +1,11 @@
 
+7.6.32 / 2025-03-06
+===================
+
+  * feat: bulk edit
+  * feat: clicking on table row opens the item
+  * build: add bulky dependency
+
 7.6.31 / 2025-02-27
 ===================
 
