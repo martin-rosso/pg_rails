@@ -12,6 +12,7 @@ es:
     read: Ver
     update: Modificar
     create: Crear
+    bulk_edit: Modificar masivamente
     archive: Archivar
     destroy: Eliminar
     export: Exportar

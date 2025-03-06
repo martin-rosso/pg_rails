@@ -42,7 +42,7 @@ module PgEngine
     end
 
     def bulk_update?
-      record.respond_to?(:bulky_attributes) && record.bulky_attributes.present?
+      user_has_profile?(:bulk_edit) && record.respond_to?(:bulky_attributes) && record.bulky_attributes.present?
     end
 
     def edit?

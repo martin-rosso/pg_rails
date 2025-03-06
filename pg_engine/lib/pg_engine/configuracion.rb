@@ -28,6 +28,7 @@ module PgEngine
         "#{key}__read": base + 1,
         "#{key}__update": base + 10,
         "#{key}__create": base + 30,
+        "#{key}__bulk_edit": base + 40,
         "#{key}__archive": base + 50,
         "#{key}__export": base + 80,
         "#{key}__destroy": base + 100
