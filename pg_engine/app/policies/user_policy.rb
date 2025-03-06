@@ -8,7 +8,11 @@ class UserPolicy < ApplicationPolicy
       if Current.namespace == :admin
         scope.all
       elsif Current.account.present?
-        ids = Current.account.user_accounts.ua_active.pluck(:user_id)
+        ids = if Current.user_account_owner?
+                Current.account.user_accounts.pluck(:user_id)
+              else
+                Current.account.user_accounts.ua_active.pluck(:user_id)
+              end
         scope.where(id: ids)
       else
         scope.none

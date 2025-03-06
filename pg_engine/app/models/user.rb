@@ -34,7 +34,11 @@ class User < ApplicationRecord
       if ActsAsTenant.unscoped?
         all
       else
-        ids = Current.account.user_accounts.ua_active.pluck(:user_id)
+        ids = if Current.user_account_owner?
+                Current.account.user_accounts.pluck(:user_id)
+              else
+                Current.account.user_accounts.ua_active.pluck(:user_id)
+              end
         # ids = ids.push(Current.user.id) ?
         where(id: ids)
       end
