@@ -17,7 +17,7 @@ describe 'Bulk edit' do
 
   before do
     login_as logged_user
-    create_list :cosa, 2
+    create_list :cosa, 7
   end
 
   describe 'bulk edit' do
