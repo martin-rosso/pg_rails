@@ -34,9 +34,15 @@ class User < ApplicationRecord
       if ActsAsTenant.unscoped?
         all
       else
-        ids = Current.account.user_accounts.ua_active.pluck(:user_id)
-        # ids = ids.push(Current.user.id) ?
-        where(id: ids)
+        ids = Current.account.user_accounts.pluck(:user_id)
+
+        # Es importante no hacer:
+        # where(id: ids)
+        # Ya que eso supone el riesgo de ser sobreescrita, por ejemplo
+        # en el getter de un belongs_to
+        # rubocop:disable Rails/WhereEquals
+        where('users.id IN (?)', ids)
+        # rubocop:enable Rails/WhereEquals
       end
     else
       all

@@ -70,4 +70,73 @@ describe PgFormBuilder do
       it { expect(subject).to eq 'La fecha' }
     end
   end
+
+  describe '#collection_pc' do
+    subject do
+      Current.namespace = :tenant
+
+      instancia.collection_pc(:creado_por, {})
+    end
+
+    context 'when user is foreign' do
+      let!(:user) { create :user }
+
+      context 'when category has not an actual value' do
+        let(:categoria) { create :categoria_de_cosa, creado_por: nil }
+
+        it do
+          expect(subject[0]).to eq []
+        end
+      end
+
+      context 'when category has an actual value' do
+        let(:categoria) { create :categoria_de_cosa, creado_por: user }
+
+        it 'doent show even when it is the actual value' do
+          expect(categoria.reload.creado_por).to eq user
+          expect(subject[0]).to eq []
+        end
+      end
+    end
+
+    context 'when its active' do
+      let!(:user) { create :user, :guest }
+
+      context 'when category has not an actual value' do
+        let(:categoria) { create :categoria_de_cosa, creado_por: nil }
+
+        it do
+          expect(subject[0]).to eq [user]
+        end
+      end
+
+      context 'when category has an actual value' do
+        let(:categoria) { create :categoria_de_cosa, creado_por: user }
+
+        it do
+          expect(subject[0]).to include user
+        end
+      end
+    end
+
+    context 'when its disabled' do
+      let!(:user) { create :user, :guest, :disabled }
+
+      context 'when category has not an actual value' do
+        let(:categoria) { create :categoria_de_cosa, creado_por: nil }
+
+        it do
+          expect(subject[0]).to eq []
+        end
+      end
+
+      context 'when category has an actual value' do
+        let(:categoria) { create :categoria_de_cosa, creado_por: user }
+
+        it do
+          expect(subject[0]).to include user
+        end
+      end
+    end
+  end
 end

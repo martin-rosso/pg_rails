@@ -8,15 +8,16 @@ h3 = t('pg_engine.base.index.bulk_edit.title', model: @clase_modelo)
     .col-auto
       p.text-center.fw-bold
         = t('pg_engine.base.index.bulk_edit.count', model: @clase_modelo, count: @collection.count)
-      table.table style="min-width: 20em; max-width: 40em"
-        - @collection.each do |model|
-          tr
-            td style="width: 1em"
-              .form-check.xform-check-lg
-                = check_box_tag 'ids[]', model.to_key, true, class: 'form-check-input'
-            td.column-truncate-90 data-bs-title=model.to_s data-controller="tooltip"
-              = link_to model, model.decorate.object_url, target: :_blank, rel: :noopener
-              / = hidden_field_tag 'ids[]', model.to_key
+      .table-responsive
+        table.table style="min-width: 20em; max-width: 40em"
+          - @collection.each do |model|
+            tr
+              td style="width: 1em"
+                .form-check.xform-check-lg
+                  = check_box_tag 'ids[]', model.to_key, true, class: 'form-check-input'
+              td.column-truncate-90 data-bs-title=model.to_s data-controller="tooltip"
+                = link_to model, model.decorate.object_url, target: :_blank, rel: :noopener
+                / = hidden_field_tag 'ids[]', model.to_key
     .col.border-start
       = render BulkEditComponent.new(@clase_modelo, params:, form: f)
 

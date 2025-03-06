@@ -53,7 +53,7 @@ module PgAssociable
       reflect = associacion_for(atributo)
       fkid = object.send(reflect.foreign_key)
       if fkid
-        # FIXME: write some tests
+        # Include the actual value
         collection = collection.or(klass.where(id: fkid))
       end
 

@@ -228,6 +228,11 @@ module PgEngine
 
       # TODO: default sort
 
+      # include all values that are present in the DB
+      # TODO: test
+      existing_value = clase_asociacion.where(id: @clase_modelo.pluck(sin_sufijo(campo)).uniq)
+
+      scope = scope.or(existing_value)
       map = scope.map { |o| [o.to_s, o.id] }
 
       content_tag :div, class: 'col-auto' do

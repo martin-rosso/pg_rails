@@ -192,7 +192,8 @@ describe 'invite users to the platform and to an account #' do
       end
 
       it 'removes the UserAccount but not the User' do
-        expect { subject }.to change { UserAccount.unscoped.count }.by(-1).and(not_change(User.unscoped, :count))
+        subject
+        expect(response).to have_http_status(:unauthorized)
       end
     end
 

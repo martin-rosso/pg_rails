@@ -77,7 +77,13 @@ FactoryBot.define do
 
     trait :guest do
       after(:create) do |model|
-        model.user_accounts.create!(profiles: [])
+        model.user_accounts.create(profiles: [])
+      end
+    end
+
+    trait :disabled do
+      after(:create) do |model|
+        model.user_accounts.update_all(membership_status: :ms_disabled)
       end
     end
   end

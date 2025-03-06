@@ -75,19 +75,19 @@ module PgEngine
       end
     end
 
-    initializer 'byebug_bullet' do
+    initializer 'bye_bug_bullet' do
       if Rails.env.local?
         # :nocov:
         if ENV['RUBY_DEBUG_OPEN']
           require 'byebug/core'
           begin
             Byebug.start_server 'localhost', ENV.fetch('BYEBUG_SERVER_PORT', 8989).to_i
-            if ENV.fetch('SLEEP_AFTER_BYEBUG', false)
-              puts 'waiting 3 secs after starting byebug server for connections'
+            if ENV.fetch('SLEEP_AFTER_BYE_BUG', false)
+              puts 'waiting 3 secs after starting bye bug server for connections'
               sleep 3
             end
           rescue Errno::EADDRINUSE
-            Rails.logger.debug 'Byebug server already running'
+            Rails.logger.debug 'Bye bug server already running'
           end
         end
         # :nocov:

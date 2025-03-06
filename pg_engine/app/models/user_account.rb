@@ -39,19 +39,37 @@ class UserAccount < ApplicationRecord
 
   after_destroy :cleanup_invitation
   def cleanup_invitation
-    usr = User.unscoped.find(user_id)
-    return unless usr.invited_to_sign_up? && !usr.confirmed?
-    return if usr.destroy
-    # :nocov:
+    return unless app_invitation_pending?
 
+    # unscoped: necesario porque ya la UserAccount fue borrada
+    # entonces el User quedaría por fuera de la default_scope
+    return if User.unscoped.find(user_id).destroy
+
+    # :nocov:
     pg_err 'User couldnt be deleted on invitation cleanup'
     # :nocov:
   end
+
+  # The user was invited to the platform and didn't
+  # confirm yet
+  def app_invitation_pending?
+    # usr = User.find(user_id)
+
+    # invited_to_sign_up? devise_invitable method that
+    # indicates if the user was created by invitation
+    user.invited_to_sign_up? && !user.confirmed?
+  end
+
   # El problema está en el joins(:user), ya que la default scope de user está scopeada dentro
   # del current_tenant entonces vuelve sobre la tabla user_accounts y bardea
   #
   # Tengo que escribir el user joins a mano porque de lo contrario sumaría la default_scope de
   # User, que a su vez joinea con user_accounts
+  #
+  # 07-03-2025
+  # esto ya no es así, la default scope de User no joinea más con user_accounts
+  # FIXME: ver si se podría hacer el joins(:user) normalmente y quitar el unscoped
+  #
   USER_JOINS = 'INNER JOIN users ON users.id = user_accounts.user_id'
   scope :kept, -> { joins(USER_JOINS, :account).merge(Account.kept).merge(User.unscoped.kept) }
 

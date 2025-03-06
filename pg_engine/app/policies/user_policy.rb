@@ -8,6 +8,14 @@ class UserPolicy < ApplicationPolicy
       if Current.namespace == :admin
         scope.all
       elsif Current.account.present?
+        #         # FIXME: implementar bien la lógica de default scopes
+        #         #           en los simple_form association inputs, usar la pundit policy scope
+        #         #        v  en los pg_associable inputs, siempre incluir el valor actual
+        #         #        v  en los filtros de listados incluir siempre los valores existentes
+        #         #        v  en los preload de listados incluir siempre los valores existentes
+        #                  v  en los get de belongs_to
+        #           FIXME: testear todos los casos
+        #
         ids = Current.account.user_accounts.ua_active.pluck(:user_id)
         scope.where(id: ids)
       else
@@ -20,9 +28,10 @@ class UserPolicy < ApplicationPolicy
   #   acceso_total? && !record.readonly?
   # end
 
-  # def puede_crear?
-  #   acceso_total? || user.asesor?
-  # end
+  def puede_crear?
+    # acceso_total? || user.asesor?
+    true
+  end
 
   # def puede_borrar?
   #   acceso_total? && !record.readonly?

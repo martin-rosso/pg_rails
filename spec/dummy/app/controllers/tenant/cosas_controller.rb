@@ -21,6 +21,16 @@ module Tenant
       end
     end
 
+    def index
+      @collection = filtros_y_policy(atributos_para_buscar)
+
+      # no puede ser includes, porque ya hay un join con carpeta (kept) entonces
+      # haría el join con responsable también
+
+      @collection = @collection.preload(:creado_por)
+      pg_respond_index(archived: false)
+    end
+
     private
 
     def atributos_permitidos
@@ -32,7 +42,7 @@ module Tenant
     end
 
     def atributos_para_listar
-      %i[nombre tipo_text categoria_de_cosa]
+      %i[nombre tipo_text categoria_de_cosa creado_por]
     end
 
     def atributos_para_mostrar

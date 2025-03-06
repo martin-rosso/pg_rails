@@ -84,7 +84,8 @@ describe 'user accounts', :tpath_req do
     end
 
     it do
-      expect { subject }.to change(UserAccount.unscoped, :count).by(-1)
+      subject
+      expect(response).to have_http_status(:unauthorized)
     end
   end
 end

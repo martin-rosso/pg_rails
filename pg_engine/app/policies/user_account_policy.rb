@@ -41,7 +41,8 @@ class UserAccountPolicy < ApplicationPolicy
   end
 
   def destroy?
-    Current.namespace == :admin || (user_is_account_owner? && !record.profiles.account__owner?)
+    Current.namespace == :admin ||
+      (user_is_account_owner? && !record.profiles.account__owner? && record.app_invitation_pending?)
   end
 
   def show?

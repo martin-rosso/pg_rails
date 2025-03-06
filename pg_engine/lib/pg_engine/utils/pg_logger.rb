@@ -15,8 +15,6 @@ def pg_err(*args)
     # :nocov:
   end
 
-  byebug if ENV.fetch('BYEBUG_ERRORS', false) # rubocop:disable Lint/Debugger
-
   pg_log(:error, *args)
 end
 
