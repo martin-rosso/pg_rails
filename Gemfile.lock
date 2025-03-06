@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/martin-rosso/bulky.git
+  revision: 30eca0ca57f53532b5d7b70438a9146e00da46a7
+  branch: main
+  specs:
+    bulky (2.0.1)
+      rails (~> 7.2)
+
+GIT
   remote: https://github.com/mrosso10/acts_as_tenant.git
   revision: f54d48ef61300363fa05634e4d140bb3c7f4c8e2
   branch: devel
@@ -12,12 +20,6 @@ GIT
   branch: support-turbo-frames
   specs:
     ransack_memory (0.1.0)
-
-PATH
-  remote: ../bulky
-  specs:
-    bulky (2.0.1)
-      rails (~> 7.2)
 
 PATH
   remote: .
