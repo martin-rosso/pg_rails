@@ -5,6 +5,7 @@ module PgEngine
   class BaseRecord < ActiveRecord::Base
     # rubocop:enable Rails/ApplicationRecord
     extend Enumerize
+    extend Bulky::Model
     include PrintHelper
     include PostgresHelper
     include Naming

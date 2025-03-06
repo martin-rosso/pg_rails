@@ -37,6 +37,14 @@ module PgEngine
       puede_editar? && !record_discarded?
     end
 
+    def bulk_edit?
+      bulk_update?
+    end
+
+    def bulk_update?
+      record.respond_to?(:bulky_attributes) && record.bulky_attributes.present?
+    end
+
     def edit?
       update?
     end

@@ -9,6 +9,8 @@ module PgEngine
         collection do
           get :archived
           get :abrir_modal
+          get :bulk_edit
+          put :bulk_update
           post :buscar
         end
         yield if block_given?

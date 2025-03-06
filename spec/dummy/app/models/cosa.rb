@@ -32,6 +32,8 @@ class Cosa < ApplicationRecord
   include Discard::Model
   include PgEngine::ChildRecord
 
+  bulky :nombre, :tipo, :categoria_de_cosa_id
+
   self.default_modal = true
   self.parent_accessor = :categoria_de_cosa
   self.inline_editable_fields = %i[nombre tipo categoria_de_cosa rico creado_por]

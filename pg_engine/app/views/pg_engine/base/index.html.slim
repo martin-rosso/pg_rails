@@ -23,6 +23,11 @@
         li = render SearchBarTogglerComponent.new
       - unless @export_link == false
         li = @clase_modelo.new.decorate.export_link(request.url, text: 'Exportar en excel')
+      - if policy(clase_modelo).bulk_edit? && action_name != 'archived'
+        li = link_to url_for([:bulk_edit, pg_namespace, nested_record, @clase_modelo].compact)+ '?' + request.query_string,
+                     class: 'icon-link dropdown-item' do
+          i.bi.bi-pencil.lh-1
+          = t('pg_engine.base.index.bulk_edit.link', model: clase_modelo)
 
 - if action_name == 'archived'
   .text-center.p-3.text-warning-emphasis.border-bottom

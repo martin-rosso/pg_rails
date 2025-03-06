@@ -15,3 +15,5 @@ eval File.read(__dir__ + '/dev_gemfile.rb'), nil, 'dev_gemfile.rb'
 
 gem "bootsnap", require: false
 gem 'ostruct'
+
+gem 'bulky', path: '../bulky'

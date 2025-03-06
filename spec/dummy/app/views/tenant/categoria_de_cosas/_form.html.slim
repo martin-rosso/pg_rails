@@ -4,7 +4,7 @@ div style="max-width: 22em"
   = pg_form_for(@categoria_de_cosa || object) do |f|
     = f.input :nombre
     = f.input :tipo
-    = f.input :fecha
+    = f.input :fecha, date_selector: true
     = f.input :tiempo
     .mt-2
     = f.button :submit

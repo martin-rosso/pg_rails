@@ -33,6 +33,8 @@ class CategoriaDeCosa < ApplicationRecord
   include Discard::Model
   include Hashid::Rails
 
+  bulky :nombre, :tipo, :fecha, :tiempo
+
   self.default_modal = true
   self.inline_editable_fields = %i[nombre tipo fecha tiempo creado_por]
 

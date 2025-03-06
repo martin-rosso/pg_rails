@@ -27,6 +27,8 @@ module PgEngine
       clazz.helper_method :column_options_for
       clazz.helper_method :instancia_modelo
 
+      # clazz.skip_before_action :save_and_load_filters, only: [:bulk_edit, :bulk_update]
+
       clazz.before_action do
         # TODO: quitar esto, que se use el attr_accessor
         #       o sea, quitar todas las referencias a @clase_modelo
@@ -228,6 +230,69 @@ module PgEngine
 
     def restore
       discard_undiscard(:undiscard)
+    end
+
+    def set_session_key_identifier
+      return unless action_name.in?(['index', 'bulk_edit', 'bulk_update'])
+
+      ::RansackMemory::Core.config[:session_key_format]
+          .gsub('%controller_name%', controller_path.parameterize.underscore)
+          .gsub('%action_name%', 'index')
+          .gsub('%request_format%', request.format.symbol.to_s)
+          .gsub('%turbo_frame%', request.headers['Turbo-Frame'] || 'top')
+    end
+
+    def bulk_edit
+      # @no_main_frame = true
+
+      @collection = filtros_y_policy(atributos_para_buscar, default_sort)
+      @ids = @collection.map(&:to_key).join(",")
+      @form_target = [:bulk_update, pg_namespace, nested_record, @clase_modelo].compact
+      key = @clase_modelo.model_name.param_key
+      @model = if params[key].present?
+                 attrs = @clase_modelo.bulky_attributes.select { |bk| bk.to_s.in?(params[:active_fields] || []) }
+                 @clase_modelo.new(params[key].permit(attrs))
+               else
+                 @clase_modelo.new
+               end
+
+      render 'bulk_edit'
+    end
+
+    def bulk_update
+      if params[:refresh].present?
+        bulk_component = BulkEditComponent.new(@clase_modelo, params:)
+        render turbo_stream: turbo_stream.replace('bulk_form', bulk_component)
+
+        return
+      end
+      # params = params.delete_if { |k,v| v.empty? or Hash === v && delete_blank(v).empty? }
+
+      # FIXME: agregar el nested record
+      target = [:bulk_edit, pg_namespace, nested_record, @clase_modelo].compact
+      if params[:ids].blank?
+        flash[:alert] = I18n.t('pg_engine.base.index.bulk_edit.blank_ids', model: @clase_modelo)
+        flash[:toast] = true
+        render turbo_stream: render_turbo_stream_flash_messages
+        return
+      end
+
+      key = @clase_modelo.model_name.param_key
+      unless params[key].is_a?(ActionController::Parameters)
+        flash[:alert] = I18n.t('pg_engine.base.index.bulk_edit.bulk_not_hash')
+        flash[:toast] = true
+        render turbo_stream: render_turbo_stream_flash_messages
+        return
+      end
+
+      # ids = Bulky.parse_ids(params[:ids])
+      ids = params[:ids]
+
+      target = [pg_namespace, nested_record, @clase_modelo].compact
+      Bulky.enqueue_update(@clase_modelo, ids, params[key])
+      redirect_to target, notice: I18n.t('pg_engine.base.index.bulk_edit.enqueue_update')
+
+      # FIXME: revisar cuando es embedded index
     end
     # End public endpoints
 

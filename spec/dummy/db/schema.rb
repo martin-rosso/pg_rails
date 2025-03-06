@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_10_27_225720) do
+ActiveRecord::Schema[7.2].define(version: 2025_03_04_170209) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_trgm"
   enable_extension "plpgsql"
@@ -104,6 +104,28 @@ ActiveRecord::Schema[7.2].define(version: 2024_10_27_225720) do
     t.index ["created_at"], name: "index_audits_on_created_at"
     t.index ["request_uuid"], name: "index_audits_on_request_uuid"
     t.index ["user_id", "user_type"], name: "user_index"
+  end
+
+  create_table "bulky_bulk_updates", force: :cascade do |t|
+    t.integer "ids", null: false, array: true
+    t.jsonb "updates", null: false
+    t.integer "initiated_by_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["initiated_by_id"], name: "index_bulky_bulk_updates_on_initiated_by_id"
+  end
+
+  create_table "bulky_updated_records", force: :cascade do |t|
+    t.integer "bulk_update_id", null: false
+    t.integer "updatable_id", null: false
+    t.string "updatable_type", null: false
+    t.jsonb "updatable_changes", null: false
+    t.string "error_message"
+    t.text "error_backtrace"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["bulk_update_id"], name: "index_bulky_updated_records_on_bulk_update_id"
+    t.index ["updatable_type", "updatable_id"], name: "index_bulky_updated_records_on_updatable_type_and_updatable_id"
   end
 
   create_table "categoria_de_cosas", force: :cascade do |t|

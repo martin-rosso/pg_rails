@@ -1,0 +1,19 @@
+#bulk_form style="max-width: 40em"
+  - @attributes.each do |attr|
+    - active = (@active_fields.present? && @active_fields.include?(attr.to_s))
+    .row
+      .col-auto
+        .form-check.form-check-lg
+          = check_box_tag "active_fields[]", attr, active, class: 'form-check-input', \
+                      data: { controller: 'bulk-edit-field-activator' }
+      .col
+        - attr = attr.to_s.gsub(/_id$/, "")
+        / html5 solo aplica a datetime
+        / date_selector solo aplica a date
+        / ignore_date y prompt solo aplica a time
+        / cada caso es inocuo para el resto de los types
+        = @f.field attr, disabled: !active, date_selector: true, minute_step: 15,
+                         ignore_date: true, prompt: { hour: 'hh', minute: 'mm' }
+  p
+    = @f.button :submit, "Confirmar"
+    = @f.button :button, 'refresh', class: 'd-none', name: 'refresh', value: '1'

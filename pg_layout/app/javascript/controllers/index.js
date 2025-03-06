@@ -15,6 +15,7 @@ import PopoverController from './popover_controller'
 import PopoverTogglerController from './popover_toggler_controller'
 import DateSelectorController from './date_selector_controller'
 import EmbeddedFrameController from './embedded_frame_controller'
+import BulkEditFieldActivator from './bulk_edit_field_activator'
 
 application.register('navbar', NavbarController)
 application.register('nested', NestedController)
@@ -31,5 +32,6 @@ application.register('popover', PopoverController)
 application.register('popover-toggler', PopoverTogglerController)
 application.register('date-selector', DateSelectorController)
 application.register('embedded-frame', EmbeddedFrameController)
+application.register('bulk-edit-field-activator', BulkEditFieldActivator)
 
 // TODO: testear con capybara todo lo que se pueda
