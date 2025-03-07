@@ -1,3 +1,6 @@
+<% content_for(:container_class) { 'container border pb-3 my-3' } %>
+<% content_for(:container_style) { 'max-width: 50em; xborder-left: 1px solid grey' } %>
+
 <h2><%= UserAccount.new.decorate.submit_default_value %></h2>
 
 <div style="max-width: 40em" data-controller="pg_form">

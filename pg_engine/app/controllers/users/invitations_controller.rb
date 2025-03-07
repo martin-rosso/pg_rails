@@ -18,8 +18,6 @@ module Users
       add_breadcrumb UserAccount.new.decorate.submit_default_value
 
       @no_main_frame = true
-      @container_class = 'container border pb-3 my-3'
-      @container_style = 'max-width: 50em; xborder-left: 1px solid grey'
     end
 
     def new
