@@ -5,8 +5,8 @@ div style="max-width: 50em"
     = f.input :nombre
     = f.input :tipo
     = f.pg_associable :categoria_de_cosa
-    = f.association :creado_por
-    / = f.pg_associable :creado_por
+    / = f.association :creado_por, collection: []
+    = f.pg_associable :creado_por
     = f.field :rico
     / = f.association :categoria_de_cosa
     .mt-2

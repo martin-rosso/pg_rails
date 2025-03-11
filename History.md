@@ -1,4 +1,12 @@
 
+7.6.35 / 2025-03-11
+==================
+
+  * fix: users default scope & restrict user_account deletion
+  * fix: require collection to be passed to association input
+  * fix: replace hardcode brand
+  * refactor: replace container global variables with yield
+
 7.6.34 / 2025-03-06
 ==================
 
@@ -72,7 +80,6 @@
   * feat: allow to skip the csrf meta tags in base layout
   * fix: move dev_user? to helper module
   * fix: urls en decorator
-  * doc: fixme comment
 
 7.6.22 / 2024-11-09
 ===================
