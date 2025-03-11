@@ -42,7 +42,7 @@ end
           back_to_index: 'Volver al listado principal',
           bulk_edit: {
             enqueue_update: "Modificación en proceso (podría demorar algunos segundos en completarse)",
-            blank_ids: PgEngine::I18nRules.rule("No hay %{genderize(ninguna,ningún)} %{singular_model} seleccionada"),
+            blank_ids: PgEngine::I18nRules.rule("No hay %{genderize(ninguna,ningún)} %{singular_model} %{genderize(seleccionada,seleccionado)}"),
             bulk_not_hash: "Debés seleccionar al menos un campo",
             title: PgEngine::I18nRules.rule("Modificación masiva de %{plural_model}"),
             link: PgEngine::I18nRules.rule("Modificar masivamente"),
