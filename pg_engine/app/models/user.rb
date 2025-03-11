@@ -29,6 +29,11 @@
 #
 
 class User < ApplicationRecord
+  # Places where the default_scope applies:
+  #  _  v  en los pg_associable inputs
+  #  _  v  en los select de filtros de listados
+  #     O  en los preload e includes de listados
+  #     O  en los get de belongs_to
   default_scope lambda {
     if Current.namespace == :tenant
       if ActsAsTenant.unscoped?

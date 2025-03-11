@@ -75,6 +75,7 @@ module PgAssociable
       options.deep_merge!({ wrapper_html: { data: { controller: 'asociable',
                                                     'asociable-modal-outlet': '.modal' } } })
       options[:as] = 'pg_associable'
+      options[:collection] = []
 
       association atributo, options
     end

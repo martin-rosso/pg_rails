@@ -32,6 +32,12 @@ class PgFormBuilder < SimpleForm::FormBuilder
     super
   end
 
+  # :nocov:
+  def fetch_association_collection(_reflection, _options)
+    raise PgEngine::Error, 'collection option must be passed'
+  end
+  # :nocov:
+
   def field(attribute_name, options = {}, &)
     model = convert_to_model(object)
 
