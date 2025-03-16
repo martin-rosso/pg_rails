@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   get "pg_engine/health" => "pg_engine/health#show", as: :pg_engine_health_check
 
   get '404', to: 'application#page_not_found'
-  get '500', to: 'application#internal_error'
+  # get '500', to: 'application#handle_internal_error'
   get 'internal_error_but_with_status200', to: 'application#internal_error_but_with_status200'
 
   get 'contacto', to: 'public/mensaje_contactos#new'
