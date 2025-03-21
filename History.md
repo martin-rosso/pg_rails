@@ -1,4 +1,12 @@
 
+7.6.36 / 2025-04-02
+==================
+
+  * feat: show miniature previews in rich text attachments
+  * fix: remove useless internal_error route
+  * fix: locale typo
+  * fix: nil pointer warning
+
 7.6.35 / 2025-03-11
 ==================
 

@@ -19,4 +19,11 @@ RSpec.describe User do
       expect(results).to eq [user]
     end
   end
+
+  describe '#first_first_name' do
+    it do
+      user = create(:user, nombre: 'Juan Carlos')
+      expect(user.first_first_name).to eq 'Juan'
+    end
+  end
 end
