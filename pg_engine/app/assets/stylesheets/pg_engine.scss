@@ -45,6 +45,9 @@ nav[aria-label=breadcrumb] a {
 .trix-content figure a:hover {
   text-decoration: underline;
 }
+.trix-content .attachment--preview {
+  width: 100px;
+}
 
 input[disabled] {
   background-color: #e9e9ed;
