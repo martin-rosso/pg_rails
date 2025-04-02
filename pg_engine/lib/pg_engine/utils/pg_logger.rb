@@ -110,7 +110,7 @@ module PgEngine
       end
 
       def rainbow_wrap(mensaje, type)
-        Rainbow(mensaje).bold.send(color_for(type))
+        mensaje.split("\n").map { Rainbow(_1).bold.send(color_for(type)) }.join("\n")
       end
 
       def color_for(type)

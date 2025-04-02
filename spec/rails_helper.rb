@@ -99,6 +99,7 @@ RSpec.configure do |config|
   config.use_transactional_fixtures = true
 
   # ActsAsTenant
+  # TODO: mover a un support, para los dependents
   config.before(:suite) do |example|
     # Make the default tenant globally available to the tests
     $default_account = FactoryBot.create(:account)
@@ -123,10 +124,6 @@ RSpec.configure do |config|
     ActsAsTenant.test_tenant = nil
   end
 
-  # Selenium
-  config.before(:each, type: :system) do
-    driven_by ENV.fetch('DRIVER', :selenium_chrome_headless_iphone).to_sym, using: ENV.fetch('BROWSER', :headless_chrome).to_sym
-  end
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
 

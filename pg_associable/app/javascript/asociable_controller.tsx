@@ -174,7 +174,9 @@ export default class extends Controller {
 
   mostrarError () {
     if (this.element.querySelector('.resultados .spinner-border')) {
+      // TODO: rastrear causa, probablemente sea por websocket desconectado.
       Rollbar.error('Time out de asociable.js')
+
       // TODO: link a contacto
       this.subWrapper.innerHTML = renderToStaticMarkup(
         <div className="resultados" tabIndex={-1}>
