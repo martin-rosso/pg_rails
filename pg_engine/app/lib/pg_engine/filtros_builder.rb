@@ -51,10 +51,14 @@ module PgEngine
       @campos.each { |campo| @filtros[campo] = {} }
     end
 
-    def opciones(campo, opciones)
+    def configure(campo, config)
       # TODO: mergear
-      @filtros[campo] = opciones
+      @filtros[campo] = config
     end
+
+    # TODO: deprecar
+    alias opciones configure
+    deprecate :opciones, deprecator: PgEngine.deprecator
 
     # querys customizadas por campo
     def query(campo, &block)
@@ -160,8 +164,8 @@ module PgEngine
       raise PgEngine::Error, 'se debe setear el form' if @form.blank?
 
       res = ''
-      @filtros.each do |campo, opciones|
-        if opciones[:oculto] ||
+      @filtros.each do |campo, config|
+        if config[:oculto] ||
            (options[:except].present? && options[:except].include?(campo.to_sym)) ||
            (options[:only].present? && options[:only].exclude?(campo.to_sym))
           next
@@ -249,13 +253,13 @@ module PgEngine
     end
 
     def filtro_select(campo, placeholder = '')
-      opciones = @filtros[campo]
+      config = @filtros[campo]
 
-      map = if opciones[:collection].present?
-              if opciones[:collection].first.is_a? Enumerize::Value
-                opciones[:collection].map { |v| [v.text, v.value] }
+      map = if config[:options].present?
+              if config[:options].first.is_a? Enumerize::Value
+                config[:options].map { |v| [v.text, v.value] }
               else
-                opciones[:collection]
+                config[:options]
               end
             else
               @clase_modelo.send(sin_sufijo(campo)).values.map do |key|

@@ -8,7 +8,7 @@ describe 'Filtros de cosas' do
   let(:visitar) do
     visit path
   end
-  let(:user) { create :user, :developer }
+  let(:user) { create :user, :owner }
   let(:listado) { page.find('.listado') }
   let!(:search_fields) { nil }
 
@@ -27,8 +27,8 @@ describe 'Filtros de cosas' do
     let(:nombre) { Faker::Lorem.sentence }
     let!(:otro_tipo) { Cosa.tipo.values.reject { _1 == cosa.tipo }.sample }
     let!(:otra_cosa) { create :cosa, tipo: otro_tipo }
-    let(:controller_class) { Admin::CosasController }
-    let(:path) { '/a/cosas' }
+    let(:controller_class) { Tenant::CosasController }
+    let(:path) { '/u/t/cosas' }
 
     describe 'default sort' do
       before do
@@ -130,6 +130,27 @@ describe 'Filtros de cosas' do
         expect(listado).to have_text cosa.tipo_text
         expect(listado).to have_no_text otra_cosa.tipo_text
       end
+
+      context 'cuando hay options enum values' do
+        let(:path) { tpath('/u/t/cosas?custom_options=enum_values', query_string: false) }
+
+        it do
+          visitar
+          expect(page).to have_css('option', text: 'Completar')
+          expect(page).to have_no_css('option', text: 'Valores')
+        end
+      end
+
+      context 'cuando hay options hash' do
+        let(:path) { tpath('/u/t/cosas?custom_options=hash', query_string: false) }
+
+        it do
+          visitar
+          expect(page).to have_css('option', text: 'Uno')
+          expect(page).to have_css('option', text: 'Dos')
+          expect(page).to have_no_css('option', text: 'Completar')
+        end
+      end
     end
 
     context 'buscar tipo por select múltiple' do
@@ -147,8 +168,8 @@ describe 'Filtros de cosas' do
   end
 
   describe 'Categorías' do
-    let(:controller_class) { Admin::CategoriaDeCosasController }
-    let(:path) { '/a/categoria_de_cosas' }
+    let(:controller_class) { Tenant::CategoriaDeCosasController }
+    let(:path) { '/u/t/categoria_de_cosas' }
     let(:search_fields) { %i[fecha] }
 
     let!(:categoria) { create :categoria_de_cosa }
@@ -199,6 +220,7 @@ describe 'Filtros de cosas' do
 
     let!(:target_user) { create :user, :orphan, developer: true }
     let!(:otro_user) { create :user, :orphan, developer: false }
+    let(:user) { create :user, :developer }
 
     describe 'boolean' do
       it do

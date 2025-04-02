@@ -1,4 +1,11 @@
 
+7.6.37 / 2025-04-02
+==================
+
+  * feat: allow custom options in enumerize based filters
+  * feat: dsfil param, for don't save filters
+  * fix: text on enumerize based html filters
+
 7.6.36 / 2025-04-02
 ==================
 

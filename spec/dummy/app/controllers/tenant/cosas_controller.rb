@@ -24,6 +24,19 @@ module Tenant
     def index
       @collection = filtros_y_policy(atributos_para_buscar)
 
+      # FIXME: quitar sufijo en filtrosbuilder
+      case params[:custom_options]
+      when 'enum_values'
+        options = [Cosa.tipo.completar, Cosa.tipo.los]
+        @filtros.configure(:tipo_eq, { options: })
+      when 'hash'
+        options = [
+          ['Uno', 1],
+          ['Dos', 2]
+        ]
+        @filtros.configure(:tipo_eq, { options: })
+      end
+
       # no puede ser includes, porque ya hay un join con carpeta (kept) entonces
       # haría el join con responsable también
 
