@@ -250,7 +250,7 @@ module PgEngine
 
     def filtro_select(campo, placeholder = '')
       map = @clase_modelo.send(sin_sufijo(campo)).values.map do |key|
-        [I18n.t("#{@clase_modelo.to_s.underscore}.#{campo}.#{key}", default: key.humanize),
+        [I18n.t("#{@clase_modelo.to_s.underscore}.#{sin_sufijo(campo)}.#{key}", default: key.text),
          key.value]
       end
       content_tag :div, class: 'col-auto' do
