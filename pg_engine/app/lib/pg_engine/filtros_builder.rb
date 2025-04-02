@@ -249,10 +249,21 @@ module PgEngine
     end
 
     def filtro_select(campo, placeholder = '')
-      map = @clase_modelo.send(sin_sufijo(campo)).values.map do |key|
-        [I18n.t("#{@clase_modelo.to_s.underscore}.#{sin_sufijo(campo)}.#{key}", default: key.text),
-         key.value]
-      end
+      opciones = @filtros[campo]
+
+      map = if opciones[:collection].present?
+              if opciones[:collection].first.is_a? Enumerize::Value
+                opciones[:collection].map { |v| [v.text, v.value] }
+              else
+                opciones[:collection]
+              end
+            else
+              @clase_modelo.send(sin_sufijo(campo)).values.map do |key|
+                [I18n.t("#{@clase_modelo.to_s.underscore}.#{sin_sufijo(campo)}.#{key}", default: key.text),
+                 key.value]
+              end
+            end
+
       content_tag :div, class: 'col-auto' do
         content_tag :div, class: "filter #{active_class(campo)}" do
           suf = extraer_sufijo(campo)
