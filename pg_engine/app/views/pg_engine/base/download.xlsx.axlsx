@@ -2,6 +2,7 @@
 
 wb = xlsx_package.workbook
 
+# FIXME: add colspaned header with model name
 title = wb.styles.add_style(
   b: true, sz: 13, bg_color: '1a172f', fg_color: 'ebebeb'
   # alignment: { horizontal: :center, vertical: :center }
