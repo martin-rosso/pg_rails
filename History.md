@@ -1,4 +1,12 @@
 
+7.6.38 / 2025-04-03
+==================
+
+  * fixup! conf: logger fix y capybara config heredable en support
+  * doc: fixme comments
+  * conf: logger fix y capybara config heredable en support
+  * fix: containerized layout
+
 7.6.37 / 2025-04-02
 ==================
 

@@ -53,6 +53,7 @@ Capybara.javascript_driver = ENV.fetch('DRIVER') { 'selenium_chrome_notebook' }.
 
 RSpec.configure do |config|
   config.before(:each, type: :system) do
-    driven_by ENV.fetch('DRIVER', :selenium_chrome_headless_iphone).to_sym, using: ENV.fetch('BROWSER', :headless_chrome).to_sym
+    driven_by ENV.fetch('DRIVER', :selenium_chrome_headless_iphone).to_sym,
+              using: ENV.fetch('BROWSER', :headless_chrome).to_sym
   end
 end

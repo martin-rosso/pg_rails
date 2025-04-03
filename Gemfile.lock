@@ -24,7 +24,7 @@ GIT
 PATH
   remote: .
   specs:
-    pg_rails (7.6.37)
+    pg_rails (7.6.38)
       activeadmin (~> 3.2.2)
       acts_as_tenant (~> 1.0)
       anycable (= 1.5.1)
