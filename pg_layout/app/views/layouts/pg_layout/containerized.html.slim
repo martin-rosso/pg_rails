@@ -1,5 +1,5 @@
 - content_for :content do
-  - klass = modal_targeted? ? '' : (yield(:container_class) || 'container-fluid')
+  - klass = modal_targeted? ? '' : (yield(:container_class).presence || 'container-fluid')
   div class="pt-3 #{klass}" style=yield(:container_style)
     = content_for?(:containerized_content) ? yield(:containerized_content) : yield
 
