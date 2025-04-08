@@ -1,4 +1,12 @@
 
+7.6.39 / 2025-04-08
+===================
+
+  * feat: navbar collapsing groups
+  * doc: code documentation
+  * test: update system scaffold
+  * test: log to stdout all debug calls in testing
+
 7.6.38 / 2025-04-03
 ==================
 
