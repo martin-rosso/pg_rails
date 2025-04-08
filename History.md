@@ -1,4 +1,12 @@
 
+7.6.41 / 2025-04-08
+===================
+
+  * feat: logos en accounts index, y rows clickables
+  * feat: logos en el account switcher de la navbar
+  * feat: selectable text cells for record indexes
+  * fix: remove breaking turbo-temporary de los sidebar collapse
+
 7.6.40 / 2025-04-08
 ===================
 
