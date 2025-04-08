@@ -15,7 +15,13 @@ ul.navbar-nav.gap-3.align-items-center class="gap-#{@breakpoint_navbar_expand}-0
         - if @other_active_accounts&.any?
           h6.dropdown-header Cambiar a:
           - @other_active_accounts.each do |ua|
-            li = link_to ua.account, tenant_root_path(tid: ua.to_param), class: 'dropdown-item'
+            li
+              = link_to tenant_root_path(tid: ua.to_param), class: 'dropdown-item' do
+                - if ua.account.logo.present?
+                  span = image_tag ua.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+                - else
+                  i.bi.bi-bag-fill.me-2.d-inline-block.text-center style="font-size: 1.7em; width: 1.6em"
+                span = ua.account
           li
             hr.dropdown-divider
         li = link_to "Administrar #{Account.nombre_plural.downcase}", users_accounts_path(tid: nil), class: 'dropdown-item'
@@ -27,7 +33,11 @@ ul.navbar-nav.gap-3.align-items-center class="gap-#{@breakpoint_navbar_expand}-0
         = Account.nombre_plural
       ul.dropdown-menu
         - @other_active_accounts.each do |ua|
-          li = link_to ua.account, tenant_root_path(tid: ua.to_param), class: 'dropdown-item'
+          li
+            = link_to tenant_root_path(tid: ua.to_param), class: 'dropdown-item' do
+              - if ua.account.logo.present?
+                span = image_tag ua.account.logo.variant(:thumb), class: 'rounded-circle border border-2 me-2', width: 40, height: 40
+              span = ua.account
         li
           hr.dropdown-divider
         li = link_to "Administrar #{Account.nombre_plural.downcase}", users_accounts_path(tid: nil), class: 'dropdown-item'

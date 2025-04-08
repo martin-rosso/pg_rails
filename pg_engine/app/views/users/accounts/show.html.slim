@@ -5,7 +5,7 @@
 .text-center
   .d-flex.justify-content-center.gap-2.align-items-center.m-3
     - if @account.logo.present?
-      = image_tag @account.logo, style: 'max-height:3em'
+      = image_tag @account.logo.variant(:thumb), style: 'max-height:3em'
     .fs-1
       = @account
 
