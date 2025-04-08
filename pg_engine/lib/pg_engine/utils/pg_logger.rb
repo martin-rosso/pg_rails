@@ -55,7 +55,7 @@ module PgEngine
       def notify_all(mensaje, type)
         send_to_logger(mensaje, type)
         send_to_rollbar(mensaje, type)
-        send_to_stdout(mensaje, type) if ENV.fetch('LOG_TO_STDOUT', nil)
+        send_to_stdout(mensaje, type) if ENV.fetch('LOG_TO_STDOUT', nil) || (Rails.env.test? && type == :debug)
         save_internal(mensaje, type) if Rails.env.test?
         nil
       end
