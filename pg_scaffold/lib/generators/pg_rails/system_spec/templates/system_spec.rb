@@ -8,12 +8,15 @@ require 'rails_helper'
 #
 # DRIVER=selenium BROWSER=firefox rspec
 describe '<%= name %>' do
+  # include ActionView::RecordIdentifier
+
   subject(:visitar) do
-    visit 'some url'
+    path = tpath("/u/t/some_tenanted_path", query_string: false)
+    visit path
   end
 
-  let(:logged_user) { create :user }
-  let(:account) { ActsAsTenant.current_tenant }
+  let(:logged_user) { create :user, :owner }
+  # let(:account) { ActsAsTenant.current_tenant }
 
   before do
     login_as logged_user
