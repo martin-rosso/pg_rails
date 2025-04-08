@@ -1,6 +1,8 @@
 - content_for :content do
   - klass = modal_targeted? ? '' : (yield(:container_class).presence || 'container-fluid')
-  div class="pt-3 #{klass}" style=yield(:container_style)
+  - padding_top_class = yield(:padding_top_class).presence || 'pt-3'
+
+  div class="#{padding_top_class} #{klass}" style=yield(:container_style)
     = content_for?(:containerized_content) ? yield(:containerized_content) : yield
 
 = render template: 'layouts/pg_layout/base'
