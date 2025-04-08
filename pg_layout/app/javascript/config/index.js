@@ -15,11 +15,16 @@ function bindListingClick () {
     if (ev.target.closest('.listado')) {
       const row = ev.target.closest('tr')
       if (row) {
-        const show = row.querySelector('.bi-eye-fill')
-        if (show) {
-          const link = show.closest('a')
-          if (link) {
-            link.click()
+        const mainRowLink = row.querySelector('.main-row-link')
+        if (mainRowLink) {
+          mainRowLink.click()
+        } else {
+          const show = row.querySelector('.bi-eye-fill')
+          if (show) {
+            const link = show.closest('a')
+            if (link) {
+              link.click()
+            }
           }
         }
       }

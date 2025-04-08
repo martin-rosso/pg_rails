@@ -75,7 +75,7 @@ module Users
     end
 
     def atributos_para_listar
-      %i[nombre owner]
+      %i[logo_f nombre owner]
     end
   end
 end

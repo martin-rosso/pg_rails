@@ -53,6 +53,8 @@
           tr
             th
             - atributos_para_listar.each do |att|
+              / TODO: poder configurar el ordenable en false
+              / Sería ideal hacer algo OOP, pero es medio bardo
               th.text-nowrap style="font-size: 0.8em" = encabezado att, ordenable: true
             - if action_name == 'archived'
               th.text-nowrap style="font-size: 0.8em" = encabezado :discarded_at, ordenable: true

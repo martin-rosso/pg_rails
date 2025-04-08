@@ -15,7 +15,7 @@ class UserAccountDecorator < PgEngine::BaseRecordDecorator
     helpers.content_tag :span do
       h.link_to h.tenant_root_path(tid: object.to_param),
                 'data-turbo-frame': :_top,
-                class: 'btn btn-sm btn-primary' do
+                class: 'btn btn-sm btn-primary main-row-link' do
         '<i class="bi bi-box-arrow-in-right"></i> Ingresar'.html_safe
       end
     end

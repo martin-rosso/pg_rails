@@ -187,6 +187,8 @@ es:
     attributes:
       account:
         owner: Administrado por
+        logo/scoped:
+          listado_header: ""
       user_account:
         membership_status: Estado
         user: Nombre

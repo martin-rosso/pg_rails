@@ -33,4 +33,12 @@ class AccountDecorator < PgEngine::BaseRecordDecorator
       end
     end
   end
+
+  def logo_f
+    if logo.present?
+      image_tag logo.variant(:thumb), style: 'max-height:3em'
+    else
+      content_tag 'i', nil, class: 'bi bi-bag-fill text-center d-inline-block', style: 'font-size: 1.7em; width: 1.6em'
+    end
+  end
 end
