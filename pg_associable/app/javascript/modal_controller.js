@@ -39,14 +39,17 @@ export default class extends Controller {
 
     this.element.addEventListener('pg:record-updated', (ev) => {
       if (ev.data.dataset.inline) {
+        // Is an inline edit submit
         this.reloadTop()
         ev.stopPropagation()
       } else {
         if (ev.data.dataset.reload) {
+          // Must reload modal. Ie: on discard/undiscard
           this.reload()
           this.reloadTop()
           ev.stopPropagation()
         } else {
+          // Is a traditional form submit
           this.back(ev)
         }
       }

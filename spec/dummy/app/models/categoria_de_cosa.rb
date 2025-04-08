@@ -65,6 +65,11 @@ class CategoriaDeCosa < ApplicationRecord
 
   attr_accessor :validate_created_at, :validate_base
 
+  # after_update :update_message
+  # def update_message
+  #   broadcast_replace_to([account, :categoria_de_cosas], renderable: RowCategoriaComponent.new)
+  # end
+
   # def validate_created_at
   #   true
   # end

@@ -30,6 +30,9 @@
           i.bi.bi-pencil.lh-1
           = t('pg_engine.base.index.bulk_edit.link', model: clase_modelo)
 
+/ if turbo stream? && Current.account.present?
+/   = turbo_stream_from Current.account, @clase_modelo.model_name.plural
+
 - if action_name == 'archived'
   .text-center.p-3.text-warning-emphasis.border-bottom
     div
