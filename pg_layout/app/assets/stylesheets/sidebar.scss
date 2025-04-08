@@ -47,10 +47,22 @@ $chevron-color: 200,200,200,.5;
   // background-color: #d2f4ea;
 }
 
-.pg--nav-button.active {
+.navbar__nav-button.active {
   --bs-link-color-rgb: white!important;
   background-color: tint-color($primary, 17%);
 }
+
+.navbar__nav-button[aria-expanded=true] {
+  font-weight: bold;
+}
+
+// Child entries
+#sidebar .collapse-inner {
+  background-color: tint-color($primary, 5%);
+  padding-bottom: 0.1em;
+  padding-top: 0.1em;
+}
+
 // Los small-items están deprecados
 #sidebar {
   &.opened {
@@ -100,7 +112,7 @@ $chevron-color: 200,200,200,.5;
   }
 }
 
-.pg--nav-button {
+.navbar__nav-button {
   padding: 0.4em 1.7em;
   width: 100%;
   text-align: right;
@@ -109,11 +121,11 @@ $chevron-color: 200,200,200,.5;
 .offcanvas-body {
   padding: 0!important;
 }
-.pg--nav-button:hover {
+.navbar__nav-button:hover {
   background-color: tint-color($primary, 20%);
 }
 
-.offcanvas .pg--nav-button {
+.offcanvas .navbar__nav-button {
   padding: 0.7em 1.7em;
   text-align: right;
 }

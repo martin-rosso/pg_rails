@@ -15,17 +15,38 @@ class DummyNavigator
     if Current.namespace == :admin
       navbar.add_item('sidebar.signed_in', {
         name: 'Categorias',
-        path: 'admin_categoria_de_cosas_path',
+        children: [
+          {
+            name: 'Listado',
+            path: 'admin_categoria_de_cosas_path',
+            # policy: 'false'
+          },
+          {
+            name: 'New',
+            path: 'new_admin_categoria_de_cosa_path',
+          }
+        ]
       })
       navbar.add_item('sidebar.signed_in', {
         name: 'Cosas',
-        path: 'admin_cosas_path',
+        children: [
+          {
+            name: 'Listado',
+            path: 'admin_cosas_path',
+            # policy: 'false'
+          },
+          {
+            name: 'New',
+            path: 'new_admin_cosa_path',
+          }
+        ]
       })
     end
   end
 end
 
 PgEngine.configurar do |config|
+  config.navigators = []
   config.navigators.prepend DummyNavigator.new
   config.add_profiles(:cosas, 5000)
   config.add_profiles(:categoria_de_cosas, 6000)

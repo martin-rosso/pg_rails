@@ -10,7 +10,7 @@
         - @navbar.sidebar.each do |entry|
           - next if @navbar.hide_entry?(entry)
           li
-            a href=entry[:path] class="pg--nav-button pe-4 text-light #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
+            a href=entry[:path] class="navbar__nav-button pe-4 text-light #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
               = entry[:title]
 css:
   .offcanvas a { text-decoration: none; }

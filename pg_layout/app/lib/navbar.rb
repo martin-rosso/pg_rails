@@ -43,22 +43,32 @@ class Navbar
     bar_data = @yaml_data[key]
     return [] if bar_data.blank?
 
-    # rubocop:disable Security/Eval
     # rubocop:disable Style/MultilineBlockChain:
     orig_idx = 0
     bar_data.map do |item|
       orig_idx += 1
-      {
-        title: item['name'],
-        attributes: item['attributes']&.html_safe,
-        path: eval(item['path']),
-        show: item['policy'] ? eval(item['policy']) : true,
-        priority: item['priority'] || 999_999,
-        orig_idx:
-      }
+      evaluate_node(item, orig_idx)
     end.sort_by { |a| [a[:priority], a[:orig_idx]] }
-    # rubocop:enable Security/Eval
     # rubocop:enable Style/MultilineBlockChain:
+  end
+
+  def evaluate_node(item, orig_idx = nil)
+    # rubocop:disable Security/Eval
+    aux = {
+      title: item['name'],
+      attributes: item['attributes']&.html_safe,
+      path: item['path'].present? ? eval(item['path']) : nil,
+      show: item['policy'] ? eval(item['policy']) : true,
+      priority: item['priority'] || 999_999,
+      orig_idx:
+    }
+    # rubocop:enable Security/Eval
+
+    if item[:children].present?
+      aux[:children] = item[:children].map { |it| evaluate_node(it) }
+    end
+
+    aux
   end
 
   def all_children_hidden?(entry)
@@ -67,7 +77,6 @@ class Navbar
 
   def any_children_active?(entry, request)
     entry[:children].any? { |child| active_entry?(child, request) }
-    true
     # TODO: quitar
   end
 

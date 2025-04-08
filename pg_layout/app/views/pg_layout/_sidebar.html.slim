@@ -6,5 +6,23 @@ div id="sidebar" class="#{@navbar_opened_class} flex-shrink-0 d-none d-#{@breakp
       - @navbar.sidebar.each do |entry|
         - next if @navbar.hide_entry?(entry)
         li.mb-1
-          a href=entry[:path] class="d-inline-flex text-decoration-none pg--nav-button #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
-            = entry[:title]
+          - if entry[:children].present?
+            - entry_id = "nav-entry-#{entry[:orig_idx]}"
+            - active = @navbar.active_entry?(entry, request)
+            a class="d-inline-flex text-decoration-none navbar__nav-button #{ active ? '' : 'collapsed'} #{entry[:attributes]}" data-bs-toggle="collapse" href="##{entry_id}" role="button" aria-expanded="#{ active ? 'true' : 'false'}" aria-controls=entry_id
+              = entry[:title]
+              - if active
+                span.bi.bi-chevron-down.ms-1 style="font-size: 0.7em"
+              - else
+                span.bi.bi-chevron-right.ms-1 style="font-size: 0.7em"
+
+            .collapse data-turbo-temporary=('true' unless @navbar.active_entry?(entry, request)) class="#{ 'show' if @navbar.active_entry?(entry, request)}" id=entry_id
+              .collapse-inner
+                - entry[:children].each do |child|
+                  - next if @navbar.hide_entry?(child)
+                  .mb-1
+                    a href=child[:path] class="d-inline-flex text-decoration-none navbar__nav-button #{@navbar.active_entry?(child, request) ? 'active' : ''} #{child[:attributes]}"
+                      = child[:title]
+          - else
+            a href=entry[:path] class="d-inline-flex text-decoration-none navbar__nav-button #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
+              = entry[:title]
