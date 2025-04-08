@@ -46,7 +46,6 @@ class DummyNavigator
 end
 
 PgEngine.configurar do |config|
-  config.navigators = []
   config.navigators.prepend DummyNavigator.new
   config.add_profiles(:cosas, 5000)
   config.add_profiles(:categoria_de_cosas, 6000)

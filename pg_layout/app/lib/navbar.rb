@@ -77,7 +77,6 @@ class Navbar
 
   def any_children_active?(entry, request)
     entry[:children].any? { |child| active_entry?(child, request) }
-    # TODO: quitar
   end
 
   def hide_entry?(entry)

@@ -16,7 +16,8 @@ div id="sidebar" class="#{@navbar_opened_class} flex-shrink-0 d-none d-#{@breakp
               - else
                 span.bi.bi-chevron-right.ms-1.align-text-bottom style="font-size: 0.7em"
 
-            .collapse data-turbo-temporary=('true' unless active) class="#{ 'show' if active}" id=entry_id
+            / data-turbo-temporary=('true' unless active)
+            .collapse class="#{ 'show' if active}" id=entry_id
               .collapse-inner
                 - entry[:children].each do |child|
                   - next if @navbar.hide_entry?(child)
