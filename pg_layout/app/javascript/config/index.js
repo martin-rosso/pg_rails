@@ -11,6 +11,7 @@ function bindListingClick () {
   document.body.onclick = (ev) => {
     if (ev.target.closest('a')) return
     if (ev.target.closest('.inline-edit')) return
+    if (ev.target.closest('.inline-no-edit')) return
     if (ev.target.closest('.listado')) {
       const row = ev.target.closest('tr')
       if (row) {

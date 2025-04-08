@@ -23,7 +23,7 @@ $values: 0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100;
 }
 
 // Table row clickable (bindListingClick)
-.listado tr:has(td:hover):has(.bi-eye-fill):not(:has(.actions-wrapper:hover)):not(:has(a:hover)):not(:has(.inline-edit:hover)) td {
+.listado tr:has(td:hover):has(.bi-eye-fill):not(:has(.actions-wrapper:hover)):not(:has(a:hover)):not(:has(.inline-edit:hover)):not(:has(.inline-no-edit:hover)) td {
 	background-color: #f2f2f2;
 	cursor: pointer;
 }
