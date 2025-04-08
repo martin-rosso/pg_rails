@@ -1,4 +1,10 @@
 
+7.6.40 / 2025-04-08
+===================
+
+  * fix: remove top padding in accounts index
+  * fixup! feat: navbar collapsing groups
+
 7.6.39 / 2025-04-08
 ===================
 
