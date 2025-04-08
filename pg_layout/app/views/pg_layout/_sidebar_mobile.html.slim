@@ -9,9 +9,28 @@
       ul.list-unstyled.mt-4
         - @navbar.sidebar.each do |entry|
           - next if @navbar.hide_entry?(entry)
+          - active = @navbar.active_entry?(entry, request)
           li
-            a href=entry[:path] class="navbar__nav-button pe-4 text-light #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
-              = entry[:title]
+            - if entry[:children].present?
+              - entry_id = "nav-entry-#{entry[:orig_idx]}"
+
+              a class="d-inline-flex text-decoration-none navbar__nav-button text-light #{ active ? '' : 'collapsed'} #{entry[:attributes]}" data-bs-toggle="collapse" href="##{entry_id}" role="button" aria-expanded="#{ active ? 'true' : 'false'}" aria-controls=entry_id
+                = entry[:title]
+                - if active
+                  span.bi.bi-chevron-down.ms-1.align-text-bottom style="font-size: 0.7em"
+                - else
+                  span.bi.bi-chevron-right.ms-1.align-text-bottom style="font-size: 0.7em"
+
+              .collapse data-turbo-temporary=('true' unless active) class="#{ 'show' if active}" id=entry_id
+                .collapse-inner
+                  - entry[:children].each do |child|
+                    - next if @navbar.hide_entry?(child)
+                    .mb-1
+                      a href=child[:path] class="d-inline-flex text-decoration-none navbar__nav-button text-light #{@navbar.active_entry?(child, request) ? 'active' : ''} #{child[:attributes]}"
+                        = child[:title]
+            - else
+              a href=entry[:path] class="navbar__nav-button pe-4 text-light #{active ? 'active' : ''} #{entry[:attributes]}"
+                = entry[:title]
 css:
   .offcanvas a { text-decoration: none; }
   .offcanvas li { xmargin-top: 0.75em; }

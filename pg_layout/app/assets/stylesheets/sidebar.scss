@@ -54,13 +54,16 @@ $chevron-color: 200,200,200,.5;
 
 .navbar__nav-button[aria-expanded=true] {
   font-weight: bold;
+  background-color: tint-color($primary, 5%);
 }
 
 // Child entries
-#sidebar .collapse-inner {
-  background-color: tint-color($primary, 5%);
-  padding-bottom: 0.1em;
-  padding-top: 0.1em;
+#sidebar, .offcanvas {
+  .collapse-inner {
+    background-color: tint-color($primary, 5%);
+    padding-bottom: 0.1em;
+    padding-top: 0.1em;
+  }
 }
 
 // Los small-items están deprecados
