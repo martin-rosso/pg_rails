@@ -384,6 +384,7 @@ module PgEngine
       object = instancia_modelo
       # Maybe lock! to ensure consistency of audits
       if (@saved = object.save)
+        ActiveSupport::Notifications.instrument("record_updated.pg_engine", object)
         respond_to do |format|
           format.html do
             if params[:inline_attribute].present?
@@ -420,6 +421,7 @@ module PgEngine
     def pg_respond_create
       object = instancia_modelo
       if (@saved = object.save)
+        ActiveSupport::Notifications.instrument("record_created.pg_engine", object)
         if in_modal?
           body = <<~HTML.html_safe
             <pg-event data-event-name="pg:record-created" data-turbo-temporary
@@ -476,6 +478,7 @@ module PgEngine
     # rubocop:disable Metrics/PerceivedComplexity
     def pg_respond_destroy(model, land_on = nil)
       if destroy_model(model)
+        ActiveSupport::Notifications.instrument("record_destroyed.pg_engine", model)
         # TODO!!: rename to main
         if turbo_frame? && current_turbo_frame != 'top'
           body = <<~HTML.html_safe
