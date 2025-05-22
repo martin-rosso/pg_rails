@@ -60,5 +60,12 @@ ul.navbar-nav.gap-3.align-items-center class="gap-#{@breakpoint_navbar_expand}-0
       li = link_to Account.nombre_plural, users_accounts_path(tid: nil), class: 'dropdown-item'
       - if Current.user.developer?
         li = link_to 'Admin', admin_users_path, class: 'dropdown-item'
+
+      - if @navbar.present?
+        - @navbar.topbar_signed_in_links.each do |entry|
+          - next if @navbar.hide_entry?(entry)
+          li
+            a href=entry[:path] class="dropdown-item #{@navbar.active_entry?(entry, request) ? 'active' : ''} #{entry[:attributes]}"
+              = entry[:title]
       li = link_to 'Cerrar sesión', destroy_user_session_path(tid: nil),
                    'data-turbo-method': :delete, class: 'dropdown-item'

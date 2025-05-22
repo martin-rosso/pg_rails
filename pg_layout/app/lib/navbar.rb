@@ -31,6 +31,13 @@ class Navbar
     @configured = true
   end
 
+  def topbar_signed_in_links
+    return [] unless @user.present?
+    configure
+
+    bar('topbar.signed_in')
+  end
+
   def sidebar
     configure
 
