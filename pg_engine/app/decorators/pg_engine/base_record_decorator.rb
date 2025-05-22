@@ -196,7 +196,7 @@ module PgEngine
     end
 
     def target_new
-      mod_name_sing = object.class.model_name.singular.to_sym
+      mod_name_sing = object.class.model_name.singular_route_key.to_sym
       [:new, pg_namespace, nested_record, mod_name_sing]
     end
 
