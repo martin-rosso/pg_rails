@@ -382,6 +382,7 @@ module PgEngine
 
     def pg_respond_update
       object = instancia_modelo
+      # Maybe lock! to ensure consistency of audits
       if (@saved = object.save)
         respond_to do |format|
           format.html do
