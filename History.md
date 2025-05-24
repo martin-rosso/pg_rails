@@ -1,4 +1,14 @@
 
+7.6.42 / 2025-05-24
+===================
+
+  * feat: support configurable user topbar links
+  * feat: instrument notifications on resource controller
+  * fix: support namespaced resources
+  * fix: allow skip default url options in dummy brand
+  * fix: add support to namespaced models
+  * conf: scaffold, disable controller specs, enable request specs
+
 7.6.41 / 2025-04-08
 ===================
 
