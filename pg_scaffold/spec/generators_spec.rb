@@ -33,9 +33,8 @@ describe 'Generators', type: :generator do
     it do
       run_generator(['users/modelo', 'bla:integer'])
 
-      my_assert_file 'spec/controllers/users/modelos_controller_spec.rb' do |content|
-        expect(content).to match(/routing/)
-        expect(content).to match(/sign_in/)
+      my_assert_file 'spec/requests/users/modelos_spec.rb' do |content|
+        expect(content).to match(/valid_attributes/)
       end
     end
   end

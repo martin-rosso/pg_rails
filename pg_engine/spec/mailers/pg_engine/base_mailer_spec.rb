@@ -27,7 +27,7 @@ describe PgEngine::BaseMailer do
     # rubocop:disable Style/GlobalVars
     before do
       $site_brand_before = PgEngine.site_brand
-      PgEngine.site_brand = PgEngine::Test::DummyBrand.new(skip_default_url_options: true)
+      PgEngine.site_brand = PgEngine::Test::DummyBrand.new(skip_default_url_options: false)
     end
 
     after do
