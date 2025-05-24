@@ -6,7 +6,7 @@ describe 'Al Registrarse' do
   include ActiveJob::TestHelper
 
   find_scroll = proc do |selector, options = {}|
-    elem = find(selector, **options.merge(visible: :all))
+    elem = find(selector, **options, visible: :all)
     script = 'arguments[0].scrollIntoView({ behavior: "instant", block: "start", inline: "nearest" });'
     page.execute_script(script, elem)
     sleep 0.5

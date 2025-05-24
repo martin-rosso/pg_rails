@@ -82,7 +82,7 @@ module PgFactoryBot
           'Faker::Lorem.sentence'
         elsif attribute.type == :date
           'Faker::Date.backward'
-        elsif attribute.type == :float || attribute.type == :decimal
+        elsif %i[float decimal].include?(attribute.type)
           'Faker::Number.decimal(l_digits: 3, r_digits: 2)'
         elsif attribute.type == :integer
           'rand(1..9999)'

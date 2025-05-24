@@ -42,7 +42,7 @@ describe 'Base requests' do
         { 'ACCEPT' => 'text/html' }
       end
 
-      include_examples 'manda el status correcto'
+      it_behaves_like 'manda el status correcto'
 
       it 'no manda el flash' do
         subject
@@ -60,7 +60,7 @@ describe 'Base requests' do
         { 'ACCEPT' => 'text/vnd.turbo-stream.html' }
       end
 
-      include_examples 'manda el status correcto'
+      it_behaves_like 'manda el status correcto'
 
       it 'manda el flash' do
         subject
@@ -73,7 +73,7 @@ describe 'Base requests' do
         { 'ACCEPT' => 'application/json' }
       end
 
-      include_examples 'manda el status correcto'
+      it_behaves_like 'manda el status correcto'
     end
   end
 

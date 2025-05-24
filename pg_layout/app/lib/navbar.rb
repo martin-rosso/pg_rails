@@ -32,7 +32,8 @@ class Navbar
   end
 
   def topbar_signed_in_links
-    return [] unless @user.present?
+    return [] if @user.blank?
+
     configure
 
     bar('topbar.signed_in')
@@ -50,13 +51,13 @@ class Navbar
     bar_data = @yaml_data[key]
     return [] if bar_data.blank?
 
-    # rubocop:disable Style/MultilineBlockChain:
+    # rubocop:disable Style/MultilineBlockChain
     orig_idx = 0
     bar_data.map do |item|
       orig_idx += 1
       evaluate_node(item, orig_idx)
     end.sort_by { |a| [a[:priority], a[:orig_idx]] }
-    # rubocop:enable Style/MultilineBlockChain:
+    # rubocop:enable Style/MultilineBlockChain
   end
 
   def evaluate_node(item, orig_idx = nil)

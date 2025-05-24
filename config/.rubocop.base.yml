@@ -5,6 +5,8 @@ require:
   - rubocop-factory_bot
   - rubocop-rspec_rails
   - rubocop-capybara
+Style/StringLiterals:
+  Enabled: false
 
 Lint/UselessAssignment:
   Exclude:

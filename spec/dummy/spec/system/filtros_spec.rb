@@ -96,13 +96,13 @@ describe 'Filtros de cosas' do
       context 'cuando es con _id' do
         let(:search_fields) { %i[categoria_de_cosa_id] }
 
-        include_examples 'buscar select simple'
+        it_behaves_like 'buscar select simple'
       end
 
       context 'cuando es sin id' do
         let(:search_fields) { %i[categoria_de_cosa] }
 
-        include_examples 'buscar select simple'
+        it_behaves_like 'buscar select simple'
       end
     end
 
