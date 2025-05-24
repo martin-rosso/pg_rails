@@ -1,7 +1,7 @@
 module PgEngine
   module Test
     class DummyBrand < PgEngine::SiteBrand
-      def initialize(include_all: false) # rubocop:disable Metrics/MethodLength
+      def initialize(skip_default_url_options: Rails.env.test?) # rubocop:disable Metrics/MethodLength
         super()
 
         @default_site_brand = :factura
@@ -48,7 +48,7 @@ module PgEngine
           }
         }
 
-        return unless Rails.env.development? || include_all
+        return if skip_default_url_options
 
         @options.merge!({
                           default_url_options: {
