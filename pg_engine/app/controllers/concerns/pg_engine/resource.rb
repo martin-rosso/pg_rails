@@ -585,12 +585,12 @@ module PgEngine
       if action_name == 'new'
         params.permit(atributos_permitidos)
       else
-        params.require(nombre_modelo).permit(atributos_permitidos)
+        params.require(clase_modelo.model_name.param_key).permit(atributos_permitidos)
       end
     end
 
     def nombre_modelo
-      clase_modelo.name.underscore
+      clase_modelo.model_name.element
     end
 
     def filtros_y_policy(campos, dflt_sort = nil, archived: false)
