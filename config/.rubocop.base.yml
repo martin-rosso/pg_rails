@@ -1,10 +1,32 @@
 require:
-  - rubocop-rails
   - rubocop-rspec
+  - rubocop-rails
   - rubocop-capybara
   - rubocop-factory_bot
   - rubocop-rspec_rails
   - rubocop-capybara
+
+Lint/EmptyBlock:
+  Enabled: false
+
+Layout/LineLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/AbcSize:
+  Enabled: false
+
+Metrics/CyclomaticComplexity:
+  Enabled: false
+
+Metrics/PerceivedComplexity:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: false
 
@@ -66,10 +88,6 @@ FactoryBot/FactoryAssociationWithStrategy:
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Metrics/BlockLength:
-  Exclude:
-    - app/admin/*
-
 Rails/LexicallyScopedActionFilter:
   Enabled: false
 
@@ -84,18 +102,6 @@ Metrics/ClassLength:
 
 Metrics/ModuleLength:
   Max: 150
-
-Metrics/MethodLength:
-  Max: 20
-
-Metrics/AbcSize:
-  Max: 25
-
-Metrics/CyclomaticComplexity:
-  Max: 9
-
-Metrics/PerceivedComplexity:
-  Max: 9
 
 AllCops:
   NewCops: enable

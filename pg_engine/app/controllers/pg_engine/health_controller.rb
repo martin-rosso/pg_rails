@@ -28,7 +28,6 @@ module PgEngine
       raise PgEngine::Error, 'redis is down'
     end
 
-    # rubocop:disable Metrics/MethodLength
     def check_websocket
       result = nil
       begin

@@ -2,7 +2,6 @@
 
 module PgEngine
   module TenantHelper
-    # rubocop:disable Metrics/AbcSize
     def set_tenant_from_params_or_fail!
       if ActsAsTenant.current_tenant.present?
         return unless Rails.env.test?

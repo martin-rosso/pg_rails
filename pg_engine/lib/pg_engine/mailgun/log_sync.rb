@@ -7,7 +7,7 @@ require 'json'
 module PgEngine
   module Mailgun
     class LogSync
-      def self.download # rubocop:disable Metrics/AbcSize
+      def self.download
         key = Rails.application.credentials.dig(:mailgun, :api_key)
         mg_client = ::Mailgun::Client.new(key)
         items = []

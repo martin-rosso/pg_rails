@@ -13,7 +13,6 @@ module Admin
       end
     end
 
-    # rubocop:disable Metrics/MethodLength
     def create
       @simple_user_notifier = SimpleUserNotifier.new(modelo_params)
       # @simple_user_notifier.message.save!

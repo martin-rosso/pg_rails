@@ -1,6 +1,5 @@
 module PgEngine
   class Navigator
-    # rubocop:disable Metrics/MethodLength
     def configure(navbar)
       # *****************************************************
 

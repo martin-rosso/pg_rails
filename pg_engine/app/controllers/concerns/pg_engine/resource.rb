@@ -1,6 +1,5 @@
 module PgEngine
   module Resource
-    # rubocop:disable Metrics/PerceivedComplexity
     def self.included(clazz)
       class << clazz
         # This is a per class variable, all subclasses of clazz inherit it
@@ -86,7 +85,6 @@ module PgEngine
 
       clazz.layout :set_layout
     end
-    # rubocop:enable Metrics/PerceivedComplexity
 
     def column_options_for(_object, _attribute)
       { class: 'text-nowrap' }
@@ -475,7 +473,6 @@ module PgEngine
       end
     end
 
-    # rubocop:disable Metrics/PerceivedComplexity
     def pg_respond_destroy(model, land_on = nil)
       if destroy_model(model)
         ActiveSupport::Notifications.instrument("record_destroyed.pg_engine", model)
@@ -513,7 +510,6 @@ module PgEngine
         redirect_back(fallback_location: root_path, status: 303)
       end
     end
-    # rubocop:enable Metrics/PerceivedComplexity
 
     def destroy_model(model)
       @error_message = I18n.t('pg_engine.resource_not_destroyed', model: model.class)

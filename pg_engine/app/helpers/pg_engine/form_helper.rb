@@ -2,7 +2,6 @@
 
 module PgEngine
   module FormHelper
-    # rubocop:disable Metrics/CyclomaticComplexity
     def pg_form_for(object, *args, &block_passed)
       resource = object
       if object.is_a? PgEngine::BaseRecordDecorator
