@@ -11,10 +11,18 @@ module PgEngine
       check_postgres
       check_websocket
       check_ssl
+      # FIXME: make configurable
+      check_good_job unless ENV.fetch("HEALTH_CHECK_SKIP_GOOD_JOB", nil) == "1"
       render_up
     end
 
     private
+
+    def check_good_job
+      return if GoodJob::Process.active.count.positive?
+
+      raise PgEngine::Error, 'good_job is down'
+    end
 
     def check_postgres
       return if User.count.is_a? Integer
