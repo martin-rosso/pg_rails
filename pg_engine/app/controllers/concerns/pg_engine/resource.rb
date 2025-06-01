@@ -291,7 +291,14 @@ module PgEngine
     protected
 
     def discard_undiscard(method)
+      object = instancia_modelo
       if instancia_modelo.send(method)
+        if method == :discard
+          ActiveSupport::Notifications.instrument("record_discarded.pg_engine", object)
+        else
+          ActiveSupport::Notifications.instrument("record_restored.pg_engine", object)
+        end
+
         if accepts_turbo_stream?
           body = <<~HTML.html_safe
             <pg-event data-event-name="pg:record-updated" data-reload="true" data-turbo-temporary>
