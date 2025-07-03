@@ -19,6 +19,21 @@ module PgRails
       klass.helper :all
     end
 
+    helper_method :current_page_size
+
+    def current_page_size
+      if params[:page_size].present?
+        session[:page_size] = params[:page_size]
+        params[:page_size].to_i
+      else
+        default_page_size
+      end
+    end
+
+    def default_page_size
+      session[:page_size].present? ? session[:page_size].to_i : 10
+    end
+
     helper_method :mobile_device?
 
     def mobile_device?
