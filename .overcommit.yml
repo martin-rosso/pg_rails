@@ -29,11 +29,6 @@ PreCommit:
     exclude:
       - pg_scaffold/lib/generators/**/templates/**/*
 
-  SlimLint:
-    enabled: true
-    exclude:
-      - pg_scaffold/lib/generators/**/templates/**/*
-
   RuboCop:
     enabled: true
     required_executable: bundle
