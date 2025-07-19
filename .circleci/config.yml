@@ -113,15 +113,10 @@ jobs:
       - checkout
       - bundle_install
       - set_up_database
-      - run:
-          command: |
-            curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
-            chmod +x ./cc-test-reporter
 
       - run:
           name: Run tests
           command: |
-            ./cc-test-reporter before-build
             export PARALLEL_TEST_PROCESSORS=4
             #RAILS_ENV=test bundle exec rails db:migrate
             corepack enable
@@ -134,8 +129,6 @@ jobs:
             bundle exec rspec spec pg_scaffold/spec pg_associable/spec pg_engine/spec pg_layout
             gem install undercover -v $UNDERCOVER_VERSION
             undercover --compare origin/main
-            cp coverage/lcov/project.lcov coverage/lcov.info
-            ./cc-test-reporter after-build --coverage-input-type lcov --exit-code $?
       - store_artifacts:
           path: spec/dummy/tmp/capybara
       - store_artifacts:
