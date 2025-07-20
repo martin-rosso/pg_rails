@@ -1,4 +1,14 @@
 
+7.6.43 / 2025-07-19
+===================
+
+  * feat: instrument notifications on record discard and restore
+  * fix: symbolize app_name on job deserialization
+  * feat: check good job in health
+  * conf: rubocop base config
+  * ci: remove code climate reporter
+  * lint: remove slim-lint
+
 7.6.42 / 2025-05-24
 ===================
 
