@@ -9,7 +9,7 @@ GIT
 GIT
   remote: https://github.com/mrosso10/acts_as_tenant.git
   revision: f54d48ef61300363fa05634e4d140bb3c7f4c8e2
-  branch: devel
+  branch: master
   specs:
     acts_as_tenant (1.0.1)
       rails (>= 6.0)
