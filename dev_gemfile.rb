@@ -1,5 +1,5 @@
 gem 'ransack_memory', github: 'mrosso10/ransack_memory', branch: 'support-turbo-frames'
-gem 'acts_as_tenant', github: 'mrosso10/acts_as_tenant', branch: 'devel'
+gem 'acts_as_tenant', github: 'mrosso10/acts_as_tenant', branch: 'master'
 # gem 'acts_as_tenant', path: '../acts_as_tenant'
 
 # VCR
