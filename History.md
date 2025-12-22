@@ -1,3 +1,9 @@
+7.6.44 / 2025-12-22
+===================
+
+  * feat: yield "index_header" on base index template
+  * build: acts_as_tenant from master branch
+  * ci: update undercover to 0.8.3
 
 7.6.43 / 2025-07-19
 ===================
