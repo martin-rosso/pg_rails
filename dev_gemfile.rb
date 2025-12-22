@@ -31,7 +31,7 @@ group :development, :test do
   # Coverage
   gem 'simplecov', '~> 0.22.0'
   gem 'simplecov-lcov', '~> 0.8.0'
-  gem 'undercover', '~> 0.5.0'
+  gem 'undercover', '~> 0.8.3'
 end
 
 # Misc
