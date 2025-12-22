@@ -33,6 +33,8 @@
 / if turbo stream? && Current.account.present?
 /   = turbo_stream_from Current.account, @clase_modelo.model_name.plural
 
+= yield(:index_header)
+
 - if action_name == 'archived'
   .text-center.p-3.text-warning-emphasis.border-bottom
     div
