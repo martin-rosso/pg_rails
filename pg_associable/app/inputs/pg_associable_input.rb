@@ -16,6 +16,9 @@ class PgAssociableInput < SimpleForm::Inputs::StringInput
 
   def input(wrapper_options = nil)
     atributo = attribute_name.to_s.gsub('_id', '')
+    # TODO: rescue route error and show custom error:
+    #   la ruta por defecto no existe, quizás está en otro namespace?
+    #   pasar las opciones modal_url: y buscar_url:
     url_modal = options[:modal_url] || namespaced_path(clase_asociacion(atributo), prefix: :abrir_modal)
     url_search = options[:buscar_url] || namespaced_path(clase_asociacion(atributo), prefix: :buscar)
 

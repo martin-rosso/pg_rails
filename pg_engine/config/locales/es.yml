@@ -118,6 +118,7 @@ es:
         header: "Aceptar invitación"
         submit_button: "Aceptar"
     confirmations:
+      # FIXME: cambiar a: "ahora tu email está confirmado", acá y en otros lugares
       confirmed: ¡Bien! Ahora tu cuenta está confirmada
     sessions:
       signed_in: ''

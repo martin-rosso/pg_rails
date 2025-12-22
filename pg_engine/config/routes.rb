@@ -4,6 +4,10 @@ Rails.application.routes.draw do
   get "pg_engine/health" => "pg_engine/health#show", as: :pg_engine_health_check
 
   get '404', to: 'application#page_not_found'
+  # FIXME: change to match, so POST and other methods are catched
+  # NOTE: via: :all is important
+  # match '404', to: 'application#page_not_found', via: :all
+  #
   # get '500', to: 'application#handle_internal_error'
   get 'internal_error_but_with_status200', to: 'application#internal_error_but_with_status200'
 
