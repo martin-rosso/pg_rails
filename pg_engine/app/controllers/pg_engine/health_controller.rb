@@ -74,10 +74,10 @@ module PgEngine
     end
 
     def check_site_ssl(sites, url)
-      raise PgEngine::Error, "SSL record not present: #{url}" if sites[url].blank?
+      raise PgEngine::Error, "SSL record not present: #{url}. Forgot to run PgEngine::SslVerifier ?" if sites[url].blank?
 
       if Time.zone.parse(sites[url]['verified_at']) < 2.days.ago
-        raise PgEngine::Error, "The SSL info is outdated: #{url}"
+        raise PgEngine::Error, "The SSL info is outdated: #{url}. PgEngine::SslVerifier is down?"
       end
 
       return unless Time.zone.parse(sites[url]['expires_at']) < 7.days.from_now
