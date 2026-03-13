@@ -1,3 +1,9 @@
+7.6.45 / 2026-03-13
+===================
+
+  * feat: go back functionality for modals
+  * doc: improved health error messages
+
 7.6.44 / 2025-12-22
 ===================
 
