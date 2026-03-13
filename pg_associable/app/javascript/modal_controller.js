@@ -9,7 +9,9 @@ export default class extends Controller {
   history = []
 
   connect (e) {
-    this.modalPuntero = new bootstrap.Modal(this.element)
+    this.modalPuntero = new bootstrap.Modal(this.element, {
+      keyboard: false
+    })
     if (this.element.dataset.removeOnHide === 'true') {
       this.element.addEventListener('hidden.bs.modal', (e) => {
         this.element.remove()
@@ -18,10 +20,25 @@ export default class extends Controller {
     if (this.element.dataset.autoShow === 'true') {
       this.modalPuntero.show()
     }
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') {
+        // Sin este timeout crashea boostrap: Uncaught TypeError: can't access
+        // property "classList", this._element is null
+        setTimeout(() => {
+          this.back()
+        }, 100)
+      }
+    })
 
     this.element.addEventListener('turbo:frame-render', (ev) => {
       if (ev.detail.fetchResponse.response.ok && ev.target.id === 'modal_content') {
-        this.history.push(ev.target.src)
+        const repeatedLink =
+          this.history.length > 0 &&
+          this.history[this.history.length - 1] === ev.target.src
+
+        if (!repeatedLink) {
+          this.history.push(ev.target.src)
+        }
       }
     })
 
@@ -114,9 +131,11 @@ export default class extends Controller {
       frame.src = url
       frame.innerHTML = '<div style="min-height: 30em">Cargando...</div>'
     } else {
-      this.modalPuntero.hide()
+      this.remove()
     }
-    ev.stopPropagation()
+    if (ev) {
+      ev.stopPropagation()
+    }
     this.reloadTop()
   }
 

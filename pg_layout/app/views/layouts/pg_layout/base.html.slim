@@ -90,6 +90,10 @@ html
                 - if using_modal?
                   .px-2.d-flex.align-items-center.border.border-start-0
                     = button_tag type: :button, class: 'btn btn-sm btn-link',
+                                 data: { action: 'modal#back',
+                                         controller: :tooltip, 'bs-title': 'Volver' } do
+                      i.bi-arrow-left
+                    = button_tag type: :button, class: 'btn btn-sm btn-link',
                                  data: { action: 'modal#maximize',
                                          controller: :tooltip, 'bs-title': 'Maximizar' } do
                       i.bi-fullscreen

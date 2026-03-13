@@ -19,7 +19,7 @@ module Tenant
     end
 
     def atributos_para_buscar
-      %i[nombre tipo fecha tiempo]
+      %i[nombre tipo_in fecha tiempo]
     end
 
     def atributos_para_listar
