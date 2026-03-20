@@ -2,6 +2,6 @@
 
 # :nocov:
 module PgRails
-  VERSION = '7.6.45'
+  VERSION = '7.6.46'
 end
 # :nocov:
