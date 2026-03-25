@@ -6,83 +6,26 @@ module PgEngine
       render_down
     end
 
+    # Examples:
+    # ?except=["good_job", "ssl", "websocket"]
+    # ?only=["redis"]
     def show
-      check_redis
-      check_postgres
-      check_websocket
-      check_ssl
-      # FIXME: make configurable
-      check_good_job unless ENV.fetch("HEALTH_CHECK_SKIP_GOOD_JOB", nil) == "1"
+      HealthChecker.new.run_checks(
+        only: parse_ary(params[:only]),
+        except: parse_ary(params[:except])
+      )
+
       render_up
     end
 
     private
 
-    def check_good_job
-      return if GoodJob::Process.active.count.positive?
+    def parse_ary(param)
+      return if param.blank?
 
-      raise PgEngine::Error, 'good_job is down'
-    end
+      ary = JSON.parse(param)
 
-    def check_postgres
-      return if User.count.is_a? Integer
-
-      raise PgEngine::Error, 'postgres is down'
-    end
-
-    def check_redis
-      return if Kredis.counter('healthcheck').increment.is_a? Integer
-
-      raise PgEngine::Error, 'redis is down'
-    end
-
-    def check_websocket
-      result = nil
-      begin
-        Timeout.timeout(5) do
-          EM.run do
-            url = Rails.application.config.action_cable.url
-            ws = Faye::WebSocket::Client.new(url)
-
-            ws.on :message do |event|
-              type = JSON.parse(event.data)['type']
-              if type == 'welcome'
-                result = :success
-                ws.close
-                EM.stop
-              end
-            end
-          end
-        end
-      rescue Timeout::Error
-        raise PgEngine::Error, 'websocket server is down'
-      end
-
-      return if result == :success
-
-      raise PgEngine::Error, 'websocket server is down'
-    end
-    # rubocop:enable Metrics/MethodLength
-
-    def check_ssl
-      raise PgEngine::Error, 'no ssl log file' unless File.exist?(PgEngine::SslVerifier::OUTPUT_PATH)
-
-      sites = JSON.parse(File.read(PgEngine::SslVerifier::OUTPUT_PATH))
-      PgEngine.config.health_ssl_urls.each do |url|
-        check_site_ssl(sites, url)
-      end
-    end
-
-    def check_site_ssl(sites, url)
-      raise PgEngine::Error, "SSL record not present: #{url}. Forgot to run PgEngine::SslVerifier ?" if sites[url].blank?
-
-      if Time.zone.parse(sites[url]['verified_at']) < 2.days.ago
-        raise PgEngine::Error, "The SSL info is outdated: #{url}. PgEngine::SslVerifier is down?"
-      end
-
-      return unless Time.zone.parse(sites[url]['expires_at']) < 7.days.from_now
-
-      raise PgEngine::Error, "The SSL certificate is expired (or about to expire): #{url}"
+      ary.is_a?(Array) ? ary : [ary]
     end
 
     def render_up

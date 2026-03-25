@@ -4,7 +4,8 @@
 
 module PgEngine
   class Configuracion
-    attr_accessor :users_controller, :global_domains, :navigators, :user_profiles, :health_ssl_urls
+    attr_accessor :users_controller, :global_domains, :navigators,
+                  :user_profiles, :health_ssl_urls, :health_checks
 
     # attr_accessor :profile_groups
 
@@ -12,6 +13,7 @@ module PgEngine
       @global_domains = ['app.localhost.com', 'test.host', 'localhost']
       @navigators = [PgEngine::Navigator.new]
       @health_ssl_urls = []
+      @health_checks = []
       # @profile_groups = [:account]
       @user_profiles = {
         account__owner: 0
@@ -54,6 +56,21 @@ module PgEngine
         end
         { name: group, options: }
       end
+    end
+
+    # @param [String] name
+    #   description for the check
+    #
+    # @param [Duration] frequency
+    #   interval to wait between check runs, if left blank, check will run
+    #   every time
+    #
+    # @param [Proc] block
+    #   a function that raises error if sth is wrong
+    def add_health_check(name, only_explicit: false, &block)
+      @health_checks.push(
+        { name:, only_explicit:, block: }
+      )
     end
   end
 end

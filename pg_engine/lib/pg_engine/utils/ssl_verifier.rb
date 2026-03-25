@@ -39,6 +39,10 @@ module PgEngine
             raise PgEngine::Error, "#{url}: The SSL certificate is expired (or about to expire)."
           end
 
+          # FIXME: ensure domain is included in certificate domains
+          # for example, if domain is example.com and certificate is issued for
+          # *.example.com, it fails.
+
           log_output(url, cert.not_after)
         end
       rescue OpenSSL::SSL::SSLError => e
