@@ -1,3 +1,8 @@
+7.6.47 / 2026-03-26
+===================
+
+  * feat: health checker refactor and new extra checks
+
 7.6.46 / 2026-03-20
 ===================
 
