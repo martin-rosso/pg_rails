@@ -25,8 +25,8 @@ describe PgEngine::HealthChecker do
         raise "sth went wrong"
       end
     end
-    expect {
+    expect do
       health_checker.run_checks(only: ["dummy_check"])
-    }.to raise_error(/Health check failed: dummy_check/)
+    end.to raise_error(/Health check failed: dummy_check/)
   end
 end
