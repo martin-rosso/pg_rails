@@ -81,7 +81,8 @@ jobs:
     steps:
       - node/install:
           node-version: '20.11.0'
-      - checkout
+      - checkout:
+          method: full
       - bundle_install
       - run: corepack enable
       - run: yarn install
@@ -110,7 +111,8 @@ jobs:
       - browser-tools/install-chrome
       - browser-tools/install-chromedriver
 
-      - checkout
+      - checkout:
+          method: full
       - bundle_install
       - set_up_database
 
