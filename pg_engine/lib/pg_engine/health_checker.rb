@@ -1,8 +1,10 @@
 module PgEngine
   class HealthChecker
     def run_checks(only: nil, except: nil)
-      ary = [default_checks, PgEngine.config.health_checks].flatten
-      ary.each do |health_check|
+      validate_check_names!(only)
+      validate_check_names!(except)
+
+      all_checks.each do |health_check|
         included = only.present? && only.include?(health_check[:name].to_s)
         excluded = except.present? && except.include?(health_check[:name].to_s)
 
@@ -19,6 +21,20 @@ module PgEngine
     end
 
     private
+
+    def all_checks
+      [default_checks, PgEngine.config.health_checks].flatten
+    end
+
+    def validate_check_names!(checks)
+      return if checks.blank?
+
+      checks.each do |check|
+        unless all_checks.map { |chk| chk[:name].to_s }.include?(check)
+          raise "Check not found: #{check}"
+        end
+      end
+    end
 
     def default_checks
       ary = []

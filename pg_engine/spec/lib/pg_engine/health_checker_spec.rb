@@ -29,4 +29,10 @@ describe PgEngine::HealthChecker do
       health_checker.run_checks(only: ["dummy_check"])
     end.to raise_error(/Health check failed: dummy_check/)
   end
+
+  it "fails if check name is wrong" do
+    expect do
+      health_checker.run_checks(only: ["wrong_check_name"])
+    end.to raise_error(/Check not found/)
+  end
 end
