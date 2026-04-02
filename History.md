@@ -1,3 +1,12 @@
+
+7.6.48 / 2026-04-02
+===================
+
+  * deps: upgrade anycable to 1.6
+  * fix: handle and log turbo:fetch-request-error
+  * fix: validate check names
+  * ci: change checkout to full mode
+
 7.6.47 / 2026-03-26
 ===================
 
