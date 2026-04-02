@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
   #     'public gem pushes.'
   # end
   spec.add_dependency 'rails', "~> 7.2.0"
-  spec.add_dependency 'anycable', "= 1.5.1"
-  spec.add_dependency 'anycable-rails', "~> 1.5.1"
+  spec.add_dependency 'anycable', "= 1.6.4"
+  spec.add_dependency 'anycable-rails', "~> 1.6.2"
   spec.add_dependency 'anycable-rails-jwt', "~> 0.2.0"
   spec.add_dependency 'cable_ready', "~> 5.0"
   spec.add_dependency 'faye-websocket', "~> 0.11"
