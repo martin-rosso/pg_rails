@@ -44,10 +44,17 @@ document.addEventListener('turbo:frame-missing', async (ev) => {
 
   flashMessage(html, 'alert')
 })
+
+// Sometimes browsers throw a "Failed to fetch" error, this is to get an
+// insight into it and see if we can wrap around it for better handling
+document.addEventListener('turbo:fetch-request-error', (ev) => {
+  Rollbar.warning('turbo:fetch-request-error', ev.detail)
+  console.error('turbo:fetch-request-error', ev.detail)
+})
+
 // document.addEventListener('turbo:before-stream-render', function () { console.log('turbo:before-stream-render') })
 // document.addEventListener('turbo:render', function () { console.log('turbo:render') })
 // document.addEventListener('turbo:before-render', function () { console.log('turbo:before-render') })
 // document.addEventListener('turbo:before-frame-render', function () { console.log('turbo:before-frame-render') })
 // document.addEventListener('turbo:frame-load', function () { console.log('turbo:frame-load') })
 // document.addEventListener('turbo:before-fetch-request', function () { console.log('turbo:before-fetch-request') })
-// document.addEventListener('turbo:fetch-request-error', function () { console.log('turbo:fetch-request-error') })
