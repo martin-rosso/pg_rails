@@ -1,6 +1,9 @@
 {
   "name": "pg_rails",
   "version": "7.6.48",
+  "publishConfig": {
+    "registry": "http://gem.bien.com.ar:4873"
+  },
   "dependencies": {
     "@anycable/web": "0.8.0",
     "@hotwired/stimulus": "^3.2.2",

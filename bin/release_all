@@ -13,8 +13,8 @@ newversion = PgRails::VERSION
 
 gemfilename = "./pkg/pg_rails-#{newversion}.gem"
 system! "gem build --output=#{gemfilename}"
-system! "gem push #{gemfilename}"
+system! "gem push #{gemfilename} --key ian_key --host http://gem.bien.com.ar:9292/private"
 
 system! 'npm pack --pack-destination pkg'
 npmpkgname = "./pkg/pg_rails-#{newversion}.tgz"
-system! "npm publish #{npmpkgname}"
+system! "npm publish #{npmpkgname} --registry http://gem.bien.com.ar:4873"
