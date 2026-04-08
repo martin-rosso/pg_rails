@@ -167,7 +167,7 @@ module PgEngine
       @navbar = Navbar.new
 
       if defined?(Rollbar) && Rollbar.configuration.enabled && Rails.application.credentials.rollbar.present?
-        @rollbar_token = Rails.application.credentials.rollbar.access_token_client
+        @rollbar_token = Rails.application.credentials.dig(:rollbar, :access_token_client)
       end
 
       if Current.user.present?
