@@ -1,5 +1,13 @@
 module PgEngine
   class DeviseController < ApplicationController
+    # Its needed to skip csrf verification because of the way devise handles
+    # authentication with a middleware.
+    # What happens if we don't? If on POST /sign_in the credentials are valid
+    # but the csrf token validation fails, user get an error but it's signed in
+    # anyway.
+    # TODO: maybe should be skipped only on specific actions like new session POST
+    skip_before_action :verify_authenticity_token
+
     prepend_before_action only: :create do
       rate_limiting(
         to: 10,
