@@ -13,9 +13,6 @@ Rails.application.configure do
   config.middleware.use ActsAsTenant::TestTenantMiddleware
 
   config.after_initialize do
-    # Don't forget to configure URL
-    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable")
-
     # Make test adapter AnyCable-compatible
     AnyCable::Rails.extend_adapter!(ActionCable.server.pubsub)
   end

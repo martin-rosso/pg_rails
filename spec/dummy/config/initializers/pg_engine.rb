@@ -56,4 +56,4 @@ end
 
 require 'pg_engine/test/dummy_brand'
 
-PgEngine.site_brand = PgEngine::Test::DummyBrand.new
+PgEngine.site_brand = PgEngine::Test::DummyBrand.new(skip_default_url_options: true)

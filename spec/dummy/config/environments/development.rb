@@ -6,10 +6,10 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :letter_opener
   # config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address: Rails.application.credentials&.mailgun&.host,
+    address: Rails.application.credentials.dig(:mailgun, :host),
     port: 465,
-    user_name: Rails.application.credentials&.mailgun&.username,
-    password: Rails.application.credentials&.mailgun&.password,
+    user_name: Rails.application.credentials.dig(:mailgun, :username),
+    password: Rails.application.credentials.dig(:mailgun, :password),
     authentication: :login,
     enable_starttls: true,
     ssl: true
@@ -19,7 +19,7 @@ Rails.application.configure do
 
   # Specify AnyCable WebSocket server URL to use by JS client
   config.after_initialize do
-    config.action_cable.url = ActionCable.server.config.url = ENV.fetch("CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
+    config.action_cable.url = ENV.fetch("ACTION_CABLE_URL", "ws://localhost:8080/cable") if AnyCable::Rails.enabled?
   end
 
   # In the development environment your application's code is reloaded any time
