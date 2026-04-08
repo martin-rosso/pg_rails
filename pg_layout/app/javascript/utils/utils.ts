@@ -77,7 +77,14 @@ export function flashMessage (message, flashType = 'warning', toast = false) {
       ${message}
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>`
-  document.querySelector('#flash').appendChild(el.children[0])
+
+  let target = document.querySelector('#flash')
+  if (target) {
+    target.appendChild(el.children[0])
+  } else {
+    target = document.querySelector('body')
+    target.prepend(el.children[0])
+  }
 }
 
 export function fadeOut (e) {
