@@ -15,11 +15,11 @@ module PgEngine
           msg = 'have_logged only support block expectations'
           raise ArgumentError, msg unless proc.is_a?(Proc)
 
-          original_messages = Set.new(PgEngine::PgLogger.test_logged_messages)
+          original_messages_count = PgEngine::PgLogger.test_logged_messages.length
           proc.call
-          logged_messages = Set.new(PgEngine::PgLogger.test_logged_messages)
+          logged_messages = PgEngine::PgLogger.test_logged_messages
 
-          @new_messages = logged_messages - original_messages
+          @new_messages = logged_messages[original_messages_count..]
           @new_messages.any? do |level, message|
             if @text.present? && @level.present?
               level == @level && message.include?(@text)
