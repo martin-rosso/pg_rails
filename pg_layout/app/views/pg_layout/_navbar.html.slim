@@ -6,17 +6,17 @@ nav class="navbar navbar-expand-#{@breakpoint_navbar_expand}" data-bs-theme="dar
           i class="bi #{@navbar_chevron_class}"
       span.ms-3
         = render partial: 'layouts/logo'
-    - if user_signed_in? && @notifications_bell.present?
+    - if Current.user.present? && @notifications_bell.present?
       div class="d-#{@breakpoint_navbar_expand}-none"
         = render @notifications_bell
     .d-flex
       - @navbar.extensiones.each do |extension|
         = extension
-      - if user_signed_in?
+      - if Current.user.present?
         .collapse.navbar-collapse.justify-content-end
           = render partial: 'pg_layout/signed_in_links'
       div class="d-#{@breakpoint_navbar_expand}-none"
-        - if user_signed_in?
+        - if Current.user.present?
           a.d-flex.align-items-center.gap-2 href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasExample" aria-controls="offcanvasExample"
             - if Current.account.present?
               - if Current.account.logo.present?

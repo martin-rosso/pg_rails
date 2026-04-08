@@ -3,7 +3,7 @@
     h5#offcanvasExampleLabel.offcanvas-title
     button.btn-close[type="button" data-bs-dismiss="offcanvas" aria-label="Close"]
   .offcanvas-body.text-end
-    - if user_signed_in?
+    - if Current.user.present?
       = render partial: 'pg_layout/signed_in_links'
     - if @navbar.present?
       ul.list-unstyled.mt-4

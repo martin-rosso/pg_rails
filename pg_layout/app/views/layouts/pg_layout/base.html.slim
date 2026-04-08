@@ -72,7 +72,7 @@ html
         = render partial: 'pg_layout/navbar' if @navbar.present?
         div
           - captured_content = capture do
-            - if user_signed_in? && breadcrumbs.any?
+            - if Current.user.present? && breadcrumbs.any?
               .d-flex.d-print-none
                 .d-flex.flex-grow-1.px-3.py-1[
                   class="#{nav_bg} align-items-center xjustify-content-between gap-5"
