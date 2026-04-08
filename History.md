@@ -1,4 +1,18 @@
 
+7.6.50 / 2026-04-08
+===================
+
+  * fix: new env ROLLBAR_ENABLED
+  * fix: turbo:frame-missing handling
+  * fix: flashMessage fallbacks to prepend to body
+  * fix: skip verify_authenticity_token on devise controllers
+  * fix: prefer Current.user.present? over user_signed_in?
+  * fix: improve base error handing
+  * fix: less verbose logging
+  * test: disable skip_default_url_options
+  * test: logger matchers
+  * test: fix test & dev environment config
+
 7.6.49 / 2026-04-02
 ===================
 
