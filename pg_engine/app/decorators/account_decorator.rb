@@ -38,7 +38,15 @@ class AccountDecorator < PgEngine::BaseRecordDecorator
     if logo.present?
       image_tag logo.variant(:thumb), style: 'max-height:3em'
     else
-      content_tag 'i', nil, class: 'bi bi-bag-fill text-center d-inline-block', style: 'font-size: 1.7em; width: 1.6em'
+      content_tag 'i', nil,
+                  class: 'bi bi-bag-fill text-center d-inline-block',
+                  style: 'font-size: 1.7em; width: 1.6em'
     end
+  rescue StandardError => e
+    pg_err(e)
+
+    content_tag 'i', nil,
+                class: 'bi bi-bag-fill text-center d-inline-block',
+                style: 'font-size: 1.7em; width: 1.6em'
   end
 end

@@ -226,6 +226,36 @@ module PgEngine
           head status
         end
       end
+    rescue StandardError => e
+      pg_err(e)
+      render_fallback_error(:internal_server_error)
+    end
+
+    def render_fallback_error(status)
+      respond_to do |format|
+        format.html do
+          render plain: File.read("public/500.html"), content_type: "text/html", status:
+        end
+
+        format.turbo_stream do
+          message = InternalErrorComponent.new.render_in(view_context)
+          alert = AlertComponent.new(type: "alert", dismissible: false)
+          html = alert.render_in(view_context) do
+            message
+          end
+          render turbo_stream: turbo_stream.update_all('body', html),
+                 status:
+        end
+
+        format.json do
+          render json: { html: "Internal server error" }, status:
+        end
+
+        # Mainly JS
+        format.any do
+          head status
+        end
+      end
     end
 
     def not_authorized(_arg_required_for_active_admin)
