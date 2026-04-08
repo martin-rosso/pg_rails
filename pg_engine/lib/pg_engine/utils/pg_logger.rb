@@ -97,8 +97,6 @@ module PgEngine
         else
           <<~STR
             #{titulo(*args)}
-            Caller Backtrace:
-              #{cleaner.clean(caller).join("\n")}
           STR
         end
       rescue StandardError
@@ -106,7 +104,10 @@ module PgEngine
       end
 
       def titulo(*args)
-        args.map { |obj| "#{obj.inspect} (#{obj.class})" }.join("\n")
+        args.map do |obj|
+          obj_class = obj.is_a?(String) ? "" : "(#{obj.class})"
+          "#{obj.inspect}#{obj_class}"
+        end.join("\n")
       end
 
       def rainbow_wrap(mensaje, type)
