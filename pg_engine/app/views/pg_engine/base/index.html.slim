@@ -62,20 +62,21 @@
               th.text-nowrap style="font-size: 0.8em" = encabezado :discarded_at, ordenable: true
         tbody
           - @collection.each do |object|
-            - object = object.decorate
-            tr id="#{dom_id(object)}"
-              td.text-nowrap.xtext-end.xps-5
-                .actions-wrapper
-                  = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
-                  = object.show_link(text: '')
-                  = object.edit_link(text: '', klass: 'btn-light')
-                  = object.archive_link
-                  = object.restore_link
-                  = object.destroy_link
-              - atributos_para_listar.each do |att, _sort_field|
-                = column_for object, att
-              - if action_name == 'archived'
-                = column_for object, :discarded_at
+            - cache_if ENV.fetch("APP_CACHE_INDEX_ROWS", "0") == "1", [Current.user.to_gid, object, action_name, Digest::MD5.hexdigest(atributos_para_listar.to_s)] do
+              - object = object.decorate
+              tr id="#{dom_id(object)}"
+                td.text-nowrap.xtext-end.xps-5
+                  .actions-wrapper
+                    = object.extra_actions(size: :sm) if object.respond_to? :extra_actions
+                    = object.show_link(text: '')
+                    = object.edit_link(text: '', klass: 'btn-light')
+                    = object.archive_link
+                    = object.restore_link
+                    = object.destroy_link
+                - atributos_para_listar.each do |att, _sort_field|
+                  = column_for object, att
+                - if action_name == 'archived'
+                  = column_for object, :discarded_at
 
     .d-flex.justify-content-center
       = paginate(@collection)
