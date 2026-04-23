@@ -1,6 +1,7 @@
 module PgScaffold
   class Railtie < ::Rails::Railtie
     initializer 'configurar_generators', after: 'factory_bot.set_fixture_replacement' do
+      # y staging?
       unless Rails.env.production?
         require_relative 'monkey_patches/mejoras_de_atributos'
         require_relative 'monkey_patches/mejoras_a_named_base'
