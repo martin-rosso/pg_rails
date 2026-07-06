@@ -1,4 +1,10 @@
 
+7.6.52 / 2026-07-06
+===================
+
+  * fix: listing rows cached only if @cache_index_rows is set
+  * ci: AllowInsecureRepositories=true
+
 7.6.51 / 2026-04-22
 ===================
 

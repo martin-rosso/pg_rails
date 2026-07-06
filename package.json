@@ -1,6 +1,6 @@
 {
   "name": "pg_rails",
-  "version": "7.6.51",
+  "version": "7.6.52",
   "publishConfig": {
     "registry": "http://gem.bien.com.ar:4873"
   },
