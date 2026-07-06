@@ -29,7 +29,7 @@ commands:
           keys:
             - packages-v1
 
-      - run: sudo apt-get --allow-releaseinfo-change update
+      - run: sudo apt-get --allow-releaseinfo-change -o Acquire::AllowInsecureRepositories=true update
       - run:
           command: |
             if ! [[ -d vendor/apt ]]; then
