@@ -62,7 +62,9 @@
               th.text-nowrap style="font-size: 0.8em" = encabezado :discarded_at, ordenable: true
         tbody
           - @collection.each do |object|
-            - cache_if ENV.fetch("APP_CACHE_INDEX_ROWS", "0") == "1", [Current.user.to_gid, object, action_name, Digest::MD5.hexdigest(atributos_para_listar.to_s)] do
+            - cache_enabled = @cache_index_rows && ENV.fetch("APP_CACHE_INDEX_ROWS", "0") == "1"
+            - cache_key = [Current.user.to_gid, object, action_name, Digest::MD5.hexdigest(atributos_para_listar.to_s)]
+            - cache_if cache_enabled, cache_key do
               - object = object.decorate
               tr id="#{dom_id(object)}"
                 td.text-nowrap.xtext-end.xps-5
