@@ -1,4 +1,10 @@
 
+7.6.53 / 2026-07-07
+===================
+
+  * fix: change minute_step to 5 in inline edit
+  * feat: lang=es en html
+
 7.6.52 / 2026-07-06
 ===================
 
